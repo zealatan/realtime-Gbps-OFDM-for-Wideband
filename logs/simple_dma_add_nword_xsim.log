@@ -1,0 +1,118 @@
+
+****** xsim v2022.2 (64-bit)
+  **** SW Build 3671981 on Fri Oct 14 04:59:54 MDT 2022
+  **** IP Build 3669848 on Fri Oct 14 08:30:02 MDT 2022
+    ** Copyright 1986-2022 Xilinx, Inc. All Rights Reserved.
+
+source xsim.dir/simple_dma_add_nword_tb_sim/xsim_script.tcl
+# xsim {simple_dma_add_nword_tb_sim} -autoloadwcfg -runall
+Time resolution is 1 ps
+run -all
+[CHK] t=95000  phase=reset_release
+[INFO] Test 1: length_words=0 — expect done, no error, processed_count=0
+[PASS]                                              T1 done  got=1'b1
+[PASS]                                          T1 no error  got=1'b0
+[PASS]                                 T1 processed_count=0  got=0
+[PASS]              T1 canary dst[0] mem[0xD0>>2] unchanged  got=0xabcdef01
+[CHK] t=125000  phase=test2
+[INFO] Test 2: length_words=1, 0x10 + 0x5 = 0x15
+[PASS]                                              T2 done  got=1'b1
+[PASS]                                          T2 no error  got=1'b0
+[PASS]                                 T2 processed_count=1  got=1
+[PASS]                                   T2 last_input_data  got=0x00000010
+[PASS]                                  T2 last_output_data  got=0x00000015
+[PASS]                               T2 dst[0] mem[0x40>>2]  got=0x00000015
+[CHK] t=195000  phase=test3
+[INFO] Test 3: length_words=4, add 0x100 to four words
+[PASS]                                              T3 done  got=1'b1
+[PASS]                                          T3 no error  got=1'b0
+[PASS]                                 T3 processed_count=4  got=4
+[PASS]                                   T3 last_input_data  got=0x40000004
+[PASS]                                  T3 last_output_data  got=0x40000104
+[PASS]                               T3 dst[0] mem[0x80>>2]  got=0x10000101
+[PASS]                               T3 dst[1] mem[0x84>>2]  got=0x20000102
+[PASS]                               T3 dst[2] mem[0x88>>2]  got=0x30000103
+[PASS]                               T3 dst[3] mem[0x8C>>2]  got=0x40000104
+[CHK] t=385000  phase=test4
+[INFO] Test 4: overflow — 0xFFFF_FFFF + 0x1 = 0x0 (wraps)
+[PASS]                                              T4 done  got=1'b1
+[PASS]               T4 no error (overflow is not an error)  got=1'b0
+[PASS]                                 T4 processed_count=1  got=1
+[PASS]                  T4 dst[0] mem[0xC0>>2] wrapped to 0  got=0x00000000
+[CHK] t=455000  phase=test5
+[INFO] Test 5: invalid src mid-processing src=0xFF4 len=4
+[PASS]                                              T5 done  got=1'b1
+[PASS]                            T5 error (OOB src word 3)  got=1'b1
+[PASS]                                 T5 processed_count=3  got=3
+[PASS]                              T5 dst[0] mem[0x100>>2]  got=0xaaaa1121
+[PASS]                              T5 dst[1] mem[0x104>>2]  got=0xbbbb2232
+[PASS]                              T5 dst[2] mem[0x108>>2]  got=0xcccc3343
+[PASS]         T5 dst[3] mem[0x10C>>2] unchanged (no write)  got=0x00000000
+[PASS]                 T5 last_input_data = OOB rdata (0x0)  got=0x00000000
+[PASS]          T5 last_output_data = OOB rdata + add_value  got=0x00000010
+[CHK] t=625000  phase=test6
+[INFO] Test 6: invalid dst mid-processing src=0x200 dst=0xFF4 len=4
+[PASS]                                              T6 done  got=1'b1
+[PASS]                            T6 error (OOB dst word 3)  got=1'b1
+[PASS]                                 T6 processed_count=3  got=3
+[PASS]                              T6 dst[0] mem[0xFF4>>2]  got=0x1111aaca
+[PASS]                              T6 dst[1] mem[0xFF8>>2]  got=0x2222bbdb
+[PASS]                              T6 dst[2] mem[0xFFC>>2]  got=0x3333ccec
+[PASS]                       T6 src mem[0x200>>2] unchanged  got=0x1111aaaa
+[PASS]         T6 last_input_data = failed-write input word  got=0x4444dddd
+[PASS]    T6 last_output_data = failed-write processed word  got=0x4444ddfd
+[CHK] t=815000  phase=test7
+[INFO] Test 7: identity mode (add_value=0), 4-word copy
+[PASS]                                              T7 done  got=1'b1
+[PASS]                                          T7 no error  got=1'b0
+[PASS]                                 T7 processed_count=4  got=4
+[PASS]                   T7 last_input_data = last src word  got=0x8888dddd
+[PASS]          T7 last_output_data = last src word (add=0)  got=0x8888dddd
+[PASS]                              T7 dst[0] mem[0x500>>2]  got=0x5555aaaa
+[PASS]                              T7 dst[1] mem[0x504>>2]  got=0x6666bbbb
+[PASS]                              T7 dst[2] mem[0x508>>2]  got=0x7777cccc
+[PASS]                              T7 dst[3] mem[0x50C>>2]  got=0x8888dddd
+[CHK] t=1005000  phase=test8a
+[INFO] Test 8a: read-error transfer (3 words, word 2 src OOB)
+[PASS]                                             T8a done  got=1'b1
+[PASS]                           T8a error (OOB src word 2)  got=1'b1
+[PASS]                                T8a processed_count=2  got=2
+[PASS]                             T8a dst[0] mem[0x600>>2]  got=0x2222bc2b
+[PASS]                             T8a dst[1] mem[0x604>>2]  got=0x3333cd3c
+[PASS]            T8a dst[2] canary mem[0x608>>2] unchanged  got=0xface5678
+[PASS]                T8a last_input_data = OOB rdata (0x0)  got=0x00000000
+[PASS]               T8a last_output_data = OOB rdata + add  got=0x00000050
+[CHK] t=1135000  phase=test8b
+[INFO] Test 8b: valid recovery after read error
+[PASS]                                             T8b done  got=1'b1
+[PASS]                                         T8b no error  got=1'b0
+[PASS]                                T8b processed_count=2  got=2
+[PASS]                  T8b last_input_data = last src word  got=0x87654321
+[PASS]                T8b last_output_data = last src + add  got=0x87654330
+[PASS]                             T8b dst[0] mem[0x700>>2]  got=0x12345687
+[PASS]                             T8b dst[1] mem[0x704>>2]  got=0x87654330
+[CHK] t=1245000  phase=test9a
+[INFO] Test 9a: write-error transfer (3 words, word 2 dst OOB)
+[PASS]                                             T9a done  got=1'b1
+[PASS]                           T9a error (OOB dst word 2)  got=1'b1
+[PASS]                                T9a processed_count=2  got=2
+[PASS]                             T9a dst[0] mem[0xFF8>>2]  got=0xabcdef04
+[PASS]                             T9a dst[1] mem[0xFFC>>2]  got=0xfedcba9b
+[PASS]                      T9a src mem[0x410>>2] unchanged  got=0xabcdef01
+[PASS]               T9a last_input_data = word 2 read data  got=0x13579bdf
+[PASS]              T9a last_output_data = word 2 processed  got=0x13579be2
+[CHK] t=1395000  phase=test9b
+[INFO] Test 9b: valid recovery after write error
+[PASS]                                             T9b done  got=1'b1
+[PASS]                                         T9b no error  got=1'b0
+[PASS]                                T9b processed_count=3  got=3
+[PASS]                  T9b last_input_data = last src word  got=0xa0b1c2d3
+[PASS]                T9b last_output_data = last src + add  got=0xa0b1c2d7
+[PASS]                             T9b dst[0] mem[0x780>>2]  got=0xdeadbef3
+[PASS]                             T9b dst[1] mem[0x784>>2]  got=0xcafef011
+[PASS]                             T9b dst[2] mem[0x788>>2]  got=0xa0b1c2d7
+[PASS] simple_dma_add_nword_tb  81/81 checks passed
+[DONE] simulation complete at t=1545000
+$finish called at time : 1545 ns : File "/home/zealatan/AI_ORC/messi/VIVADO_MIN_EXAMPLE/tb/simple_dma_add_nword_tb.sv" Line 400
+exit
+INFO: [Common 17-206] Exiting xsim at Sun May  3 10:02:47 2026...

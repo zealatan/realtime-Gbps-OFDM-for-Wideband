@@ -1,0 +1,4 @@
+INFO: [VRFC 10-2263] Analyzing SystemVerilog file "/home/zealatan/RTL_SYNC/rtl/cp_autocorr_core.v" into library work
+INFO: [VRFC 10-311] analyzing module cp_autocorr_core
+INFO: [VRFC 10-2263] Analyzing SystemVerilog file "/home/zealatan/RTL_SYNC/tb/cp_autocorr_core_tb.sv" into library work
+INFO: [VRFC 10-311] analyzing module cp_autocorr_core_tb

@@ -1,0 +1,14 @@
+Vivado Simulator v2022.2
+Copyright 1986-1999, 2001-2022 Xilinx, Inc. All Rights Reserved.
+Running: /home/zealatan/Vivado/2022.2/bin/unwrapped/lnx64.o/xelab simple_axi_master_tb -debug typical -s simple_axi_master_tb_sim 
+Multi-threading is on. Using 10 slave threads.
+Starting static elaboration
+Pass Through NonSizing Optimizer
+Completed static elaboration
+Starting simulation data flow analysis
+Completed simulation data flow analysis
+Time Resolution for simulation is 1ps
+Compiling module work.simple_axi_master
+Compiling module work.axi_mem_model_default
+Compiling module work.simple_axi_master_tb
+Built simulation snapshot simple_axi_master_tb_sim

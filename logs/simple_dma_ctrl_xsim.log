@@ -1,0 +1,249 @@
+
+****** xsim v2022.2 (64-bit)
+  **** SW Build 3671981 on Fri Oct 14 04:59:54 MDT 2022
+  **** IP Build 3669848 on Fri Oct 14 08:30:02 MDT 2022
+    ** Copyright 1986-2022 Xilinx, Inc. All Rights Reserved.
+
+source xsim.dir/simple_dma_ctrl_tb_sim/xsim_script.tcl
+# xsim {simple_dma_ctrl_tb_sim} -autoloadwcfg -runall
+Time resolution is 1 ps
+run -all
+[CHK] t=95000  phase=reset_release
+[INFO] Test 1: 4-word copy 0x00-0x0C -> 0x80-0x8C
+[PASS]                                   bresp @ 0x00000004  got=0x00000000
+[PASS]                                   bresp @ 0x00000008  got=0x00000000
+[PASS]                                   bresp @ 0x0000000c  got=0x00000000
+[PASS]                                   bresp @ 0x00000000  got=0x00000000
+[PASS]                                       T1 STATUS.done  got=1'b1
+[PASS]                                    T1 STATUS.error=0  got=1'b0
+[PASS]                                    T1 copied_count=4  got=4
+[PASS]                               T1 dst[0] mem[0x80>>2]  got=0xdeadbeef
+[PASS]                               T1 dst[1] mem[0x84>>2]  got=0xcafef00d
+[PASS]                               T1 dst[2] mem[0x88>>2]  got=0xa5a5a5a5
+[PASS]                               T1 dst[3] mem[0x8C>>2]  got=0x12345678
+[CHK] t=450000  phase=test2
+[INFO] Test 2: single-word copy 0x04 -> 0xC0
+[PASS]                                   bresp @ 0x00000004  got=0x00000000
+[PASS]                                   bresp @ 0x00000008  got=0x00000000
+[PASS]                                   bresp @ 0x0000000c  got=0x00000000
+[PASS]                                   bresp @ 0x00000000  got=0x00000000
+[PASS]                                       T2 STATUS.done  got=1'b1
+[PASS]                                    T2 STATUS.error=0  got=1'b0
+[PASS]                                    T2 copied_count=1  got=1
+[PASS]                                  T2 dst mem[0xC0>>2]  got=0xcafef00d
+[CHK] t=690000  phase=test3
+[INFO] Test 3: invalid AXI-lite addr 0x20 -> SLVERR
+[PASS]                                   bresp @ 0x00000020  got=0x00000002
+[PASS]                                   rresp @ 0x00000020  got=0x00000002
+[CHK] t=750000  phase=test4
+[INFO] Test 4: OOB src mid-copy src=0xFF4 dst=0x300 len=4
+[PASS]                                   bresp @ 0x00000004  got=0x00000000
+[PASS]                                   bresp @ 0x00000008  got=0x00000000
+[PASS]                                   bresp @ 0x0000000c  got=0x00000000
+[PASS]                                   bresp @ 0x00000000  got=0x00000000
+[PASS]                                       T4 STATUS.done  got=1'b1
+[PASS]                                    T4 STATUS.error=1  got=1'b1
+[PASS]                                    T4 copied_count=3  got=3
+[PASS]                              T4 dst[0] mem[0x300>>2]  got=0xaaaa1111
+[PASS]                              T4 dst[1] mem[0x304>>2]  got=0xbbbb2222
+[PASS]                              T4 dst[2] mem[0x308>>2]  got=0xcccc3333
+[PASS]                    T4 dst[3] mem[0x30C>>2] unchanged  got=0x00000000
+[CHK] t=1080000  phase=test5
+[INFO] Test 5: OOB dst mid-copy src=0x200 dst=0xFF4 len=4
+[PASS]                                   bresp @ 0x00000004  got=0x00000000
+[PASS]                                   bresp @ 0x00000008  got=0x00000000
+[PASS]                                   bresp @ 0x0000000c  got=0x00000000
+[PASS]                                   bresp @ 0x00000000  got=0x00000000
+[PASS]                                       T5 STATUS.done  got=1'b1
+[PASS]                                    T5 STATUS.error=1  got=1'b1
+[PASS]                                    T5 copied_count=3  got=3
+[PASS]                              T5 dst[0] mem[0xFF4>>2]  got=0x1111aaaa
+[PASS]                              T5 dst[1] mem[0xFF8>>2]  got=0x2222bbbb
+[PASS]                              T5 dst[2] mem[0xFFC>>2]  got=0x3333cccc
+[PASS]                 T5 canary mem[256] (0x400) unchanged  got=0xfeedface
+[CHK] t=1440000  phase=test6
+[INFO] Test 6: mixed write ordering, 3-word copy 0x10-0x18 -> 0x500-0x508
+[PASS]                          bresp_aw_first @ 0x00000004  got=0x00000000
+[PASS]                           bresp_w_first @ 0x00000008  got=0x00000000
+[PASS]                          bresp_aw_first @ 0x0000000c  got=0x00000000
+[PASS]                           bresp_w_first @ 0x00000000  got=0x00000000
+[PASS]                                       T6 STATUS.done  got=1'b1
+[PASS]                                    T6 STATUS.error=0  got=1'b0
+[PASS]                                    T6 copied_count=3  got=3
+[PASS]                              T6 dst[0] mem[0x500>>2]  got=0xbeefcafe
+[PASS]                              T6 dst[1] mem[0x504>>2]  got=0xf00ddead
+[PASS]                              T6 dst[2] mem[0x508>>2]  got=0x5a5a5a5a
+[CHK] t=1810000  phase=test7
+[INFO] Test 7: invalid addr SLVERR via AW-first (0x40) and W-first (0x50)
+[PASS]                          bresp_aw_first @ 0x00000040  got=0x00000002
+[PASS]                           bresp_w_first @ 0x00000050  got=0x00000002
+[CHK] t=1890000  phase=test8
+[INFO] Test 8: B-channel backpressure (3-cycle delay), 2-word copy 0x1C-0x20 -> 0x600-0x604
+[PASS]             bvalid_held[0] bready_delay @ 0x00000004  got=1'b1
+[PASS]             bvalid_held[1] bready_delay @ 0x00000004  got=1'b1
+[PASS]             bvalid_held[2] bready_delay @ 0x00000004  got=1'b1
+[PASS]                           bresp_delayed @ 0x00000004  got=0x00000000
+[PASS]             bvalid_held[0] bready_delay @ 0x00000008  got=1'b1
+[PASS]             bvalid_held[1] bready_delay @ 0x00000008  got=1'b1
+[PASS]             bvalid_held[2] bready_delay @ 0x00000008  got=1'b1
+[PASS]                           bresp_delayed @ 0x00000008  got=0x00000000
+[PASS]             bvalid_held[0] bready_delay @ 0x0000000c  got=1'b1
+[PASS]             bvalid_held[1] bready_delay @ 0x0000000c  got=1'b1
+[PASS]             bvalid_held[2] bready_delay @ 0x0000000c  got=1'b1
+[PASS]                           bresp_delayed @ 0x0000000c  got=0x00000000
+[PASS]             bvalid_held[0] bready_delay @ 0x00000060  got=1'b1
+[PASS]             bvalid_held[1] bready_delay @ 0x00000060  got=1'b1
+[PASS]             bvalid_held[2] bready_delay @ 0x00000060  got=1'b1
+[PASS]                           bresp_delayed @ 0x00000060  got=0x00000002
+[PASS]                                   bresp @ 0x00000000  got=0x00000000
+[PASS]                                       T8 STATUS.done  got=1'b1
+[PASS]                                    T8 STATUS.error=0  got=1'b0
+[PASS]                                    T8 copied_count=2  got=2
+[PASS]                              T8 dst[0] mem[0x600>>2]  got=0x6b6b6b6b
+[PASS]                              T8 dst[1] mem[0x604>>2]  got=0x9c9c9c9c
+[CHK] t=2350000  phase=test9
+[INFO] Test 9: R-channel backpressure (3-cycle delay) on all register reads
+[PASS]             rvalid_held[0] rready_delay @ 0x00000004  got=1'b1
+[PASS]            rdata_stable[0] rready_delay @ 0x00000004  got=0x0000001c
+[PASS]            rresp_stable[0] rready_delay @ 0x00000004  got=0x00000000
+[PASS]             rvalid_held[1] rready_delay @ 0x00000004  got=1'b1
+[PASS]            rdata_stable[1] rready_delay @ 0x00000004  got=0x0000001c
+[PASS]            rresp_stable[1] rready_delay @ 0x00000004  got=0x00000000
+[PASS]             rvalid_held[2] rready_delay @ 0x00000004  got=1'b1
+[PASS]            rdata_stable[2] rready_delay @ 0x00000004  got=0x0000001c
+[PASS]            rresp_stable[2] rready_delay @ 0x00000004  got=0x00000000
+[PASS]                           rresp_delayed @ 0x00000004  got=0x00000000
+[PASS]                                 T9 SRC_ADDR readback  got=0x0000001c
+[PASS]             rvalid_held[0] rready_delay @ 0x00000008  got=1'b1
+[PASS]            rdata_stable[0] rready_delay @ 0x00000008  got=0x00000600
+[PASS]            rresp_stable[0] rready_delay @ 0x00000008  got=0x00000000
+[PASS]             rvalid_held[1] rready_delay @ 0x00000008  got=1'b1
+[PASS]            rdata_stable[1] rready_delay @ 0x00000008  got=0x00000600
+[PASS]            rresp_stable[1] rready_delay @ 0x00000008  got=0x00000000
+[PASS]             rvalid_held[2] rready_delay @ 0x00000008  got=1'b1
+[PASS]            rdata_stable[2] rready_delay @ 0x00000008  got=0x00000600
+[PASS]            rresp_stable[2] rready_delay @ 0x00000008  got=0x00000000
+[PASS]                           rresp_delayed @ 0x00000008  got=0x00000000
+[PASS]                                 T9 DST_ADDR readback  got=0x00000600
+[PASS]             rvalid_held[0] rready_delay @ 0x0000000c  got=1'b1
+[PASS]            rdata_stable[0] rready_delay @ 0x0000000c  got=0x00000002
+[PASS]            rresp_stable[0] rready_delay @ 0x0000000c  got=0x00000000
+[PASS]             rvalid_held[1] rready_delay @ 0x0000000c  got=1'b1
+[PASS]            rdata_stable[1] rready_delay @ 0x0000000c  got=0x00000002
+[PASS]            rresp_stable[1] rready_delay @ 0x0000000c  got=0x00000000
+[PASS]             rvalid_held[2] rready_delay @ 0x0000000c  got=1'b1
+[PASS]            rdata_stable[2] rready_delay @ 0x0000000c  got=0x00000002
+[PASS]            rresp_stable[2] rready_delay @ 0x0000000c  got=0x00000000
+[PASS]                           rresp_delayed @ 0x0000000c  got=0x00000000
+[PASS]                             T9 LENGTH_WORDS readback  got=0x00000002
+[PASS]             rvalid_held[0] rready_delay @ 0x00000010  got=1'b1
+[PASS]            rdata_stable[0] rready_delay @ 0x00000010  got=0x00000001
+[PASS]            rresp_stable[0] rready_delay @ 0x00000010  got=0x00000000
+[PASS]             rvalid_held[1] rready_delay @ 0x00000010  got=1'b1
+[PASS]            rdata_stable[1] rready_delay @ 0x00000010  got=0x00000001
+[PASS]            rresp_stable[1] rready_delay @ 0x00000010  got=0x00000000
+[PASS]             rvalid_held[2] rready_delay @ 0x00000010  got=1'b1
+[PASS]            rdata_stable[2] rready_delay @ 0x00000010  got=0x00000001
+[PASS]            rresp_stable[2] rready_delay @ 0x00000010  got=0x00000000
+[PASS]                           rresp_delayed @ 0x00000010  got=0x00000000
+[PASS]                          T9 STATUS (done=1, error=0)  got=0x00000001
+[PASS]             rvalid_held[0] rready_delay @ 0x00000014  got=1'b1
+[PASS]            rdata_stable[0] rready_delay @ 0x00000014  got=0x00000002
+[PASS]            rresp_stable[0] rready_delay @ 0x00000014  got=0x00000000
+[PASS]             rvalid_held[1] rready_delay @ 0x00000014  got=1'b1
+[PASS]            rdata_stable[1] rready_delay @ 0x00000014  got=0x00000002
+[PASS]            rresp_stable[1] rready_delay @ 0x00000014  got=0x00000000
+[PASS]             rvalid_held[2] rready_delay @ 0x00000014  got=1'b1
+[PASS]            rdata_stable[2] rready_delay @ 0x00000014  got=0x00000002
+[PASS]            rresp_stable[2] rready_delay @ 0x00000014  got=0x00000000
+[PASS]                           rresp_delayed @ 0x00000014  got=0x00000000
+[PASS]                                    T9 COPIED_COUNT=2  got=0x00000002
+[PASS]             rvalid_held[0] rready_delay @ 0x00000030  got=1'b1
+[PASS]            rdata_stable[0] rready_delay @ 0x00000030  got=0x00000000
+[PASS]            rresp_stable[0] rready_delay @ 0x00000030  got=0x00000002
+[PASS]             rvalid_held[1] rready_delay @ 0x00000030  got=1'b1
+[PASS]            rdata_stable[1] rready_delay @ 0x00000030  got=0x00000000
+[PASS]            rresp_stable[1] rready_delay @ 0x00000030  got=0x00000002
+[PASS]             rvalid_held[2] rready_delay @ 0x00000030  got=1'b1
+[PASS]            rdata_stable[2] rready_delay @ 0x00000030  got=0x00000000
+[PASS]            rresp_stable[2] rready_delay @ 0x00000030  got=0x00000002
+[PASS]                           rresp_delayed @ 0x00000030  got=0x00000002
+[PASS]                              T9 invalid addr rdata=0  got=0x00000000
+[CHK] t=2770000  phase=test10
+[INFO] Test 10: busy-state reads — CONTROL/STATUS/COPIED_COUNT while DMA running
+[PASS]                                   bresp @ 0x00000004  got=0x00000000
+[PASS]                                   bresp @ 0x00000008  got=0x00000000
+[PASS]                                   bresp @ 0x0000000c  got=0x00000000
+[PASS]                                   bresp @ 0x00000000  got=0x00000000
+[PASS]                                   rresp @ 0x00000000  got=0x00000000
+[PASS]                                   T10 CONTROL busy=1  got=1'b1
+[PASS]                                   rresp @ 0x00000010  got=0x00000000
+[PASS]                         T10 STATUS.done=0 while busy  got=1'b0
+[PASS]                        T10 STATUS.error=0 while busy  got=1'b0
+[PASS]                                   rresp @ 0x00000014  got=0x00000000
+[PASS]          T10 COPIED_COUNT <= LENGTH_WORDS while busy  got=0x00000002  max=0x00000008
+[PASS]                   T10 STATUS.done=1 after completion  got=1'b1
+[PASS]                  T10 STATUS.error=0 after completion  got=1'b0
+[PASS]                                   T10 COPIED_COUNT=8  got=8
+[PASS]                             T10 dst[0] mem[0x700>>2]  got=0xa0a0a0a0
+[PASS]                             T10 dst[1] mem[0x704>>2]  got=0xa1a1a1a1
+[PASS]                             T10 dst[2] mem[0x708>>2]  got=0xa2a2a2a2
+[PASS]                             T10 dst[3] mem[0x70C>>2]  got=0xa3a3a3a3
+[PASS]                             T10 dst[4] mem[0x710>>2]  got=0xa4a4a4a4
+[PASS]                             T10 dst[5] mem[0x714>>2]  got=0xa5a5a5a5
+[PASS]                             T10 dst[6] mem[0x718>>2]  got=0xa6a6a6a6
+[PASS]                             T10 dst[7] mem[0x71C>>2]  got=0xa7a7a7a7
+[CHK] t=3280000  phase=test11
+[INFO] Test 11: busy re-trigger guard — second start ignored, transfer unaffected
+[PASS]                                   bresp @ 0x00000004  got=0x00000000
+[PASS]                                   bresp @ 0x00000008  got=0x00000000
+[PASS]                                   bresp @ 0x0000000c  got=0x00000000
+[PASS]                                   bresp @ 0x00000000  got=0x00000000
+[PASS]                                   rresp @ 0x00000000  got=0x00000000
+[PASS]                  T11 CONTROL busy=1 before retrigger  got=1'b1
+[PASS]                                   bresp @ 0x00000004  got=0x00000000
+[PASS]                                   bresp @ 0x00000008  got=0x00000000
+[PASS]                                   bresp @ 0x0000000c  got=0x00000000
+[PASS]                                   bresp @ 0x00000000  got=0x00000000
+[PASS]                   T11 STATUS.done=1 after completion  got=1'b1
+[PASS]                                   T11 STATUS.error=0  got=1'b0
+[PASS]                 T11 COPIED_COUNT=8 (original length)  got=8
+[PASS]                             T11 dst[0] mem[0xA00>>2]  got=0xb0b0b0b0
+[PASS]                             T11 dst[1] mem[0xA04>>2]  got=0xb1b1b1b1
+[PASS]                             T11 dst[2] mem[0xA08>>2]  got=0xb2b2b2b2
+[PASS]                             T11 dst[3] mem[0xA0C>>2]  got=0xb3b3b3b3
+[PASS]                             T11 dst[4] mem[0xA10>>2]  got=0xb4b4b4b4
+[PASS]                             T11 dst[5] mem[0xA14>>2]  got=0xb5b5b5b5
+[PASS]                             T11 dst[6] mem[0xA18>>2]  got=0xb6b6b6b6
+[PASS]                             T11 dst[7] mem[0xA1C>>2]  got=0xb7b7b7b7
+[PASS]            T11 canary_before mem[0x9FC>>2] unchanged  got=0xc0dec0de
+[PASS]            T11 canary_after  mem[0xA20>>2] unchanged  got=0xdecaf0ca
+[CHK] t=3790000  phase=test12a
+[INFO] Test 12a: zero-length DMA transfer — no reads/writes, done=1 count=0
+[PASS]                                   bresp @ 0x00000004  got=0x00000000
+[PASS]                                   bresp @ 0x00000008  got=0x00000000
+[PASS]                                   bresp @ 0x0000000c  got=0x00000000
+[PASS]                                   bresp @ 0x00000000  got=0x00000000
+[PASS]                                   T12a STATUS.done=1  got=1'b1
+[PASS]                                  T12a STATUS.error=0  got=1'b0
+[PASS]                                  T12a COPIED_COUNT=0  got=0
+[PASS]                     T12a src mem[0xB00>>2] unchanged  got=0x00000000
+[PASS]           T12a canary dst[0] mem[0xB80>>2] unchanged  got=0xfaceb00c
+[PASS]           T12a canary dst[1] mem[0xB84>>2] unchanged  got=0xd0d0d0d0
+[CHK] t=4000000  phase=test12b
+[INFO] Test 12b: 3-word restart after zero-length — normal transfer completes
+[PASS]                                   bresp @ 0x00000004  got=0x00000000
+[PASS]                                   bresp @ 0x00000008  got=0x00000000
+[PASS]                                   bresp @ 0x0000000c  got=0x00000000
+[PASS]                                   bresp @ 0x00000000  got=0x00000000
+[PASS]                                   T12b STATUS.done=1  got=1'b1
+[PASS]                                  T12b STATUS.error=0  got=1'b0
+[PASS]                                  T12b COPIED_COUNT=3  got=3
+[PASS]                            T12b dst[0] mem[0xC00>>2]  got=0xc0c0c0c0
+[PASS]                            T12b dst[1] mem[0xC04>>2]  got=0xc1c1c1c1
+[PASS]                            T12b dst[2] mem[0xC08>>2]  got=0xc2c2c2c2
+[PASS] simple_dma_ctrl_tb  208/208 checks passed
+[DONE] simulation complete at t=4330000
+$finish called at time : 4330 ns : File "/home/zealatan/AI_ORC/messi/VIVADO_MIN_EXAMPLE/tb/simple_dma_ctrl_tb.sv" Line 918
+exit
+INFO: [Common 17-206] Exiting xsim at Sun May  3 09:21:54 2026...

@@ -1,0 +1,83 @@
+
+****** xsim v2022.2 (64-bit)
+  **** SW Build 3671981 on Fri Oct 14 04:59:54 MDT 2022
+  **** IP Build 3669848 on Fri Oct 14 08:30:02 MDT 2022
+    ** Copyright 1986-2022 Xilinx, Inc. All Rights Reserved.
+
+source xsim.dir/cordic_atan2_tb_sim/xsim_script.tcl
+# xsim {cordic_atan2_tb_sim} -autoloadwcfg -runall
+Time resolution is 1 ps
+run -all
+
+--- T1: Reset state ---
+[PASS] T1 tready=1
+[PASS] T1 dout_valid=0
+
+--- T2: Angle=0 ---
+[PASS] T2 valid
+[PASS] T2 angle=0 = 0x0000 (0)
+
+--- T3: Angle=+pi/2 ---
+[PASS] T3 valid
+[PASS] T3 angle=+pi/2 = 0x3fff (16383)
+
+--- T4: Angle=-pi/2 ---
+[PASS] T4 valid
+[PASS] T4 angle=-pi/2 = 0xc001 (-16383)
+
+--- T5: Angle=+pi ---
+[PASS] T5 valid
+[PASS] T5 angle=+pi = 0x7fff (32767)
+
+--- T6: Angle=+pi/4 ---
+[PASS] T6 valid
+[PASS] T6 angle=+pi/4 = 0x1fff (8191)
+
+--- T7: Latency verification ---
+[PASS] T7 not valid at T+14
+[PASS] T7 valid at T+15
+[PASS] T7 angle=0 at T+15 = 0x0000 (0)
+
+--- T8: tvalid=0 gap ---
+[PASS] T8 no valid output
+
+--- T9: tready always 1 ---
+[PASS] T9 tready before
+[PASS] T9 tready during
+[PASS] T9 tready after
+
+--- T10: Streaming 5 back-to-back ---
+[PASS] T10 sample0 = 0x0000 (0)
+[PASS] T10 sample1 = 0x3fff (16383)
+[PASS] T10 sample2 = 0xc001 (-16383)
+[PASS] T10 sample3 = 0x7fff (32767)
+[PASS] T10 sample4 = 0x1fff (8191)
+
+--- T11: Reset mid-stream ---
+[PASS] T11 valid=0 during reset
+[PASS] T11 valid=0 after reset
+
+--- T12: All 4 quadrants ---
+[PASS] T12 Q1 +pi/4 = 0x1fff (8191)
+[PASS] T12 Q2 +3pi/4 = 0x5fff (24575)
+[PASS] T12 Q3 -3pi/4 = 0xa001 (-24575)
+[PASS] T12 Q4 -pi/4 = 0xe001 (-8191)
+
+--- T13: PRNG smoke ---
+[PASS] T13 prng0 = 0x2d1b (11547)
+[PASS] T13 prng1 = 0x2d1b (11547)
+[PASS] T13 prng2 = 0x688b (26763)
+[PASS] T13 prng3 = 0x2d1b (11547)
+[PASS] T13 prng4 = 0x7842 (30786)
+[PASS] T13 prng5 = 0x2d1b (11547)
+[PASS] T13 prng6 = 0x2d1b (11547)
+[PASS] T13 prng7 = 0x4b1b (19227)
+
+========================================
+PASS: 38   FAIL: 0
+CI GATE: PASSED
+========================================
+
+$finish called at time : 3686 ns : File "/home/zealatan/RTL_SYNC/tb/cordic_atan2_tb.sv" Line 363
+exit
+INFO: [Common 17-206] Exiting xsim at Tue May  5 10:07:29 2026...

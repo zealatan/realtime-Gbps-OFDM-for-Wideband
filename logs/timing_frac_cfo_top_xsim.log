@@ -1,0 +1,56 @@
+
+****** xsim v2022.2 (64-bit)
+  **** SW Build 3671981 on Fri Oct 14 04:59:54 MDT 2022
+  **** IP Build 3669848 on Fri Oct 14 08:30:02 MDT 2022
+    ** Copyright 1986-2022 Xilinx, Inc. All Rights Reserved.
+
+source xsim.dir/timing_frac_cfo_top_tb_sim/xsim_script.tcl
+# xsim {timing_frac_cfo_top_tb_sim} -autoloadwcfg -runall
+Time resolution is 1 ps
+run -all
+
+--- T1: Reset ---
+[PASS] T1 done=0
+[PASS] T1 busy=0
+[PASS] T1 frac_phase_valid=0
+
+--- T2: All-zero buffer ---
+[PASS] T2 busy=1 on start
+[PASS] T2 done fires
+[PASS] T2 frac_phase_valid
+[PASS] T2 peak_corr_i=0 = 0
+[PASS] T2 peak_corr_q=0 = 0
+[PASS] T2 frac_phase=0 = 0
+[PASS] T2 busy=0 after done
+
+--- T3: Constant I=100 Q=50 ---
+[PASS] T3 busy=1 on start
+[PASS] T3 done fires
+[PASS] T3 frac_phase_valid
+[PASS] T3 peak_lag=0 = 0
+[PASS] T3 peak_corr_i = 50000
+[PASS] T3 peak_corr_q=0 = 0
+[PASS] T3 peak_energy = 100000
+[PASS] T3 frac_phase=0 = 0
+[PASS] T3 busy=0 after done
+
+--- T4: A={100,0} B={0,100} → frac_phase=-pi/2 ---
+[PASS] T4 busy=1 on start
+[PASS] T4 done fires
+[PASS] T4 frac_phase_valid
+[PASS] T4 frac_phase matches golden = -13027
+[PASS] T4 busy=0 after done
+
+--- T5: Re-run after done ---
+[PASS] T5 busy=1 on start
+[PASS] T5 done fires
+[PASS] T5 busy=0 after done
+
+========================================
+PASS: 27   FAIL: 0
+CI GATE: PASSED
+========================================
+
+$finish called at time : 12246 ns : File "/home/zealatan/RTL_SYNC/tb/timing_frac_cfo_top_tb.sv" Line 327
+exit
+INFO: [Common 17-206] Exiting xsim at Tue May  5 13:59:27 2026...

@@ -1,0 +1,20 @@
+0.7
+2020.2
+Oct 14 2022
+05:07:14
+/home/zealatan/RTL_SYNC/rtl/axis_complex_mult.v,1777913080,systemVerilog,,/home/zealatan/RTL_SYNC/rtl/complex_mult_iq.v,,axis_complex_mult,,,,,,,,
+/home/zealatan/RTL_SYNC/rtl/complex_mult_iq.v,1777958479,systemVerilog,,/home/zealatan/RTL_SYNC/rtl/complex_rotator.v,,complex_mult_iq,,,,,,,,
+/home/zealatan/RTL_SYNC/rtl/complex_rotator.v,1777976355,systemVerilog,,/home/zealatan/RTL_SYNC/rtl/nco_phase_gen.v,,complex_rotator,,,,,,,,
+/home/zealatan/RTL_SYNC/rtl/cordic_atan2.v,1777968277,systemVerilog,,/home/zealatan/RTL_SYNC/rtl/frac_cfo_estimator.v,,cordic_atan2,,,,,,,,
+/home/zealatan/RTL_SYNC/rtl/cp_autocorr_core.v,1777962102,systemVerilog,,/home/zealatan/RTL_SYNC/rtl/timing_metric_core.v,,cp_autocorr_core,,,,,,,,
+/home/zealatan/RTL_SYNC/rtl/frac_cfo_corrector_top.v,1777979160,systemVerilog,,/home/zealatan/RTL_SYNC/rtl/cp_autocorr_core.v,,frac_cfo_corrector_top,,,,,,,,
+/home/zealatan/RTL_SYNC/rtl/frac_cfo_estimator.v,1777970894,systemVerilog,,/home/zealatan/RTL_SYNC/rtl/timing_frac_cfo_top.v,,frac_cfo_estimator,,,,,,,,
+/home/zealatan/RTL_SYNC/rtl/frac_cfo_frame_corrector_top.v,1778056574,systemVerilog,,/home/zealatan/RTL_SYNC/tb/frac_cfo_frame_corrector_top_tb.sv,,frac_cfo_frame_corrector_top,,,,,,,,
+/home/zealatan/RTL_SYNC/rtl/frame_detector.v,1777957343,systemVerilog,,/home/zealatan/RTL_SYNC/rtl/frac_cfo_frame_corrector_top.v,,frame_detector,,,,,,,,
+/home/zealatan/RTL_SYNC/rtl/iq_frame_buffer.v,1777923673,systemVerilog,,/home/zealatan/RTL_SYNC/rtl/frame_detector.v,,iq_frame_buffer,,,,,,,,
+/home/zealatan/RTL_SYNC/rtl/nco_phase_gen.v,1777972394,systemVerilog,,/home/zealatan/RTL_SYNC/rtl/frac_cfo_corrector_top.v,,nco_phase_gen,,,,,,,,
+/home/zealatan/RTL_SYNC/rtl/peak_detector.v,1777923005,systemVerilog,,/home/zealatan/RTL_SYNC/rtl/timing_sync_top.v,,peak_detector,,,,,,,,
+/home/zealatan/RTL_SYNC/rtl/timing_frac_cfo_top.v,1777982012,systemVerilog,,/home/zealatan/RTL_SYNC/rtl/iq_frame_buffer.v,,timing_frac_cfo_top,,,,,,,,
+/home/zealatan/RTL_SYNC/rtl/timing_metric_core.v,1777963472,systemVerilog,,/home/zealatan/RTL_SYNC/rtl/peak_detector.v,,timing_metric_core,,,,,,,,
+/home/zealatan/RTL_SYNC/rtl/timing_sync_top.v,1777981327,systemVerilog,,/home/zealatan/RTL_SYNC/rtl/cordic_atan2.v,,timing_sync_top,,,,,,,,
+/home/zealatan/RTL_SYNC/tb/frac_cfo_frame_corrector_top_tb.sv,1778057310,systemVerilog,,,,frac_cfo_frame_corrector_top_tb,,,,,,,,

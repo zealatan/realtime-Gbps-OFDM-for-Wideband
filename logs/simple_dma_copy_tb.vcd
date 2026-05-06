@@ -1,0 +1,755 @@
+$date
+   Sat May  2 22:56:07 2026
+$end
+$version
+  2022.2
+$end
+$timescale
+  1ps
+$end
+$scope module simple_dma_copy_tb $end
+$var reg 1 ! aclk $end
+$var reg 1 " aresetn $end
+$var reg 1 # start_tb $end
+$var reg 32 $ src_tb [31:0] $end
+$var reg 32 % dst_tb [31:0] $end
+$var wire 32 & axi_araddr [31:0] $end
+$var wire 1 ' axi_arvalid $end
+$var wire 1 ( axi_arready $end
+$var wire 32 ) axi_rdata [31:0] $end
+$var wire 2 * axi_rresp [1:0] $end
+$var wire 1 + axi_rlast $end
+$var wire 1 , axi_rvalid $end
+$var wire 1 - axi_rready $end
+$var wire 32 . axi_awaddr [31:0] $end
+$var wire 1 / axi_awvalid $end
+$var wire 1 0 axi_awready $end
+$var wire 32 1 axi_wdata [31:0] $end
+$var wire 4 2 axi_wstrb [3:0] $end
+$var wire 1 3 axi_wlast $end
+$var wire 1 4 axi_wvalid $end
+$var wire 1 5 axi_wready $end
+$var wire 2 6 axi_bresp [1:0] $end
+$var wire 1 7 axi_bvalid $end
+$var wire 1 8 axi_bready $end
+$var wire 32 9 copied_data [31:0] $end
+$var wire 1 : done $end
+$var wire 1 ; error $end
+$var reg 32 < pass_count [31:0] $end
+$var reg 32 = fail_count [31:0] $end
+$scope module dut $end
+$var wire 1 > aclk $end
+$var wire 1 ? aresetn $end
+$var wire 1 @ start $end
+$var wire 32 A src_addr [31:0] $end
+$var wire 32 B dst_addr [31:0] $end
+$var wire 32 9 copied_data [31:0] $end
+$var wire 1 : done $end
+$var wire 1 ; error $end
+$var wire 32 & araddr [31:0] $end
+$var wire 1 ' arvalid $end
+$var wire 1 ( arready $end
+$var wire 32 ) rdata [31:0] $end
+$var wire 2 * rresp [1:0] $end
+$var wire 1 + rlast $end
+$var wire 1 , rvalid $end
+$var wire 1 - rready $end
+$var wire 32 . awaddr [31:0] $end
+$var wire 1 / awvalid $end
+$var wire 1 0 awready $end
+$var wire 32 1 wdata [31:0] $end
+$var wire 4 2 wstrb [3:0] $end
+$var wire 1 3 wlast $end
+$var wire 1 4 wvalid $end
+$var wire 1 5 wready $end
+$var wire 2 6 bresp [1:0] $end
+$var wire 1 7 bvalid $end
+$var wire 1 8 bready $end
+$var reg 3 C state [2:0] $end
+$var reg 32 D src_lat [31:0] $end
+$var reg 32 E dst_lat [31:0] $end
+$var reg 32 F rdata_lat [31:0] $end
+$var reg 1 G read_err $end
+$var reg 1 H write_err $end
+$var reg 1 I done_r $end
+$var reg 1 J error_r $end
+$upscope $end
+$scope module slave $end
+$var wire 1 K aclk $end
+$var wire 1 L aresetn $end
+$var wire 32 . awaddr [31:0] $end
+$var wire 1 / awvalid $end
+$var reg 1 M awready $end
+$var wire 32 1 wdata [31:0] $end
+$var wire 4 2 wstrb [3:0] $end
+$var wire 1 3 wlast $end
+$var wire 1 4 wvalid $end
+$var reg 1 N wready $end
+$var reg 2 O bresp [1:0] $end
+$var reg 1 P bvalid $end
+$var wire 1 8 bready $end
+$var wire 32 & araddr [31:0] $end
+$var wire 1 ' arvalid $end
+$var reg 1 Q arready $end
+$var reg 32 R rdata [31:0] $end
+$var reg 2 S rresp [1:0] $end
+$var reg 1 T rlast $end
+$var reg 1 U rvalid $end
+$var wire 1 - rready $end
+$var integer 32 V init_i [31:0] $end
+$var reg 2 W wstate [1:0] $end
+$var reg 32 X aw_latch [31:0] $end
+$var reg 32 Y wd_latch [31:0] $end
+$var reg 4 Z ws_latch [3:0] $end
+$var integer 32 [ i [31:0] $end
+$var reg 1 \ rstate $end
+$scope function addr_in_range $end
+$var reg 1 ] addr_in_range $end
+$var reg 32 ^ a [31:0] $end
+$upscope $end
+$scope task do_write $end
+$var reg 32 _ a [31:0] $end
+$var reg 32 ` d [31:0] $end
+$var reg 4 a s [3:0] $end
+$var integer 32 b idx [31:0] $end
+$upscope $end
+$upscope $end
+$scope task run_dma $end
+$var reg 32 c tsrc [31:0] $end
+$var reg 32 d tdst [31:0] $end
+$var reg 32 e timeout [31:0] $end
+$upscope $end
+$scope task check_eq $end
+$var reg 32 c got [31:0] $end
+$var reg 32 d exp [31:0] $end
+$var reg 32 e label $end
+$upscope $end
+$scope task check_bit $end
+$var reg 1 f got $end
+$var reg 1 g exp $end
+$var reg 32 e label $end
+$upscope $end
+$upscope $end
+$enddefinitions $end
+#0
+$dumpvars
+0!
+0"
+0#
+b0 $
+b0 %
+b0 &
+0'
+1(
+b0 )
+b0 *
+0+
+0,
+0-
+b0 .
+0/
+10
+b0 1
+b1111 2
+13
+04
+15
+b0 6
+07
+08
+b0 9
+0:
+0;
+b0 <
+b0 =
+0>
+0?
+0@
+b0 A
+b0 B
+b0 C
+b0 D
+b0 E
+b0 F
+0G
+0H
+0I
+0J
+0K
+0L
+1M
+1N
+b0 O
+0P
+1Q
+b0 R
+b0 S
+0T
+0U
+b10000000000 V
+b0 W
+bx X
+bx Y
+bx Z
+bx [
+0\
+0]
+b0 ^
+bx _
+bx `
+bx a
+bx b
+b0 c
+b0 d
+b0 e
+0f
+0g
+$end
+#5000
+1!
+1>
+1K
+#10000
+0!
+0>
+0K
+#15000
+1!
+1>
+1K
+#20000
+0!
+0>
+0K
+#25000
+1!
+1>
+1K
+#30000
+0!
+0>
+0K
+#35000
+1!
+1>
+1K
+#40000
+0!
+0>
+0K
+#45000
+1!
+1>
+1K
+#50000
+0!
+0>
+0K
+#55000
+1!
+1>
+1K
+#60000
+0!
+0>
+0K
+#65000
+1!
+1>
+1K
+#70000
+0!
+0>
+0K
+#75000
+1!
+1"
+1>
+1?
+1K
+1L
+#80000
+0!
+0>
+0K
+#85000
+1!
+1>
+1K
+#90000
+0!
+0>
+0K
+#95000
+1!
+1>
+1K
+#100000
+0!
+1#
+b0 $
+b10000 %
+0>
+1@
+b10000 B
+0K
+#105000
+1!
+1'
+b10000 .
+1>
+b1 C
+b10000 E
+1K
+#110000
+0!
+0#
+0>
+0@
+0K
+#115000
+1!
+0'
+0(
+b11011110101011011011111011101111 )
+1+
+1,
+1-
+1>
+b10 C
+1K
+0Q
+b11011110101011011011111011101111 R
+1T
+1U
+1\
+#120000
+0!
+0>
+0K
+#125000
+1!
+1(
+0+
+0,
+0-
+1/
+b11011110101011011011111011101111 1
+14
+b11011110101011011011111011101111 9
+1>
+b11 C
+b11011110101011011011111011101111 F
+1K
+1Q
+0T
+0U
+0\
+#130000
+0!
+0>
+0K
+#135000
+1!
+0/
+00
+04
+05
+17
+18
+1>
+b100 C
+1K
+0M
+0N
+1P
+b11 W
+b10000 _
+b11011110101011011011111011101111 `
+b1111 a
+b100 b
+#140000
+0!
+0>
+0K
+#145000
+1!
+10
+15
+07
+08
+1>
+b101 C
+1K
+1M
+1N
+0P
+b0 W
+#150000
+0!
+0>
+0K
+#155000
+1!
+1:
+1>
+b0 C
+1I
+1K
+#160000
+0!
+0>
+0K
+#165000
+1!
+0:
+b100 <
+1>
+0I
+1K
+#170000
+0!
+1#
+b100 $
+b100000 %
+0>
+1@
+b100 A
+b100000 B
+0K
+#175000
+1!
+b100 &
+1'
+b100000 .
+1>
+b1 C
+b100 D
+b100000 E
+1K
+#180000
+0!
+0#
+0>
+0@
+0K
+#185000
+1!
+0'
+0(
+b11001010111111101111000000001101 )
+1+
+1,
+1-
+1>
+b10 C
+1K
+0Q
+b11001010111111101111000000001101 R
+1T
+1U
+1\
+#190000
+0!
+0>
+0K
+#195000
+1!
+1(
+0+
+0,
+0-
+1/
+b11001010111111101111000000001101 1
+14
+b11001010111111101111000000001101 9
+1>
+b11 C
+b11001010111111101111000000001101 F
+1K
+1Q
+0T
+0U
+0\
+#200000
+0!
+0>
+0K
+#205000
+1!
+0/
+00
+04
+05
+17
+18
+1>
+b100 C
+1K
+0M
+0N
+1P
+b11 W
+b100000 _
+b11001010111111101111000000001101 `
+b1000 b
+#210000
+0!
+0>
+0K
+#215000
+1!
+10
+15
+07
+08
+1>
+b101 C
+1K
+1M
+1N
+0P
+b0 W
+#220000
+0!
+0>
+0K
+#225000
+1!
+1:
+1>
+b0 C
+1I
+1K
+#230000
+0!
+0>
+0K
+#235000
+1!
+0:
+b1000 <
+1>
+0I
+1K
+#240000
+0!
+1#
+b1000000000000 $
+b110000 %
+0>
+1@
+b1000000000000 A
+b110000 B
+0K
+#245000
+1!
+b1000000000000 &
+1'
+b110000 .
+1>
+b1 C
+b1000000000000 D
+b110000 E
+1K
+#250000
+0!
+0#
+0>
+0@
+0K
+#255000
+1!
+0'
+0(
+b0 )
+b10 *
+1+
+1,
+1-
+1>
+b10 C
+1K
+0Q
+b0 R
+b10 S
+1T
+1U
+1\
+#260000
+0!
+0>
+0K
+#265000
+1!
+1(
+b0 *
+0+
+0,
+0-
+b0 1
+b0 9
+1>
+b101 C
+b0 F
+1G
+1K
+1Q
+b0 S
+0T
+0U
+0\
+#270000
+0!
+0>
+0K
+#275000
+1!
+1:
+1;
+1>
+b0 C
+1I
+1J
+1K
+#280000
+0!
+0>
+0K
+#285000
+1!
+0:
+0;
+b1011 <
+1>
+0G
+0I
+0J
+1K
+#290000
+0!
+1#
+b1000 $
+b10000000000000 %
+0>
+1@
+b1000 A
+b10000000000000 B
+0K
+#295000
+1!
+b1000 &
+1'
+b10000000000000 .
+1>
+b1 C
+b1000 D
+b10000000000000 E
+1K
+#300000
+0!
+0#
+0>
+0@
+0K
+#305000
+1!
+0'
+0(
+b10100101101001011010010110100101 )
+1+
+1,
+1-
+1>
+b10 C
+1K
+0Q
+b10100101101001011010010110100101 R
+1T
+1U
+1\
+#310000
+0!
+0>
+0K
+#315000
+1!
+1(
+0+
+0,
+0-
+1/
+b10100101101001011010010110100101 1
+14
+b10100101101001011010010110100101 9
+1>
+b11 C
+b10100101101001011010010110100101 F
+1K
+1Q
+0T
+0U
+0\
+#320000
+0!
+0>
+0K
+#325000
+1!
+0/
+00
+04
+05
+b10 6
+17
+18
+1>
+b100 C
+1K
+0M
+0N
+b10 O
+1P
+b11 W
+#330000
+0!
+0>
+0K
+#335000
+1!
+10
+15
+b0 6
+07
+08
+1>
+b101 C
+1H
+1K
+1M
+1N
+b0 O
+0P
+b0 W
+#340000
+0!
+0>
+0K
+#345000
+1!
+1:
+1;
+1>
+b0 C
+1I
+1J
+1K
+#350000
+0!
+0>
+0K
+#355000
+1!
+b10000 <
+1>
+1K

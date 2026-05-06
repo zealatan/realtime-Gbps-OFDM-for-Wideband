@@ -1,0 +1,122 @@
+
+****** xsim v2022.2 (64-bit)
+  **** SW Build 3671981 on Fri Oct 14 04:59:54 MDT 2022
+  **** IP Build 3669848 on Fri Oct 14 08:30:02 MDT 2022
+    ** Copyright 1986-2022 Xilinx, Inc. All Rights Reserved.
+
+source xsim.dir/complex_mult_iq_tb_sim/xsim_script.tcl
+# xsim {complex_mult_iq_tb_sim} -autoloadwcfg -runall
+Time resolution is 1 ps
+run -all
+[PASS] T1 dut0 valid=0 in reset
+[PASS] T1 dut1 valid=0 in reset
+[PASS] T1 dut2 valid=0 in reset
+[PASS] T2 A=(0.5,0) B=(0.5,0) dut0 valid
+[PASS] T2 A=(0.5,0) B=(0.5,0) dut1 valid
+[PASS] T2 A=(0.5,0) B=(0.5,0) dut2 valid
+[PASS] T2 A=(0.5,0) B=(0.5,0) dut0 I_out  =8192
+[PASS] T2 A=(0.5,0) B=(0.5,0) dut0 Q_out  =0
+[PASS] T2 A=(0.5,0) B=(0.5,0) dut1 I_out  =8192
+[PASS] T2 A=(0.5,0) B=(0.5,0) dut1 Q_out  =0
+[PASS] T2 A=(0.5,0) B=(0.5,0) dut2 I_out  =8192
+[PASS] T2 A=(0.5,0) B=(0.5,0) dut2 Q_out  =0
+[PASS] T3 A=(0,j0.5) B=(0,j0.5) dut0 valid
+[PASS] T3 A=(0,j0.5) B=(0,j0.5) dut1 valid
+[PASS] T3 A=(0,j0.5) B=(0,j0.5) dut2 valid
+[PASS] T3 A=(0,j0.5) B=(0,j0.5) dut0 I_out  =-8192
+[PASS] T3 A=(0,j0.5) B=(0,j0.5) dut0 Q_out  =0
+[PASS] T3 A=(0,j0.5) B=(0,j0.5) dut1 I_out  =8192
+[PASS] T3 A=(0,j0.5) B=(0,j0.5) dut1 Q_out  =0
+[PASS] T3 A=(0,j0.5) B=(0,j0.5) dut2 I_out  =8192
+[PASS] T3 A=(0,j0.5) B=(0,j0.5) dut2 Q_out  =0
+[PASS] T4 A=(0.5,j0.5) B=(0.5,j0.5) dut0 valid
+[PASS] T4 A=(0.5,j0.5) B=(0.5,j0.5) dut1 valid
+[PASS] T4 A=(0.5,j0.5) B=(0.5,j0.5) dut2 valid
+[PASS] T4 A=(0.5,j0.5) B=(0.5,j0.5) dut0 I_out  =0
+[PASS] T4 A=(0.5,j0.5) B=(0.5,j0.5) dut0 Q_out  =16384
+[PASS] T4 A=(0.5,j0.5) B=(0.5,j0.5) dut1 I_out  =16384
+[PASS] T4 A=(0.5,j0.5) B=(0.5,j0.5) dut1 Q_out  =0
+[PASS] T4 A=(0.5,j0.5) B=(0.5,j0.5) dut2 I_out  =16384
+[PASS] T4 A=(0.5,j0.5) B=(0.5,j0.5) dut2 Q_out  =0
+[PASS] T5 A=(0.5,0) B=(0,j0.5) dut0 valid
+[PASS] T5 A=(0.5,0) B=(0,j0.5) dut1 valid
+[PASS] T5 A=(0.5,0) B=(0,j0.5) dut2 valid
+[PASS] T5 A=(0.5,0) B=(0,j0.5) dut0 I_out  =0
+[PASS] T5 A=(0.5,0) B=(0,j0.5) dut0 Q_out  =8192
+[PASS] T5 A=(0.5,0) B=(0,j0.5) dut1 I_out  =0
+[PASS] T5 A=(0.5,0) B=(0,j0.5) dut1 Q_out  =8192
+[PASS] T5 A=(0.5,0) B=(0,j0.5) dut2 I_out  =0
+[PASS] T5 A=(0.5,0) B=(0,j0.5) dut2 Q_out  =-8192
+[PASS] T6 A=(0,j0.5) B=(0.5,0) dut0 valid
+[PASS] T6 A=(0,j0.5) B=(0.5,0) dut1 valid
+[PASS] T6 A=(0,j0.5) B=(0.5,0) dut2 valid
+[PASS] T6 A=(0,j0.5) B=(0.5,0) dut0 I_out  =0
+[PASS] T6 A=(0,j0.5) B=(0.5,0) dut0 Q_out  =8192
+[PASS] T6 A=(0,j0.5) B=(0.5,0) dut1 I_out  =0
+[PASS] T6 A=(0,j0.5) B=(0.5,0) dut1 Q_out  =-8192
+[PASS] T6 A=(0,j0.5) B=(0.5,0) dut2 I_out  =0
+[PASS] T6 A=(0,j0.5) B=(0.5,0) dut2 Q_out  =8192
+[PASS] T7 A=(1.0,0) B=(-1.0,0) dut0 valid
+[PASS] T7 A=(1.0,0) B=(-1.0,0) dut1 valid
+[PASS] T7 A=(1.0,0) B=(-1.0,0) dut2 valid
+[PASS] T7 A=(1.0,0) B=(-1.0,0) dut0 I_out  =-32767
+[PASS] T7 A=(1.0,0) B=(-1.0,0) dut0 Q_out  =0
+[PASS] T7 A=(1.0,0) B=(-1.0,0) dut1 I_out  =-32767
+[PASS] T7 A=(1.0,0) B=(-1.0,0) dut1 Q_out  =0
+[PASS] T7 A=(1.0,0) B=(-1.0,0) dut2 I_out  =-32767
+[PASS] T7 A=(1.0,0) B=(-1.0,0) dut2 Q_out  =0
+[PASS] T8 A=(0.5,j0.25) B=(0.5,j0.25) dut0 valid
+[PASS] T8 A=(0.5,j0.25) B=(0.5,j0.25) dut1 valid
+[PASS] T8 A=(0.5,j0.25) B=(0.5,j0.25) dut2 valid
+[PASS] T8 A=(0.5,j0.25) B=(0.5,j0.25) dut0 I_out  =6144
+[PASS] T8 A=(0.5,j0.25) B=(0.5,j0.25) dut0 Q_out  =8192
+[PASS] T8 A=(0.5,j0.25) B=(0.5,j0.25) dut1 I_out  =10240
+[PASS] T8 A=(0.5,j0.25) B=(0.5,j0.25) dut1 Q_out  =0
+[PASS] T8 A=(0.5,j0.25) B=(0.5,j0.25) dut2 I_out  =10240
+[PASS] T8 A=(0.5,j0.25) B=(0.5,j0.25) dut2 Q_out  =0
+[PASS] T9 A=(0.5,j0.25) B=(0.25,j0.5) dut0 valid
+[PASS] T9 A=(0.5,j0.25) B=(0.25,j0.5) dut1 valid
+[PASS] T9 A=(0.5,j0.25) B=(0.25,j0.5) dut2 valid
+[PASS] T9 A=(0.5,j0.25) B=(0.25,j0.5) dut0 I_out  =0
+[PASS] T9 A=(0.5,j0.25) B=(0.25,j0.5) dut0 Q_out  =10240
+[PASS] T9 A=(0.5,j0.25) B=(0.25,j0.5) dut1 I_out  =8192
+[PASS] T9 A=(0.5,j0.25) B=(0.25,j0.5) dut1 Q_out  =6144
+[PASS] T9 A=(0.5,j0.25) B=(0.25,j0.5) dut2 I_out  =8192
+[PASS] T9 A=(0.5,j0.25) B=(0.25,j0.5) dut2 Q_out  =-6144
+[PASS] T10 dut0_tvalid=1 when not consumed
+[PASS] T10 dut0 I_out=8192 held  =8192
+[PASS] T10 dut0 a_tready=0 when output blocked
+[PASS] T10 dut0_tvalid deasserts after ready
+[PASS] T11 dut0 tlast passes through
+[PASS] T11 dut1 tlast passes through
+[PASS] T11 dut2 tlast passes through
+[PASS] T12 beat0 I=0  =0
+[PASS] T12 beat0 Q=16384  =16384
+[PASS] T12 beat1 I=8192  =8192
+[PASS] T12 beat1 Q=0  =0
+[PASS] T12 beat2 I=-8192  =-8192
+[PASS] T12 beat2 Q=0  =0
+[PASS] T13 no output when only A valid
+[PASS] T14 A=(-0.5,0) B=(-0.5,0) dut0 valid
+[PASS] T14 A=(-0.5,0) B=(-0.5,0) dut1 valid
+[PASS] T14 A=(-0.5,0) B=(-0.5,0) dut2 valid
+[PASS] T14 A=(-0.5,0) B=(-0.5,0) dut0 I_out  =8192
+[PASS] T14 A=(-0.5,0) B=(-0.5,0) dut0 Q_out  =0
+[PASS] T14 A=(-0.5,0) B=(-0.5,0) dut1 I_out  =8192
+[PASS] T14 A=(-0.5,0) B=(-0.5,0) dut1 Q_out  =0
+[PASS] T14 A=(-0.5,0) B=(-0.5,0) dut2 I_out  =8192
+[PASS] T14 A=(-0.5,0) B=(-0.5,0) dut2 Q_out  =0
+[PASS] T15 A=(0.5,j0.5) B=(0.25,j0.125) dut0 valid
+[PASS] T15 A=(0.5,j0.5) B=(0.25,j0.125) dut1 valid
+[PASS] T15 A=(0.5,j0.5) B=(0.25,j0.125) dut2 valid
+[PASS] T15 A=(0.5,j0.5) B=(0.25,j0.125) dut0 I_out  =2048
+[PASS] T15 A=(0.5,j0.5) B=(0.25,j0.125) dut0 Q_out  =6144
+[PASS] T15 A=(0.5,j0.5) B=(0.25,j0.125) dut1 I_out  =6144
+[PASS] T15 A=(0.5,j0.5) B=(0.25,j0.125) dut1 Q_out  =-2048
+[PASS] T15 A=(0.5,j0.5) B=(0.25,j0.125) dut2 I_out  =6144
+[PASS] T15 A=(0.5,j0.5) B=(0.25,j0.125) dut2 Q_out  =2048
+--- 107 PASS  0 FAIL ---
+CI GATE: PASSED
+$finish called at time : 370 ns : File "/home/zealatan/RTL_SYNC/tb/complex_mult_iq_tb.sv" Line 462
+exit
+INFO: [Common 17-206] Exiting xsim at Tue May  5 07:26:15 2026...

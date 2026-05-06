@@ -1,0 +1,54 @@
+
+****** xsim v2022.2 (64-bit)
+  **** SW Build 3671981 on Fri Oct 14 04:59:54 MDT 2022
+  **** IP Build 3669848 on Fri Oct 14 08:30:02 MDT 2022
+    ** Copyright 1986-2022 Xilinx, Inc. All Rights Reserved.
+
+source xsim.dir/axis_complex_mult_snap/xsim_script.tcl
+# xsim {axis_complex_mult_snap} -autoloadwcfg -runall
+Time resolution is 1 ps
+run -all
+[PASS] T1 reset: outputs clear during reset
+[PASS] T2 single pair  data=0x20000000 tlast=0
+[PASS] T3 vec[0]  data=0x20000000 tlast=0
+[PASS] T3 vec[1]  data=0x20002000 tlast=1
+[PASS] T3 vec[2]  data=0x2000c000 tlast=1
+[PASS] T4 rr[0] 0.75x0.5  data=0x30000000 tlast=0
+[PASS] T4 rr[1] maxr x0.5  data=0x3fff0000 tlast=0
+[PASS] T5 tlast al=0 bl=0  data=0x20000000 tlast=0
+[PASS] T5 tlast al=1 bl=0  data=0x20000000 tlast=1
+[PASS] T5 tlast al=0 bl=1  data=0x20000000 tlast=1
+[PASS] T5 tlast al=1 bl=1  data=0x20000000 tlast=1
+[PASS] T6 neg[0]  data=0xe0000000 tlast=0
+[PASS] T6 neg[1]  data=0x20002000 tlast=0
+[PASS] T7 wrap[0]  data=0xfffdffff tlast=0
+[PASS] T7 wrap[1]  data=0x00000000 tlast=0
+[PASS] T8 stall cycle: tvalid=1 data=0x30000000 stable
+[PASS] T8 stall cycle: tvalid=1 data=0x30000000 stable
+[PASS] T8 stall cycle: tvalid=1 data=0x30000000 stable
+[PASS] T8 accepted after stall  data=0x30000000 tlast=0
+[PASS] T9 A-only stall: no accept, no output
+[PASS] T9 A-only stall: no accept, no output
+[PASS] T9 A-only stall: no accept, no output
+[PASS] T9 output after B driven  data=0x20000000 tlast=0
+[PASS] T10 B-only stall: no accept, no output
+[PASS] T10 B-only stall: no accept, no output
+[PASS] T10 B-only stall: no accept, no output
+[PASS] T10 output after A driven  data=0x30000000 tlast=0
+[PASS] T11 beat[0]  data=0x20000000 tlast=0
+[PASS] T11 beat[1]  data=0x30000000 tlast=0
+[PASS] T11 beat[2]  data=0x28000800 tlast=0
+[PASS] T11 beat[3]  data=0xe0002000 tlast=0
+[PASS] T11 beat[4]  data=0x1fff0000 tlast=1
+[INFO] T12 beat 16/80: scoreboard=16 bp_ok=4 fail=0
+[INFO] T12 beat 32/80: scoreboard=32 bp_ok=8 fail=0
+[INFO] T12 beat 48/80: scoreboard=48 bp_ok=12 fail=0
+[INFO] T12 beat 64/80: scoreboard=64 bp_ok=16 fail=0
+[INFO] T12 beat 80/80: scoreboard=80 bp_ok=20 fail=0
+[INFO] T12 final: 80 beats, 80 scoreboard pass, 20 bp stall cycles ok, 0 fail
+[PASS] T12 smoke: 80/80 beats + 20 bp stall cycles verified
+--- 33 PASS  0 FAIL ---
+CI GATE: PASSED
+$finish called at time : 2256 ns : File "/home/zealatan/AI_ORC/messi/VIVADO_MIN_EXAMPLE/tb/axis_complex_mult_tb.sv" Line 383
+exit
+INFO: [Common 17-206] Exiting xsim at Sun May  3 22:18:43 2026...

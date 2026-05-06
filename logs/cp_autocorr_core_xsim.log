@@ -1,0 +1,129 @@
+
+****** xsim v2022.2 (64-bit)
+  **** SW Build 3671981 on Fri Oct 14 04:59:54 MDT 2022
+  **** IP Build 3669848 on Fri Oct 14 08:30:02 MDT 2022
+    ** Copyright 1986-2022 Xilinx, Inc. All Rights Reserved.
+
+source xsim.dir/cp_autocorr_core_tb_sim/xsim_script.tcl
+# xsim {cp_autocorr_core_tb_sim} -autoloadwcfg -runall
+Time resolution is 1 ps
+run -all
+
+--- T1: Reset state ---
+[PASS] T1 done=0
+[PASS] T1 busy=0
+[PASS] T1 buf_rd_en=0
+
+--- T2: All-zero buffer ---
+[PASS] T2 done pulse
+[PASS] T2 busy clear
+[PASS] T2 lag0 PI = 0
+[PASS] T2 lag0 PQ = 0
+[PASS] T2 lag0 E = 0
+[PASS] T2 lag15 PI = 0
+[PASS] T2 lag15 PQ = 0
+[PASS] T2 lag15 E = 0
+
+--- T3: Single tap, real-only ---
+[PASS] T3 done
+[PASS] T3 lag0 PI = 20000
+[PASS] T3 lag0 PQ = 0
+[PASS] T3 lag0 E = 50000
+[PASS] T3 lag1 PI = 0
+[PASS] T3 lag1 PQ = 0
+[PASS] T3 lag1 E = 0
+
+--- T4: All CP_LEN taps, real-only ---
+[PASS] T4 done
+[PASS] T4 lag0 PI = 20000
+[PASS] T4 lag0 PQ = 0
+[PASS] T4 lag0 E = 50000
+
+--- T5: Q-only, single tap ---
+[PASS] T5 done
+[PASS] T5 lag0 PI = 5000
+[PASS] T5 lag0 PQ = 0
+[PASS] T5 lag0 E = 12500
+
+--- T6: Mixed I+Q, single tap ---
+[PASS] T6 done
+[PASS] T6 lag0 PI = 20000
+[PASS] T6 lag0 PQ = 2500
+[PASS] T6 lag0 E = 58125
+
+--- T7: Multiple non-zero lags ---
+[PASS] T7 done
+[PASS] T7 lag0 PI = 304
+[PASS] T7 lag0 PQ = 4
+[PASS] T7 lag0 E = 648
+[PASS] T7 lag5 PI = 720
+[PASS] T7 lag5 PQ = -160
+[PASS] T7 lag5 E = 2020
+[PASS] T7 lag3 PI = 436
+[PASS] T7 lag3 PQ = -79
+[PASS] T7 lag3 E = 1172
+
+--- T8: done width = 1 clock ---
+[PASS] T8 done is 1-clock
+
+--- T9: busy deasserts with done ---
+[PASS] T9 busy=0 on done
+[PASS] T9 busy=1 while running
+
+--- T10: Back-to-back runs ---
+[PASS] T10 run1 done
+[PASS] T10 run1 lag0 PI = 200
+[PASS] T10 run2 done
+[PASS] T10 run2 lag0 PI = 840
+
+--- T11: Non-zero base_addr ---
+[PASS] T11 done
+[PASS] T11 lag0 PI = 5000
+[PASS] T11 lag0 PQ = 0
+[PASS] T11 lag0 E = 12500
+
+--- T12: Negative inputs ---
+[PASS] T12 done
+[PASS] T12 lag0 PI = 10000
+[PASS] T12 lag0 PQ = -17500
+[PASS] T12 lag0 E = 58125
+
+--- T13: All lags sweep ---
+[PASS] T13 done
+[PASS] T13 lag0 PI = 5
+[PASS] T13 lag0 PQ = 0
+[PASS] T13 lag0 E = 11
+[PASS] T13 lag8 PI = 8
+[PASS] T13 lag8 PQ = 0
+[PASS] T13 lag8 E = 20
+[PASS] T13 lag15 PI = 8
+[PASS] T13 lag15 PQ = 0
+[PASS] T13 lag15 E = 20
+
+--- T14: result_rd_addr selects different lags ---
+[PASS] T14 done
+[PASS] T14 lag2 PI = 480000
+[PASS] T14 lag2 PQ = 0
+[PASS] T14 lag2 E = 1000000
+[PASS] T14 lag11 PI = 1200000
+[PASS] T14 lag11 PQ = 0
+[PASS] T14 lag11 E = 2440000
+[PASS] T14 lag7 PI=0 = 0
+
+--- T15: PRNG smoke test ---
+[PASS] T15 done
+[PASS] T15 lag0_PI_PQ_E PI = 713198950
+[PASS] T15 lag0_PI_PQ_E PQ = -894631861
+[PASS] T15 lag0_PI_PQ_E E = 253081376
+[PASS] T15 lag5_zero PI = 0
+[PASS] T15 lag5_zero PQ = 0
+[PASS] T15 lag5_zero E = 0
+
+========================================
+PASS: 80   FAIL: 0
+CI GATE: PASSED
+========================================
+
+$finish called at time : 41338 ns : File "/home/zealatan/RTL_SYNC/tb/cp_autocorr_core_tb.sv" Line 500
+exit
+INFO: [Common 17-206] Exiting xsim at Tue May  5 08:25:10 2026...

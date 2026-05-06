@@ -1,0 +1,4 @@
+INFO: [VRFC 10-2263] Analyzing SystemVerilog file "/home/zealatan/RTL_SYNC/rtl/frame_detector.v" into library work
+INFO: [VRFC 10-311] analyzing module frame_detector
+INFO: [VRFC 10-2263] Analyzing SystemVerilog file "/home/zealatan/RTL_SYNC/tb/frame_detector_tb.sv" into library work
+INFO: [VRFC 10-311] analyzing module frame_detector_tb

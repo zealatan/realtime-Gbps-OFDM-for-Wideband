@@ -1,0 +1,4 @@
+INFO: [VRFC 10-2263] Analyzing SystemVerilog file "/home/zealatan/AI_ORC/messi/VIVADO_MIN_EXAMPLE/tb/axi_mem_model.sv" into library work
+INFO: [VRFC 10-311] analyzing module axi_mem_model
+INFO: [VRFC 10-2263] Analyzing SystemVerilog file "/home/zealatan/AI_ORC/messi/VIVADO_MIN_EXAMPLE/tb/mem_rw_tb.sv" into library work
+INFO: [VRFC 10-311] analyzing module mem_rw_tb

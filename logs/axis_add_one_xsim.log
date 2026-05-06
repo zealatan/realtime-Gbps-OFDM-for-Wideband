@@ -1,0 +1,173 @@
+
+****** xsim v2022.2 (64-bit)
+  **** SW Build 3671981 on Fri Oct 14 04:59:54 MDT 2022
+  **** IP Build 3669848 on Fri Oct 14 08:30:02 MDT 2022
+    ** Copyright 1986-2022 Xilinx, Inc. All Rights Reserved.
+
+source xsim.dir/axis_add_one_tb_sim/xsim_script.tcl
+# xsim {axis_add_one_tb_sim} -autoloadwcfg -runall
+Time resolution is 1 ps
+run -all
+[INFO] Test 1: reset defaults
+[PASS] id=0 after reset: 0
+[PASS] ta=0 after reset: 0x00000000
+[PASS] st=0 after reset: 0
+[INFO] Test 2: single-beat transfer
+[PASS] beat 0 tdata: 0xdeadbef0
+[PASS] beat 0 tlast: 1
+[INFO] Test 3: multi-beat packet (4 beats)
+[PASS] beat 0 tdata: 0xaaaa0001
+[PASS] beat 0 tlast: 0
+[PASS] beat 1 tdata: 0xaaaa0002
+[PASS] beat 1 tlast: 0
+[PASS] beat 2 tdata: 0xaaaa0003
+[PASS] beat 2 tlast: 0
+[PASS] beat 3 tdata: 0xaaaa0004
+[PASS] beat 3 tlast: 1
+[INFO] Test 4: back-to-back throughput (6 beats)
+[PASS]  during pipeline: 1
+[PASS]         T4 tdata: 0xcccc0001
+[PASS] ast=0 (not last): 0
+[PASS]  during pipeline: 1
+[PASS]         T4 tdata: 0xcccc0002
+[PASS] ast=0 (not last): 0
+[PASS]  during pipeline: 1
+[PASS]         T4 tdata: 0xcccc0003
+[PASS] ast=0 (not last): 0
+[PASS]  during pipeline: 1
+[PASS]         T4 tdata: 0xcccc0004
+[PASS] ast=0 (not last): 0
+[PASS]  during pipeline: 1
+[PASS]         T4 tdata: 0xcccc0005
+[PASS] ast=0 (not last): 0
+[PASS] tvalid last beat: 1
+[PASS]  tdata last beat: 0xcccc0006
+[PASS] last=1 last beat: 1
+[INFO] Test 5: output backpressure
+[PASS] T5 m_tvalid held: 1
+[PASS] 5 m_tdata stable: 0xbbbb1235
+[PASS] 5 m_tlast stable: 1
+[PASS] T5 m_tvalid held: 1
+[PASS] 5 m_tdata stable: 0xbbbb1235
+[PASS] 5 m_tlast stable: 1
+[PASS] T5 m_tvalid held: 1
+[PASS] 5 m_tdata stable: 0xbbbb1235
+[PASS] 5 m_tlast stable: 1
+[PASS] beat 0 tdata: 0xbbbb1235
+[PASS] beat 0 tlast: 1
+[INFO] Test 6: input stall
+[PASS] beat 0 tdata: 0xeeee0011
+[PASS] beat 0 tlast: 0
+[PASS] beat 1 tdata: 0xdddc0021
+[PASS] beat 1 tlast: 0
+[PASS] beat 2 tdata: 0xccca0031
+[PASS] beat 2 tlast: 1
+[INFO] Test 7: wraparound
+[PASS] beat 0 tdata: 0x00000000
+[PASS] beat 0 tlast: 1
+[INFO] Test 8: tlast propagation
+[PASS] beat 0 tdata: 0x11110002
+[PASS] beat 0 tlast: 1
+[PASS] beat 0 tdata: 0x22220001
+[PASS] beat 0 tlast: 0
+[PASS] beat 1 tdata: 0x22220002
+[PASS] beat 1 tlast: 0
+[PASS] beat 2 tdata: 0x22220003
+[PASS] beat 2 tlast: 1
+[PASS] beat 0 tdata: 0x33330002
+[PASS] beat 0 tlast: 0
+[PASS] beat 1 tdata: 0x33330003
+[PASS] beat 1 tlast: 1
+[INFO] Test 9: reset mid-packet
+[PASS] id=0 after reset: 0
+[PASS] ta=0 after reset: 0x00000000
+[PASS] st=0 after reset: 0
+[PASS] dy=1 after reset: 1
+[PASS] beat 0 tdata: 0xf00dcaff
+[PASS] beat 0 tlast: 1
+[INFO] Test 10: LFSR smoke test
+[PASS] beat 0 tdata: 0x4b4a2469
+[PASS] beat 0 tlast: 1
+[PASS] beat 1 tdata: 0x969448d1
+[PASS] beat 1 tlast: 0
+[PASS] beat 2 tdata: 0x2d2891a2
+[PASS] beat 2 tlast: 1
+[PASS] beat 3 tdata: 0x5a512343
+[PASS] beat 3 tlast: 0
+[PASS] beat 4 tdata: 0xb4a24686
+[PASS] beat 4 tlast: 0
+[PASS] beat 5 tdata: 0x69448d0c
+[PASS] beat 5 tlast: 1
+[PASS] beat 6 tdata: 0xd2891a17
+[PASS] beat 6 tlast: 0
+[PASS] beat 7 tdata: 0xa512342d
+[PASS] beat 7 tlast: 0
+[PASS] beat 8 tdata: 0x4a24685a
+[PASS] beat 8 tlast: 0
+[PASS] beat 9 tdata: 0x9448d0b3
+[PASS] beat 9 tlast: 1
+[PASS] beat 10 tdata: 0x2891a165
+[PASS] beat 10 tlast: 0
+[PASS] beat 11 tdata: 0x512342c9
+[PASS] beat 11 tlast: 0
+[PASS] beat 12 tdata: 0xa2468592
+[PASS] beat 12 tlast: 0
+[PASS] beat 13 tdata: 0x448d0b23
+[PASS] beat 13 tlast: 0
+[PASS] beat 14 tdata: 0x891a1646
+[PASS] beat 14 tlast: 1
+[PASS] beat 15 tdata: 0x12342c8b
+[PASS] beat 15 tlast: 0
+[PASS] beat 16 tdata: 0x24685915
+[PASS] beat 16 tlast: 0
+[PASS] beat 17 tdata: 0x48d0b22a
+[PASS] beat 17 tlast: 0
+[PASS] beat 18 tdata: 0x91a16454
+[PASS] beat 18 tlast: 0
+[PASS] beat 19 tdata: 0x2342c8a7
+[PASS] beat 19 tlast: 0
+[PASS] beat 20 tdata: 0x4685914e
+[PASS] beat 20 tlast: 1
+[PASS] beat 21 tdata: 0x8d0b229c
+[PASS] beat 21 tlast: 0
+[PASS] beat 22 tdata: 0x1a164538
+[PASS] beat 22 tlast: 0
+[PASS] beat 23 tdata: 0x342c8a6f
+[PASS] beat 23 tlast: 0
+[PASS] beat 24 tdata: 0x685914dd
+[PASS] beat 24 tlast: 0
+[PASS] beat 25 tdata: 0xd0b229b9
+[PASS] beat 25 tlast: 0
+[PASS] beat 26 tdata: 0xa1645371
+[PASS] beat 26 tlast: 0
+[PASS] beat 27 tdata: 0x42c8a6e1
+[PASS] beat 27 tlast: 1
+[PASS] beat 28 tdata: 0x85914dc1
+[PASS] beat 28 tlast: 0
+[PASS] beat 29 tdata: 0x0b229b82
+[PASS] beat 29 tlast: 0
+[PASS] beat 30 tdata: 0x16453703
+[PASS] beat 30 tlast: 0
+[PASS] beat 31 tdata: 0x2c8a6e06
+[PASS] beat 31 tlast: 0
+[PASS] beat 32 tdata: 0x5914dc0c
+[PASS] beat 32 tlast: 0
+[PASS] beat 33 tdata: 0xb229b817
+[PASS] beat 33 tlast: 0
+[PASS] beat 34 tdata: 0x6453702e
+[PASS] beat 34 tlast: 0
+[PASS] beat 35 tdata: 0xc8a6e05c
+[PASS] beat 35 tlast: 1
+[PASS] beat 36 tdata: 0x914dc0b7
+[PASS] beat 36 tlast: 1
+[PASS] beat 37 tdata: 0x229b816d
+[PASS] beat 37 tlast: 0
+[PASS] beat 38 tdata: 0x453702d9
+[PASS] beat 38 tlast: 1
+[INFO] ===== SIMULATION COMPLETE =====
+[INFO] Total checks: 146
+[INFO] Failures:     0
+[PASS] All checks passed.
+$finish called at time : 1625 ns : File "/home/zealatan/AI_ORC/messi/VIVADO_MIN_EXAMPLE/tb/axis_add_one_tb.sv" Line 427
+exit
+INFO: [Common 17-206] Exiting xsim at Sun May  3 15:17:38 2026...

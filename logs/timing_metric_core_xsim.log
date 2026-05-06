@@ -1,0 +1,108 @@
+
+****** xsim v2022.2 (64-bit)
+  **** SW Build 3671981 on Fri Oct 14 04:59:54 MDT 2022
+  **** IP Build 3669848 on Fri Oct 14 08:30:02 MDT 2022
+    ** Copyright 1986-2022 Xilinx, Inc. All Rights Reserved.
+
+source xsim.dir/timing_metric_core_tb_sim/xsim_script.tcl
+# xsim {timing_metric_core_tb_sim} -autoloadwcfg -runall
+Time resolution is 1 ps
+run -all
+
+--- T1: Reset state ---
+[PASS] T1 done=0
+[PASS] T1 busy=0
+[PASS] T1 metric_valid=0
+
+--- T2: All-zero inputs ---
+[PASS] T2 done
+[PASS] T2 lag0 = 0x00000000 (0)
+[PASS] T2 lag7 = 0x00000000 (0)
+
+--- T3: Real-only, single lag ---
+[PASS] T3 done
+[PASS] T3 lag0 M=-10000 = 0xffffd8f0 (-10000)
+[PASS] T3 lag1 M=0 = 0x00000000 (0)
+[PASS] T3 lag7 M=0 = 0x00000000 (0)
+
+--- T4: Mixed I+Q ---
+[PASS] T4 done
+[PASS] T4 lag3 metric = 0xffffc085 (-16251)
+[PASS] T4 lag0 zero = 0x00000000 (0)
+
+--- T5: num_lags=4 ---
+[PASS] T5 done
+[PASS] T5 cnt==4
+[PASS] T5 last=3
+[PASS] T5 lag0 = 0xfffff448 (-3000)
+[PASS] T5 lag3 = 0xffffd120 (-12000)
+
+--- T6: metric_valid gating ---
+[PASS] T6 valid=0 before start
+[PASS] T6 valid=1 in RUN
+[PASS] T6 valid=0 after done
+
+--- T7: metric_last position ---
+[PASS] T7 done
+[PASS] T7 last=4
+[PASS] T7 cnt=5
+
+--- T8: done pulse width ---
+[PASS] T8 done width=1
+
+--- T9: busy behavior ---
+[PASS] T9 busy=0 on done
+[PASS] T9 busy=1 while running
+
+--- T10: Back-to-back runs ---
+[PASS] T10 run1 done
+[PASS] T10 run1 lag0 = 0xfffffc18 (-1000)
+[PASS] T10 run2 done
+[PASS] T10 run2 lag0 = 0xfffff830 (-2000)
+
+--- T11: Negative inputs ---
+[PASS] T11 done
+[PASS] T11 lag2 (neg==pos) = 0xffffc085 (-16251)
+
+--- T12: Large values ---
+[PASS] T12 done
+[PASS] T12 lag0 large = 0x00000000 (0)
+
+--- T13: num_lags=1 ---
+[PASS] T13 done
+[PASS] T13 cnt=1
+[PASS] T13 last=0
+[PASS] T13 lag0 = 0xffffec78 (-5000)
+
+--- T14: All lags golden model ---
+[PASS] T14 done
+[PASS] T14 cnt=8
+[PASS] T14 lag0 = 0xfffff9a6 (-1626)
+[PASS] T14 lag1 = 0xffffed58 (-4776)
+[PASS] T14 lag2 = 0xffffdb48 (-9400)
+[PASS] T14 lag3 = 0xffffbe2e (-16850)
+[PASS] T14 lag4 = 0xffff9aba (-25926)
+[PASS] T14 lag5 = 0xffff7184 (-36476)
+[PASS] T14 lag6 = 0xffff3ddc (-49700)
+[PASS] T14 lag7 = 0xffff04ba (-64326)
+
+--- T15: PRNG smoke ---
+[PASS] T15 done
+[PASS] T15 cnt=8
+[PASS] T15 lag0 = 0x10b4f655 (280294997)
+[PASS] T15 lag1 = 0x9ad3d95d (-1697392291)
+[PASS] T15 lag2 = 0x463d30a1 (1178415265)
+[PASS] T15 lag3 = 0xad202389 (-1390402679)
+[PASS] T15 lag4 = 0xb67801c8 (-1233649208)
+[PASS] T15 lag5 = 0xc0b3d7fd (-1061955587)
+[PASS] T15 lag6 = 0xc408e1b5 (-1006050891)
+[PASS] T15 lag7 = 0xec8d35e1 (-326289951)
+
+========================================
+PASS: 59   FAIL: 0
+CI GATE: PASSED
+========================================
+
+$finish called at time : 1526 ns : File "/home/zealatan/RTL_SYNC/tb/timing_metric_core_tb.sv" Line 431
+exit
+INFO: [Common 17-206] Exiting xsim at Tue May  5 09:39:00 2026...

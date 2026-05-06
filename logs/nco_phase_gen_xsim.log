@@ -1,0 +1,72 @@
+
+****** xsim v2022.2 (64-bit)
+  **** SW Build 3671981 on Fri Oct 14 04:59:54 MDT 2022
+  **** IP Build 3669848 on Fri Oct 14 08:30:02 MDT 2022
+    ** Copyright 1986-2022 Xilinx, Inc. All Rights Reserved.
+
+source xsim.dir/nco_phase_gen_tb_sim/xsim_script.tcl
+# xsim {nco_phase_gen_tb_sim} -autoloadwcfg -runall
+Time resolution is 1 ps
+run -all
+
+--- T1: Reset state ---
+[PASS] T1 phase_acc=0 = 0x00000000 (0)
+[PASS] T1 sincos_valid=0
+
+--- T2: step_word=0, phase constant ---
+[PASS] T2 phase_acc still 0 = 0x00000000 (0)
+[PASS] T2 sincos_valid=1
+[PASS] T2 sin(0)=0 = 0x0000 (0)
+[PASS] T2 cos(0)ÿÿˆ1 = 0x7fff (32767)
+
+--- T3: Positive step_word ---
+[PASS] T3 step1 = 0x00010000 (65536)
+[PASS] T3 step2 = 0x00020000 (131072)
+[PASS] T3 step3 = 0x00030000 (196608)
+[PASS] T3 step4 = 0x00040000 (262144)
+
+--- T4: Negative step_word ---
+[PASS] T4 step1 = -0x10000 = 0xffff0000 (-65536)
+[PASS] T4 step2 = -0x20000 = 0xfffe0000 (-131072)
+
+--- T5: sincos_valid timing ---
+[PASS] T5 not valid at T+LAT-1
+[PASS] T5 valid at T+LAT
+
+--- T6: enable=0 gaps ---
+[PASS] T6 after 1st enable = 0x00010000 (65536)
+[PASS] T6 gap1 hold = 0x00010000 (65536)
+[PASS] T6 gap2 hold = 0x00010000 (65536)
+[PASS] T6 gap3 hold = 0x00010000 (65536)
+[PASS] T6 after 2nd enable = 0x00020000 (131072)
+
+--- T7: Wraparound ---
+[PASS] T7 first = 0x80000001 (-2147483647)
+[PASS] T7 wrap = 0x00000002 (2)
+
+--- T8: phase_reset mid-run ---
+[PASS] T8 after reset = 0x00000000 (0)
+[PASS] T8 restart from 0 = 0x00010000 (65536)
+
+--- T9: load_step ---
+[PASS] T9 no step loaded = 0x00000000 (0)
+[PASS] T9 after load = 0x00020000 (131072)
+
+--- T10: Golden model sin/cos ---
+[PASS] T10 sin[0] = 0x0000 (0)
+[PASS] T10 cos[0] = 0x7fff (32767)
+[PASS] T10 sin[1] = 0x30fb (12539)
+[PASS] T10 cos[1] = 0x7640 (30272)
+[PASS] T10 sin[2] = 0x5a82 (23170)
+[PASS] T10 cos[2] = 0x5a81 (23169)
+[PASS] T10 sin[3] = 0x7641 (30273)
+[PASS] T10 cos[3] = 0x30fa (12538)
+
+========================================
+PASS: 33   FAIL: 0
+CI GATE: PASSED
+========================================
+
+$finish called at time : 1276 ns : File "/home/zealatan/RTL_SYNC/tb/nco_phase_gen_tb.sv" Line 368
+exit
+INFO: [Common 17-206] Exiting xsim at Tue May  5 11:16:36 2026...

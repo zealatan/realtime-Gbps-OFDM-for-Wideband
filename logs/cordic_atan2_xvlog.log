@@ -1,0 +1,4 @@
+INFO: [VRFC 10-2263] Analyzing SystemVerilog file "/home/zealatan/RTL_SYNC/rtl/cordic_atan2.v" into library work
+INFO: [VRFC 10-311] analyzing module cordic_atan2
+INFO: [VRFC 10-2263] Analyzing SystemVerilog file "/home/zealatan/RTL_SYNC/tb/cordic_atan2_tb.sv" into library work
+INFO: [VRFC 10-311] analyzing module cordic_atan2_tb

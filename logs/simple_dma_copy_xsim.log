@@ -1,0 +1,39 @@
+
+****** xsim v2022.2 (64-bit)
+  **** SW Build 3671981 on Fri Oct 14 04:59:54 MDT 2022
+  **** IP Build 3669848 on Fri Oct 14 08:30:02 MDT 2022
+    ** Copyright 1986-2022 Xilinx, Inc. All Rights Reserved.
+
+source xsim.dir/simple_dma_copy_tb_sim/xsim_script.tcl
+# xsim {simple_dma_copy_tb_sim} -autoloadwcfg -runall
+Time resolution is 1 ps
+run -all
+[CHK] t=95000  phase=reset_release
+[INFO] Test 1: copy 0x00 -> 0x10
+[PASS]                                        T1 done  got=1'b1
+[PASS]                                    T1 no error  got=1'b0
+[PASS]                                 T1 copied_data  got=0xdeadbeef
+[PASS]                            T1 dst mem[0x10>>2]  got=0xdeadbeef
+[CHK] t=165000  phase=copy2
+[INFO] Test 2: copy 0x04 -> 0x20
+[PASS]                                        T2 done  got=1'b1
+[PASS]                                    T2 no error  got=1'b0
+[PASS]                                 T2 copied_data  got=0xcafef00d
+[PASS]                            T2 dst mem[0x20>>2]  got=0xcafef00d
+[CHK] t=235000  phase=invalid_src
+[INFO] Test 3: invalid src=0x1000 -> dst=0x30 — expect error, dst unchanged
+[PASS]                              T3 done (OOB src)  got=1'b1
+[PASS]             T3 error asserted (SLVERR on read)  got=1'b1
+[PASS]  T3 dst mem[0x30>>2] unchanged (write skipped)  got=0x00000000
+[CHK] t=285000  phase=invalid_dst
+[INFO] Test 4: src=0x08, invalid dst=0x2000 — error, src/canary unchanged
+[PASS]                              T4 done (OOB dst)  got=1'b1
+[PASS]            T4 error asserted (SLVERR on write)  got=1'b1
+[PASS]                     T4 copied_data matches src  got=0xa5a5a5a5
+[PASS]                  T4 src mem[0x08>>2] unchanged  got=0xa5a5a5a5
+[PASS]           T4 canary mem[100] (0x190) unchanged  got=0xfeedface
+[PASS] simple_dma_copy_tb  16/16 checks passed
+[DONE] simulation complete at t=355000
+$finish called at time : 355 ns : File "/home/zealatan/AI_ORC/messi/VIVADO_MIN_EXAMPLE/tb/simple_dma_copy_tb.sv" Line 212
+exit
+INFO: [Common 17-206] Exiting xsim at Sat May  2 22:56:07 2026...

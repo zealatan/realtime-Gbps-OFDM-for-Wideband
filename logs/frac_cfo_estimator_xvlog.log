@@ -1,0 +1,6 @@
+INFO: [VRFC 10-2263] Analyzing SystemVerilog file "/home/zealatan/RTL_SYNC/rtl/cordic_atan2.v" into library work
+INFO: [VRFC 10-311] analyzing module cordic_atan2
+INFO: [VRFC 10-2263] Analyzing SystemVerilog file "/home/zealatan/RTL_SYNC/rtl/frac_cfo_estimator.v" into library work
+INFO: [VRFC 10-311] analyzing module frac_cfo_estimator
+INFO: [VRFC 10-2263] Analyzing SystemVerilog file "/home/zealatan/RTL_SYNC/tb/frac_cfo_estimator_tb.sv" into library work
+INFO: [VRFC 10-311] analyzing module frac_cfo_estimator_tb

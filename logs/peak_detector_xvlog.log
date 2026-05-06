@@ -1,0 +1,9 @@
+INFO: [VRFC 10-2263] Analyzing SystemVerilog file "/home/zealatan/RTL_SYNC/rtl/peak_detector.v" into library work
+INFO: [VRFC 10-311] analyzing module peak_detector
+INFO: [VRFC 10-2263] Analyzing SystemVerilog file "/home/zealatan/RTL_SYNC/tb/peak_detector_tb.sv" into library work
+INFO: [VRFC 10-311] analyzing module peak_detector_tb
+WARNING: [VRFC 10-3824] variable 'n' must explicitly be declared as automatic or static [/home/zealatan/RTL_SYNC/tb/peak_detector_tb.sv:237]
+WARNING: [VRFC 10-3824] variable 'n' must explicitly be declared as automatic or static [/home/zealatan/RTL_SYNC/tb/peak_detector_tb.sv:250]
+WARNING: [VRFC 10-3824] variable 'n' must explicitly be declared as automatic or static [/home/zealatan/RTL_SYNC/tb/peak_detector_tb.sv:373]
+WARNING: [VRFC 10-3824] variable 'n' must explicitly be declared as automatic or static [/home/zealatan/RTL_SYNC/tb/peak_detector_tb.sv:388]
+WARNING: [VRFC 10-3824] variable 'n' must explicitly be declared as automatic or static [/home/zealatan/RTL_SYNC/tb/peak_detector_tb.sv:431]

@@ -1,0 +1,741 @@
+
+****** xsim v2022.2 (64-bit)
+  **** SW Build 3671981 on Fri Oct 14 04:59:54 MDT 2022
+  **** IP Build 3669848 on Fri Oct 14 08:30:02 MDT 2022
+    ** Copyright 1986-2022 Xilinx, Inc. All Rights Reserved.
+
+source xsim.dir/simple_dma_add_ctrl_tb_sim/xsim_script.tcl
+# xsim {simple_dma_add_ctrl_tb_sim} -autoloadwcfg -runall
+Time resolution is 1 ps
+run -all
+[INFO] Test 1: register R/W sanity + SLVERR
+[PASS]                                         T1 SRC write  resp=2'b00
+[PASS]                                         T1 DST write  resp=2'b00
+[PASS]                                         T1 LEN write  resp=2'b00
+[PASS]                                         T1 ADD write  resp=2'b00
+[PASS]                                          T1 SRC read  resp=2'b00
+[PASS]                                      T1 SRC readback  got=0xdeadbeef
+[PASS]                                          T1 DST read  resp=2'b00
+[PASS]                                      T1 DST readback  got=0xcafef00d
+[PASS]                                          T1 LEN read  resp=2'b00
+[PASS]                                      T1 LEN readback  got=0x00000007
+[PASS]                                          T1 ADD read  resp=2'b00
+[PASS]                                      T1 ADD readback  got=0x00000042
+[PASS]                              T1 invalid write SLVERR  resp=2'b10
+[PASS]                               T1 invalid read SLVERR  resp=2'b10
+[PASS]                                   T1 invalid rdata=0  got=0x00000000
+[INFO] Test 2: 1-word add transfer
+[PASS]                                     start: SRC write  resp=2'b00
+[PASS]                                     start: DST write  resp=2'b00
+[PASS]                                     start: LEN write  resp=2'b00
+[PASS]                                     start: ADD write  resp=2'b00
+[PASS]                                    start: CTRL write  resp=2'b00
+[PASS]                                       T2 STATUS read  resp=2'b00
+[PASS]                                       T2 STATUS.done  got=1'b1
+[PASS]                                    T2 STATUS.error=0  got=1'b0
+[PASS]                                        T2 COUNT read  resp=2'b00
+[PASS]                                 T2 PROCESSED_COUNT=1  got=0x00000001
+[PASS]                                      T2 LAST_IN read  resp=2'b00
+[PASS]                                   T2 LAST_INPUT_DATA  got=0x00000010
+[PASS]                                     T2 LAST_OUT read  resp=2'b00
+[PASS]                                  T2 LAST_OUTPUT_DATA  got=0x00000015
+[PASS]                                  T2 dst mem[0x40>>2]  got=0x00000015
+[INFO] Test 3: 4-word add transfer (add=0x100)
+[PASS]                                     start: SRC write  resp=2'b00
+[PASS]                                     start: DST write  resp=2'b00
+[PASS]                                     start: LEN write  resp=2'b00
+[PASS]                                     start: ADD write  resp=2'b00
+[PASS]                                    start: CTRL write  resp=2'b00
+[PASS]                                       T3 STATUS read  resp=2'b00
+[PASS]                                       T3 STATUS.done  got=1'b1
+[PASS]                                    T3 STATUS.error=0  got=1'b0
+[PASS]                                        T3 COUNT read  resp=2'b00
+[PASS]                                 T3 PROCESSED_COUNT=4  got=0x00000004
+[PASS]                                      T3 LAST_IN read  resp=2'b00
+[PASS]                                   T3 LAST_INPUT_DATA  got=0x40000004
+[PASS]                                     T3 LAST_OUT read  resp=2'b00
+[PASS]                                  T3 LAST_OUTPUT_DATA  got=0x40000104
+[PASS]                                            T3 dst[0]  got=0x10000101
+[PASS]                                            T3 dst[1]  got=0x20000102
+[PASS]                                            T3 dst[2]  got=0x30000103
+[PASS]                                            T3 dst[3]  got=0x40000104
+[INFO] Test 4: identity mode (add=0)
+[PASS]                                     start: SRC write  resp=2'b00
+[PASS]                                     start: DST write  resp=2'b00
+[PASS]                                     start: LEN write  resp=2'b00
+[PASS]                                     start: ADD write  resp=2'b00
+[PASS]                                    start: CTRL write  resp=2'b00
+[PASS]                                       T4 STATUS read  resp=2'b00
+[PASS]                                       T4 STATUS.done  got=1'b1
+[PASS]                                    T4 STATUS.error=0  got=1'b0
+[PASS]                                        T4 COUNT read  resp=2'b00
+[PASS]                                 T4 PROCESSED_COUNT=4  got=0x00000004
+[PASS]                                            T4 dst[0]  got=0xaaaa0001
+[PASS]                                            T4 dst[1]  got=0xbbbb0002
+[PASS]                                            T4 dst[2]  got=0xcccc0003
+[PASS]                                            T4 dst[3]  got=0xdddd0004
+[INFO] Test 5: 32-bit overflow (no error)
+[PASS]                                     start: SRC write  resp=2'b00
+[PASS]                                     start: DST write  resp=2'b00
+[PASS]                                     start: LEN write  resp=2'b00
+[PASS]                                     start: ADD write  resp=2'b00
+[PASS]                                    start: CTRL write  resp=2'b00
+[PASS]                                       T5 STATUS read  resp=2'b00
+[PASS]                                       T5 STATUS.done  got=1'b1
+[PASS]                                    T5 STATUS.error=0  got=1'b0
+[PASS]                                  T5 dst wrapped to 0  got=0x00000000
+[INFO] Test 6: zero-length transfer
+[PASS]                                     start: SRC write  resp=2'b00
+[PASS]                                     start: DST write  resp=2'b00
+[PASS]                                     start: LEN write  resp=2'b00
+[PASS]                                     start: ADD write  resp=2'b00
+[PASS]                                    start: CTRL write  resp=2'b00
+[PASS]                                       T6 STATUS read  resp=2'b00
+[PASS]                                       T6 STATUS.done  got=1'b1
+[PASS]                                    T6 STATUS.error=0  got=1'b0
+[PASS]                                        T6 COUNT read  resp=2'b00
+[PASS]                                 T6 PROCESSED_COUNT=0  got=0x00000000
+[PASS]                    T6 canary mem[0x140>>2] unchanged  got=0xfaceb00c
+[INFO] Test 7: invalid src mid-transfer (word 2 OOB)
+[PASS]                                     start: SRC write  resp=2'b00
+[PASS]                                     start: DST write  resp=2'b00
+[PASS]                                     start: LEN write  resp=2'b00
+[PASS]                                     start: ADD write  resp=2'b00
+[PASS]                                    start: CTRL write  resp=2'b00
+[PASS]                                       T7 STATUS read  resp=2'b00
+[PASS]                                       T7 STATUS.done  got=1'b1
+[PASS]                                    T7 STATUS.error=1  got=1'b1
+[PASS]                                        T7 COUNT read  resp=2'b00
+[PASS]                                 T7 PROCESSED_COUNT=2  got=0x00000002
+[PASS]                                            T7 dst[0]  got=0xbbbb2232
+[PASS]                                            T7 dst[1]  got=0xcccc3343
+[PASS]                           T7 dst[2] canary unchanged  got=0xdecaf0ca
+[INFO] Test 8: invalid dst mid-transfer (word 2 OOB)
+[PASS]                                     start: SRC write  resp=2'b00
+[PASS]                                     start: DST write  resp=2'b00
+[PASS]                                     start: LEN write  resp=2'b00
+[PASS]                                     start: ADD write  resp=2'b00
+[PASS]                                    start: CTRL write  resp=2'b00
+[PASS]                                       T8 STATUS read  resp=2'b00
+[PASS]                                       T8 STATUS.done  got=1'b1
+[PASS]                                    T8 STATUS.error=1  got=1'b1
+[PASS]                                        T8 COUNT read  resp=2'b00
+[PASS]                                 T8 PROCESSED_COUNT=2  got=0x00000002
+[PASS]                              T8 dst[0] mem[0xFF8>>2]  got=0x1111aaca
+[PASS]                              T8 dst[1] mem[0xFFC>>2]  got=0x2222bbdb
+[PASS]                                  T8 src[0] unchanged  got=0x1111aaaa
+[INFO] Test 9: busy-state reads and re-trigger guard
+[PASS]                                         T9 SRC write  resp=2'b00
+[PASS]                                         T9 DST write  resp=2'b00
+[PASS]                                         T9 LEN write  resp=2'b00
+[PASS]                                         T9 ADD write  resp=2'b00
+[PASS]                                        T9 CTRL start  resp=2'b00
+[PASS]                                T9 STATUS read (busy)  resp=2'b00
+[PASS]                       T9 STATUS.busy=1 while running  got=1'b1
+[PASS]                             T9 CTRL re-start (no-op)  resp=2'b00
+[PASS]                                T9 STATUS read (done)  resp=2'b00
+[PASS]                                       T9 STATUS.done  got=1'b1
+[PASS]                                    T9 STATUS.error=0  got=1'b0
+[PASS]                                        T9 COUNT read  resp=2'b00
+[PASS]                                 T9 PROCESSED_COUNT=8  got=0x00000008
+[PASS]                                            T9 dst[0]  got=0xa0a0a0a1
+[PASS]                                            T9 dst[1]  got=0xa1a1a1a2
+[PASS]                                            T9 dst[2]  got=0xa2a2a2a3
+[PASS]                                            T9 dst[3]  got=0xa3a3a3a4
+[PASS]                                            T9 dst[4]  got=0xa4a4a4a5
+[PASS]                                            T9 dst[5]  got=0xa5a5a5a6
+[PASS]                                            T9 dst[6]  got=0xa6a6a6a7
+[PASS]                                            T9 dst[7]  got=0xa7a7a7a8
+[INFO] Test 10: restart after error
+[PASS]                                     start: SRC write  resp=2'b00
+[PASS]                                     start: DST write  resp=2'b00
+[PASS]                                     start: LEN write  resp=2'b00
+[PASS]                                     start: ADD write  resp=2'b00
+[PASS]                                    start: CTRL write  resp=2'b00
+[PASS]                                     T10a STATUS read  resp=2'b00
+[PASS]                                     T10a STATUS.done  got=1'b1
+[PASS]                                  T10a STATUS.error=1  got=1'b1
+[PASS]                                      T10a COUNT read  resp=2'b00
+[PASS]                               T10a PROCESSED_COUNT=1  got=0x00000001
+[PASS]                                     start: SRC write  resp=2'b00
+[PASS]                                     start: DST write  resp=2'b00
+[PASS]                                     start: LEN write  resp=2'b00
+[PASS]                                     start: ADD write  resp=2'b00
+[PASS]                                    start: CTRL write  resp=2'b00
+[PASS]                                     T10b STATUS read  resp=2'b00
+[PASS]                                     T10b STATUS.done  got=1'b1
+[PASS]                                  T10b STATUS.error=0  got=1'b0
+[PASS]                                      T10b COUNT read  resp=2'b00
+[PASS]                               T10b PROCESSED_COUNT=2  got=0x00000002
+[PASS]                            T10b dst[0] mem[0x680>>2]  got=0x12345687
+[PASS]                            T10b dst[1] mem[0x684>>2]  got=0x87654330
+[INFO] Test 11: mixed write ordering (AW-first and W-first)
+[PASS]                     T11 invalid addr AW-first SLVERR  resp=2'b10
+[PASS]                      T11 invalid addr W-first SLVERR  resp=2'b10
+[PASS]                                 T11 SRC via AW-first  resp=2'b00
+[PASS]                                  T11 DST via W-first  resp=2'b00
+[PASS]                                 T11 LEN via AW-first  resp=2'b00
+[PASS]                                  T11 ADD via W-first  resp=2'b00
+[PASS]                          T11 CTRL start via AW-first  resp=2'b00
+[PASS]                                      T11 STATUS read  resp=2'b00
+[PASS]                                      T11 STATUS.done  got=1'b1
+[PASS]                                   T11 STATUS.error=0  got=1'b0
+[PASS]                                       T11 COUNT read  resp=2'b00
+[PASS]                                T11 PROCESSED_COUNT=3  got=0x00000003
+[PASS]                                     T11 LAST_IN read  resp=2'b00
+[PASS]                                  T11 LAST_INPUT_DATA  got=0xdead0003
+[PASS]                                    T11 LAST_OUT read  resp=2'b00
+[PASS]                                 T11 LAST_OUTPUT_DATA  got=0xdead0013
+[PASS]                             T11 dst[0] mem[0x800>>2]  got=0xdead0011
+[PASS]                             T11 dst[1] mem[0x804>>2]  got=0xdead0012
+[PASS]                             T11 dst[2] mem[0x808>>2]  got=0xdead0013
+[INFO] Test 12: B-channel backpressure (3-cycle bready delay)
+[PASS]                    bready_delay: bvalid held cycle 1  got=1'b1
+[PASS]                    bready_delay: bvalid held cycle 2  got=1'b1
+[PASS]                    bready_delay: bvalid held cycle 3  got=1'b1
+[PASS]                   bready_delay: bvalid before accept  got=1'b1
+[PASS]                            T12 SRC bready_delay OKAY  resp=2'b00
+[PASS]                    bready_delay: bvalid held cycle 1  got=1'b1
+[PASS]                    bready_delay: bvalid held cycle 2  got=1'b1
+[PASS]                    bready_delay: bvalid held cycle 3  got=1'b1
+[PASS]                   bready_delay: bvalid before accept  got=1'b1
+[PASS]                            T12 DST bready_delay OKAY  resp=2'b00
+[PASS]                    bready_delay: bvalid held cycle 1  got=1'b1
+[PASS]                    bready_delay: bvalid held cycle 2  got=1'b1
+[PASS]                    bready_delay: bvalid held cycle 3  got=1'b1
+[PASS]                   bready_delay: bvalid before accept  got=1'b1
+[PASS]                            T12 LEN bready_delay OKAY  resp=2'b00
+[PASS]                    bready_delay: bvalid held cycle 1  got=1'b1
+[PASS]                    bready_delay: bvalid held cycle 2  got=1'b1
+[PASS]                    bready_delay: bvalid held cycle 3  got=1'b1
+[PASS]                   bready_delay: bvalid before accept  got=1'b1
+[PASS]                            T12 ADD bready_delay OKAY  resp=2'b00
+[PASS]                    bready_delay: bvalid held cycle 1  got=1'b1
+[PASS]                    bready_delay: bvalid held cycle 2  got=1'b1
+[PASS]                    bready_delay: bvalid held cycle 3  got=1'b1
+[PASS]                   bready_delay: bvalid before accept  got=1'b1
+[PASS]                 T12 invalid addr bready_delay SLVERR  resp=2'b10
+[PASS]                                       T12 CTRL start  resp=2'b00
+[PASS]                                      T12 STATUS read  resp=2'b00
+[PASS]                                      T12 STATUS.done  got=1'b1
+[PASS]                                   T12 STATUS.error=0  got=1'b0
+[PASS]                                       T12 COUNT read  resp=2'b00
+[PASS]                                T12 PROCESSED_COUNT=2  got=0x00000002
+[PASS]                             T12 dst[0] mem[0x900>>2]  got=0x11223349
+[PASS]                             T12 dst[1] mem[0x904>>2]  got=0x5566778d
+[INFO] Test 13: R-channel backpressure (3-cycle rready delay)
+[PASS]                                     start: SRC write  resp=2'b00
+[PASS]                                     start: DST write  resp=2'b00
+[PASS]                                     start: LEN write  resp=2'b00
+[PASS]                                     start: ADD write  resp=2'b00
+[PASS]                                    start: CTRL write  resp=2'b00
+[PASS]                    rready_delay: rvalid held cycle 1  got=1'b1
+[PASS]                  rready_delay: rdata  stable cycle 1  got=0x00000820
+[PASS]                  rready_delay: rresp  stable cycle 1  resp=2'b00
+[PASS]                    rready_delay: rvalid held cycle 2  got=1'b1
+[PASS]                  rready_delay: rdata  stable cycle 2  got=0x00000820
+[PASS]                  rready_delay: rresp  stable cycle 2  resp=2'b00
+[PASS]                    rready_delay: rvalid held cycle 3  got=1'b1
+[PASS]                  rready_delay: rdata  stable cycle 3  got=0x00000820
+[PASS]                  rready_delay: rresp  stable cycle 3  resp=2'b00
+[PASS]                   rready_delay: rvalid before accept  got=1'b1
+[PASS]                           rready_delay: rresp  final  resp=2'b00
+[PASS]                                T13 SRC_ADDR readback  got=0x00000820
+[PASS]                    rready_delay: rvalid held cycle 1  got=1'b1
+[PASS]                  rready_delay: rdata  stable cycle 1  got=0x00000940
+[PASS]                  rready_delay: rresp  stable cycle 1  resp=2'b00
+[PASS]                    rready_delay: rvalid held cycle 2  got=1'b1
+[PASS]                  rready_delay: rdata  stable cycle 2  got=0x00000940
+[PASS]                  rready_delay: rresp  stable cycle 2  resp=2'b00
+[PASS]                    rready_delay: rvalid held cycle 3  got=1'b1
+[PASS]                  rready_delay: rdata  stable cycle 3  got=0x00000940
+[PASS]                  rready_delay: rresp  stable cycle 3  resp=2'b00
+[PASS]                   rready_delay: rvalid before accept  got=1'b1
+[PASS]                           rready_delay: rresp  final  resp=2'b00
+[PASS]                                T13 DST_ADDR readback  got=0x00000940
+[PASS]                    rready_delay: rvalid held cycle 1  got=1'b1
+[PASS]                  rready_delay: rdata  stable cycle 1  got=0x00000004
+[PASS]                  rready_delay: rresp  stable cycle 1  resp=2'b00
+[PASS]                    rready_delay: rvalid held cycle 2  got=1'b1
+[PASS]                  rready_delay: rdata  stable cycle 2  got=0x00000004
+[PASS]                  rready_delay: rresp  stable cycle 2  resp=2'b00
+[PASS]                    rready_delay: rvalid held cycle 3  got=1'b1
+[PASS]                  rready_delay: rdata  stable cycle 3  got=0x00000004
+[PASS]                  rready_delay: rresp  stable cycle 3  resp=2'b00
+[PASS]                   rready_delay: rvalid before accept  got=1'b1
+[PASS]                           rready_delay: rresp  final  resp=2'b00
+[PASS]                                     T13 LEN readback  got=0x00000004
+[PASS]                    rready_delay: rvalid held cycle 1  got=1'b1
+[PASS]                  rready_delay: rdata  stable cycle 1  got=0x00000007
+[PASS]                  rready_delay: rresp  stable cycle 1  resp=2'b00
+[PASS]                    rready_delay: rvalid held cycle 2  got=1'b1
+[PASS]                  rready_delay: rdata  stable cycle 2  got=0x00000007
+[PASS]                  rready_delay: rresp  stable cycle 2  resp=2'b00
+[PASS]                    rready_delay: rvalid held cycle 3  got=1'b1
+[PASS]                  rready_delay: rdata  stable cycle 3  got=0x00000007
+[PASS]                  rready_delay: rresp  stable cycle 3  resp=2'b00
+[PASS]                   rready_delay: rvalid before accept  got=1'b1
+[PASS]                           rready_delay: rresp  final  resp=2'b00
+[PASS]                               T13 ADD_VALUE readback  got=0x00000007
+[PASS]                    rready_delay: rvalid held cycle 1  got=1'b1
+[PASS]                  rready_delay: rdata  stable cycle 1  got=0x00000001
+[PASS]                  rready_delay: rresp  stable cycle 1  resp=2'b00
+[PASS]                    rready_delay: rvalid held cycle 2  got=1'b1
+[PASS]                  rready_delay: rdata  stable cycle 2  got=0x00000001
+[PASS]                  rready_delay: rresp  stable cycle 2  resp=2'b00
+[PASS]                    rready_delay: rvalid held cycle 3  got=1'b1
+[PASS]                  rready_delay: rdata  stable cycle 3  got=0x00000001
+[PASS]                  rready_delay: rresp  stable cycle 3  resp=2'b00
+[PASS]                   rready_delay: rvalid before accept  got=1'b1
+[PASS]                           rready_delay: rresp  final  resp=2'b00
+[PASS]                   T13 STATUS (done=1 error=0 busy=0)  got=0x00000001
+[PASS]                    rready_delay: rvalid held cycle 1  got=1'b1
+[PASS]                  rready_delay: rdata  stable cycle 1  got=0x00000004
+[PASS]                  rready_delay: rresp  stable cycle 1  resp=2'b00
+[PASS]                    rready_delay: rvalid held cycle 2  got=1'b1
+[PASS]                  rready_delay: rdata  stable cycle 2  got=0x00000004
+[PASS]                  rready_delay: rresp  stable cycle 2  resp=2'b00
+[PASS]                    rready_delay: rvalid held cycle 3  got=1'b1
+[PASS]                  rready_delay: rdata  stable cycle 3  got=0x00000004
+[PASS]                  rready_delay: rresp  stable cycle 3  resp=2'b00
+[PASS]                   rready_delay: rvalid before accept  got=1'b1
+[PASS]                           rready_delay: rresp  final  resp=2'b00
+[PASS]                                T13 PROCESSED_COUNT=4  got=0x00000004
+[PASS]                    rready_delay: rvalid held cycle 1  got=1'b1
+[PASS]                  rready_delay: rdata  stable cycle 1  got=0x3a3b3c3d
+[PASS]                  rready_delay: rresp  stable cycle 1  resp=2'b00
+[PASS]                    rready_delay: rvalid held cycle 2  got=1'b1
+[PASS]                  rready_delay: rdata  stable cycle 2  got=0x3a3b3c3d
+[PASS]                  rready_delay: rresp  stable cycle 2  resp=2'b00
+[PASS]                    rready_delay: rvalid held cycle 3  got=1'b1
+[PASS]                  rready_delay: rdata  stable cycle 3  got=0x3a3b3c3d
+[PASS]                  rready_delay: rresp  stable cycle 3  resp=2'b00
+[PASS]                   rready_delay: rvalid before accept  got=1'b1
+[PASS]                           rready_delay: rresp  final  resp=2'b00
+[PASS]                                  T13 LAST_INPUT_DATA  got=0x3a3b3c3d
+[PASS]                    rready_delay: rvalid held cycle 1  got=1'b1
+[PASS]                  rready_delay: rdata  stable cycle 1  got=0x3a3b3c44
+[PASS]                  rready_delay: rresp  stable cycle 1  resp=2'b00
+[PASS]                    rready_delay: rvalid held cycle 2  got=1'b1
+[PASS]                  rready_delay: rdata  stable cycle 2  got=0x3a3b3c44
+[PASS]                  rready_delay: rresp  stable cycle 2  resp=2'b00
+[PASS]                    rready_delay: rvalid held cycle 3  got=1'b1
+[PASS]                  rready_delay: rdata  stable cycle 3  got=0x3a3b3c44
+[PASS]                  rready_delay: rresp  stable cycle 3  resp=2'b00
+[PASS]                   rready_delay: rvalid before accept  got=1'b1
+[PASS]                           rready_delay: rresp  final  resp=2'b00
+[PASS]                                 T13 LAST_OUTPUT_DATA  got=0x3a3b3c44
+[PASS]                    rready_delay: rvalid held cycle 1  got=1'b1
+[PASS]                  rready_delay: rdata  stable cycle 1  got=0x00000000
+[PASS]                  rready_delay: rresp  stable cycle 1  resp=2'b10
+[PASS]                    rready_delay: rvalid held cycle 2  got=1'b1
+[PASS]                  rready_delay: rdata  stable cycle 2  got=0x00000000
+[PASS]                  rready_delay: rresp  stable cycle 2  resp=2'b10
+[PASS]                    rready_delay: rvalid held cycle 3  got=1'b1
+[PASS]                  rready_delay: rdata  stable cycle 3  got=0x00000000
+[PASS]                  rready_delay: rresp  stable cycle 3  resp=2'b10
+[PASS]                   rready_delay: rvalid before accept  got=1'b1
+[PASS]                           rready_delay: rresp  final  resp=2'b10
+[PASS]                             T13 invalid addr rdata=0  got=0x00000000
+[INFO] Test 14a: reset during active DMA add transfer
+[PASS]                                     start: SRC write  resp=2'b00
+[PASS]                                     start: DST write  resp=2'b00
+[PASS]                                     start: LEN write  resp=2'b00
+[PASS]                                     start: ADD write  resp=2'b00
+[PASS]                                    start: CTRL write  resp=2'b00
+[PASS]                                    T14a CONTROL read  resp=2'b00
+[PASS]                            T14a CONTROL=0 (busy_r=0)  got=0x00000000
+[PASS]                                   T14a SRC_ADDR read  resp=2'b00
+[PASS]                                      T14a SRC_ADDR=0  got=0x00000000
+[PASS]                                   T14a DST_ADDR read  resp=2'b00
+[PASS]                                      T14a DST_ADDR=0  got=0x00000000
+[PASS]                                        T14a LEN read  resp=2'b00
+[PASS]                                  T14a LENGTH_WORDS=0  got=0x00000000
+[PASS]                                  T14a ADD_VALUE read  resp=2'b00
+[PASS]                                     T14a ADD_VALUE=0  got=0x00000000
+[PASS]                                     T14a STATUS read  resp=2'b00
+[PASS]                T14a STATUS=0 (done=0 error=0 busy=0)  got=0x00000000
+[PASS]                                      T14a COUNT read  resp=2'b00
+[PASS]                               T14a PROCESSED_COUNT=0  got=0x00000000
+[PASS]                                    T14a LAST_IN read  resp=2'b00
+[PASS]                               T14a LAST_INPUT_DATA=0  got=0x00000000
+[PASS]                                   T14a LAST_OUT read  resp=2'b00
+[PASS]                              T14a LAST_OUTPUT_DATA=0  got=0x00000000
+[PASS]                 T14a canary mem[639] 0x9FC unchanged  got=0xbeefcafe
+[PASS]                 T14a canary mem[656] 0xA40 unchanged  got=0xdecafbad
+[INFO] Test 14b: fresh valid transfer after reset
+[PASS]                                     start: SRC write  resp=2'b00
+[PASS]                                     start: DST write  resp=2'b00
+[PASS]                                     start: LEN write  resp=2'b00
+[PASS]                                     start: ADD write  resp=2'b00
+[PASS]                                    start: CTRL write  resp=2'b00
+[PASS]                                     T14b STATUS read  resp=2'b00
+[PASS]                                     T14b STATUS.done  got=1'b1
+[PASS]                                  T14b STATUS.error=0  got=1'b0
+[PASS]                                      T14b COUNT read  resp=2'b00
+[PASS]                               T14b PROCESSED_COUNT=4  got=0x00000004
+[PASS]                            T14b dst[0] mem[0xD00>>2]  got=0x00011004
+[PASS]                            T14b dst[1] mem[0xD04>>2]  got=0x00022005
+[PASS]                            T14b dst[2] mem[0xD08>>2]  got=0x00033006
+[PASS]                            T14b dst[3] mem[0xD0C>>2]  got=0x00044007
+[INFO] Test 15: repeated normal restart (5 back-to-back transfers)
+[INFO] T15 run1 src=0xD10 dst=0xD48 len=1 add=0xAA
+[PASS]                                     start: SRC write  resp=2'b00
+[PASS]                                     start: DST write  resp=2'b00
+[PASS]                                     start: LEN write  resp=2'b00
+[PASS]                                     start: ADD write  resp=2'b00
+[PASS]                                    start: CTRL write  resp=2'b00
+[PASS]                                    T15r1 STATUS resp  resp=2'b00
+[PASS]                                    T15r1 STATUS.done  got=1'b1
+[PASS]                                 T15r1 STATUS.error=0  got=1'b0
+[PASS]                                     T15r1 COUNT resp  resp=2'b00
+[PASS]                              T15r1 PROCESSED_COUNT=1  got=0x00000001
+[PASS]                                   T15r1 LAST_IN resp  resp=2'b00
+[PASS]                                T15r1 LAST_INPUT_DATA  got=0xaaaa0001
+[PASS]                                  T15r1 LAST_OUT resp  resp=2'b00
+[PASS]                               T15r1 LAST_OUTPUT_DATA  got=0xaaaa00ab
+[PASS]                           T15r1 dst[0] mem[0xD48>>2]  got=0xaaaa00ab
+[INFO] T15 run2 src=0xD14 dst=0xD4C len=2 add=0xBB
+[PASS]                                     start: SRC write  resp=2'b00
+[PASS]                                     start: DST write  resp=2'b00
+[PASS]                                     start: LEN write  resp=2'b00
+[PASS]                                     start: ADD write  resp=2'b00
+[PASS]                                    start: CTRL write  resp=2'b00
+[PASS]                                    T15r2 STATUS resp  resp=2'b00
+[PASS]                                    T15r2 STATUS.done  got=1'b1
+[PASS]                                 T15r2 STATUS.error=0  got=1'b0
+[PASS]                                     T15r2 COUNT resp  resp=2'b00
+[PASS]                              T15r2 PROCESSED_COUNT=2  got=0x00000002
+[PASS]                                   T15r2 LAST_IN resp  resp=2'b00
+[PASS]                                T15r2 LAST_INPUT_DATA  got=0xbbbb0002
+[PASS]                                  T15r2 LAST_OUT resp  resp=2'b00
+[PASS]                               T15r2 LAST_OUTPUT_DATA  got=0xbbbb00bd
+[PASS]                           T15r2 dst[0] mem[0xD4C>>2]  got=0xbbbb00bc
+[PASS]                           T15r2 dst[1] mem[0xD50>>2]  got=0xbbbb00bd
+[INFO] T15 run3 src=0xD1C dst=0xD54 len=3 add=0xCC
+[PASS]                                     start: SRC write  resp=2'b00
+[PASS]                                     start: DST write  resp=2'b00
+[PASS]                                     start: LEN write  resp=2'b00
+[PASS]                                     start: ADD write  resp=2'b00
+[PASS]                                    start: CTRL write  resp=2'b00
+[PASS]                                    T15r3 STATUS resp  resp=2'b00
+[PASS]                                    T15r3 STATUS.done  got=1'b1
+[PASS]                                 T15r3 STATUS.error=0  got=1'b0
+[PASS]                                     T15r3 COUNT resp  resp=2'b00
+[PASS]                              T15r3 PROCESSED_COUNT=3  got=0x00000003
+[PASS]                                   T15r3 LAST_IN resp  resp=2'b00
+[PASS]                                T15r3 LAST_INPUT_DATA  got=0xcccc0003
+[PASS]                                  T15r3 LAST_OUT resp  resp=2'b00
+[PASS]                               T15r3 LAST_OUTPUT_DATA  got=0xcccc00cf
+[PASS]                           T15r3 dst[0] mem[0xD54>>2]  got=0xcccc00cd
+[PASS]                           T15r3 dst[1] mem[0xD58>>2]  got=0xcccc00ce
+[PASS]                           T15r3 dst[2] mem[0xD5C>>2]  got=0xcccc00cf
+[INFO] T15 run4 src=0xD28 dst=0xD60 len=2 add=0xDD
+[PASS]                                     start: SRC write  resp=2'b00
+[PASS]                                     start: DST write  resp=2'b00
+[PASS]                                     start: LEN write  resp=2'b00
+[PASS]                                     start: ADD write  resp=2'b00
+[PASS]                                    start: CTRL write  resp=2'b00
+[PASS]                                    T15r4 STATUS resp  resp=2'b00
+[PASS]                                    T15r4 STATUS.done  got=1'b1
+[PASS]                                 T15r4 STATUS.error=0  got=1'b0
+[PASS]                                     T15r4 COUNT resp  resp=2'b00
+[PASS]                              T15r4 PROCESSED_COUNT=2  got=0x00000002
+[PASS]                                   T15r4 LAST_IN resp  resp=2'b00
+[PASS]                                T15r4 LAST_INPUT_DATA  got=0xdddd0002
+[PASS]                                  T15r4 LAST_OUT resp  resp=2'b00
+[PASS]                               T15r4 LAST_OUTPUT_DATA  got=0xdddd00df
+[PASS]                           T15r4 dst[0] mem[0xD60>>2]  got=0xdddd00de
+[PASS]                           T15r4 dst[1] mem[0xD64>>2]  got=0xdddd00df
+[INFO] T15 run5 src=0xD30 dst=0xD68 len=4 add=0xEE
+[PASS]                                     start: SRC write  resp=2'b00
+[PASS]                                     start: DST write  resp=2'b00
+[PASS]                                     start: LEN write  resp=2'b00
+[PASS]                                     start: ADD write  resp=2'b00
+[PASS]                                    start: CTRL write  resp=2'b00
+[PASS]                                    T15r5 STATUS resp  resp=2'b00
+[PASS]                                    T15r5 STATUS.done  got=1'b1
+[PASS]                                 T15r5 STATUS.error=0  got=1'b0
+[PASS]                                     T15r5 COUNT resp  resp=2'b00
+[PASS]                              T15r5 PROCESSED_COUNT=4  got=0x00000004
+[PASS]                                   T15r5 LAST_IN resp  resp=2'b00
+[PASS]                                T15r5 LAST_INPUT_DATA  got=0xeeee0004
+[PASS]                                  T15r5 LAST_OUT resp  resp=2'b00
+[PASS]                               T15r5 LAST_OUTPUT_DATA  got=0xeeee00f2
+[PASS]                           T15r5 dst[0] mem[0xD68>>2]  got=0xeeee00ef
+[PASS]                           T15r5 dst[1] mem[0xD6C>>2]  got=0xeeee00f0
+[PASS]                           T15r5 dst[2] mem[0xD70>>2]  got=0xeeee00f1
+[PASS]                           T15r5 dst[3] mem[0xD74>>2]  got=0xeeee00f2
+[PASS]                  T15 canary mem[862] 0xD78 unchanged  got=0xa1b2c3d4
+[INFO] Test 16: lightweight random valid-transfer smoke (10 iters, fixed seed)
+[INFO] T16 iter=0 len=1 add=1 src=0xD80 dst=0xDA0
+[PASS]                                     start: SRC write  resp=2'b00
+[PASS]                                     start: DST write  resp=2'b00
+[PASS]                                     start: LEN write  resp=2'b00
+[PASS]                                     start: ADD write  resp=2'b00
+[PASS]                                    start: CTRL write  resp=2'b00
+[PASS]                                   T16[0] STATUS resp  resp=2'b00
+[PASS]                                   T16[0] STATUS.done  got=1'b1
+[PASS]                                T16[0] STATUS.error=0  got=1'b0
+[PASS]                                    T16[0] COUNT resp  resp=2'b00
+[PASS]                                       T16[0] COUNT=1  got=0x00000001
+[PASS]                                        T16[0] dst[0]  got=0x00001002
+[INFO] T16 iter=1 len=2 add=2 src=0xD80 dst=0xDA0
+[PASS]                                     start: SRC write  resp=2'b00
+[PASS]                                     start: DST write  resp=2'b00
+[PASS]                                     start: LEN write  resp=2'b00
+[PASS]                                     start: ADD write  resp=2'b00
+[PASS]                                    start: CTRL write  resp=2'b00
+[PASS]                                   T16[1] STATUS resp  resp=2'b00
+[PASS]                                   T16[1] STATUS.done  got=1'b1
+[PASS]                                T16[1] STATUS.error=0  got=1'b0
+[PASS]                                    T16[1] COUNT resp  resp=2'b00
+[PASS]                                       T16[1] COUNT=2  got=0x00000002
+[PASS]                                        T16[1] dst[0]  got=0x00002003
+[PASS]                                        T16[1] dst[1]  got=0x00002004
+[INFO] T16 iter=2 len=3 add=3 src=0xD80 dst=0xDA0
+[PASS]                                     start: SRC write  resp=2'b00
+[PASS]                                     start: DST write  resp=2'b00
+[PASS]                                     start: LEN write  resp=2'b00
+[PASS]                                     start: ADD write  resp=2'b00
+[PASS]                                    start: CTRL write  resp=2'b00
+[PASS]                                   T16[2] STATUS resp  resp=2'b00
+[PASS]                                   T16[2] STATUS.done  got=1'b1
+[PASS]                                T16[2] STATUS.error=0  got=1'b0
+[PASS]                                    T16[2] COUNT resp  resp=2'b00
+[PASS]                                       T16[2] COUNT=3  got=0x00000003
+[PASS]                                        T16[2] dst[0]  got=0x00003004
+[PASS]                                        T16[2] dst[1]  got=0x00003005
+[PASS]                                        T16[2] dst[2]  got=0x00003006
+[INFO] T16 iter=3 len=4 add=4 src=0xD80 dst=0xDA0
+[PASS]                                     start: SRC write  resp=2'b00
+[PASS]                                     start: DST write  resp=2'b00
+[PASS]                                     start: LEN write  resp=2'b00
+[PASS]                                     start: ADD write  resp=2'b00
+[PASS]                                    start: CTRL write  resp=2'b00
+[PASS]                                   T16[3] STATUS resp  resp=2'b00
+[PASS]                                   T16[3] STATUS.done  got=1'b1
+[PASS]                                T16[3] STATUS.error=0  got=1'b0
+[PASS]                                    T16[3] COUNT resp  resp=2'b00
+[PASS]                                       T16[3] COUNT=4  got=0x00000004
+[PASS]                                        T16[3] dst[0]  got=0x00004005
+[PASS]                                        T16[3] dst[1]  got=0x00004006
+[PASS]                                        T16[3] dst[2]  got=0x00004007
+[PASS]                                        T16[3] dst[3]  got=0x00004008
+[INFO] T16 iter=4 len=5 add=5 src=0xD80 dst=0xDA0
+[PASS]                                     start: SRC write  resp=2'b00
+[PASS]                                     start: DST write  resp=2'b00
+[PASS]                                     start: LEN write  resp=2'b00
+[PASS]                                     start: ADD write  resp=2'b00
+[PASS]                                    start: CTRL write  resp=2'b00
+[PASS]                                   T16[4] STATUS resp  resp=2'b00
+[PASS]                                   T16[4] STATUS.done  got=1'b1
+[PASS]                                T16[4] STATUS.error=0  got=1'b0
+[PASS]                                    T16[4] COUNT resp  resp=2'b00
+[PASS]                                       T16[4] COUNT=5  got=0x00000005
+[PASS]                                        T16[4] dst[0]  got=0x00005006
+[PASS]                                        T16[4] dst[1]  got=0x00005007
+[PASS]                                        T16[4] dst[2]  got=0x00005008
+[PASS]                                        T16[4] dst[3]  got=0x00005009
+[PASS]                                        T16[4] dst[4]  got=0x0000500a
+[INFO] T16 iter=5 len=6 add=6 src=0xD80 dst=0xDA0
+[PASS]                                     start: SRC write  resp=2'b00
+[PASS]                                     start: DST write  resp=2'b00
+[PASS]                                     start: LEN write  resp=2'b00
+[PASS]                                     start: ADD write  resp=2'b00
+[PASS]                                    start: CTRL write  resp=2'b00
+[PASS]                                   T16[5] STATUS resp  resp=2'b00
+[PASS]                                   T16[5] STATUS.done  got=1'b1
+[PASS]                                T16[5] STATUS.error=0  got=1'b0
+[PASS]                                    T16[5] COUNT resp  resp=2'b00
+[PASS]                                       T16[5] COUNT=6  got=0x00000006
+[PASS]                                        T16[5] dst[0]  got=0x00006007
+[PASS]                                        T16[5] dst[1]  got=0x00006008
+[PASS]                                        T16[5] dst[2]  got=0x00006009
+[PASS]                                        T16[5] dst[3]  got=0x0000600a
+[PASS]                                        T16[5] dst[4]  got=0x0000600b
+[PASS]                                        T16[5] dst[5]  got=0x0000600c
+[INFO] T16 iter=6 len=7 add=7 src=0xD80 dst=0xDA0
+[PASS]                                     start: SRC write  resp=2'b00
+[PASS]                                     start: DST write  resp=2'b00
+[PASS]                                     start: LEN write  resp=2'b00
+[PASS]                                     start: ADD write  resp=2'b00
+[PASS]                                    start: CTRL write  resp=2'b00
+[PASS]                                   T16[6] STATUS resp  resp=2'b00
+[PASS]                                   T16[6] STATUS.done  got=1'b1
+[PASS]                                T16[6] STATUS.error=0  got=1'b0
+[PASS]                                    T16[6] COUNT resp  resp=2'b00
+[PASS]                                       T16[6] COUNT=7  got=0x00000007
+[PASS]                                        T16[6] dst[0]  got=0x00007008
+[PASS]                                        T16[6] dst[1]  got=0x00007009
+[PASS]                                        T16[6] dst[2]  got=0x0000700a
+[PASS]                                        T16[6] dst[3]  got=0x0000700b
+[PASS]                                        T16[6] dst[4]  got=0x0000700c
+[PASS]                                        T16[6] dst[5]  got=0x0000700d
+[PASS]                                        T16[6] dst[6]  got=0x0000700e
+[INFO] T16 iter=7 len=8 add=8 src=0xD80 dst=0xDA0
+[PASS]                                     start: SRC write  resp=2'b00
+[PASS]                                     start: DST write  resp=2'b00
+[PASS]                                     start: LEN write  resp=2'b00
+[PASS]                                     start: ADD write  resp=2'b00
+[PASS]                                    start: CTRL write  resp=2'b00
+[PASS]                                   T16[7] STATUS resp  resp=2'b00
+[PASS]                                   T16[7] STATUS.done  got=1'b1
+[PASS]                                T16[7] STATUS.error=0  got=1'b0
+[PASS]                                    T16[7] COUNT resp  resp=2'b00
+[PASS]                                       T16[7] COUNT=8  got=0x00000008
+[PASS]                                        T16[7] dst[0]  got=0x00008009
+[PASS]                                        T16[7] dst[1]  got=0x0000800a
+[PASS]                                        T16[7] dst[2]  got=0x0000800b
+[PASS]                                        T16[7] dst[3]  got=0x0000800c
+[PASS]                                        T16[7] dst[4]  got=0x0000800d
+[PASS]                                        T16[7] dst[5]  got=0x0000800e
+[PASS]                                        T16[7] dst[6]  got=0x0000800f
+[PASS]                                        T16[7] dst[7]  got=0x00008010
+[INFO] T16 iter=8 len=1 add=9 src=0xD80 dst=0xDA0
+[PASS]                                     start: SRC write  resp=2'b00
+[PASS]                                     start: DST write  resp=2'b00
+[PASS]                                     start: LEN write  resp=2'b00
+[PASS]                                     start: ADD write  resp=2'b00
+[PASS]                                    start: CTRL write  resp=2'b00
+[PASS]                                   T16[8] STATUS resp  resp=2'b00
+[PASS]                                   T16[8] STATUS.done  got=1'b1
+[PASS]                                T16[8] STATUS.error=0  got=1'b0
+[PASS]                                    T16[8] COUNT resp  resp=2'b00
+[PASS]                                       T16[8] COUNT=1  got=0x00000001
+[PASS]                                        T16[8] dst[0]  got=0x0000900a
+[INFO] T16 iter=9 len=2 add=10 src=0xD80 dst=0xDA0
+[PASS]                                     start: SRC write  resp=2'b00
+[PASS]                                     start: DST write  resp=2'b00
+[PASS]                                     start: LEN write  resp=2'b00
+[PASS]                                     start: ADD write  resp=2'b00
+[PASS]                                    start: CTRL write  resp=2'b00
+[PASS]                                   T16[9] STATUS resp  resp=2'b00
+[PASS]                                   T16[9] STATUS.done  got=1'b1
+[PASS]                                T16[9] STATUS.error=0  got=1'b0
+[PASS]                                    T16[9] COUNT resp  resp=2'b00
+[PASS]                                       T16[9] COUNT=2  got=0x00000002
+[PASS]                                        T16[9] dst[0]  got=0x0000a00b
+[PASS]                                        T16[9] dst[1]  got=0x0000a00c
+[PASS]                  T16 canary mem[880] 0xDC0 unchanged  got=0xcafebabe
+[INFO] Test 17: busy config write policy
+[PASS]                                     start: SRC write  resp=2'b00
+[PASS]                                     start: DST write  resp=2'b00
+[PASS]                                     start: LEN write  resp=2'b00
+[PASS]                                     start: ADD write  resp=2'b00
+[PASS]                                    start: CTRL write  resp=2'b00
+[PASS]                           T17 STATUS read while busy  resp=2'b00
+[PASS]                                    T17 STATUS.busy=1  got=1'b1
+[PASS]                         T17 STATUS.done=0 while busy  got=1'b0
+[PASS]                               T17 busy write SRC=new  resp=2'b00
+[PASS]                               T17 busy write DST=new  resp=2'b00
+[PASS]                                 T17 busy write LEN=5  resp=2'b00
+[PASS]                               T17 busy write ADD=new  resp=2'b00
+[PASS]                                T17 STATUS after orig  resp=2'b00
+[PASS]                         T17 STATUS.done=1 after orig  got=1'b1
+[PASS]                        T17 STATUS.error=0 after orig  got=1'b0
+[PASS]                                 T17 COUNT after orig  resp=2'b00
+[PASS]                          T17 PROCESSED_COUNT=16 orig  got=0x00000010
+[PASS]                               T17 LAST_IN after orig  resp=2'b00
+[PASS]                             T17 LAST_INPUT_DATA orig  got=0xa0a00010
+[PASS]                              T17 LAST_OUT after orig  resp=2'b00
+[PASS]                            T17 LAST_OUTPUT_DATA orig  got=0xa0a01244
+[PASS]                                      T17 orig dst[0]  got=0xa0a01235
+[PASS]                                      T17 orig dst[1]  got=0xa0a01236
+[PASS]                                      T17 orig dst[2]  got=0xa0a01237
+[PASS]                                      T17 orig dst[3]  got=0xa0a01238
+[PASS]                                      T17 orig dst[4]  got=0xa0a01239
+[PASS]                                      T17 orig dst[5]  got=0xa0a0123a
+[PASS]                                      T17 orig dst[6]  got=0xa0a0123b
+[PASS]                                      T17 orig dst[7]  got=0xa0a0123c
+[PASS]                                      T17 orig dst[8]  got=0xa0a0123d
+[PASS]                                      T17 orig dst[9]  got=0xa0a0123e
+[PASS]                                     T17 orig dst[10]  got=0xa0a0123f
+[PASS]                                     T17 orig dst[11]  got=0xa0a01240
+[PASS]                                     T17 orig dst[12]  got=0xa0a01241
+[PASS]                                     T17 orig dst[13]  got=0xa0a01242
+[PASS]                                     T17 orig dst[14]  got=0xa0a01243
+[PASS]                                     T17 orig dst[15]  got=0xa0a01244
+[PASS]        T17 canary before orig dst mem[959] unchanged  got=0xb1b1b1b1
+[PASS]        T17 canary after  orig dst mem[976] unchanged  got=0xb2b2b2b2
+[PASS]                 T17 new dst mem[980] not yet written  got=0x00000000
+[PASS]                                     T17 SRC reg read  resp=2'b00
+[PASS]                                 T17 SRC readback=new  got=0x00000e60
+[PASS]                                     T17 DST reg read  resp=2'b00
+[PASS]                                 T17 DST readback=new  got=0x00000f50
+[PASS]                                     T17 LEN reg read  resp=2'b00
+[PASS]                                   T17 LEN readback=5  got=0x00000005
+[PASS]                                     T17 ADD reg read  resp=2'b00
+[PASS]                                 T17 ADD readback=new  got=0x00005678
+[PASS]                                T17 second CTRL.start  resp=2'b00
+[PASS]                            T17 STATUS after new xfer  resp=2'b00
+[PASS]                           T17 STATUS.done=1 new xfer  got=1'b1
+[PASS]                          T17 STATUS.error=0 new xfer  got=1'b0
+[PASS]                             T17 COUNT after new xfer  resp=2'b00
+[PASS]                       T17 PROCESSED_COUNT=5 new xfer  got=0x00000005
+[PASS]                           T17 LAST_IN after new xfer  resp=2'b00
+[PASS]                         T17 LAST_INPUT_DATA new xfer  got=0xb0b00005
+[PASS]                          T17 LAST_OUT after new xfer  resp=2'b00
+[PASS]                        T17 LAST_OUTPUT_DATA new xfer  got=0xb0b0567d
+[PASS]                                       T17 new dst[0]  got=0xb0b05679
+[PASS]                                       T17 new dst[1]  got=0xb0b0567a
+[PASS]                                       T17 new dst[2]  got=0xb0b0567b
+[PASS]                                       T17 new dst[3]  got=0xb0b0567c
+[PASS]                                       T17 new dst[4]  got=0xb0b0567d
+[PASS]         T17 canary before new dst mem[979] unchanged  got=0xb3b3b3b3
+[PASS]         T17 canary after  new dst mem[985] unchanged  got=0xb4b4b4b4
+[INFO] Test 18: reset during transfer
+[PASS]                                     start: SRC write  resp=2'b00
+[PASS]                                     start: DST write  resp=2'b00
+[PASS]                                     start: LEN write  resp=2'b00
+[PASS]                                     start: ADD write  resp=2'b00
+[PASS]                                    start: CTRL write  resp=2'b00
+[PASS]                           T18 STATUS read while busy  resp=2'b00
+[PASS]                                    T18 STATUS.busy=1  got=1'b1
+[PASS]                         T18 STATUS.done=0 while busy  got=1'b0
+[PASS]                                     T18 CONTROL read  resp=2'b00
+[PASS]                 T18 CONTROL=0 (busy_r=0 after reset)  got=0x00000000
+[PASS]                                    T18 SRC_ADDR read  resp=2'b00
+[PASS]                           T18 SRC_ADDR=0 after reset  got=0x00000000
+[PASS]                                    T18 DST_ADDR read  resp=2'b00
+[PASS]                           T18 DST_ADDR=0 after reset  got=0x00000000
+[PASS]                                         T18 LEN read  resp=2'b00
+[PASS]                       T18 LENGTH_WORDS=0 after reset  got=0x00000000
+[PASS]                                   T18 ADD_VALUE read  resp=2'b00
+[PASS]                          T18 ADD_VALUE=0 after reset  got=0x00000000
+[PASS]                                      T18 STATUS read  resp=2'b00
+[PASS]                 T18 STATUS=0 (done=0 error=0 busy=0)  got=0x00000000
+[PASS]                                       T18 COUNT read  resp=2'b00
+[PASS]                    T18 PROCESSED_COUNT=0 after reset  got=0x00000000
+[PASS]                                     T18 LAST_IN read  resp=2'b00
+[PASS]                    T18 LAST_INPUT_DATA=0 after reset  got=0x00000000
+[PASS]                                    T18 LAST_OUT read  resp=2'b00
+[PASS]                   T18 LAST_OUTPUT_DATA=0 after reset  got=0x00000000
+[PASS]  T18 canary before orig dst mem[994] 0xF88 unchanged  got=0xf8f8aabb
+[PASS] T18 canary after  orig dst mem[1003] 0xFAC unchanged  got=0xf8f8ccdd
+[INFO] Test 18: recovery transfer after reset
+[PASS]                                     start: SRC write  resp=2'b00
+[PASS]                                     start: DST write  resp=2'b00
+[PASS]                                     start: LEN write  resp=2'b00
+[PASS]                                     start: ADD write  resp=2'b00
+[PASS]                                    start: CTRL write  resp=2'b00
+[PASS]                            T18 STATUS after recovery  resp=2'b00
+[PASS]                           T18 STATUS.done=1 recovery  got=1'b1
+[PASS]                          T18 STATUS.error=0 recovery  got=1'b0
+[PASS]                           T18 STATUS.busy=0 recovery  got=1'b0
+[PASS]                             T18 COUNT after recovery  resp=2'b00
+[PASS]                       T18 PROCESSED_COUNT=3 recovery  got=0x00000003
+[PASS]                           T18 LAST_IN after recovery  resp=2'b00
+[PASS]                         T18 LAST_INPUT_DATA recovery  got=0xd9d90003
+[PASS]                          T18 LAST_OUT after recovery  resp=2'b00
+[PASS]                        T18 LAST_OUTPUT_DATA recovery  got=0xd9d90103
+[PASS]                       T18 new dst[0] mem[1008] 0xFC0  got=0xd9d90101
+[PASS]                       T18 new dst[1] mem[1009] 0xFC4  got=0xd9d90102
+[PASS]                       T18 new dst[2] mem[1010] 0xFC8  got=0xd9d90103
+[PASS]  T18 canary before new dst mem[1007] 0xFBC unchanged  got=0xf8f8eeff
+[PASS]  T18 canary after  new dst mem[1011] 0xFCC unchanged  got=0xf8f80011
+[PASS] simple_dma_add_ctrl_tb  691/691 checks passed
+[DONE] simulation complete at t=16140000
+$finish called at time : 16140 ns : File "/home/zealatan/AI_ORC/messi/VIVADO_MIN_EXAMPLE/tb/simple_dma_add_ctrl_tb.sv" Line 1199
+exit
+INFO: [Common 17-206] Exiting xsim at Sun May  3 11:52:49 2026...

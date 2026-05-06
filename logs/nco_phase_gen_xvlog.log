@@ -1,0 +1,4 @@
+INFO: [VRFC 10-2263] Analyzing SystemVerilog file "/home/zealatan/RTL_SYNC/rtl/nco_phase_gen.v" into library work
+INFO: [VRFC 10-311] analyzing module nco_phase_gen
+INFO: [VRFC 10-2263] Analyzing SystemVerilog file "/home/zealatan/RTL_SYNC/tb/nco_phase_gen_tb.sv" into library work
+INFO: [VRFC 10-311] analyzing module nco_phase_gen_tb

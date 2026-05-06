@@ -1,0 +1,58 @@
+
+****** xsim v2022.2 (64-bit)
+  **** SW Build 3671981 on Fri Oct 14 04:59:54 MDT 2022
+  **** IP Build 3669848 on Fri Oct 14 08:30:02 MDT 2022
+    ** Copyright 1986-2022 Xilinx, Inc. All Rights Reserved.
+
+source xsim.dir/iq_frame_buffer_tb_sim/xsim_script.tcl
+# xsim {iq_frame_buffer_tb_sim} -autoloadwcfg -runall
+Time resolution is 1 ps
+run -all
+[PASS] T1 busy=0 in reset
+[PASS] T1 full=0 in reset
+[PASS] T1 capture_done=0 in reset
+[PASS] T1 sample_count=0 in reset  =0
+[PASS] T2 capture_done
+[PASS] T2 busy=0 after done
+[PASS] T2 sample_count=1  =1
+[PASS] T3 capture_done
+[PASS] T3 sample_count=4  =4
+[PASS] T3 not full
+[PASS] T4 rd_data[0]  =0x00000001
+[PASS] T4 rd_data[1]  =0x00000002
+[PASS] T4 rd_data[2]  =0x00000003
+[PASS] T4 rd_data[3]  =0x00000004
+[PASS] T5 rd_data valid 1 clock after rd_addr  =0x00000003
+[PASS] T5 consecutive read addr 3  =0x00000004
+[PASS] T6 capture_done on full
+[PASS] T6 full=1
+[PASS] T6 sample_count=DEPTH  =64
+[PASS] T7 tready=0 when full (no capture)
+[PASS] T8 full read-back: all 64 samples correct
+[PASS] T9 wb overwrites addr 10  =0xcafebabe
+[PASS] T10 tready=1 when busy and no wb
+[PASS] T10 tready=0 while wb_en active
+[PASS] T10 tready=1 after wb_en deasserted
+[PASS] T11 capture_done=0 one clock after done
+[PASS] T12 cap[0] done
+[PASS] T12 cap[0] count=2  =2
+[PASS] T12 cap[1] done
+[PASS] T12 cap[1] count=3  =3
+[PASS] T12 cap[2] done
+[PASS] T12 cap[2] count=4  =4
+[PASS] T12 cap[3] done
+[PASS] T12 cap[3] count=5  =5
+[PASS] T13 wb-idle addr 0  =0xf0f0f0f0
+[PASS] T13 wb-idle addr 5  =0xf0f0f0f1
+[PASS] T13 wb-idle addr 10  =0xf0f0f0f2
+[PASS] T14 still busy after spurious start
+[PASS] T14 original capture completed
+[PASS] T14 sample_count=6  =6
+[PASS] T15 smoke fill done
+[PASS] T15 smoke count=32  =32
+[PASS] T15 PRNG smoke: 32/32 samples match
+--- 43 PASS  0 FAIL ---
+CI GATE: PASSED
+$finish called at time : 2900 ns : File "/home/zealatan/RTL_SYNC/tb/iq_frame_buffer_tb.sv" Line 414
+exit
+INFO: [Common 17-206] Exiting xsim at Tue May  5 06:08:04 2026...

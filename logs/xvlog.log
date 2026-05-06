@@ -1,0 +1,4 @@
+INFO: [VRFC 10-2263] Analyzing SystemVerilog file "/home/zealatan/AI_ORC/messi/VIVADO_MIN_EXAMPLE/rtl/and2.v" into library work
+INFO: [VRFC 10-311] analyzing module and2
+INFO: [VRFC 10-2263] Analyzing SystemVerilog file "/home/zealatan/AI_ORC/messi/VIVADO_MIN_EXAMPLE/tb/and2_tb.sv" into library work
+INFO: [VRFC 10-311] analyzing module and2_tb

@@ -1,0 +1,69 @@
+
+****** xsim v2022.2 (64-bit)
+  **** SW Build 3671981 on Fri Oct 14 04:59:54 MDT 2022
+  **** IP Build 3669848 on Fri Oct 14 08:30:02 MDT 2022
+    ** Copyright 1986-2022 Xilinx, Inc. All Rights Reserved.
+
+source xsim.dir/frac_cfo_estimator_tb_sim/xsim_script.tcl
+# xsim {frac_cfo_estimator_tb_sim} -autoloadwcfg -runall
+Time resolution is 1 ps
+run -all
+
+--- T1: Reset state ---
+[PASS] T1 done=0
+[PASS] T1 busy=0
+[PASS] T1 frac_phase_valid=0
+
+--- T2: Angle=0 (I=+100000, Q=0) ---
+[PASS] T2 done
+[PASS] T2 phase_valid
+[PASS] T2 phase=0 = 0x0000 (0)
+
+--- T3: Angle=+pi/2 ---
+[PASS] T3 done
+[PASS] T3 phase=+pi/2 = 0x3fff (16383)
+
+--- T4: Angle=-pi/2 ---
+[PASS] T4 done
+[PASS] T4 phase=-pi/2 = 0xc001 (-16383)
+
+--- T5: Angle=+pi ---
+[PASS] T5 done
+[PASS] T5 phase=+pi = 0x7fff (32767)
+
+--- T6: peak_lag selection ---
+[PASS] T6 lag=ÿÿÿâÿ’ 0 = 0x0000 (0)
+[PASS] T6 lag=5  ÿÿ’ pi/2 = 0x3fff (16383)
+[PASS] T6 lag=1ÿÿÿ†’ pi = 0x7fff (32767)
+
+--- T7: done pulse width ---
+[PASS] T7 done width=1
+
+--- T8: busy behavior ---
+[PASS] T8 busy=0 after done
+[PASS] T8 busy=1 while running
+
+--- T9: back-to-back runs ---
+[PASS] T9 run1 done
+[PASS] T9 run1 phase = 0x0000 (0)
+[PASS] T9 run2 done
+[PASS] T9 run2 phase = 0x3fff (16383)
+
+--- T10: PRNG smoke ---
+[PASS] T10 lag0 = 0x47b7 (18359)
+[PASS] T10 lag1 = 0x40d7 (16599)
+[PASS] T10 lag2 = 0xa401 (-23551)
+[PASS] T10 lag3 = 0x9217 (-28137)
+[PASS] T10 lag4 = 0x2d1b (11547)
+[PASS] T10 lag5 = 0x2d1b (11547)
+[PASS] T10 lag6 = 0x84f5 (-31499)
+[PASS] T10 lag7 = 0xe2c2 (-7486)
+
+========================================
+PASS: 30   FAIL: 0
+CI GATE: PASSED
+========================================
+
+$finish called at time : 3656 ns : File "/home/zealatan/RTL_SYNC/tb/frac_cfo_estimator_tb.sv" Line 303
+exit
+INFO: [Common 17-206] Exiting xsim at Tue May  5 10:51:40 2026...

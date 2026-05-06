@@ -1,0 +1,4 @@
+INFO: [VRFC 10-2263] Analyzing SystemVerilog file "/home/zealatan/RTL_SYNC/rtl/timing_metric_core.v" into library work
+INFO: [VRFC 10-311] analyzing module timing_metric_core
+INFO: [VRFC 10-2263] Analyzing SystemVerilog file "/home/zealatan/RTL_SYNC/tb/timing_metric_core_tb.sv" into library work
+INFO: [VRFC 10-311] analyzing module timing_metric_core_tb

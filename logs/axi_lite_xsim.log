@@ -1,0 +1,178 @@
+
+****** xsim v2022.2 (64-bit)
+  **** SW Build 3671981 on Fri Oct 14 04:59:54 MDT 2022
+  **** IP Build 3669848 on Fri Oct 14 08:30:02 MDT 2022
+    ** Copyright 1986-2022 Xilinx, Inc. All Rights Reserved.
+
+source xsim.dir/axi_lite_regfile_tb_sim/xsim_script.tcl
+# xsim {axi_lite_regfile_tb_sim} -autoloadwcfg -runall
+Time resolution is 1 ps
+run -all
+[CHK] t=95000  phase=reset_release
+[INFO] Test 1: reset defaults
+[PASS]                       reset_default reg[0]  got=0x00000000
+[PASS]                    rresp OKAY reset reg[0]  resp=2'b00
+[PASS]                       reset_default reg[1]  got=0x00000000
+[PASS]                    rresp OKAY reset reg[1]  resp=2'b00
+[PASS]                       reset_default reg[2]  got=0x00000000
+[PASS]                    rresp OKAY reset reg[2]  resp=2'b00
+[PASS]                       reset_default reg[3]  got=0x00000000
+[PASS]                    rresp OKAY reset reg[3]  resp=2'b00
+[CHK] t=210000  phase=write_allones
+[INFO] Test 2: write all-ones + bresp/rresp
+[PASS]                  bresp OKAY allones reg[0]  resp=2'b00
+[PASS]                             allones reg[0]  got=0xffffffff
+[PASS]                  rresp OKAY allones reg[0]  resp=2'b00
+[PASS]                  bresp OKAY allones reg[1]  resp=2'b00
+[PASS]                             allones reg[1]  got=0xffffffff
+[PASS]                  rresp OKAY allones reg[1]  resp=2'b00
+[PASS]                  bresp OKAY allones reg[2]  resp=2'b00
+[PASS]                             allones reg[2]  got=0xffffffff
+[PASS]                  rresp OKAY allones reg[2]  resp=2'b00
+[PASS]                  bresp OKAY allones reg[3]  resp=2'b00
+[PASS]                             allones reg[3]  got=0xffffffff
+[PASS]                  rresp OKAY allones reg[3]  resp=2'b00
+[CHK] t=450000  phase=write_unique
+[INFO] Test 3: unique values
+[PASS]                   bresp OKAY unique reg[0]  resp=2'b00
+[PASS]                   bresp OKAY unique reg[1]  resp=2'b00
+[PASS]                   bresp OKAY unique reg[2]  resp=2'b00
+[PASS]                   bresp OKAY unique reg[3]  resp=2'b00
+[PASS]                              unique reg[0]  got=0xa5a50000
+[PASS]                   rresp OKAY unique reg[0]  resp=2'b00
+[PASS]                              unique reg[1]  got=0xa5a50001
+[PASS]                   rresp OKAY unique reg[1]  resp=2'b00
+[PASS]                              unique reg[2]  got=0xa5a50002
+[PASS]                   rresp OKAY unique reg[2]  resp=2'b00
+[PASS]                              unique reg[3]  got=0xa5a50003
+[PASS]                   rresp OKAY unique reg[3]  resp=2'b00
+[CHK] t=690000  phase=write_allzeros
+[INFO] Test 4: write all-zeros
+[PASS]                 bresp OKAY allzeros reg[0]  resp=2'b00
+[PASS]                            allzeros reg[0]  got=0x00000000
+[PASS]                 rresp OKAY allzeros reg[0]  resp=2'b00
+[PASS]                 bresp OKAY allzeros reg[1]  resp=2'b00
+[PASS]                            allzeros reg[1]  got=0x00000000
+[PASS]                 rresp OKAY allzeros reg[1]  resp=2'b00
+[PASS]                 bresp OKAY allzeros reg[2]  resp=2'b00
+[PASS]                            allzeros reg[2]  got=0x00000000
+[PASS]                 rresp OKAY allzeros reg[2]  resp=2'b00
+[PASS]                 bresp OKAY allzeros reg[3]  resp=2'b00
+[PASS]                            allzeros reg[3]  got=0x00000000
+[PASS]                 rresp OKAY allzeros reg[3]  resp=2'b00
+[CHK] t=930000  phase=wstrb
+[INFO] Test 5: partial WSTRB byte-lane writes on reg[0]
+[PASS]                      bresp OKAY wstrb seed  resp=2'b00
+[PASS]                      bresp OKAY wstrb=0001  resp=2'b00
+[PASS]                  wstrb=0001: byte0 cleared  got=0xffffff00
+[PASS]                 rresp OKAY wstrb=0001 read  resp=2'b00
+[PASS]                      bresp OKAY wstrb=1000  resp=2'b00
+[PASS]              wstrb=1000: byte3 set to 0xAB  got=0xabffff00
+[PASS]                 rresp OKAY wstrb=1000 read  resp=2'b00
+[PASS]                      bresp OKAY wstrb=0110  resp=2'b00
+[PASS]               wstrb=0110: bytes1+2 updated  got=0xab341200
+[PASS]                 rresp OKAY wstrb=0110 read  resp=2'b00
+[CHK] t=1170000  phase=wstrb_isolation
+[INFO] Test 5b: individual byte-lane isolation on reg[2]
+[PASS]            bresp OKAY wstrb_isolation seed  resp=2'b00
+[PASS]                   bresp OKAY wstrb_b0_only  resp=2'b00
+[PASS]      wstrb_b0_only: byte0=0x11 others=0xFF  got=0xffffff11
+[PASS]                   rresp OKAY wstrb_b0_only  resp=2'b00
+[PASS]                   bresp OKAY wstrb_b1_only  resp=2'b00
+[PASS] wstrb_b1_only: byte1=0x22 others unchanged  got=0xffff2211
+[PASS]                   rresp OKAY wstrb_b1_only  resp=2'b00
+[PASS]                   bresp OKAY wstrb_b2_only  resp=2'b00
+[PASS] wstrb_b2_only: byte2=0x33 others unchanged  got=0xff332211
+[PASS]                   rresp OKAY wstrb_b2_only  resp=2'b00
+[PASS]                   bresp OKAY wstrb_b3_only  resp=2'b00
+[PASS] wstrb_b3_only: byte3=0x44 others unchanged  got=0x44332211
+[PASS]                   rresp OKAY wstrb_b3_only  resp=2'b00
+[CHK] t=1470000  phase=aw_before_w
+[INFO] Test 6: AW-before-W transaction (W_WAIT_W path)
+[PASS]              bresp OKAY aw_before_w reg[1]  resp=2'b00
+[PASS]                aw_before_w readback reg[1]  got=0xdeadbeef
+[PASS]              rresp OKAY aw_before_w reg[1]  resp=2'b00
+[PASS]             bresp OKAY aw_before_w cleanup  resp=2'b00
+[CHK] t=1570000  phase=w_before_aw
+[INFO] Test 7: W-before-AW transaction (W_WAIT_A path)
+[PASS]              bresp OKAY w_before_aw reg[2]  resp=2'b00
+[PASS]                w_before_aw readback reg[2]  got=0xcafef00d
+[PASS]              rresp OKAY w_before_aw reg[2]  resp=2'b00
+[PASS]             bresp OKAY w_before_aw cleanup  resp=2'b00
+[CHK] t=1670000  phase=invalid_addr
+[INFO] Test 8: invalid address 0x10 — BRESP/RRESP=SLVERR, no alias
+[PASS]                 bresp OKAY pre-seed reg[0]  resp=2'b00
+[PASS]                   0x10 write: BRESP=SLVERR  resp=2'b10
+[PASS]                    0x10 read: RRESP=SLVERR  resp=2'b10
+[PASS]    0x10 read: rdata=0x0 (no register leak)  got=0x00000000
+[PASS]         0x10 write did not alias to reg[0]  got=0xaaaaaaaa
+[CHK] t=1820000  phase=same_cycle_aw_w
+[INFO] Test 9: simultaneous AW+W same-cycle, W_IDLE->W_BRESP direct
+[PASS]               bresp OKAY same_cycle reg[3]  resp=2'b00
+[PASS]                 same_cycle readback reg[3]  got=0xbeefcafe
+[PASS]               rresp OKAY same_cycle reg[3]  resp=2'b00
+[PASS]              bresp OKAY same_cycle cleanup  resp=2'b00
+[CHK] t=1910000  phase=b_backpressure
+[INFO] Test 10: B-channel backpressure (bp=3 and bp=7)
+[PASS]             bresp OKAY bp_write bp3 reg[0]  resp=2'b00
+[PASS]             bresp OKAY bp_write bp7 reg[1]  resp=2'b00
+[PASS]                   bp_write readback reg[0]  got=0xba5eb000
+[PASS]        rresp OKAY bp_write readback reg[0]  resp=2'b00
+[PASS]                   bp_write readback reg[1]  got=0xc0def00d
+[PASS]        rresp OKAY bp_write readback reg[1]  resp=2'b00
+[PASS]         bresp OKAY bp_write cleanup reg[0]  resp=2'b00
+[PASS]         bresp OKAY bp_write cleanup reg[1]  resp=2'b00
+[CHK] t=2210000  phase=r_backpressure
+[INFO] Test 11: R-channel backpressure (bp=3 and bp=5)
+[PASS]            bresp OKAY bp_read setup reg[2]  resp=2'b00
+[PASS]            bresp OKAY bp_read setup reg[3]  resp=2'b00
+[PASS]                    bp_read bp3 reg[2] data  got=0xf00dcafe
+[PASS]              rresp OKAY bp_read bp3 reg[2]  resp=2'b00
+[PASS]                    bp_read bp5 reg[3] data  got=0xdead0001
+[PASS]              rresp OKAY bp_read bp5 reg[3]  resp=2'b00
+[PASS]          bresp OKAY bp_read cleanup reg[2]  resp=2'b00
+[PASS]          bresp OKAY bp_read cleanup reg[3]  resp=2'b00
+[CHK] t=2490000  phase=inv_addr_sweep
+[INFO] Test 12: invalid-address sweep, W_IDLE simultaneous path
+[PASS]           inv 0x14: seed bresp OKAY reg[1]  resp=2'b00
+[PASS]                     inv 0x14: BRESP=SLVERR  resp=2'b10
+[PASS]                     inv 0x14: RRESP=SLVERR  resp=2'b10
+[PASS]                        inv 0x14: rdata=0x0  got=0x00000000
+[PASS]                inv 0x14: reg[1] unmodified  got=0x5a5a1400
+[PASS]           inv 0xFF: seed bresp OKAY reg[3]  resp=2'b00
+[PASS]                     inv 0xFF: BRESP=SLVERR  resp=2'b10
+[PASS]                     inv 0xFF: RRESP=SLVERR  resp=2'b10
+[PASS]                        inv 0xFF: rdata=0x0  got=0x00000000
+[PASS]                inv 0xFF: reg[3] unmodified  got=0x5a5aff00
+[PASS]     inv 0x80000000: seed bresp OKAY reg[0]  resp=2'b00
+[PASS]               inv 0x80000000: BRESP=SLVERR  resp=2'b10
+[PASS]               inv 0x80000000: RRESP=SLVERR  resp=2'b10
+[PASS]                  inv 0x80000000: rdata=0x0  got=0x00000000
+[PASS]          inv 0x80000000: reg[0] unmodified  got=0x5a5a8000
+[CHK] t=2940000  phase=inv_addr_aw_first
+[INFO] Test 13: AW-before-W at invalid addresses (W_WAIT_W path)
+[PASS]         aw_first inv 0x14: seed bresp OKAY  resp=2'b00
+[PASS]            aw_first inv 0x14: BRESP=SLVERR  resp=2'b10
+[PASS]       aw_first inv 0x14: reg[1] unmodified  got=0x5a5a1413
+[PASS]         aw_first inv 0xFF: seed bresp OKAY  resp=2'b00
+[PASS]            aw_first inv 0xFF: BRESP=SLVERR  resp=2'b10
+[PASS]       aw_first inv 0xFF: reg[3] unmodified  got=0x5a5aff13
+[PASS]   aw_first inv 0x80000000: seed bresp OKAY  resp=2'b00
+[PASS]      aw_first inv 0x80000000: BRESP=SLVERR  resp=2'b10
+[PASS] aw_first inv 0x80000000: reg[0] unmodified  got=0x5a5a8013
+[CHK] t=3330000  phase=inv_addr_w_first
+[INFO] Test 14: W-before-AW at invalid addresses (W_WAIT_A path)
+[PASS]          w_first inv 0x14: seed bresp OKAY  resp=2'b00
+[PASS]             w_first inv 0x14: BRESP=SLVERR  resp=2'b10
+[PASS]        w_first inv 0x14: reg[1] unmodified  got=0x5a5a1414
+[PASS]          w_first inv 0xFF: seed bresp OKAY  resp=2'b00
+[PASS]             w_first inv 0xFF: BRESP=SLVERR  resp=2'b10
+[PASS]        w_first inv 0xFF: reg[3] unmodified  got=0x5a5aff14
+[PASS]    w_first inv 0x80000000: seed bresp OKAY  resp=2'b00
+[PASS]       w_first inv 0x80000000: BRESP=SLVERR  resp=2'b10
+[PASS]  w_first inv 0x80000000: reg[0] unmodified  got=0x5a5a8014
+[PASS] axi_lite_regfile_tb  133/133 checks passed
+[DONE] simulation complete at t=3720000
+$finish called at time : 3720 ns : File "/home/zealatan/AI_ORC/messi/VIVADO_MIN_EXAMPLE/tb/axi_lite_regfile_tb.sv" Line 724
+exit
+INFO: [Common 17-206] Exiting xsim at Sat May  2 18:44:04 2026...

@@ -1,0 +1,14 @@
+Vivado Simulator v2022.2
+Copyright 1986-1999, 2001-2022 Xilinx, Inc. All Rights Reserved.
+Running: /home/zealatan/Vivado/2022.2/bin/unwrapped/lnx64.o/xelab frac_cfo_estimator_tb -debug typical -s frac_cfo_estimator_tb_sim 
+Multi-threading is on. Using 10 slave threads.
+Starting static elaboration
+Pass Through NonSizing Optimizer
+Completed static elaboration
+Starting simulation data flow analysis
+Completed simulation data flow analysis
+Time Resolution for simulation is 1ps
+Compiling module work.cordic_atan2
+Compiling module work.frac_cfo_estimator
+Compiling module work.frac_cfo_estimator_tb
+Built simulation snapshot frac_cfo_estimator_tb_sim

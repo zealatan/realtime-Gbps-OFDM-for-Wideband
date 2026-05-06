@@ -1,0 +1,84 @@
+
+****** xsim v2022.2 (64-bit)
+  **** SW Build 3671981 on Fri Oct 14 04:59:54 MDT 2022
+  **** IP Build 3669848 on Fri Oct 14 08:30:02 MDT 2022
+    ** Copyright 1986-2022 Xilinx, Inc. All Rights Reserved.
+
+source xsim.dir/peak_detector_tb_sim/xsim_script.tcl
+# xsim {peak_detector_tb_sim} -autoloadwcfg -runall
+Time resolution is 1 ps
+run -all
+[PASS] T1 reset busy=0
+[PASS] T1 reset done=0
+[PASS] T1 reset error=0
+[PASS] T2 done asserted
+[PASS] T2 peak_index=0  idx=0
+[PASS] T2 peak_value=42  val=42
+[PASS] T3 done
+[PASS] T3 peak_index  idx=0
+[PASS] T3 peak_value  val=100
+[PASS] T4 done
+[PASS] T4 peak_index  idx=4
+[PASS] T4 peak_value  val=999
+[PASS] T5 done
+[PASS] T5 peak_index  idx=3
+[PASS] T5 peak_value  val=500
+[PASS] T6 done
+[PASS] T6 all-equal idx=0  idx=0
+[PASS] T6 all-equal val=77  val=77
+[PASS] T7 done
+[PASS] T7 increasing last idx  idx=9
+[PASS] T7 increasing last val  val=10
+[PASS] T8 done
+[PASS] T8 decreasing first idx  idx=0
+[PASS] T8 decreasing first val  val=10
+[PASS] T9 done
+[PASS] T9 tie first idx=1  idx=1
+[PASS] T9 tie val=500  val=500
+[PASS] T10 done=1 on completion clock
+[PASS] T10 done=0 one clock after completion
+[PASS] T10 peak_index stable after done  idx=2
+[PASS] T10 peak_value stable after done  val=3
+[PASS] T11 done=1 at end
+[PASS] T11 busy=0 at done
+[PASS] T12 error set by start-while-busy
+[PASS] T12 error sticky after done
+[PASS] T13 scan[0] done
+[PASS] T13 scan[0] peak_idx  idx=0
+[PASS] T13 scan[0] peak_val  val=10
+[PASS] T13 scan[1] done
+[PASS] T13 scan[1] peak_idx  idx=0
+[PASS] T13 scan[1] peak_val  val=20
+[PASS] T13 scan[2] done
+[PASS] T13 scan[2] peak_idx  idx=0
+[PASS] T13 scan[2] peak_val  val=30
+[PASS] T13 scan[3] done
+[PASS] T13 scan[3] peak_idx  idx=0
+[PASS] T13 scan[3] peak_val  val=40
+[PASS] T14 256-elem done
+[PASS] T14 256-elem peak_idx  idx=200
+[PASS] T14 256-elem peak_val  val=1099511627775
+[PASS] T15 511-elem done
+[PASS] T15 511-elem peak_idx  idx=255
+[PASS] T15 511-elem peak_val  val=18446744073709551614
+[PASS] T16 all-zero done
+[PASS] T16 all-zero idx=0  idx=0
+[PASS] T16 all-zero val=0  val=0
+[PASS] T17 done
+[PASS] T17 idx=0  idx=0
+[PASS] T17 val=1  val=1
+[PASS] T18 done
+[PASS] T18 idx=4  idx=4
+[PASS] T18 val=999  val=999
+[PASS] T19 max_count=0 done
+[PASS] T19 max_count=0 no error
+[PASS] T19 max_count=0 peak_idx  idx=9
+[INFO] T20 progress: 10/30 scans done, 10 pass 0 fail
+[INFO] T20 progress: 20/30 scans done, 20 pass 0 fail
+[INFO] T20 progress: 30/30 scans done, 30 pass 0 fail
+[PASS] T20 PRNG smoke: 30/30 scans correct
+--- 66 PASS  0 FAIL ---
+CI GATE: PASSED
+$finish called at time : 19570 ns : File "/home/zealatan/RTL_SYNC/tb/peak_detector_tb.sv" Line 496
+exit
+INFO: [Common 17-206] Exiting xsim at Mon May  4 21:32:47 2026...

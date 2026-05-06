@@ -1,0 +1,16 @@
+Vivado Simulator v2022.2
+Copyright 1986-1999, 2001-2022 Xilinx, Inc. All Rights Reserved.
+Running: /home/zealatan/Vivado/2022.2/bin/unwrapped/lnx64.o/xelab complex_mult_iq_tb -debug typical -timescale 1ns/1ps -s complex_mult_iq_tb_sim 
+Multi-threading is on. Using 10 slave threads.
+Starting static elaboration
+Pass Through NonSizing Optimizer
+Completed static elaboration
+Starting simulation data flow analysis
+Completed simulation data flow analysis
+Time Resolution for simulation is 1ps
+Compiling module work.axis_complex_mult_default
+Compiling module work.complex_mult_iq_default
+Compiling module work.complex_mult_iq(CONJ_A=1)
+Compiling module work.complex_mult_iq(CONJ_B=1)
+Compiling module work.complex_mult_iq_tb
+Built simulation snapshot complex_mult_iq_tb_sim

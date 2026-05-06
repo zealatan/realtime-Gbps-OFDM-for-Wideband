@@ -1,0 +1,14 @@
+INFO: [VRFC 10-2263] Analyzing SystemVerilog file "/home/zealatan/RTL_SYNC/rtl/axis_complex_mult.v" into library work
+INFO: [VRFC 10-311] analyzing module axis_complex_mult
+INFO: [VRFC 10-2263] Analyzing SystemVerilog file "/home/zealatan/RTL_SYNC/rtl/complex_mult_iq.v" into library work
+INFO: [VRFC 10-311] analyzing module complex_mult_iq
+INFO: [VRFC 10-2263] Analyzing SystemVerilog file "/home/zealatan/RTL_SYNC/rtl/cp_autocorr_core.v" into library work
+INFO: [VRFC 10-311] analyzing module cp_autocorr_core
+INFO: [VRFC 10-2263] Analyzing SystemVerilog file "/home/zealatan/RTL_SYNC/rtl/timing_metric_core.v" into library work
+INFO: [VRFC 10-311] analyzing module timing_metric_core
+INFO: [VRFC 10-2263] Analyzing SystemVerilog file "/home/zealatan/RTL_SYNC/rtl/peak_detector.v" into library work
+INFO: [VRFC 10-311] analyzing module peak_detector
+INFO: [VRFC 10-2263] Analyzing SystemVerilog file "/home/zealatan/RTL_SYNC/rtl/timing_sync_top.v" into library work
+INFO: [VRFC 10-311] analyzing module timing_sync_top
+INFO: [VRFC 10-2263] Analyzing SystemVerilog file "/home/zealatan/RTL_SYNC/tb/timing_sync_top_tb.sv" into library work
+INFO: [VRFC 10-311] analyzing module timing_sync_top_tb

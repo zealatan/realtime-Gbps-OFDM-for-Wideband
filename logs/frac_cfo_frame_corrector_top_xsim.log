@@ -1,0 +1,78 @@
+
+****** xsim v2022.2 (64-bit)
+  **** SW Build 3671981 on Fri Oct 14 04:59:54 MDT 2022
+  **** IP Build 3669848 on Fri Oct 14 08:30:02 MDT 2022
+    ** Copyright 1986-2022 Xilinx, Inc. All Rights Reserved.
+
+source xsim.dir/frac_cfo_frame_corrector_top_tb_sim/xsim_script.tcl
+# xsim {frac_cfo_frame_corrector_top_tb_sim} -autoloadwcfg -runall
+Time resolution is 1 ps
+run -all
+
+--- T1: Reset ---
+[PASS] T1 done=0
+[PASS] T1 busy=0
+[PASS] T1 frame_error=0
+
+--- T2: Happy path (8 quiet + 100 signal) ---
+[PASS] T2 busy=1 after start
+[PASS] T2 done fires
+[PASS] T2 frame_found
+[PASS] T2 frame_error=0
+[PASS] T2 frac_phase_valid seen
+[PASS] T2 frac_phase=0 = 0
+[PASS] T2 busy=0 after done
+
+--- T3: m_axis count and tlast ---
+[PASS] T3 m_axis sample count = 20
+[PASS] T3 tlast on last sample = 19
+[PASS] T3 m_axis_tvalid fires
+
+--- T4: m_axis sample values (zero CFO, signal region) ---
+[PASS] T4 samples[1] I=99 = 99
+[PASS] T4 samples[1] Q=0 = 0
+[PASS] T4 samples[2] I=99 = 99
+[PASS] T4 samples[2] Q=0 = 0
+[PASS] T4 most samples I=99
+
+--- T5: Frame not found (max threshold) ---
+[PASS] T5 done fires
+[PASS] T5 frame_found=0
+[PASS] T5 frame_error=1
+[PASS] T5 frac_phase_valid=0
+[PASS] T5 busy=0 after done
+[PASS] T5 m_axis idle
+
+--- T6: done pulse width = 1 clock ---
+[PASS] T6 done=1 at done cycle
+[PASS] T6 done=0 next cycle
+
+--- T7: busy timeline ---
+[PASS] T7 busy=0 before start
+[PASS] T7 busy=1 during run
+[PASS] T7 done=1 at transition
+[PASS] T7 busy=0 at done
+
+--- T8: frame_index stable after done ---
+[PASS] T8 frame_index nonzero = 5 (nonzero)
+[PASS] T8 frame_index stable = 5
+
+--- T9: peak_lag stable after done ---
+[PASS] T9 peak_lag stable = 2
+[PASS] T9 frac_phase_valid seen
+
+--- T10: Back-to-back runs ---
+[PASS] T10 second done fires
+[PASS] T10 frame_found again
+[PASS] T10 frame_index consistent = 5
+[PASS] T10 m_axis count = TOTAL_TB = 20
+[PASS] T10 tlast on last sample = 19
+
+========================================
+PASS: 39   FAIL: 0
+CI GATE: PASSED
+========================================
+
+$finish called at time : 55906 ns : File "/home/zealatan/RTL_SYNC/tb/frac_cfo_frame_corrector_top_tb.sv" Line 548
+exit
+INFO: [Common 17-206] Exiting xsim at Wed May  6 11:01:07 2026...

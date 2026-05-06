@@ -1,0 +1,8 @@
+INFO: [VRFC 10-2263] Analyzing SystemVerilog file "/home/zealatan/AI_ORC/messi/VIVADO_MIN_EXAMPLE/tb/axi_mem_model.sv" into library work
+INFO: [VRFC 10-311] analyzing module axi_mem_model
+INFO: [VRFC 10-2263] Analyzing SystemVerilog file "/home/zealatan/AI_ORC/messi/VIVADO_MIN_EXAMPLE/rtl/simple_dma_copy_nword.v" into library work
+INFO: [VRFC 10-311] analyzing module simple_dma_copy_nword
+INFO: [VRFC 10-2263] Analyzing SystemVerilog file "/home/zealatan/AI_ORC/messi/VIVADO_MIN_EXAMPLE/rtl/simple_dma_ctrl.v" into library work
+INFO: [VRFC 10-311] analyzing module simple_dma_ctrl
+INFO: [VRFC 10-2263] Analyzing SystemVerilog file "/home/zealatan/AI_ORC/messi/VIVADO_MIN_EXAMPLE/tb/simple_dma_ctrl_tb.sv" into library work
+INFO: [VRFC 10-311] analyzing module simple_dma_ctrl_tb

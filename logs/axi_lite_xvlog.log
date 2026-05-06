@@ -1,0 +1,4 @@
+INFO: [VRFC 10-2263] Analyzing SystemVerilog file "/home/zealatan/AI_ORC/messi/VIVADO_MIN_EXAMPLE/rtl/axi_lite_regfile.v" into library work
+INFO: [VRFC 10-311] analyzing module axi_lite_regfile
+INFO: [VRFC 10-2263] Analyzing SystemVerilog file "/home/zealatan/AI_ORC/messi/VIVADO_MIN_EXAMPLE/tb/axi_lite_regfile_tb.sv" into library work
+INFO: [VRFC 10-311] analyzing module axi_lite_regfile_tb

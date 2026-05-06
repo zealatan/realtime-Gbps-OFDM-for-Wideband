@@ -1,0 +1,6 @@
+INFO: [VRFC 10-2263] Analyzing SystemVerilog file "/home/zealatan/RTL_SYNC/rtl/iq_frame_buffer.v" into library work
+INFO: [VRFC 10-311] analyzing module iq_frame_buffer
+INFO: [VRFC 10-2263] Analyzing SystemVerilog file "/home/zealatan/RTL_SYNC/tb/iq_frame_buffer_tb.sv" into library work
+INFO: [VRFC 10-311] analyzing module iq_frame_buffer_tb
+WARNING: [VRFC 10-3824] variable 'mismatches' must explicitly be declared as automatic or static [/home/zealatan/RTL_SYNC/tb/iq_frame_buffer_tb.sv:248]
+WARNING: [VRFC 10-3824] variable 'smoke_n' must explicitly be declared as automatic or static [/home/zealatan/RTL_SYNC/tb/iq_frame_buffer_tb.sv:379]

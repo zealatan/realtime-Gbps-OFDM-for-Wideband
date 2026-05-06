@@ -1,0 +1,67 @@
+
+****** xsim v2022.2 (64-bit)
+  **** SW Build 3671981 on Fri Oct 14 04:59:54 MDT 2022
+  **** IP Build 3669848 on Fri Oct 14 08:30:02 MDT 2022
+    ** Copyright 1986-2022 Xilinx, Inc. All Rights Reserved.
+
+source xsim.dir/frac_cfo_corrector_top_tb_sim/xsim_script.tcl
+# xsim {frac_cfo_corrector_top_tb_sim} -autoloadwcfg -runall
+Time resolution is 1 ps
+run -all
+
+--- T1: Reset ---
+[PASS] T1 m_tvalid=0
+[PASS] T1 sincos_valid=0
+
+--- T2: step_word=0, identity rotation ---
+[PASS] T2 sincos_valid=1 after startup
+[PASS] T2a m_tvalid=1
+[PASS] T2a I_out = 16383
+[PASS] T2a Q_out = 0
+[PASS] T2b m_tvalid=1
+[PASS] T2b I_out = 0
+[PASS] T2b Q_out = 16383
+
+--- T3: step_word=0x10000000 (pi/8/sample), advancing phase ---
+[PASS] T3 sincos_valid=1 after startup
+[PASS] T3s0 m_tvalid=1
+[PASS] T3s0 I_out = 16383
+[PASS] T3s0 Q_out = 0
+[PASS] T3s1 m_tvalid=1
+[PASS] T3s1 I_out = 11584
+[PASS] T3s1 Q_out = -11585
+
+--- T4: phase_reset clears accumulator ---
+[PASS] T4 phase_acc=0 after reset = 0x00000000
+
+--- T5: restart after phase_reset ---
+[PASS] T5 sincos_valid=1 after restart
+[PASS] T5 m_tvalid=1
+[PASS] T5 I_out = 16383
+[PASS] T5 Q_out = 0
+
+--- T6: tlast passthrough ---
+[PASS] T6 m_tvalid=1
+[PASS] T6 m_tlast=1
+
+--- T7: backpressure ---
+[PASS] T7 m_tvalid=1 when held
+[PASS] T7 iq_tready=0 when blocked
+[PASS] T7 m_tvalid clears after ready
+
+--- T8: consecutive 3-beat stream ---
+[PASS] T8b0 I_out = 16383
+[PASS] T8b0 Q_out = 0
+[PASS] T8b1 I_out = 0
+[PASS] T8b1 Q_out = 16383
+[PASS] T8b2 I_out = 16383
+[PASS] T8b2 Q_out = 8191
+
+========================================
+PASS: 32   FAIL: 0
+CI GATE: PASSED
+========================================
+
+$finish called at time : 1690 ns : File "/home/zealatan/RTL_SYNC/tb/frac_cfo_corrector_top_tb.sv" Line 376
+exit
+INFO: [Common 17-206] Exiting xsim at Tue May  5 13:08:13 2026...

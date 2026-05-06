@@ -1,0 +1,69 @@
+
+****** xsim v2022.2 (64-bit)
+  **** SW Build 3671981 on Fri Oct 14 04:59:54 MDT 2022
+  **** IP Build 3669848 on Fri Oct 14 08:30:02 MDT 2022
+    ** Copyright 1986-2022 Xilinx, Inc. All Rights Reserved.
+
+source xsim.dir/complex_rotator_tb_sim/xsim_script.tcl
+# xsim {complex_rotator_tb_sim} -autoloadwcfg -runall
+Time resolution is 1 ps
+run -all
+
+--- T1: Reset ---
+[PASS] T1 m_tvalid=0
+
+--- T2: theta=0, I=0.5, Q=0 ---
+[PASS] T2 valid
+[PASS] T2 I_out = 16383
+[PASS] T2 Q_out = 0
+
+--- T3: theta=0, I=0, Q=0.5 ---
+[PASS] T3 valid
+[PASS] T3 I_out = 0
+[PASS] T3 Q_out = 16383
+
+--- T4: theta=pi/2, I=0.5, Q=0 ---
+[PASS] T4 valid
+[PASS] T4 I_out = 0
+[PASS] T4 Q_out = -16384
+
+--- T5: theta=pi/2, I=0, Q=0.5 ---
+[PASS] T5 valid
+[PASS] T5 I_out = 16383
+[PASS] T5 Q_out = 0
+
+--- T6: theta=pi, I=0.5, Q=0.25 ---
+[PASS] T6 valid
+[PASS] T6 I_out = -16384
+[PASS] T6 Q_out = -8192
+
+--- T7: theta=pi/4, I=0.5, Q=0 ---
+[PASS] T7 valid
+[PASS] T7 I_out = 11585
+[PASS] T7 Q_out = -11585
+
+--- T8: tlast passthrough ---
+[PASS] T8 m_tvalid=1
+[PASS] T8 tlast passes through
+
+--- T9: backpressure ---
+[PASS] T9 m_tvalid=1 when held
+[PASS] T9 iq_tready=0 when blocked
+[PASS] T9 m_tvalid deasserts after ready
+
+--- T10: consecutive stream ---
+[PASS] T10b0 I_out = 16383
+[PASS] T10b0 Q_out = 8191
+[PASS] T10b1 I_out = 16383
+[PASS] T10b1 Q_out = -8192
+[PASS] T10b2 I_out = 11585
+[PASS] T10b2 Q_out = -11585
+
+========================================
+PASS: 30   FAIL: 0
+CI GATE: PASSED
+========================================
+
+$finish called at time : 270 ns : File "/home/zealatan/RTL_SYNC/tb/complex_rotator_tb.sv" Line 310
+exit
+INFO: [Common 17-206] Exiting xsim at Tue May  5 12:21:51 2026...
