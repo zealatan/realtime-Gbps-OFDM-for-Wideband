@@ -2,8 +2,8 @@
 # Vivado v2022.2 (64-bit)
 # SW Build 3671981 on Fri Oct 14 05:00:03 MDT 2022
 # IP Build 3669848 on Fri Oct 14 08:30:02 MDT 2022
-# Start of session at: Thu May  7 17:01:38 2026
-# Process ID: 22284
+# Start of session at: Thu May  7 21:27:37 2026
+# Process ID: 1192
 # Current directory: C:/RTL_SYNC
 # Command line: vivado.exe -mode batch -source scripts\vivado\step27_create_zcu102_bd_no_ila.tcl -log reports\step27\step27_create_bd.log -journal reports\step27\step27_create_bd.jou
 # Log file: C:/RTL_SYNC/reports/step27/step27_create_bd.log
@@ -80,7 +80,7 @@ No ILA | No DMA | No implementation
 # puts "INFO: Creating packaging project..."
 INFO: Creating packaging project...
 # create_project -force ip_pack_proj $PACK_PROJ -part $PART
-create_project: Time (s): cpu = 00:00:21 ; elapsed = 00:00:34 . Memory (MB): peak = 378.160 ; gain = 67.938
+create_project: Time (s): cpu = 00:00:15 ; elapsed = 00:00:27 . Memory (MB): peak = 379.062 ; gain = 69.277
 # set_property target_language    Verilog [current_project]
 # set_property source_mgmt_mode   All     [current_project]
 # add_files $RTL_FILES
@@ -98,15 +98,6 @@ INFO: Running ipx::package_project...
 #     -import_files
 WARNING: [IP_Flow 19-3833] Unreferenced file from the top module is not packaged: 'C:/RTL_SYNC/rtl/frac_cfo_sync_control_s_axi.v'.
 WARNING: [IP_Flow 19-3833] Unreferenced file from the top module is not packaged: 'C:/RTL_SYNC/rtl/frac_cfo_sync_axi_stream_wrapper.v'.
-CRITICAL WARNING: [HDL 9-1206] Syntax error near ''' [c:/RTL_SYNC/vivado/ip_repo/frac_cfo_sync_bram_test_wrapper_1_0/src/cp_autocorr_core.v:97]
-CRITICAL WARNING: [HDL 9-1206] Syntax error near ''' [c:/RTL_SYNC/vivado/ip_repo/frac_cfo_sync_bram_test_wrapper_1_0/src/frac_cfo_frame_corrector_top.v:176]
-CRITICAL WARNING: [HDL 9-1206] Syntax error near ''' [c:/RTL_SYNC/vivado/ip_repo/frac_cfo_sync_bram_test_wrapper_1_0/src/frac_cfo_frame_corrector_top.v:320]
-CRITICAL WARNING: [HDL 9-1206] Syntax error near ''' [c:/RTL_SYNC/vivado/ip_repo/frac_cfo_sync_bram_test_wrapper_1_0/src/frac_cfo_frame_corrector_top.v:393]
-CRITICAL WARNING: [HDL 9-1206] Syntax error near ''' [c:/RTL_SYNC/vivado/ip_repo/frac_cfo_sync_bram_test_wrapper_1_0/src/frac_cfo_frame_corrector_top.v:400]
-CRITICAL WARNING: [HDL 9-1206] Syntax error near 'else' [c:/RTL_SYNC/vivado/ip_repo/frac_cfo_sync_bram_test_wrapper_1_0/src/frac_cfo_frame_corrector_top.v:409]
-CRITICAL WARNING: [HDL 9-1206] Syntax error near ''' [c:/RTL_SYNC/vivado/ip_repo/frac_cfo_sync_bram_test_wrapper_1_0/src/frac_cfo_frame_corrector_top.v:432]
-CRITICAL WARNING: [HDL 9-1206] Syntax error near ''' [c:/RTL_SYNC/vivado/ip_repo/frac_cfo_sync_bram_test_wrapper_1_0/src/timing_sync_top.v:132]
-CRITICAL WARNING: [HDL 9-1206] Syntax error near ''' [c:/RTL_SYNC/vivado/ip_repo/frac_cfo_sync_bram_test_wrapper_1_0/src/timing_sync_top.v:155]
 WARNING: [IP_Flow 19-587] [HDL Parser] HDL port or parameter 'input_mem' has a dependency on the module local parameter or undefined parameter 'MEM_DEPTH'.
 WARNING: [IP_Flow 19-587] [HDL Parser] HDL port or parameter 'output_mem' has a dependency on the module local parameter or undefined parameter 'MEM_DEPTH'.
 WARNING: [IP_Flow 19-587] [HDL Parser] HDL port or parameter 'debug_state_word' has a dependency on the module local parameter or undefined parameter 'SNK_CAPTURE'.
@@ -123,7 +114,7 @@ INFO: [IP_Flow 19-4728] Bus Interface 'aclk': Added interface parameter 'ASSOCIA
 INFO: [IP_Flow 19-4728] Bus Interface 'aclk': Added interface parameter 'ASSOCIATED_RESET' with value 'aresetn'.
 INFO: [IP_Flow 19-2181] Payment Required is not set for this core.
 INFO: [IP_Flow 19-2187] The Product Guide file is missing.
-ipx::package_project: Time (s): cpu = 00:00:09 ; elapsed = 00:00:15 . Memory (MB): peak = 428.273 ; gain = 15.828
+ipx::package_project: Time (s): cpu = 00:00:05 ; elapsed = 00:00:09 . Memory (MB): peak = 430.277 ; gain = 16.617
 # set_property name            $IP_NAME    [ipx::current_core]
 # set_property version         $IP_VERSION [ipx::current_core]
 # set_property core_revision   1           [ipx::current_core]
@@ -208,7 +199,7 @@ INFO: Packaging project closed.
 #     puts "INFO: Removed previous project at $PROJ_DIR"
 # }
 # create_project $PROJ_NAME $PROJ_DIR -part $PART -force
-create_project: Time (s): cpu = 00:00:01 ; elapsed = 00:00:08 . Memory (MB): peak = 428.273 ; gain = 0.000
+create_project: Time (s): cpu = 00:00:01 ; elapsed = 00:00:07 . Memory (MB): peak = 430.277 ; gain = 0.000
 # set_property default_lib     work    [current_project]
 # set_property target_language Verilog [current_project]
 # if {[catch {set_property board_part $BOARD_PART [current_project]} brd_err]} {
@@ -241,7 +232,7 @@ Wrote  : <C:\RTL_SYNC\vivado\step27_zcu102_bd\step27_zcu102_bd.srcs\sources_1\bd
 # current_bd_design $BD_NAME
 # puts "INFO: Adding Zynq UltraScale+ MPSoC..."
 INFO: Adding Zynq UltraScale+ MPSoC...
-create_bd_cell: Time (s): cpu = 00:00:10 ; elapsed = 00:00:12 . Memory (MB): peak = 605.539 ; gain = 170.391
+create_bd_cell: Time (s): cpu = 00:00:08 ; elapsed = 00:00:10 . Memory (MB): peak = 607.391 ; gain = 170.816
 # set ps [create_bd_cell -type ip \
 #     -vlnv xilinx.com:ip:zynq_ultra_ps_e:* \
 #     zynq_ultra_ps_e_0]
@@ -259,7 +250,6 @@ create_bd_cell: Time (s): cpu = 00:00:10 ; elapsed = 00:00:12 . Memory (MB): pea
 #     }
 # }
 INFO: [PSU-1]  DP_AUDIO clock source: RPLL is also being used by other peripheral clocks. Their outputs may get impacted if any driver changes DP_AUDIO PLL source to support runtime audio change 
-apply_bd_automation: Time (s): cpu = 00:00:05 ; elapsed = 00:00:05 . Memory (MB): peak = 605.539 ; gain = 0.000
 INFO: Board automation applied.
 # set_property CONFIG.PSU__USE__M_AXI_GP0              {1}   $ps
 # set_property CONFIG.PSU__USE__M_AXI_GP1              {0}   $ps
@@ -389,7 +379,6 @@ INFO: [PSU-1]  DP_AUDIO clock source: RPLL is also being used by other periphera
 INFO: [xilinx.com:ip:smartconnect:1.0-1] sync_phase1_bd_axi_smc_0: SmartConnect sync_phase1_bd_axi_smc_0 is in Low-Area Mode.
 WARNING: [xilinx.com:ip:smartconnect:1.0-1] sync_phase1_bd_axi_smc_0: IP sync_phase1_bd_axi_smc_0 is configured in Low-area mode as all propagated traffic is low-bandwidth (AXI4LITE). SI S00_AXI has property HAS_BURST == 1. WRAP bursts are not supported in Low-area mode and will result in DECERR if received.
 WARNING: [xilinx.com:ip:smartconnect:1.0-1] sync_phase1_bd_axi_smc_0: If WRAP transactions are required then turn off Low-area mode using ADVANCED_PROPERTIES. Execute following: set_property CONFIG.ADVANCED_PROPERTIES {__experimental_features__ {disable_low_area_mode 1}} [get_bd_cells /sync_phase1_bd_axi_smc_0]
-xit::source_ipfile: Time (s): cpu = 00:00:03 ; elapsed = 00:00:08 . Memory (MB): peak = 618.750 ; gain = 13.211
 CRITICAL WARNING: [BD 41-1732] Bus interface '/wrapper_0/s_axi' is found to be associated with multiple clock-pins. This may prevent design from functioning correctly. List of associated clock-pins:
 /wrapper_0/aclk
 /wrapper_0/aclk
@@ -398,11 +387,10 @@ CRITICAL WARNING: [BD 41-1732] Bus interface '/wrapper_0/s_axi' is found to be a
 WARNING: [BD 41-927] Following properties on pin /wrapper_0/aclk have been updated from connected ip, but BD cell '/wrapper_0' does not accept parameter changes, so they may not be synchronized with cell properties:
 	FREQ_HZ = 99990005 
 Please resolve any mismatches by directly setting properties on BD cell </wrapper_0> to completely resolve these warnings.
-validate_bd_design: Time (s): cpu = 00:00:06 ; elapsed = 00:00:13 . Memory (MB): peak = 625.711 ; gain = 20.172
+validate_bd_design: Time (s): cpu = 00:00:04 ; elapsed = 00:00:07 . Memory (MB): peak = 628.961 ; gain = 21.570
 INFO: Block design validated OK.
 # save_bd_design
 Wrote  : <C:\RTL_SYNC\vivado\step27_zcu102_bd\step27_zcu102_bd.srcs\sources_1\bd\sync_phase1_bd\sync_phase1_bd.bd> 
-save_bd_design: Time (s): cpu = 00:00:02 ; elapsed = 00:00:07 . Memory (MB): peak = 625.711 ; gain = 0.000
 # puts "INFO: Block design saved."
 INFO: Block design saved.
 # puts "INFO: Creating HDL wrapper..."
@@ -421,7 +409,7 @@ INFO: [BD 41-1662] The design 'sync_phase1_bd.bd' is already validated. Therefor
 Verilog Output written to : C:/RTL_SYNC/vivado/step27_zcu102_bd/step27_zcu102_bd.gen/sources_1/bd/sync_phase1_bd/synth/sync_phase1_bd.v
 Verilog Output written to : C:/RTL_SYNC/vivado/step27_zcu102_bd/step27_zcu102_bd.gen/sources_1/bd/sync_phase1_bd/sim/sync_phase1_bd.v
 Verilog Output written to : C:/RTL_SYNC/vivado/step27_zcu102_bd/step27_zcu102_bd.gen/sources_1/bd/sync_phase1_bd/hdl/sync_phase1_bd_wrapper.v
-make_wrapper: Time (s): cpu = 00:00:09 ; elapsed = 00:00:57 . Memory (MB): peak = 866.449 ; gain = 240.738
+make_wrapper: Time (s): cpu = 00:00:05 ; elapsed = 00:00:10 . Memory (MB): peak = 870.859 ; gain = 241.898
 INFO: HDL wrapper 'sync_phase1_bd_wrapper' set as top.
 # puts "INFO: Generating output products..."
 INFO: Generating output products...
@@ -451,7 +439,7 @@ INFO: [BD 41-1029] Generation completed for the IP Integrator block axi_smc .
 INFO: [BD 41-1029] Generation completed for the IP Integrator block wrapper_0 .
 Exporting to file C:/RTL_SYNC/vivado/step27_zcu102_bd/step27_zcu102_bd.gen/sources_1/bd/sync_phase1_bd/hw_handoff/sync_phase1_bd.hwh
 Generated Hardware Definition File C:/RTL_SYNC/vivado/step27_zcu102_bd/step27_zcu102_bd.gen/sources_1/bd/sync_phase1_bd/synth/sync_phase1_bd.hwdef
-generate_target: Time (s): cpu = 00:01:59 ; elapsed = 00:02:31 . Memory (MB): peak = 953.379 ; gain = 86.930
+generate_target: Time (s): cpu = 00:01:17 ; elapsed = 00:01:33 . Memory (MB): peak = 934.812 ; gain = 63.953
 # puts ""
 
 # puts "========================================================"
@@ -491,4 +479,4 @@ Step 28: synthesis + implementation + bitstream + XSA
 # puts "========================================================"
 ========================================================
 # exit 0
-INFO: [Common 17-206] Exiting Vivado at Thu May  7 17:07:22 2026...
+INFO: [Common 17-206] Exiting Vivado at Thu May  7 21:30:58 2026...
