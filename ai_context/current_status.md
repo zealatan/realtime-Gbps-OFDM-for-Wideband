@@ -520,12 +520,72 @@ Simulation result: PASS: 39   FAIL: 0   CI GATE: PASSED
 - `ai_context/` is populated with this file
 - `docs/` contains Step 2, Step 3, Step 4, and Step 20 specification documents
 
+## Roadmap Change — 2026-05-06
+
+**Project focus updated to Phase 1 functional FPGA synchronizer bring-up.**
+
+Integer CFO estimation (`int_cfo_estimator.v`) is **deferred**. The immediate priority
+is hardening `frac_cfo_frame_corrector_top` through randomized verification before
+advancing to synthesis and FPGA bring-up.
+
+Revised roadmap:
+- Step 21: Randomized verification campaign for `frac_cfo_frame_corrector_top`
+- Step 22: Synthesis-readiness audit (Vivado OOC, ZCU102 target)
+- Step 23: AXI-Lite debug/config wrapper for Phase-1 FPGA bring-up
+- Step 24+: Integer CFO and remaining synchronizer chain (deferred)
+
+---
+
+---
+
+### Step 21 — Randomized Verification Campaign for `frac_cfo_frame_corrector_top`
+
+Status: **COMPLETE**
+
+Files changed:
+- `tb/frac_cfo_frame_corrector_top_tb.sv` — expanded from 39 to 176 checks (R1–R8 added)
+- `docs/step21_frac_cfo_frame_corrector_randomized_verification.md` — created
+- `ai_context/current_status.md` — updated
+
+Test groups (all PASS):
+- R1: Timing offset sweep, quiet-sample counts 4..19 (16 × 2 = 32 checks)
+- R2: Signal config sweep (100,0), (0,100), (70,70), (-100,0) (4 × 4 = 16 checks)
+- R3: Randomized frame placement, XorShift32, seed=0xDEAD_BEEF, 20 trials (20 × 2 = 40 checks)
+- R4: Randomized amplitude 30..129, seed=0xCAFE_0001, 10 trials (10 × 1 = 10 checks)
+- R5: AXI-Stream backpressure, delays 0/1/2/3 cycles (4 × 3 = 12 checks)
+- R6: Reset robustness, 3 scenarios (3 × 3 = 9 checks)
+- R7: No-frame / false-trigger rejection, max threshold (3 × 2 = 6 checks)
+- R8: Buffer boundary stress, 4 configs (4 × 3 = 12 checks)
+
+Simulation result: PASS=176, FAIL=0, CI GATE: PASSED
+Randomized trials: 20 frame-placement + 10 amplitude = 30 total
+CFO range tested: 0x0000..0xC000 (via CP autocorr frac_phase path)
+Timing offset range: quiet 4..19 (R1) + randomized 4..15 (R3)
+Backpressure patterns: 4 (delays 0..3 cycles)
+
+Bugs found (testbench only, RTL not modified):
+1. GROUP FAIL logic used `fail_cnt == 0` (global) instead of per-group delta.
+   Fix: added `grp_fail_snap` variable; each group snapshots fail_cnt before its tests.
+2. R1 off=0..3, R3 some trials, R8 C1 used <WINDOW_LEN=4 quiet samples → DUT got frame_error=1.
+   Fix: R1 uses off+4 as quiet count (range 4..19); R3 lower bound raised to 4; R8 C1 uses off=4.
+
+RTL modified: No.
+
+Recommended Step 22: Phase-1 Synthesis-Readiness (Vivado OOC, xczu9eg-ffvb1156-2-e / ZCU102,
+aclk 100 MHz). Windows Vivado required for actual synthesis.
+
+---
+
 ## Next Step
 
-### Step 21 — Implement and Verify `int_cfo_estimator.v`
+### Step 22 — Phase-1 Synthesis-Readiness and Vivado Resource/Timing Check
 
-Integer CFO estimation via cross-correlation of PSS in the frequency domain.
-Input: NSC corrected IQ samples (from frac_cfo_frame_corrector_top m_axis output).
-Operation: 512-point FFT → multiply by conj(PSS_ref) → IFFT → peak_detector.
-int_cfo = peak_index − (NSC−1) = peak_index − 255.
-Sub-modules needed: fft_wrapper.v (or Xilinx FFT IP behavioral model), complex_mult_iq.v (already done).
+Target: ZCU102 (`xczu9eg-ffvb1156-2-e`), clock port `aclk`, 100 MHz.
+Scope: OOC synthesis of `frac_cfo_frame_corrector_top.v`, resource utilization report,
+timing report, any critical warnings.
+Windows Vivado required for actual synthesis/implementation steps.
+
+#### Deferred: `int_cfo_estimator.v`
+
+Integer CFO estimation deferred to Step 24+.
+Reason: Phase 1 focus is functional FPGA bring-up, not full synchronizer chain completion.

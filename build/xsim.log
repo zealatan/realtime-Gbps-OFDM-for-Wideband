@@ -2,13 +2,13 @@
 # xsim v2022.2 (64-bit)
 # SW Build 3671981 on Fri Oct 14 04:59:54 MDT 2022
 # IP Build 3669848 on Fri Oct 14 08:30:02 MDT 2022
-# Start of session at: Wed May  6 11:00:49 2026
-# Process ID: 23622
+# Start of session at: Thu May  7 08:32:43 2026
+# Process ID: 155991
 # Current directory: /home/zealatan/RTL_SYNC/build
 # Command line: xsim -mode tcl -source {xsim.dir/frac_cfo_frame_corrector_top_tb_sim/xsim_script.tcl}
 # Log file: /home/zealatan/RTL_SYNC/build/xsim.log
 # Journal file: /home/zealatan/RTL_SYNC/build/xsim.jou
-# Running On: DESKTOP-FAIRVEG, OS: Linux, CPU Frequency: 2496.001 MHz, CPU Physical cores: 6, Host memory: 8134 MB
+# Running On: DESKTOP-FAIRVEG, OS: Linux, CPU Frequency: 2495.999 MHz, CPU Physical cores: 6, Host memory: 8134 MB
 #-----------------------------------------------------------
 source xsim.dir/frac_cfo_frame_corrector_top_tb_sim/xsim_script.tcl
 # xsim {frac_cfo_frame_corrector_top_tb_sim} -autoloadwcfg -runall
@@ -74,11 +74,181 @@ run -all
 [PASS] T10 m_axis count = TOTAL_TB = 20
 [PASS] T10 tlast on last sample = 19
 
+--- R1: Timing offset sweep (quiet 4..19) ---
+[PASS] R1 off=0 frame_found
+[PASS] R1 off=0 count=TOTAL_TB = 20
+[PASS] R1 off=1 frame_found
+[PASS] R1 off=1 count=TOTAL_TB = 20
+[PASS] R1 off=2 frame_found
+[PASS] R1 off=2 count=TOTAL_TB = 20
+[PASS] R1 off=3 frame_found
+[PASS] R1 off=3 count=TOTAL_TB = 20
+[PASS] R1 off=4 frame_found
+[PASS] R1 off=4 count=TOTAL_TB = 20
+[PASS] R1 off=5 frame_found
+[PASS] R1 off=5 count=TOTAL_TB = 20
+[PASS] R1 off=6 frame_found
+[PASS] R1 off=6 count=TOTAL_TB = 20
+[PASS] R1 off=7 frame_found
+[PASS] R1 off=7 count=TOTAL_TB = 20
+[PASS] R1 off=8 frame_found
+[PASS] R1 off=8 count=TOTAL_TB = 20
+[PASS] R1 off=9 frame_found
+[PASS] R1 off=9 count=TOTAL_TB = 20
+[PASS] R1 off=10 frame_found
+[PASS] R1 off=10 count=TOTAL_TB = 20
+[PASS] R1 off=11 frame_found
+[PASS] R1 off=11 count=TOTAL_TB = 20
+[PASS] R1 off=12 frame_found
+[PASS] R1 off=12 count=TOTAL_TB = 20
+[PASS] R1 off=13 frame_found
+[PASS] R1 off=13 count=TOTAL_TB = 20
+[PASS] R1 off=14 frame_found
+[PASS] R1 off=14 count=TOTAL_TB = 20
+[PASS] R1 off=15 frame_found
+[PASS] R1 off=15 count=TOTAL_TB = 20
+[GROUP] R1 timing offset sweep PASS
+
+--- R2: Signal configuration sweep ---
+[PASS] R2 c0 frame_found
+[PASS] R2 c0 frame_error=0
+[PASS] R2 c0 count = 20
+[PASS] R2 c0 tlast = 19
+[PASS] R2 c1 frame_found
+[PASS] R2 c1 frame_error=0
+[PASS] R2 c1 count = 20
+[PASS] R2 c1 tlast = 19
+[PASS] R2 c2 frame_found
+[PASS] R2 c2 frame_error=0
+[PASS] R2 c2 count = 20
+[PASS] R2 c2 tlast = 19
+[PASS] R2 c3 frame_found
+[PASS] R2 c3 frame_error=0
+[PASS] R2 c3 count = 20
+[PASS] R2 c3 tlast = 19
+[GROUP] R2 signal configuration sweep PASS
+
+--- R3: Randomized frame placement (20 trials) ---
+[PASS] R3 tr=0 frame_found
+[PASS] R3 tr=0 count = 20
+[PASS] R3 tr=1 frame_found
+[PASS] R3 tr=1 count = 20
+[PASS] R3 tr=2 frame_found
+[PASS] R3 tr=2 count = 20
+[PASS] R3 tr=3 frame_found
+[PASS] R3 tr=3 count = 20
+[PASS] R3 tr=4 frame_found
+[PASS] R3 tr=4 count = 20
+[PASS] R3 tr=5 frame_found
+[PASS] R3 tr=5 count = 20
+[PASS] R3 tr=6 frame_found
+[PASS] R3 tr=6 count = 20
+[PASS] R3 tr=7 frame_found
+[PASS] R3 tr=7 count = 20
+[PASS] R3 tr=8 frame_found
+[PASS] R3 tr=8 count = 20
+[PASS] R3 tr=9 frame_found
+[PASS] R3 tr=9 count = 20
+[PASS] R3 tr=10 frame_found
+[PASS] R3 tr=10 count = 20
+[PASS] R3 tr=11 frame_found
+[PASS] R3 tr=11 count = 20
+[PASS] R3 tr=12 frame_found
+[PASS] R3 tr=12 count = 20
+[PASS] R3 tr=13 frame_found
+[PASS] R3 tr=13 count = 20
+[PASS] R3 tr=14 frame_found
+[PASS] R3 tr=14 count = 20
+[PASS] R3 tr=15 frame_found
+[PASS] R3 tr=15 count = 20
+[PASS] R3 tr=16 frame_found
+[PASS] R3 tr=16 count = 20
+[PASS] R3 tr=17 frame_found
+[PASS] R3 tr=17 count = 20
+[PASS] R3 tr=18 frame_found
+[PASS] R3 tr=18 count = 20
+[PASS] R3 tr=19 frame_found
+[PASS] R3 tr=19 count = 20
+[RANDOM] frame_placement_trials = 20
+[GROUP] R3 randomized frame placement PASS
+
+--- R4: Randomized amplitude scaling (10 trials) ---
+[PASS] R4 tr=0 count = 20
+[PASS] R4 tr=1 count = 20
+[PASS] R4 tr=2 count = 20
+[PASS] R4 tr=3 count = 20
+[PASS] R4 tr=4 count = 20
+[PASS] R4 tr=5 count = 20
+[PASS] R4 tr=6 count = 20
+[PASS] R4 tr=7 count = 20
+[PASS] R4 tr=8 count = 20
+[PASS] R4 tr=9 count = 20
+[RANDOM] amplitude_trials = 10
+[GROUP] R4 randomized amplitude scaling PASS
+
+--- R5: AXI-Stream output backpressure ---
+[PASS] R5 delay=0 count=TOTAL_TB = 20
+[PASS] R5 delay=0 tlast at last = 19
+[PASS] R5 delay=0 tvalid_fired
+[PASS] R5 delay=1 count=TOTAL_TB = 20
+[PASS] R5 delay=1 tlast at last = 19
+[PASS] R5 delay=1 tvalid_fired
+[PASS] R5 delay=2 count=TOTAL_TB = 20
+[PASS] R5 delay=2 tlast at last = 19
+[PASS] R5 delay=2 tvalid_fired
+[PASS] R5 delay=3 count=TOTAL_TB = 20
+[PASS] R5 delay=3 tlast at last = 19
+[PASS] R5 delay=3 tvalid_fired
+[GROUP] R5 AXI backpressure PASS
+
+--- R6: Reset robustness ---
+[INFO] R6 S1: reset from idle, then verify recovery
+[PASS] R6 S1: busy=0 after reset
+[PASS] R6 S1: done=0 after reset
+[PASS] R6 S1: recovery done fires
+[INFO] R6 S2: reset mid-frame-det, then verify recovery
+[PASS] R6 S2: busy=0 after mid-proc reset
+[PASS] R6 S2: done=0 after mid-proc reset
+[PASS] R6 S2: recovery done fires
+[INFO] R6 S3: reset after done, verify clean restart
+[PASS] R6 S3: busy=0 after post-done reset
+[PASS] R6 S3: second run done fires
+[PASS] R6 S3: second run count = 20
+[GROUP] R6 reset robustness PASS
+
+--- R7: No-frame / false-trigger rejection ---
+[PASS] R7 T1: frame_error=1 (quiet+max thr)
+[PASS] R7 T1: m_axis_tvalid=0
+[PASS] R7 T2: frame_error=1 (signal+max thr)
+[PASS] R7 T2: m_axis_tvalid=0
+[PASS] R7 T3: frame_error=1 (mixed+max thr)
+[PASS] R7 T3: m_axis_tvalid=0
+[GROUP] R7 no-frame rejection PASS
+
+--- R8: Buffer boundary stress ---
+[PASS] R8 C1: frame_found
+[PASS] R8 C1: count = 20
+[PASS] R8 C1: tlast = 19
+[PASS] R8 C2: frame_found
+[PASS] R8 C2: count = 20
+[PASS] R8 C2: tlast = 19
+[PASS] R8 C3: frame_found
+[PASS] R8 C3: count = 20
+[PASS] R8 C3: tlast = 19
+[PASS] R8 C4: frame_found
+[PASS] R8 C4: count = 20
+[PASS] R8 C4: tlast = 19
+[GROUP] R8 buffer boundary stress PASS
+
 ========================================
-PASS: 39   FAIL: 0
+PASS: 176   FAIL: 0
+[RANDOM] frame_placement_trials = 20  amplitude_trials = 10
+CFO range tested: 0x0000..0xC000 (via CP autocorr frac_phase path)
+Timing offset range: 0..15 (R1 sweep) + randomized 2..15 (R3)
+Backpressure patterns tested: 4 (delays 0..3)
 CI GATE: PASSED
 ========================================
 
-$finish called at time : 55906 ns : File "/home/zealatan/RTL_SYNC/tb/frac_cfo_frame_corrector_top_tb.sv" Line 548
+$finish called at time : 409646 ns : File "/home/zealatan/RTL_SYNC/tb/frac_cfo_frame_corrector_top_tb.sv" Line 1032
 exit
-INFO: [Common 17-206] Exiting xsim at Wed May  6 11:01:07 2026...
+INFO: [Common 17-206] Exiting xsim at Thu May  7 08:32:50 2026...
