@@ -1,339 +1,614 @@
-# AI-assisted RTL/FPGA Verification Workflow Experiment
+# AI-Assisted RTL/FPGA Synchronizer Verification Workflow
 
 ## 1. Overview
 
-This project is a small experiment using **Claude Code Pro** as an AI-assisted RTL/FPGA verification agent in a minimal Vivado project.
+This project is an AI-assisted RTL/FPGA verification experiment using **Claude Code Pro** as a coding and verification agent.
 
-The goal was to test whether an AI coding agent can participate in a realistic verification loop:
+The active workspace for this project is:
 
 ```text
-Spec → Code Generation → Simulation → Failure Detection → Debugging → Patch → Re-run → Pass Summary
+/home/zealatan/RTL_SYNC
 ```
 
-Project path:
+This workspace is separate from the earlier `VIVADO_MIN_EXAMPLE` benchmark project.
+
+The current goal of `RTL_SYNC` is to build and verify an FPGA-ready **OFDM synchronizer subsystem** step by step.
+
+The project currently focuses on:
+
+```text
+OFDM frame detection
+→ CP/timing synchronization
+→ fractional CFO estimation
+→ fractional CFO correction
+→ corrected time-domain frame output
+```
+
+This is **not yet a full OFDM receiver**. The current scope intentionally stops before FFT, integer CFO, channel estimation, equalization, and demodulation.
+
+---
+
+## 2. Project Roadmap
+
+The project roadmap is organized into three phases.
+
+```text
+Phase 1: Functional FPGA synchronizer
+Phase 2: 1 sample/clock streaming synchronizer
+Phase 3: multi-sample/clock parallel synchronizer
+```
+
+### Phase 1 Goal
+
+Phase 1 focuses on proving that the synchronizer block can functionally run on FPGA.
+
+The Phase 1 design is allowed to be:
+
+```text
+frame-buffered
+FSM-controlled
+debug-friendly
+not fully throughput-optimized
+```
+
+Phase 1 does **not** require a continuous 1 sample/clock streaming architecture.
+
+### Phase 2 Goal
+
+Phase 2 will redesign the synchronizer into a true 1 sample/clock streaming pipeline.
+
+This likely requires:
+
+```text
+sliding CP/autocorrelation update
+continuous metric generation
+streaming peak detection
+streaming NCO correction
+pipeline balancing
+```
+
+### Phase 3 Goal
+
+Phase 3 will extend the design into a multi-sample/clock architecture for high-throughput RFSoC-class operation.
+
+This likely requires:
+
+```text
+multi-lane input/output
+parallel correlation updates
+lane-wise peak detection
+multi-lane NCO correction
+wide AXI-Stream datapaths
+```
+
+---
+
+## 3. Active Workspace Policy
+
+The active workspace is:
+
+```text
+/home/zealatan/RTL_SYNC
+```
+
+All RTL, testbench, simulation, documentation, prompt archive, and status updates for this project should be performed inside this workspace.
+
+Do not confuse this project with:
 
 ```text
 /home/zealatan/AI_ORC/messi/VIVADO_MIN_EXAMPLE
 ```
 
-Initial project:
+That path belongs to a different earlier RTL verification benchmark.
+
+Before any major Claude task, the agent should verify:
+
+```bash
+pwd
+git rev-parse --show-toplevel
+```
+
+The path must resolve to:
 
 ```text
-rtl/and2.v
-tb/and2_tb.sv
-scripts/run_vivado_sim.sh
-CLAUDE.md
+/home/zealatan/RTL_SYNC
+```
+
+---
+
+## 4. Environment Split
+
+The workflow uses a split environment.
+
+### WSL Environment
+
+The WSL workspace is used for:
+
+```text
+RTL editing
+testbench editing
+Vivado xsim simulation
+documentation
+prompt archive
+ai_context updates
+Claude Code RTL/simulation work
+```
+
+### Windows Environment
+
+Windows is used for:
+
+```text
+Vivado synthesis
+Vivado implementation
+bitstream generation
+Vivado Hardware Manager
+Vitis firmware development
+ZCU102 board programming
+```
+
+Reason:
+
+```text
+The valid Vivado license for ZCU102 synthesis/implementation/bitstream generation is installed or served on Windows.
+```
+
+Therefore, WSL may prepare TCL/scripts, but exact ZCU102 synthesis, implementation, bitstream generation, and Vitis work should be executed on Windows Vivado/Vitis unless the Windows license server is reliably reachable from WSL.
+
+Target board:
+
+```text
+ZCU102
+```
+
+Target part:
+
+```text
+xczu9eg-ffvb1156-2-e
+```
+
+Current synchronizer clock port:
+
+```text
+aclk
+```
+
+Do not use `clk` as the top-level clock name for current synthesis constraints.
+
+---
+
+## 5. Current Design Scope
+
+The current top-level synchronizer block is:
+
+```text
+rtl/frac_cfo_frame_corrector_top.v
+```
+
+Current testbench:
+
+```text
+tb/frac_cfo_frame_corrector_top_tb.sv
+```
+
+Current simulation script:
+
+```text
+scripts/run_frac_cfo_frame_corrector_top_sim.sh
+```
+
+The top-level architecture is:
+
+```text
+AXI-Stream IQ input
+  ↓
+input capture / frame buffer
+  ↓
+frame detector
+  ↓
+CP timing / fractional CFO estimation
+  ↓
+NCO-based fractional CFO correction
+  ↓
+AXI-Stream corrected IQ output
+```
+
+The current architecture is best described as:
+
+```text
+Phase-1 frame-buffered sequential synchronizer
+```
+
+It is not yet a Phase-2 1 sample/clock streaming synchronizer.
+
+---
+
+## 6. Completed Steps
+
+### Step 20 — frac_cfo_frame_corrector_top Integration
+
+Step 20 integrated the fractional-CFO synchronizer pipeline into:
+
+```text
+rtl/frac_cfo_frame_corrector_top.v
+```
+
+The integrated top includes:
+
+```text
+input capture
+shared IQ frame buffer
+frame detection
+CP timing / fractional CFO estimation
+NCO-based fractional CFO correction
+AXI-Stream corrected output playback
+```
+
+Step 20 result:
+
+```text
+PASS = 39
+FAIL = 0
+CI GATE = PASSED
+```
+
+Step 20 established the first complete integrated top for the Phase-1 synchronizer path.
+
+---
+
+### Step 21 — Randomized Verification Campaign
+
+Step 21 strengthened verification of `frac_cfo_frame_corrector_top`.
+
+The previous plan for Step 21 was:
+
+```text
+int_cfo_estimator.v
+```
+
+However, this was deferred.
+
+Reason:
+
+```text
+The current Phase 1 goal is to close the existing fractional-CFO frame synchronizer as a robust functional FPGA-ready block before adding integer CFO or FFT-based functionality.
+```
+
+Step 21 added randomized and sweep-based verification.
+
+Verification groups:
+
+```text
+R1 — Timing offset sweep
+R2 — Fractional CFO sweep
+R3 — Randomized frame placement
+R4 — Randomized amplitude scaling
+R5 — AXI-Stream output backpressure
+R6 — Reset robustness
+R7 — No-frame / false-trigger rejection
+R8 — Buffer boundary stress
+```
+
+Step 21 result:
+
+```text
+PASS = 176
+FAIL = 0
+Randomized trials = 30
+CI GATE = PASSED
+RTL modified = No
+```
+
+Bugs found:
+
+```text
+RTL bugs: none
+
+Testbench bugs:
+1. Group failure logic used global fail count instead of per-group delta.
+2. Some tests used fewer than WINDOW_LEN=4 quiet samples before frame onset.
+```
+
+Both were fixed in the testbench.
+
+---
+
+## 7. Deferred Work
+
+### Deferred: Integer CFO Estimator
+
+The following planned block is deferred:
+
+```text
+int_cfo_estimator.v
+```
+
+Original idea:
+
+```text
+PSS cross-correlation
+512-point FFT
+conj(PSS_ref) multiplication
+IFFT
+peak detection
+integer CFO estimation
+```
+
+Reason for deferral:
+
+```text
+Integer CFO estimation introduces FFT/IFFT, PSS/reference sequence handling, and additional algorithmic scope.
+The current goal is Phase 1 FPGA functional bring-up of the existing fractional-CFO synchronizer block.
+```
+
+Integer CFO may be revisited later as:
+
+```text
+Phase 1b extension
+Phase 2 feature
+or a separate synchronizer expansion task
+```
+
+---
+
+## 8. Next Steps
+
+The revised roadmap from the current state is:
+
+```text
+Step 22 — Phase-1 synthesis-readiness and Vivado resource/timing check
+Step 23 — AXI-Lite + AXI-Stream debug/config wrapper
+Step 24 — BRAM preload/readback wrapper for known-vector FPGA test
+Step 25 — Windows Vivado ZCU102 project / synthesis / implementation / bitstream flow
+Step 26 — Vitis baremetal control/readback application
+Step 27 — Known-vector FPGA run
+Step 28 — CFO/timing sweep hardware test
+Step 29 — Phase-1 final report/demo package
+```
+
+---
+
+## 9. Step 22 Plan
+
+Step 22 should check whether the Step 21-verified synchronizer top is synthesizable and suitable for Phase-1 FPGA bring-up.
+
+Step 22 should create or update:
+
+```text
+scripts/run_frac_cfo_frame_corrector_top_synth.sh
+scripts/step22_synth_check.tcl
+docs/step22_synthesis_readiness_report.md
+reports/
 ai_context/current_status.md
 ```
 
-The project was extended from a simple AND-gate example into an AXI-lite register-file verification experiment.
+Important Step 22 target information:
+
+```text
+Target board = ZCU102
+Target part = xczu9eg-ffvb1156-2-e
+Clock port = aclk
+Clock target = 100 MHz
+```
+
+Important constraint:
+
+```text
+Do not use clk.
+Use aclk.
+```
+
+Step 22 should audit for synthesis risks such as:
+
+```text
+real
+shortreal
+$sin
+$cos
+$atan
+$atan2
+$sqrt
+$ln
+delay statements
+file I/O
+runtime initial blocks
+latch inference risks
+combinational loop risks
+multi-driven net risks
+```
+
+Because the ZCU102 license is on Windows, exact ZCU102 synthesis should be treated as a Windows Vivado task.
 
 ---
 
-## 2. Workflow Concept
+## 10. Step 23 Plan
 
-The current structure is:
+Step 23 should add an AXI-Lite debug/config wrapper while preserving AXI-Stream data ports.
+
+Important distinction:
 
 ```text
-Human prompt / policy
+AXI-Lite = control/status plane
+AXI-Stream = IQ sample data plane
+```
+
+The wrapper should expose both:
+
+```text
+AXI-Lite slave interface
+AXI-Stream input
+AXI-Stream output
+```
+
+Step 23 should not add:
+
+```text
+FFT
+integer CFO
+DMA
+BRAM preload/readback
+bitstream generation
+Phase 2 redesign
+```
+
+Possible register map:
+
+```text
+0x00 CONTROL
+0x04 STATUS
+0x08 CFG_CFO_STEP
+0x0C CFG_TIMING_OFFSET
+0x10 CFG_FRAME_LEN
+0x14 SAMPLE_COUNT
+0x18 OUTPUT_COUNT
+0x1C DEBUG_STATE
+```
+
+---
+
+## 11. Step 24 Plan
+
+Step 24 should provide a data path for known-vector FPGA testing.
+
+Purpose:
+
+```text
+preload input IQ samples
+feed them into the synchronizer as AXI-Stream
+capture output samples
+read back output samples
+compare against Python/golden reference
+```
+
+Recommended structure:
+
+```text
+AXI-Lite control
   ↓
-Claude Code agent
+Input BRAM
   ↓
-Read / Write / Bash / MCP tools
+AXI-Stream source FSM
   ↓
-Vivado xsim / logs / patches
+frac_cfo synchronizer
+  ↓
+AXI-Stream sink FSM
+  ↓
+Output BRAM
 ```
 
-Interpretation:
-
-```text
-Prompt / policy       = control plane
-Claude Code           = execution agent
-Read/Write/Bash/MCP   = execution plane
-Vivado xsim/logs      = verification feedback
-```
-
-This is currently a **single-agent + human-in-the-loop verification workflow**.
+Step 24 is still a Phase-1 functional bring-up step.
 
 ---
 
-## 3. What Was Tried
+## 12. Prompt Archive Policy
 
-Claude Code was asked to:
+All major Claude/RTL verification prompts must be saved under:
 
 ```text
-1. Read CLAUDE.md and ai_context/current_status.md first.
-2. Inspect only selected folders.
-3. Generate a verification plan.
-4. Create an AXI-lite register-file RTL.
-5. Create a self-checking SystemVerilog testbench.
-6. Create a Vivado xsim run script.
-7. Run simulation.
-8. Detect failures.
-9. Patch the testbench or RTL when allowed.
-10. Re-run simulation and summarize the result.
+md_files/
 ```
+
+Naming convention:
+
+```text
+NN_descriptive_step_name_prompt.md
+```
+
+Current important prompt archives include:
+
+```text
+md_files/20_frac_cfo_frame_corrector_top_prompt.md
+md_files/21_frac_cfo_frame_corrector_randomized_verification_prompt.md
+```
+
+The next required prompt archive is:
+
+```text
+md_files/22_synthesis_readiness_prompt.md
+```
+
+Prompt files are part of the experiment record and should be committed to git.
 
 ---
 
-## 4. AXI-lite Register File Experiment
+## 13. AI-Assisted Verification Method
 
-Generated/updated files:
+This project continues the broader experiment of using Claude Code as an RTL/FPGA verification agent.
 
-```text
-rtl/axi_lite_regfile.v
-tb/axi_lite_regfile_tb.sv
-scripts/run_axi_regfile_sim.sh
-ai_context/current_status.md
-```
-
-The DUT implements:
+The repeated loop is:
 
 ```text
-4 × 32-bit AXI-lite registers
-Valid addresses: 0x00, 0x04, 0x08, 0x0C
-Invalid address detection using addr[31:4] != 0
-SLVERR response for invalid read/write
-No register modification on invalid write
-```
-
----
-
-## 5. First Failure
-
-The first generated testbench caused xsim to hang during the first read test.
-
-Observed behavior:
-
-```text
-xvlog passed
-xelab passed
-xsim started
-Test 1 hung during axi_read()
-No timeout guard existed
-```
-
-Root cause:
-
-```text
-The testbench drove and deasserted AXI signals on the same posedge where the DUT sampled them.
-```
-
-This created a SystemVerilog TB/DUT race condition.
-
----
-
-## 6. Fix
-
-The testbench was patched with a safer timing rule:
-
-```text
-Drive AXI master signals on negedge.
-Sample DUT ready/valid on posedge.
-Add timeout guards to every wait loop.
-Use $fatal on timeout.
-Print [DONE] only after all checks pass.
-```
-
-Initial fixed result:
-
-```text
-16/16 checks passed
-Simulation completed successfully
-```
-
----
-
-## 7. Extended Verification Result
-
-The AXI-lite testbench was extended with:
-
-```text
-Reset checks
-Register write/read checks
-Partial WSTRB byte-lane writes
-AW-before-W ordering
-W-before-AW ordering
-Simultaneous AW+W
-B-channel backpressure
-R-channel backpressure
-Invalid address tests
-No-alias checks
-```
-
-Final result:
-
-```text
-133/133 checks passed
-0 failures
-0 $fatal
-CI grep gate passed
-Simulation end time: 3720 ns
-```
-
----
-
-## 8. Key Lesson
-
-The important result was not just code generation.
-
-The important result was that Claude Code participated in a real verification feedback loop:
-
-```text
-Generate RTL/TB/script
-→ Run simulation
-→ Encounter failure
-→ Diagnose testbench race
-→ Patch testbench
+Spec
+→ Code generation
+→ Simulation
+→ Failure detection
+→ Debugging
+→ Patch
 → Re-run
-→ Extend tests
-→ Find RTL limitation
-→ Patch invalid-address handling
-→ Re-run
-→ Reach 133/133 pass
+→ Pass summary
+→ Documentation update
+```
+
+Human role:
+
+```text
+define scope
+approve roadmap changes
+protect file boundaries
+classify high-level design direction
+decide when to defer scope expansion
+review final reports
+```
+
+Claude Code role:
+
+```text
+read CLAUDE.md and ai_context/current_status.md
+save prompt archives
+modify allowed files
+generate RTL/TB/scripts/docs
+run xsim
+read logs
+fix testbench issues
+avoid RTL changes unless proven necessary
+update status files
+summarize results
 ```
 
 ---
 
-## 9. Human vs AI Role
+## 14. Current Maturity
 
-Current role split:
-
-```text
-Human:
-- Defines goal
-- Sets file scope
-- Controls RTL modification approval
-- Reviews failure classification
-- Decides next verification layer
-
-Claude Code:
-- Reads project context
-- Generates RTL/TB/scripts
-- Runs xsim
-- Reads logs
-- Patches code
-- Updates status files
-- Summarizes results
-```
-
----
-
-## 10. Automation Insight
-
-Right now, the human gives detailed prompts manually.
-
-This is useful because repeated prompt patterns reveal what should later become an automation policy.
-
-Repeated rules include:
-
-```text
-Read CLAUDE.md and current_status.md first.
-Do not scan the whole repository.
-Modify only approved files.
-Do not modify RTL unless explicitly authorized.
-Use timeout guards in all wait loops.
-Use negedge-drive / posedge-sample for bus master tasks.
-Run the relevant simulation script after changes.
-Classify failures as TB bug or RTL bug.
-Report changed files, pass/fail count, CI status, and remaining failures.
-```
-
-These rules should later be moved into:
-
-```text
-ai_context/autonomous_policy.md
-```
-
-The workflow can then move from:
-
-```text
-Human-in-the-loop
-```
-
-toward:
-
-```text
-Human-on-the-loop with approval gates
-```
-
----
-
-## 11. Current Maturity
-
-| Level | Description |
-|---|---|
-| Level 0 | Ask ChatGPT for code snippets |
-| Level 1 | Claude edits files |
-| Level 2 | Claude runs simulations and reads logs |
-| Level 3 | Claude detects failures and patches TB/scripts |
-| Level 4 | Policy-based autonomous verification with approval gates |
-| Level 5 | FPGA board, UART, ILA, DMA, and hardware feedback loop |
-
-Current experiment:
+For `RTL_SYNC`, the current maturity is:
 
 ```text
 Level 2.5 to Level 3
 ```
 
----
-
-## 12. Next Steps
-
-Recommended next steps:
+Meaning:
 
 ```text
-1. Continue manual prompting for a few more verification layers.
-2. Build tb/axi_mem_model.sv.
-3. Build tb/mem_rw_tb.sv.
-4. Add scripts/run_mem_rw_sim.sh.
-5. Verify AXI memory read/write behavior.
-6. Then move toward DMA verification.
-7. Convert repeated prompt patterns into ai_context/autonomous_policy.md.
+Claude edits files
+Claude runs simulations
+Claude reads logs
+Claude detects and fixes testbench issues
+Claude updates documentation/status
+Human still controls roadmap and approval gates
 ```
 
-Do not automate everything immediately.
+The project has not yet reached FPGA hardware feedback loop level.
 
-First, repeat the workflow manually, observe patterns, and then turn those patterns into policy files and scripts.
+That will begin after:
+
+```text
+Step 24 BRAM preload/readback wrapper
+Step 25 Windows Vivado bitstream flow
+Step 26 Vitis control app
+Step 27 known-vector FPGA run
+```
 
 ---
 
-## 13. One-Line Summary
+## 15. One-Line Summary
 
-This experiment shows that a single Claude Code agent, guided by structured prompts and project policy files, can already participate in a meaningful RTL verification loop: generate RTL/TB/scripts, run Vivado xsim, detect failures, patch testbench/RTL issues, re-run simulations, and reach a clean passing verification result across an incrementally growing DUT stack.
-
----
-
-## 14. AI-Assisted RTL Verification Benchmark
-
-This project has grown into a structured RTL Verification Agent benchmark covering eight DUT layers and **664 passing checks**.
-
-### Current Status
-
-| Layer | DUT | Checks |
-|-------|-----|--------|
-| 0 | AXI-lite register file | 133/133 |
-| 1 | AXI4 memory model | 30/30 |
-| 2 | Simple AXI4 master | 14/14 |
-| 3 | 1-word DMA copy engine | 16/16 |
-| 4 | N-word DMA copy engine | 31/31 |
-| 5 | AXI-lite DMA copy wrapper | 208/208 |
-| 6 | N-word DMA add/processing engine | 81/81 |
-| 7 | AXI-lite DMA add accelerator | 151/151 |
-| **Total** | | **664/664** |
-
-All checks pass. CI grep gate (`[FAIL]` / `FATAL`) is clean on all simulation scripts.
-
-### Documentation
-
-- [RTL Verification Agent Benchmark](docs/rtl_verification_agent_benchmark.md) — full layer-by-layer breakdown, verification patterns, agent capabilities, and coverage gaps
-- [RTL Verification Workflow Summary](docs/rtl_verification_workflow_summary.md) — compact workflow diagram, completed-layer table, and future orchestrator context
-
-### Context
-
-This benchmark is being built to validate **Agent 4 (RTL Verification Agent)** in a planned five-agent hardware development orchestrator:
-
-```
-Algorithm Agent → Python Modeling Agent → RTL Design Agent
-  → RTL Verification Agent (← here) → FPGA Test Agent
-```
+`RTL_SYNC` is now a Phase-1 AI-assisted RTL/FPGA synchronizer verification project. The fractional-CFO frame synchronizer top has passed integration testing and a stronger randomized verification campaign, while integer CFO has been deferred so the current synchronizer block can first be closed as a functional FPGA-ready subsystem.
