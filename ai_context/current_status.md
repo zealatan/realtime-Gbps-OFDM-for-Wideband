@@ -576,16 +576,68 @@ aclk 100 MHz). Windows Vivado required for actual synthesis.
 
 ---
 
-## Next Step
+---
 
 ### Step 22 — Phase-1 Synthesis-Readiness and Vivado Resource/Timing Check
 
-Target: ZCU102 (`xczu9eg-ffvb1156-2-e`), clock port `aclk`, 100 MHz.
-Scope: OOC synthesis of `frac_cfo_frame_corrector_top.v`, resource utilization report,
-timing report, any critical warnings.
-Windows Vivado required for actual synthesis/implementation steps.
+Status: **Prepared, pending Windows Vivado execution.**
+
+Prompt archive: `md_files/22_synthesis_readiness_prompt.md`
+
+Files created:
+- `scripts/step22_synth_check.tcl` — OOC synthesis TCL for Vivado 2022.2
+- `scripts/synth_stubs/cordic_atan2_stub.v` — synthesizable port-only stub (CORDIC placeholder)
+- `scripts/synth_stubs/nco_phase_gen_stub.v` — synthesizable port-only stub (CORDIC placeholder)
+- `scripts/windows/run_step22_zcu102_ooc_synth.bat` — Windows batch runner
+- `scripts/windows/README.md` — WSL/Windows environment guide
+- `docs/step22_synthesis_readiness_report.md` — synthesis readiness audit and report
+
+Target board: ZCU102 (`xczu9eg-ffvb1156-2-e`)
+Clock port: `aclk` at 100 MHz (10.000 ns period)
+Mode: OOC synthesis with CORDIC stubs
+
+RTL audit findings:
+- 2 BLOCKER modules (behavioral CORDIC simulation models):
+  - `rtl/cordic_atan2.v` — uses `real`, `$atan2` — must be replaced with `cordic_v6_0` IP
+  - `rtl/nco_phase_gen.v` — uses `real`, `$sin`, `$cos` — must be replaced with `cordic_v6_0` IP
+- All other RTL (13 files) is synthesizable — no latches, loops, multi-driven nets found
+
+Synthesis execution status: NOT RUN (Windows Vivado required)
+
+RTL modified: No.
+
+Recommended user action:
+```
+cd C:\RTL_SYNC
+scripts\windows\run_step22_zcu102_ooc_synth.bat
+```
+Then copy reports back to WSL:
+```bash
+cp /mnt/c/RTL_SYNC/reports/step22_*.rpt /home/zealatan/RTL_SYNC/reports/
+```
+
+Recommended Step 23 (if synthesis passes): CORDIC IP integration
+  — Replace `cordic_atan2.v` and `nco_phase_gen.v` with `cordic_v6_0` Vivado IP
+  — Re-run Step 21 xsim to verify PASS=176
+  — Re-run Step 22 synthesis without stubs for full pass
+
+Recommended Step 24+: AXI-Lite debug/config wrapper, then `int_cfo_estimator.v`
+
+---
+
+## Next Step
+
+### Step 23 — CORDIC IP Integration (recommended after Step 22 synthesis pass)
+
+Replace simulation-only CORDIC behavioral models with synthesizable Xilinx `cordic_v6_0` IP:
+- `rtl/cordic_atan2.v` → IP translate mode, 16-bit phase output, LATENCY=15
+- `rtl/nco_phase_gen.v` → IP rotate/sincos mode + phase accumulator, 16-bit coefficients
+
+After integration:
+1. Re-run Step 21 simulation to verify PASS=176, FAIL=0 (behavior preserved)
+2. Re-run Step 22 synthesis without stubs for clean full-pass
 
 #### Deferred: `int_cfo_estimator.v`
 
-Integer CFO estimation deferred to Step 24+.
+Integer CFO estimation deferred to Step 25+.
 Reason: Phase 1 focus is functional FPGA bring-up, not full synchronizer chain completion.
