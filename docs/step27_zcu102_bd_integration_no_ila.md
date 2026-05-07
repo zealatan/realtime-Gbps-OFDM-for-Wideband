@@ -273,6 +273,15 @@ HDL wrapper (`sync_phase1_bd_wrapper`): PASS
 Output products generated: PASS
 No synthesis, no implementation, no bitstream (deferred to Step 28).
 
+**Note (Step 28B):** IP packaging (`ipx::package_project`) copies RTL into the IP
+directory and succeeds cleanly.  However, during Step 28 BD synthesis, Vivado's packaged
+IP synthesis parser treats the copied RTL as Verilog (matching the `.v` extension) and
+rejects SystemVerilog width-cast syntax `WIDTH'(expr)` present in three files.
+See `docs/step28_zcu102_bitstream_xsa_export.md §Step 28B` for the fix.
+
+After the RTL syntax fix (Step 28B), Step 27 must be re-run to repackage the IP with the
+corrected RTL before Step 28 synthesis can proceed.
+
 ## Known Limitations
 
 1. **Board files**: ZCU102 board preset (`xilinx.com:zcu102:part0:3.4`) may not be installed.

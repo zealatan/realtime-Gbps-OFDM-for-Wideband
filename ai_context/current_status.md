@@ -841,11 +841,22 @@ RTL modified: No
 
 ---
 
-### Step 28 — ZCU102 Synthesis, Implementation, Bitstream, and XSA Export
+### Step 28 / 28B — ZCU102 Synthesis, Implementation, Bitstream, and XSA Export
 
-Status: **Prepared, pending Windows Vivado execution.**
+Status: **Step 28 failed synthesis; Step 28B RTL fix applied; pending Windows re-run.**
 
-Prompt archive: `md_files/28_zcu102_bitstream_xsa_export_prompt.md`
+Prompt archives:
+- `md_files/28_zcu102_bitstream_xsa_export_prompt.md` (Step 28)
+- `md_files/28b_fix_ip_packaged_verilog_syntax_prompt.md` (Step 28B)
+
+Step 28B failure and fix:
+- Vivado error: `[Synth 8-2716] syntax error near '''` in `cp_autocorr_core.v:97`
+- Root cause: 8 SystemVerilog width-cast patterns `WIDTH'(expr)` in 3 RTL files;
+  Vivado packaged IP synthesis parses `.v` files as Verilog (not SV) and rejects this syntax
+- Fix: replaced all 8 casts with Verilog-2001 equivalents (sized localparams or direct expressions)
+- Files patched: `rtl/cp_autocorr_core.v`, `rtl/timing_sync_top.v`, `rtl/frac_cfo_frame_corrector_top.v`
+- Regression: xvlog not in PATH in WSL — regressions could not be run; changes are mechanical syntax-only
+- Re-run required: Step 27 must be re-run to repackage IP with fixed RTL before Step 28 synthesis
 
 Files created:
 - `scripts/vivado/step28_build_bitstream_xsa.tcl` — Vivado batch Tcl: open Step 27 project, synth, impl, reports, timing check, bitstream, XSA
@@ -853,6 +864,11 @@ Files created:
 - `docs/step28_zcu102_bitstream_xsa_export.md` — step documentation
 - `reports/step28/` — directory created (empty until Windows run)
 - `outputs/step28/` — directory created (empty until Windows run)
+
+RTL files patched (Step 28B):
+- `rtl/cp_autocorr_core.v` — 1 cast fixed: added `localparam [ADDR_WIDTH-1:0] LP_NSC_B = NSC`
+- `rtl/timing_sync_top.v` — 2 casts fixed: added LP_NSC_IDX and LP_NSC_CNT localparams
+- `rtl/frac_cfo_frame_corrector_top.v` — 5 casts fixed: dropped cast syntax, rely on assignment-width truncation
 
 Vivado project: `vivado/step27_zcu102_bd/step27_zcu102_bd.xpr`
 BD top: `sync_phase1_bd_wrapper`
@@ -878,15 +894,16 @@ Timing check: prints `TIMING CHECK: PASS` or `TIMING CHECK: FAIL`; exits non-zer
 
 No ILA, no DMA, no VIO, no integer CFO, no Vitis firmware in this step.
 
-Synthesis run: NOT RUN
+Synthesis run: FAILED (Step 28B fix applied; re-run required)
 Implementation run: NOT RUN
 Bitstream: NOT GENERATED
 XSA: NOT EXPORTED
-RTL modified: No
+RTL modified: Yes (Step 28B — 8 SV cast patterns replaced with Verilog-2001 equivalents)
 
-Recommended user action — run on Windows:
+Recommended user action — run on Windows (Step 27 first to repackage IP with fixed RTL):
 ```
 cd C:\RTL_SYNC
+.\scripts\windows\run_step27_create_zcu102_bd_no_ila.bat
 .\scripts\windows\run_step28_build_bitstream_xsa.bat
 ```
 
@@ -903,6 +920,18 @@ cp /mnt/c/RTL_SYNC/reports/step28/step28_build.log /home/zealatan/RTL_SYNC/repor
 ---
 
 ## Next Step
+
+### Immediate — Re-run Step 27 + Step 28 on Windows (with Step 28B RTL fix)
+
+Step 27 must be run first to repackage the IP with the corrected RTL:
+```
+cd C:\RTL_SYNC
+.\scripts\windows\run_step27_create_zcu102_bd_no_ila.bat
+.\scripts\windows\run_step28_build_bitstream_xsa.bat
+```
+
+Expected: Step 28 synthesis should now pass the `cp_autocorr_core.v:97` error.
+Step 28 reports `TIMING CHECK: PASS` → bitstream and XSA generated.
 
 ### Step 29 — Vitis Baremetal Control Application for Known-Vector Test
 

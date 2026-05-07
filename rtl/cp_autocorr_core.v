@@ -64,6 +64,10 @@ module cp_autocorr_core #(
         S_ACCUM   = 3'd4,   // B valid; compute MAC; advance tap/lag
         S_DONE    = 3'd5;
 
+    // Verilog-2001: ADDR_WIDTH'(NSC) is SystemVerilog-only cast syntax.
+    // Use a sized localparam instead so packaged IP synthesis accepts Verilog type.
+    localparam [ADDR_WIDTH-1:0] LP_NSC_B = NSC;
+
     reg [2:0]             state;
     reg [INDEX_WIDTH-1:0] lag;   // current lag index  m: 0..NSC-1
     reg [5:0]             tap;   // current tap index  k: 0..CP_LEN-1
@@ -94,7 +98,7 @@ module cp_autocorr_core #(
         base_addr
         + {{(ADDR_WIDTH-INDEX_WIDTH){1'b0}}, lag}
         + {{(ADDR_WIDTH-6){1'b0}},           tap};
-    wire [ADDR_WIDTH-1:0] addr_B = addr_A + ADDR_WIDTH'(NSC);
+    wire [ADDR_WIDTH-1:0] addr_B = addr_A + LP_NSC_B;
 
     // Combinatorial result read
     assign result_autocorr_I = mem_P_I[result_rd_addr];

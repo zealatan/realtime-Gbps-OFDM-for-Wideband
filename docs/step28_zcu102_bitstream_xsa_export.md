@@ -147,13 +147,98 @@ cp /mnt/c/RTL_SYNC/reports/step28/step28_build.log \
 
 ## Execution Status
 
-**Prepared — pending Windows Vivado execution.**
+**Step 28 failed during synthesis (Step 28B RTL fix applied, pending re-run).**
 
-The Tcl script and batch runner have been authored in WSL and are ready for
-execution on Windows.
+Initial execution: Vivado synthesis failed on the packaged IP run
+`sync_phase1_bd_wrapper_0_0_synth_1` with:
 
-Synthesis, implementation, timing, bitstream generation, and XSA export have
-**not yet been run**.
+```
+ERROR: [Synth 8-2716] syntax error near '''
+[.../ipshared/.../src/cp_autocorr_core.v:97]
+```
+
+See **Step 28B** section below for root cause and fix.
+
+---
+
+## Step 28B — RTL Verilog Syntax Compatibility Fix
+
+### Original Vivado Error
+
+```
+ERROR: [Synth 8-2716] syntax error near '''
+  File: .../ipshared/.../src/cp_autocorr_core.v:97
+  
+Additional warnings during IP packaging:
+  syntax near ''' in timing_sync_top.v
+  syntax near ''' in frac_cfo_frame_corrector_top.v
+```
+
+The apostrophe character `'` in the error messages is the SystemVerilog width/type cast operator.
+
+### Root Cause
+
+Three RTL files contained SystemVerilog-only width-cast syntax (`WIDTH'(expr)` or `N'(expr)`).
+This syntax is accepted by `xvlog -sv` (the simulator) but rejected by Vivado's Verilog IP synthesis parser:
+
+- `ipx::package_project` copies RTL into the IP directory
+- During BD synthesis (`launch_runs synth_1`), Vivado synthesizes the packaged IP as **Verilog** (not SystemVerilog)
+- The `WIDTH'(...)` cast form is a SystemVerilog construct — the Verilog parser rejects the apostrophe as a syntax error
+
+The `xvlog -sv` flag causes the simulator to accept SystemVerilog syntax even in `.v` files.
+Vivado packaged IP synthesis uses Verilog parsing (matching the `.v` extension) without the `-sv` flag.
+
+### All Patterns Fixed (8 total)
+
+| File | Line | Original (SV) | Fixed (Verilog-2001) |
+|------|------|----------------|----------------------|
+| `cp_autocorr_core.v` | 97 | `ADDR_WIDTH'(NSC)` | `LP_NSC_B` (localparam) |
+| `timing_sync_top.v` | 132 | `9'(NSC)` | `LP_NSC_IDX` (localparam) |
+| `timing_sync_top.v` | 155 | `10'(NSC)` | `LP_NSC_CNT` (localparam) |
+| `frac_cfo_frame_corrector_top.v` | 176 | `PLAY_CNT_W'(TOTAL_SAMPLES)` | `TOTAL_SAMPLES` |
+| `frac_cfo_frame_corrector_top.v` | 320 | `BUF_AW'(play_rd_ptr)` | `play_rd_ptr` |
+| `frac_cfo_frame_corrector_top.v` | 393 | `BUF_AW'(peak_lag)` | `peak_lag` |
+| `frac_cfo_frame_corrector_top.v` | 400 | `5'(NCO_WAIT)` | `NCO_WAIT` |
+| `frac_cfo_frame_corrector_top.v` | 432 | `PLAY_CNT_W'(TOTAL_SAMPLES - 1)` | `TOTAL_SAMPLES - 1` |
+
+**Fix strategy:**
+
+- For integer parameter casts to sized wire connections/arithmetic: add a `localparam` with an explicit width, e.g. `localparam [ADDR_WIDTH-1:0] LP_NSC_B = NSC;` — the localparam assignment performs the truncation at elaboration time in clean Verilog-2001.
+- For casts where width constraint comes from the assignment context (LHS reg/wire width): drop the cast entirely. Verilog-2001 assignment or comparison truncates/zero-extends the RHS to match the LHS width.
+
+**Arithmetic correctness:** All parameter values are small relative to their target widths (e.g. NSC=256 fits in ADDR_WIDTH=12 bits, TOTAL_SAMPLES=288 fits in PLAY_CNT_W=9 bits), so no numeric overflow occurs from removing the explicit cast.
+
+### Regression Status
+
+xvlog not in PATH in WSL — regressions could not be run.
+RTL changes are mechanical syntax substitutions with no algorithmic change.
+The same values flow through the same arithmetic; only the cast notation changed.
+
+WSL regression command (run when Vivado toolchain is in PATH):
+```bash
+bash scripts/run_frac_cfo_frame_corrector_top_sim.sh
+bash scripts/run_frac_cfo_sync_bram_test_wrapper_sim.sh
+bash scripts/run_frac_cfo_sync_axi_stream_wrapper_sim.sh
+```
+Expected: PASS=176, PASS=23, PASS=23.
+
+### Required Windows Re-run Sequence
+
+Step 27 must be re-run first to repackage the IP with the fixed RTL (the packaged IP
+in `vivado/ip_repo/` has a cached copy of the old RTL).
+
+```bat
+cd C:\RTL_SYNC
+.\scripts\windows\run_step27_create_zcu102_bd_no_ila.bat
+.\scripts\windows\run_step28_build_bitstream_xsa.bat
+```
+
+Step 27 will:
+- Delete and recreate `vivado/ip_repo/frac_cfo_sync_bram_test_wrapper_1_0/`
+- Re-import RTL with the fixed syntax
+- Recreate `vivado/step27_zcu102_bd/step27_zcu102_bd.xpr`
+
+Step 28 will then synthesize the fixed RTL inside the packaged IP.
 
 ---
 

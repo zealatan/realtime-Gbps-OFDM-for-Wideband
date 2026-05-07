@@ -62,6 +62,11 @@ module timing_sync_top #(
         S_LATCH    = 3'd3,
         S_DONE     = 3'd4;
 
+    // Verilog-2001: 9'(NSC) and 10'(NSC) are SystemVerilog-only cast syntax.
+    // Use sized localparams instead so packaged IP synthesis accepts Verilog type.
+    localparam [INDEX_WIDTH-1:0] LP_NSC_IDX = NSC;  // for num_lags port  [INDEX_WIDTH-1:0]
+    localparam [9:0]             LP_NSC_CNT = NSC;  // for max_count port [COUNT_WIDTH-1:0]==[9:0]
+
     reg [2:0] state;
 
     // -----------------------------------------------------------------------
@@ -129,7 +134,7 @@ module timing_sync_top #(
         .aclk             (aclk),
         .aresetn          (aresetn),
         .start            (tmc_start_r),
-        .num_lags         (9'(NSC)),
+        .num_lags         (LP_NSC_IDX),
         .done             (tmc_done),
         .busy             (tmc_busy),
         .result_rd_addr   (tmc_result_rd_addr_w),
@@ -152,7 +157,7 @@ module timing_sync_top #(
         .aclk       (aclk),
         .aresetn    (aresetn),
         .start      (pd_start_r),
-        .max_count  (10'(NSC)),
+        .max_count  (LP_NSC_CNT),
         .data_in    (tmc_metric_out),
         .data_valid (tmc_metric_valid),
         .data_last  (tmc_metric_last),

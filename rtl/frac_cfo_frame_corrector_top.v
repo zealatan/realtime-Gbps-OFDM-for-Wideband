@@ -173,7 +173,7 @@ module frac_cfo_frame_corrector_top #(
 
     wire corr_accept = play_hold_valid && corr_tready;
     wire can_issue   = (state == S_CORRECT) && !play_rd_pend &&
-                       (play_rd_ptr < PLAY_CNT_W'(TOTAL_SAMPLES)) &&
+                       (play_rd_ptr < TOTAL_SAMPLES) &&
                        (!play_hold_valid || corr_accept);
 
     // =========================================================================
@@ -317,7 +317,7 @@ module frac_cfo_frame_corrector_top #(
             end
             S_CORRECT: begin
                 buf_rd_en   = can_issue;
-                buf_rd_addr = slot_start_r + BUF_AW'(play_rd_ptr);
+                buf_rd_addr = slot_start_r + play_rd_ptr;
             end
             default: begin
                 buf_rd_en   = 1'b0;
@@ -390,14 +390,14 @@ module frac_cfo_frame_corrector_top #(
                     if (tfc_done) begin
                         peak_lag_r   <= peak_lag;
                         frac_phase_r <= frac_phase;
-                        slot_start_r <= frame_index_r + BUF_AW'(peak_lag);
+                        slot_start_r <= frame_index_r + peak_lag;
                         nco_cnt      <= 5'd0;
                         state        <= S_LOAD_NCO;
                     end
                 end
 
                 S_LOAD_NCO: begin
-                    if (nco_cnt == 5'(NCO_WAIT)) begin
+                    if (nco_cnt == NCO_WAIT) begin
                         // sincos_valid is now asserted; initialize playback
                         play_rd_ptr     <= {PLAY_CNT_W{1'b0}};
                         play_rd_pend    <= 1'b0;
@@ -429,7 +429,7 @@ module frac_cfo_frame_corrector_top #(
                     // Issue next read when hold is free (or being freed)
                     if (can_issue) begin
                         play_rd_pend <= 1'b1;
-                        play_rd_last <= (play_rd_ptr == PLAY_CNT_W'(TOTAL_SAMPLES - 1));
+                        play_rd_last <= (play_rd_ptr == TOTAL_SAMPLES - 1);
                         play_rd_ptr  <= play_rd_ptr + 1;
                     end
 
