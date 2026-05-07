@@ -771,7 +771,7 @@ RTL modified: No (new files only).
 
 ### Step 27 — ZCU102 Vivado Block Design Integration (No ILA)
 
-Status: **v1 failed (27B) — v2 failed (27C) — v3 prepared, pending Windows Vivado re-run**
+Status: **COMPLETE** (v3 script passed on Windows)
 
 Prompt archives:
 - `md_files/27_zcu102_bd_integration_no_ila_prompt.md` (original Step 27)
@@ -828,42 +828,91 @@ Address map:
 - wrapper_0 base: 0xA0000000
 - wrapper_0 range: 64 KB
 
-validate_bd_design: NOT RUN (pending Windows Vivado re-run with v3)
-Synthesis: NOT RUN
-Bitstream: NOT RUN
+validate_bd_design: PASS (v3 confirmed on Windows)
+HDL wrapper: PASS
+Output products: PASS
+Synthesis: NOT RUN (Step 28)
+Bitstream: NOT RUN (Step 28)
+RTL modified: No
+
+---
+
+---
+
+---
+
+### Step 28 — ZCU102 Synthesis, Implementation, Bitstream, and XSA Export
+
+Status: **Prepared, pending Windows Vivado execution.**
+
+Prompt archive: `md_files/28_zcu102_bitstream_xsa_export_prompt.md`
+
+Files created:
+- `scripts/vivado/step28_build_bitstream_xsa.tcl` — Vivado batch Tcl: open Step 27 project, synth, impl, reports, timing check, bitstream, XSA
+- `scripts/windows/run_step28_build_bitstream_xsa.bat` — Windows batch runner
+- `docs/step28_zcu102_bitstream_xsa_export.md` — step documentation
+- `reports/step28/` — directory created (empty until Windows run)
+- `outputs/step28/` — directory created (empty until Windows run)
+
+Vivado project: `vivado/step27_zcu102_bd/step27_zcu102_bd.xpr`
+BD top: `sync_phase1_bd_wrapper`
+Board: ZCU102 / `xczu9eg-ffvb1156-2-e`
+Vivado: 2022.2 (Windows only)
+
+Expected outputs (after Windows run):
+- `outputs/step28/sync_phase1_bd_wrapper.bit`
+- `outputs/step28/sync_phase1_bd_wrapper.xsa`
+
+Build steps performed by Tcl:
+1. Open Step 27 project; verify top = `sync_phase1_bd_wrapper`
+2. Reset prior runs (idempotent)
+3. Launch `synth_1` (4 jobs); wait; check status
+4. Open synthesized design; generate synth utilization + timing reports
+5. Launch `impl_1` (4 jobs); wait; check status
+6. Open implemented design; generate impl utilization, timing, DRC, power reports
+7. Check timing: WNS ≥ 0 → `TIMING CHECK: PASS`; else exit non-zero
+8. `write_bitstream -force outputs/step28/sync_phase1_bd_wrapper.bit`
+9. `write_hw_platform -fixed -include_bit -force -file outputs/step28/sync_phase1_bd_wrapper.xsa`
+
+Timing check: prints `TIMING CHECK: PASS` or `TIMING CHECK: FAIL`; exits non-zero on failure
+
+No ILA, no DMA, no VIO, no integer CFO, no Vitis firmware in this step.
+
+Synthesis run: NOT RUN
+Implementation run: NOT RUN
+Bitstream: NOT GENERATED
+XSA: NOT EXPORTED
 RTL modified: No
 
 Recommended user action — run on Windows:
 ```
 cd C:\RTL_SYNC
-scripts\windows\run_step27_create_zcu102_bd_no_ila.bat
+.\scripts\windows\run_step28_build_bitstream_xsa.bat
 ```
 
-Log output: reports\step27\step27_create_bd.log
+Log: `reports\step28\step28_build.log`
+
+Then copy results back to WSL:
+```bash
+cp /mnt/c/RTL_SYNC/outputs/step28/sync_phase1_bd_wrapper.bit /home/zealatan/RTL_SYNC/outputs/step28/
+cp /mnt/c/RTL_SYNC/outputs/step28/sync_phase1_bd_wrapper.xsa /home/zealatan/RTL_SYNC/outputs/step28/
+cp /mnt/c/RTL_SYNC/reports/step28/*.rpt /home/zealatan/RTL_SYNC/reports/step28/
+cp /mnt/c/RTL_SYNC/reports/step28/step28_build.log /home/zealatan/RTL_SYNC/reports/step28/
+```
 
 ---
 
 ## Next Step
 
-### Immediate — Re-run Step 27 on Windows with v3 script
+### Step 29 — Vitis Baremetal Control Application for Known-Vector Test
 
-```
-cd C:\RTL_SYNC
-scripts\windows\run_step27_create_zcu102_bd_no_ila.bat
-```
+Create a Vitis 2022.2 baremetal C application (Cortex-A53 APU) that:
+1. Writes known IQ samples into input memory window (`0xA0001000`–`0xA0001FFF`)
+2. Programs CFG_CFO_STEP, CFG_TIMING_OFFSET, CFG_FRAME_LEN, INPUT_LEN, OUTPUT_MAX_LEN
+3. Enables wrapper + writes start_pulse
+4. Polls STATUS.done_sticky
+5. Reads INPUT_COUNT, OUTPUT_COUNT, output memory window
+6. Prints results over UART
 
-v3 fixes applied:
-- HPM1 FPD disabled (`PSU__USE__M_AXI_GP1=0`)
-- Address assignment uses `assign_bd_address -offset -range <slave_seg>`
-
-Expected result: `validate_bd_design` and `make_wrapper` both pass with no errors.
-
-### Step 28 — Synthesis / Implementation / Bitstream / XSA Export
-
-Run the Step 27 block design through the full Vivado flow on Windows:
-- Synthesis + implementation + write_bitstream
-- write_hw_platform → sync_phase1.xsa
-- Open XSA in Vitis for ARM firmware development
-
-Or alternatively: connect AXI-Lite CFG registers to DUT runtime inputs
-(THRESHOLD, WINDOW_LEN, HIT_COUNT) before implementation.
+Prerequisite: Step 28 bitstream and XSA must be generated.
+Import `sync_phase1_bd_wrapper.xsa` into Vitis 2022.2 to create the baremetal platform.

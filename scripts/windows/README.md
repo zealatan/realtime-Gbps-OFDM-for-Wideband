@@ -168,3 +168,68 @@ cp /mnt/c/RTL_SYNC/reports/step27/step27_create_bd.log \
 ### Recommended Step 28
 
 Run the Step 27 block design through synthesis + implementation + bitstream + XSA export.
+
+---
+
+## Step 28 — ZCU102 Synthesis, Implementation, Bitstream, XSA
+
+### Command
+
+Run from Windows PowerShell or CMD:
+
+```bat
+cd C:\RTL_SYNC
+scripts\windows\run_step28_build_bitstream_xsa.bat
+```
+
+### What it does
+
+1. Opens Step 27 project: `vivado\step27_zcu102_bd\step27_zcu102_bd.xpr`
+2. Verifies top = `sync_phase1_bd_wrapper`
+3. Resets prior runs (idempotent)
+4. Runs synthesis (`synth_1`, 4 jobs)
+5. Generates synthesis utilization and timing summary reports
+6. Runs implementation (`impl_1`, 4 jobs)
+7. Generates implementation utilization, timing, DRC, and power reports
+8. Checks timing: prints `TIMING CHECK: PASS` or exits non-zero
+9. Writes bitstream to `outputs\step28\sync_phase1_bd_wrapper.bit`
+10. Exports XSA to `outputs\step28\sync_phase1_bd_wrapper.xsa`
+11. Saves full log to `reports\step28\step28_build.log`
+
+### Outputs
+
+| File | Contents |
+|------|----------|
+| `outputs\step28\sync_phase1_bd_wrapper.bit` | FPGA bitstream |
+| `outputs\step28\sync_phase1_bd_wrapper.xsa` | Vitis hardware platform |
+| `reports\step28\step28_build.log` | Full console log |
+| `reports\step28\step28_synth_utilization.rpt` | Synthesis resource usage |
+| `reports\step28\step28_synth_timing_summary.rpt` | Synthesis timing |
+| `reports\step28\step28_impl_utilization.rpt` | Implementation resource usage |
+| `reports\step28\step28_timing_summary.rpt` | Implementation timing (WNS/WHS) |
+| `reports\step28\step28_drc.rpt` | DRC results |
+| `reports\step28\step28_power.rpt` | Power estimate |
+
+### No ILA / No DMA / No Integer CFO
+
+ILA, DMA, VIO, and integer CFO are intentionally omitted.
+Phase 1 bring-up uses PS AXI reads/writes and UART print-out via Vitis (Step 29).
+
+### Copying results back to WSL
+
+```bash
+# From WSL after Windows run:
+cp /mnt/c/RTL_SYNC/outputs/step28/sync_phase1_bd_wrapper.bit \
+   /home/zealatan/RTL_SYNC/outputs/step28/
+cp /mnt/c/RTL_SYNC/outputs/step28/sync_phase1_bd_wrapper.xsa \
+   /home/zealatan/RTL_SYNC/outputs/step28/
+cp /mnt/c/RTL_SYNC/reports/step28/*.rpt \
+   /home/zealatan/RTL_SYNC/reports/step28/
+cp /mnt/c/RTL_SYNC/reports/step28/step28_build.log \
+   /home/zealatan/RTL_SYNC/reports/step28/
+```
+
+### Recommended Step 29
+
+Create a Vitis baremetal C application for known-vector testing.
+Import `sync_phase1_bd_wrapper.xsa` into Vitis 2022.2 as the hardware platform.

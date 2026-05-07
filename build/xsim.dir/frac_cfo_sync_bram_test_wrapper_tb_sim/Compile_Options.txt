@@ -1,1 +1,0 @@
-"frac_cfo_sync_bram_test_wrapper_tb" -debug "typical" -timescale "1ns/1ps" -s "frac_cfo_sync_bram_test_wrapper_tb_sim" 

@@ -266,11 +266,12 @@ RTL not modified.  No simulation regressions.
 
 **v2 failed** (Step 27C root cause: HPM1 enabled by board automation; address assignment on wrong segment type).
 
-**v3 prepared — pending Windows Vivado re-run.**
+**v3 complete — confirmed on Windows Vivado.**
 
-The v3 Tcl script has been authored in WSL and is ready for execution on Windows.
-`validate_bd_design` and output product generation have **not yet been run** with v3.
-No synthesis, no implementation, no bitstream.
+`validate_bd_design`: PASS
+HDL wrapper (`sync_phase1_bd_wrapper`): PASS
+Output products generated: PASS
+No synthesis, no implementation, no bitstream (deferred to Step 28).
 
 ## Known Limitations
 
