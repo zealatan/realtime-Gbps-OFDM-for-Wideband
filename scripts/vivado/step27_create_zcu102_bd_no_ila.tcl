@@ -1,5 +1,5 @@
 # =============================================================================
-# step27_create_zcu102_bd_no_ila.tcl  (v2 — local IP packaging)
+# step27_create_zcu102_bd_no_ila.tcl  (v3 — HPM1 disable + address fix)
 # Step 27: ZCU102 Vivado Block Design — frac_cfo_sync_bram_test_wrapper
 #          No ILA, No DMA, No implementation.
 #
@@ -9,6 +9,14 @@
 # SystemVerilog, and BD module-reference does not accept SystemVerilog tops.
 # Fix: package the RTL hierarchy as a local Vivado IP (using ipx commands),
 # then instantiate via -type ip -vlnv instead of -type module -reference.
+#
+# Fix applied (Step 27C):
+#   1. ZCU102 board automation enabled M_AXI_HPM1_FPD, leaving maxihpm1_fpd_aclk
+#      unconnected and causing validate_bd_design to error.
+#      Fix: explicitly set PSU__USE__M_AXI_GP1=0 after automation.
+#   2. set_property offset/range on slave-side bd_addr_segs emitted warnings
+#      (OFFSET/RANGE properties only exist on master-mapped segments).
+#      Fix: use assign_bd_address -offset -range <slave_seg> directly.
 #
 # Run from Windows Vivado 2022.2 batch mode, from C:\RTL_SYNC:
 #   C:\Xilinx\Vivado\2022.2\bin\vivado.bat -mode batch ^
@@ -67,7 +75,7 @@ set RTL_FILES [list \
 ]
 
 puts "========================================================"
-puts "Step 27 (v2): ZCU102 Block Design — IP packaging path"
+puts "Step 27 (v3): ZCU102 Block Design — IP packaging + HPM1 disable + addr fix"
 puts "Part:    $PART"
 puts "BD:      $BD_NAME"
 puts "IP VLNV: $IP_VLNV"
@@ -272,11 +280,15 @@ if {$board_available} {
     }
 }
 
-# Minimal PS configuration (idempotent — reinforces automation or provides fallback)
+# Minimal PS configuration (idempotent — reinforces automation or provides fallback).
+# PSU__USE__M_AXI_GP1=0 is critical: ZCU102 board automation enables both
+# M_AXI_HPM0_FPD and M_AXI_HPM1_FPD.  HPM1 is unused in this design; if left
+# enabled its maxihpm1_fpd_aclk pin is unconnected and validate_bd_design fails.
 set_property CONFIG.PSU__USE__M_AXI_GP0              {1}   $ps
+set_property CONFIG.PSU__USE__M_AXI_GP1              {0}   $ps
 set_property CONFIG.PSU__FPGA_PL0_ENABLE             {1}   $ps
 set_property CONFIG.PSU__CRL_APB__PL0_REF_CTRL__FREQMHZ {100} $ps
-puts "INFO: PS configured: HPM0 FPD master enabled, FCLK0 = 100 MHz."
+puts "INFO: PS configured: HPM0 FPD enabled, HPM1 FPD disabled, FCLK0 = 100 MHz."
 
 # proc_sys_reset
 puts "INFO: Adding proc_sys_reset..."
@@ -384,19 +396,31 @@ if {$wrap_axi_intf eq ""} {
 
 # =============================================================================
 # Address assignment
+# assign_bd_address -offset -range <slave_seg> both creates the master-mapped
+# segment and sets its offset/range in one call.  This avoids the Step 27C
+# failure where set_property offset/range was called on a slave-side segment
+# (which has no OFFSET/RANGE properties — only master-mapped segments do).
 # =============================================================================
 puts "INFO: Assigning addresses..."
-assign_bd_address
-
-set segs [get_bd_addr_segs -of_objects [get_bd_intf_pins ${WRAP_CELL}/*]]
-if {[llength $segs] > 0} {
-    set seg [lindex $segs 0]
-    set_property offset $WRAP_BASE $seg
-    set_property range  $WRAP_RANGE $seg
-    puts "INFO: Address assigned: $WRAP_BASE, range $WRAP_RANGE"
-} else {
-    puts "WARNING: No address segments found for $WRAP_CELL."
-    puts "         Assign address manually in Vivado GUI after BD creation."
+set slave_segs [get_bd_addr_segs -of_objects [get_bd_intf_pins ${WRAP_CELL}/*]]
+set addr_ok 0
+if {[llength $slave_segs] > 0} {
+    set slave_seg [lindex $slave_segs 0]
+    if {[catch {
+        assign_bd_address \
+            -offset $WRAP_BASE \
+            -range  64K \
+            $slave_seg
+        set addr_ok 1
+        puts "INFO: Address assigned: offset=$WRAP_BASE range=64K"
+    } addr_err]} {
+        puts "WARNING: Targeted assign_bd_address failed: $addr_err"
+        puts "INFO: Falling back to auto-assign..."
+    }
+}
+if {!$addr_ok} {
+    catch {assign_bd_address} ae
+    puts "INFO: Auto-assigned addresses. Verify $WRAP_BASE in Vivado GUI."
 }
 
 # =============================================================================
@@ -443,7 +467,7 @@ if {[catch {
 # =============================================================================
 puts ""
 puts "========================================================"
-puts "Step 27 (v2) COMPLETE."
+puts "Step 27 (v3) COMPLETE."
 puts ""
 puts "IP packaged: $IP_VLNV"
 puts "IP repo:     $IP_ROOT"

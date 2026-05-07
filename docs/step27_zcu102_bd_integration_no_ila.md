@@ -212,14 +212,64 @@ scripts\windows\run_step27_create_zcu102_bd_no_ila.bat
 
 Output log: `reports\step27\step27_create_bd.log`
 
+## Failure and Fix (Step 27C)
+
+### Step 27C Failures (from Windows Vivado v2 run)
+
+Running v2 produced two validate_bd_design failures:
+
+**Failure 1 — unconnected `maxihpm1_fpd_aclk`**
+
+```
+[BD 41-1273] ...maxihpm1_fpd_aclk is an unconnected clock input port.
+```
+
+Root cause: ZCU102 board preset enables both M_AXI_HPM0_FPD and M_AXI_HPM1_FPD.
+HPM1 is unused (only HPM0 connects to the SmartConnect).  The HPM1 clock pin is
+left dangling, which is a BD validation error.
+
+Fix: Add `set_property CONFIG.PSU__USE__M_AXI_GP1 {0} $ps` after PS automation.
+This overrides whatever the board preset enabled.
+
+**Failure 2 — `set_property offset/range` on wrong segment type**
+
+```
+WARNING: Property offset does not exist on object of type bd_addr_seg.
+WARNING: Property range does not exist on object of type bd_addr_seg.
+```
+
+Root cause: v2 fetched slave-side segments with
+`get_bd_addr_segs -of_objects [get_bd_intf_pins wrapper_0/*]`
+then called `set_property offset/range` on them.
+Slave-side `bd_addr_seg` objects have no OFFSET/RANGE properties —
+only the master-mapped segments that `assign_bd_address` creates have them.
+
+Fix: Replace `set_property offset/range` with the single-call form
+`assign_bd_address -offset $WRAP_BASE -range 64K $slave_seg`.
+This both creates the master-mapped segment and sets its offset/range.
+Plain `assign_bd_address` (auto) is used as fallback.
+
+### v3 Fix Summary
+
+| Change | v2 | v3 |
+|--------|----|----|
+| HPM1 disable | missing | `set_property CONFIG.PSU__USE__M_AXI_GP1 {0} $ps` |
+| Address assign | `set_property offset/range $slave_seg` (fails) | `assign_bd_address -offset -range $slave_seg` (correct) |
+
+RTL not modified.  No simulation regressions.
+
+---
+
 ## Execution Status
 
 **v1 failed** (Step 27B root cause: `-sv` flag → SystemVerilog type → BD module-reference rejected).
 
-**v2 prepared — pending Windows Vivado re-run.**
+**v2 failed** (Step 27C root cause: HPM1 enabled by board automation; address assignment on wrong segment type).
 
-The v2 Tcl script (IP packaging approach) has been authored in WSL and is ready for execution on Windows.
-`validate_bd_design` and output product generation have **not yet been run**.
+**v3 prepared — pending Windows Vivado re-run.**
+
+The v3 Tcl script has been authored in WSL and is ready for execution on Windows.
+`validate_bd_design` and output product generation have **not yet been run** with v3.
 No synthesis, no implementation, no bitstream.
 
 ## Known Limitations

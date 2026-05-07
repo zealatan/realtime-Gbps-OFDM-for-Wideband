@@ -771,22 +771,29 @@ RTL modified: No (new files only).
 
 ### Step 27 — ZCU102 Vivado Block Design Integration (No ILA)
 
-Status: **v1 failed — v2 prepared (Step 27B fix applied), pending Windows Vivado re-run**
+Status: **v1 failed (27B) — v2 failed (27C) — v3 prepared, pending Windows Vivado re-run**
 
 Prompt archives:
 - `md_files/27_zcu102_bd_integration_no_ila_prompt.md` (original Step 27)
-- `md_files/27b_package_wrapper_as_local_ip_prompt.md` (Step 27B fix)
+- `md_files/27b_package_wrapper_as_local_ip_prompt.md` (Step 27B fix — IP packaging)
+- `md_files/27c_disable_unused_hpm1_prompt.md` (Step 27C fix — HPM1 + address)
 
-v1 failure:
+v1 failure (Step 27B):
 - Error: `create_bd_cell -type module -reference frac_cfo_sync_bram_test_wrapper` rejected
 - Cause: `read_verilog -sv` marks .v files as SystemVerilog type; BD module-reference disallows SV tops
 - Fix: Package RTL as local Vivado IP (ipx::package_project), instantiate as -type ip -vlnv
 
+v2 failures (Step 27C):
+- Error 1: `maxihpm1_fpd_aclk` unconnected — ZCU102 board automation enables HPM1 FPD; HPM1 unused
+  Fix: `set_property CONFIG.PSU__USE__M_AXI_GP1 {0} $ps` after PS configuration
+- Error 2: `set_property offset/range` on slave-side bd_addr_seg (no OFFSET/RANGE property)
+  Fix: `assign_bd_address -offset $WRAP_BASE -range 64K $slave_seg` (targeted one-call form)
+
 Files created/updated:
-- `scripts/vivado/step27_create_zcu102_bd_no_ila.tcl` — rewritten (v2): IP packaging + BD creation
+- `scripts/vivado/step27_create_zcu102_bd_no_ila.tcl` — v3: HPM1 disable + address fix
 - `scripts/windows/run_step27_create_zcu102_bd_no_ila.bat` — unchanged
-- `docs/step27_zcu102_bd_integration_no_ila.md` — updated with failure, root cause, fix
-- `md_files/27b_package_wrapper_as_local_ip_prompt.md` — Step 27B prompt archive
+- `docs/step27_zcu102_bd_integration_no_ila.md` — updated with 27C failure/fix section
+- `md_files/27c_disable_unused_hpm1_prompt.md` — Step 27C prompt archive
 - `reports/step27/` — empty until Windows run
 
 Target:
@@ -797,19 +804,21 @@ Target:
 - Vivado project: vivado/step27_zcu102_bd/
 - IP repo: vivado/ip_repo/frac_cfo_sync_bram_test_wrapper_1_0/
 
-Block design architecture (unchanged):
-- PS (zynq_ultra_ps_e_0): M_AXI_HPM0_FPD master, pl_clk0 at 100 MHz
+Block design architecture:
+- PS (zynq_ultra_ps_e_0): M_AXI_HPM0_FPD master only (HPM1 disabled), pl_clk0 at 100 MHz
 - AXI SmartConnect (axi_smc): 1 master in → 1 slave out
 - proc_sys_reset_0: pl_resetn0 → peripheral_aresetn
 - xlconstant_0: dcm_locked tied to 1
 - wrapper_0 (frac_cfo_sync_bram_test_wrapper): AXI-Lite slave, packaged as local IP
 
-Vivado integration approach (v2):
-- Raw module reference: removed
-- Packaged local IP: yes
+Vivado integration approach (v3):
+- Raw module reference: removed (v2)
+- Packaged local IP: yes (v2)
 - IP VLNV: zealatan.local:user:frac_cfo_sync_bram_test_wrapper:1.0
 - IP packaging: ipx::package_project with add_files (no -sv flag)
 - S_AXI interface: auto-inferred + fallback manual definition
+- HPM1 FPD: explicitly disabled (v3)
+- Address assignment: assign_bd_address -offset -range <slave_seg> (v3)
 
 ILA: omitted intentionally
 DMA: not added
@@ -819,7 +828,7 @@ Address map:
 - wrapper_0 base: 0xA0000000
 - wrapper_0 range: 64 KB
 
-validate_bd_design: NOT RUN (pending Windows Vivado re-run)
+validate_bd_design: NOT RUN (pending Windows Vivado re-run with v3)
 Synthesis: NOT RUN
 Bitstream: NOT RUN
 RTL modified: No
@@ -835,6 +844,19 @@ Log output: reports\step27\step27_create_bd.log
 ---
 
 ## Next Step
+
+### Immediate — Re-run Step 27 on Windows with v3 script
+
+```
+cd C:\RTL_SYNC
+scripts\windows\run_step27_create_zcu102_bd_no_ila.bat
+```
+
+v3 fixes applied:
+- HPM1 FPD disabled (`PSU__USE__M_AXI_GP1=0`)
+- Address assignment uses `assign_bd_address -offset -range <slave_seg>`
+
+Expected result: `validate_bd_design` and `make_wrapper` both pass with no errors.
 
 ### Step 28 — Synthesis / Implementation / Bitstream / XSA Export
 
