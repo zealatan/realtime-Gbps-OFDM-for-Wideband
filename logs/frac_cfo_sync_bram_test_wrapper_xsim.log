@@ -1,0 +1,67 @@
+
+****** xsim v2022.2 (64-bit)
+  **** SW Build 3671981 on Fri Oct 14 04:59:54 MDT 2022
+  **** IP Build 3669848 on Fri Oct 14 08:30:02 MDT 2022
+    ** Copyright 1986-2022 Xilinx, Inc. All Rights Reserved.
+
+source xsim.dir/frac_cfo_sync_bram_test_wrapper_tb_sim/xsim_script.tcl
+# xsim {frac_cfo_sync_bram_test_wrapper_tb_sim} -autoloadwcfg -runall
+Time resolution is 1 ps
+run -all
+
+--- T1: STATUS=0 after reset ---
+PASS  T1_STATUS_after_reset: got=0 exp=0
+
+--- T2: Write enable=1, read CONTROL ---
+PASS  T2_bresp_OKAY: got=0 exp=0
+PASS  T2_enable_readback: got=1 exp=1
+
+--- T3: INPUT_LEN / OUTPUT_MAX_LEN write/read ---
+PASS  T3_INPUT_LEN: got=28 exp=28
+PASS  T3_OUTPUT_MAX_LEN: got=20 exp=20
+
+--- T4: CFG_CFO_STEP byte strobe ---
+PASS  T4_CFG_CFO_full_write: got=0xdeadbeef exp=0xdeadbeef
+PASS  T4_CFG_CFO_byte_strobe: got=0xffadbeef exp=0xffadbeef
+
+--- T5: input_mem write/read ---
+PASS  T5_input_mem_rw: got=0x12345678 exp=0x12345678
+
+--- T6: output_mem[0] = 0 before run ---
+PASS  T6_output_mem_before_run: got=0 exp=0
+
+--- T7: Known-vector run ---
+T7: STATUS=0x0000009a polls=33
+PASS  T7_done_sticky: got=1 exp=1
+PASS  T7_no_frame_error: got=0 exp=0
+PASS  T7_INPUT_COUNT: got=28 exp=28
+PASS  T7_OUTPUT_COUNT: got=20 exp=20
+PASS  T7_output_mem_read_OKAY: got=0 exp=0
+
+--- T8: Write output_mem → SLVERR ---
+PASS  T8_output_mem_write_SLVERR: got=2 exp=2
+
+--- T9: Read unmapped address → SLVERR ---
+PASS  T9_unmapped_read_SLVERR: got=2 exp=2
+
+--- T10: Output overflow ---
+T10: STATUS=0x000000da polls=33
+PASS  T10_overflow_sticky: got=1 exp=1
+PASS  T10_output_count_capped: got=5 exp=5
+
+--- T11: Soft reset clears status ---
+PASS  T11_STATUS_after_softreset: got=0 exp=0
+PASS  T11_INPUT_CNT_after_softreset: got=0 exp=0
+PASS  T11_OUTPUT_CNT_after_softreset: got=0 exp=0
+
+--- T12: clr_status_pulse clears done_sticky ---
+PASS  T12_done_sticky_before_clr: got=1 exp=1
+PASS  T12_done_sticky_after_clr: got=0 exp=0
+
+=========================
+PASS=23  FAIL=0
+CI GATE: PASSED
+=========================
+$finish called at time : 17855 ns : File "/home/zealatan/RTL_SYNC/tb/frac_cfo_sync_bram_test_wrapper_tb.sv" Line 460
+exit
+INFO: [Common 17-206] Exiting xsim at Thu May  7 15:36:45 2026...

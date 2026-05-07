@@ -1,0 +1,29 @@
+Vivado Simulator v2022.2
+Copyright 1986-1999, 2001-2022 Xilinx, Inc. All Rights Reserved.
+Running: /home/zealatan/Downloads/Vivado/2022.2/bin/unwrapped/lnx64.o/xelab frac_cfo_sync_axi_stream_wrapper_tb -debug typical -timescale 1ns/1ps -s frac_cfo_sync_axi_stream_wrapper_tb_sim 
+Multi-threading is on. Using 10 slave threads.
+Starting static elaboration
+Pass Through NonSizing Optimizer
+Completed static elaboration
+Starting simulation data flow analysis
+Completed simulation data flow analysis
+Time Resolution for simulation is 1ps
+Compiling module work.frac_cfo_sync_control_s_axi
+Compiling module work.iq_frame_buffer(ADDR_WIDTH=10,DE...
+Compiling module work.frame_detector(ADDR_WIDTH=10,IND...
+Compiling module work.cp_autocorr_core(NSC=16,CP_LEN=4...
+Compiling module work.timing_metric_core(NSC=16)
+Compiling module work.peak_detector(METRIC_WIDTH=32)
+Compiling module work.timing_sync_top(NSC=16,CP_LEN=4,...
+Compiling module work.cordic_atan2
+Compiling module work.frac_cfo_estimator
+Compiling module work.timing_frac_cfo_top(NSC=16,CP_LE...
+Compiling module work.nco_phase_gen
+Compiling module work.axis_complex_mult_default
+Compiling module work.complex_mult_iq(CONJ_B=1)
+Compiling module work.complex_rotator
+Compiling module work.frac_cfo_corrector_top
+Compiling module work.frac_cfo_frame_corrector_top(NSC...
+Compiling module work.frac_cfo_sync_axi_stream_wrapper...
+Compiling module work.frac_cfo_sync_axi_stream_wrapper...
+Built simulation snapshot frac_cfo_sync_axi_stream_wrapper_tb_sim

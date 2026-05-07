@@ -1,0 +1,64 @@
+
+****** xsim v2022.2 (64-bit)
+  **** SW Build 3671981 on Fri Oct 14 04:59:54 MDT 2022
+  **** IP Build 3669848 on Fri Oct 14 08:30:02 MDT 2022
+    ** Copyright 1986-2022 Xilinx, Inc. All Rights Reserved.
+
+source xsim.dir/frac_cfo_sync_axi_stream_wrapper_tb_sim/xsim_script.tcl
+# xsim {frac_cfo_sync_axi_stream_wrapper_tb_sim} -autoloadwcfg -runall
+Time resolution is 1 ps
+run -all
+
+--- T1: STATUS=0 after reset ---
+PASS  ATUS_after_reset: got=0 exp=0
+PASS  T1_rresp_OKAY: got=0 exp=0
+
+--- T2: Write enable=1, read CONTROL ---
+PASS  T2_bresp_OKAY: got=0 exp=0
+PASS  _enable_readback: got=1 exp=1
+
+--- T3: Soft reset clears enable ---
+PASS  3_enable_cleared: got=0 exp=0
+PASS  _zero_after_srst: got=0 exp=0
+
+--- T4: clear_status_pulse clears stickies ---
+PASS  _seen_sticky_set: got=1 exp=1
+PASS  n_sticky_cleared: got=0 exp=0
+
+--- T5: CFG registers write/read ---
+PASS  T5_CFG_CFO_STEP: got=3735928559 exp=3735928559
+PASS  FG_TIMING_OFFSET: got=305419896 exp=305419896
+PASS  T5_CFG_FRAME_LEN: got=2864434397 exp=2864434397
+PASS  _CFO_BYTE_STROBE: got=4289576687 exp=4289576687
+
+--- T6: SLVERR for unmapped address ---
+PASS  T6_write_SLVERR: got=2 exp=2
+PASS  T6_read_SLVERR: got=2 exp=2
+
+--- T7: SAMPLE_COUNT increments ---
+PASS  7_SAMPLE_COUNT_3: got=3 exp=3
+
+--- T8: OUTPUT_COUNT=0 before any output ---
+PASS  zero_after_reset: got=0 exp=0
+
+--- T9: STATUS busy bit follows DUT busy ---
+PASS  9_busy_zero_idle: got=0 exp=0
+
+--- T10: Integration test ---
+PASS  T10_done_sticky: set after 30 polls
+PASS  T_COUNT_eq_TOTAL: got=20 exp=20
+
+--- T11: Soft reset clears all counters and stickies ---
+PASS  e_sticky_cleared: got=0 exp=0
+PASS  t_sticky_cleared: got=0 exp=0
+PASS  LE_COUNT_cleared: got=0 exp=0
+PASS  UT_COUNT_cleared: got=0 exp=0
+
+========================================
+PASS=23  FAIL=0
+CI GATE: PASSED
+========================================
+
+$finish called at time : 7976 ns : File "/home/zealatan/RTL_SYNC/tb/frac_cfo_sync_axi_stream_wrapper_tb.sv" Line 470
+exit
+INFO: [Common 17-206] Exiting xsim at Thu May  7 15:38:00 2026...
