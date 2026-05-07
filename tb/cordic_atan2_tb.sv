@@ -13,11 +13,12 @@
 
 module cordic_atan2_tb;
 
-    localparam int IW       = 32;
-    localparam int PW       = 16;
-    localparam int LAT      = 15;
-    localparam int CLK_HALF = 5;
-    localparam int TIMEOUT  = 2000;
+    localparam int IW        = 32;
+    localparam int PW        = 16;
+    localparam int LAT       = 15;
+    localparam int CLK_HALF  = 5;
+    localparam int TIMEOUT   = 2000;
+    localparam int PHASE_TOL = 4;   // integer CORDIC quantization error bound
 
     // -----------------------------------------------------------------------
     // Clock / reset
@@ -62,14 +63,17 @@ module cordic_atan2_tb;
     endtask
 
     task automatic chk_phase(input string nm,
-                              input logic [PW-1:0] got,
-                              input logic [PW-1:0] exp);
-        if (got === exp)
-            begin $display("[PASS] %s = 0x%04X (%0d)",
-                           nm, got, $signed(got)); pass_cnt++; end
+                              input logic [PW-1:0] got_bits,
+                              input logic [PW-1:0] exp_bits);
+        int diff;
+        diff = int'($signed(got_bits)) - int'($signed(exp_bits));
+        if (diff < 0) diff = -diff;
+        if (diff <= PHASE_TOL)
+            begin $display("[PASS] %s = 0x%04X (%0d, exp=%0d)",
+                           nm, got_bits, $signed(got_bits), $signed(exp_bits)); pass_cnt++; end
         else
-            begin $display("[FAIL] %s  got=0x%04X(%0d) exp=0x%04X(%0d)",
-                           nm, got, $signed(got), exp, $signed(exp)); fail_cnt++; end
+            begin $display("[FAIL] %s  got=0x%04X(%0d) exp=0x%04X(%0d) diff=%0d",
+                           nm, got_bits, $signed(got_bits), exp_bits, $signed(exp_bits), diff); fail_cnt++; end
     endtask
 
     // -----------------------------------------------------------------------

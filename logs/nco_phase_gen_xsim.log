@@ -16,8 +16,8 @@ run -all
 --- T2: step_word=0, phase constant ---
 [PASS] T2 phase_acc still 0 = 0x00000000 (0)
 [PASS] T2 sincos_valid=1
-[PASS] T2 sin(0)=0 = 0x0000 (0)
-[PASS] T2 cos(0)ÿÿˆ1 = 0x7fff (32767)
+[PASS] T2 sin(0)=0 = 0x0000 (0, exp=0)
+[PASS] T2 cos(0)ÿÿˆ1 = 0x7fff (32767, exp=32767)
 
 --- T3: Positive step_word ---
 [PASS] T3 step1 = 0x00010000 (65536)
@@ -53,20 +53,20 @@ run -all
 [PASS] T9 after load = 0x00020000 (131072)
 
 --- T10: Golden model sin/cos ---
-[PASS] T10 sin[0] = 0x0000 (0)
-[PASS] T10 cos[0] = 0x7fff (32767)
-[PASS] T10 sin[1] = 0x30fb (12539)
-[PASS] T10 cos[1] = 0x7640 (30272)
-[PASS] T10 sin[2] = 0x5a82 (23170)
-[PASS] T10 cos[2] = 0x5a81 (23169)
-[PASS] T10 sin[3] = 0x7641 (30273)
-[PASS] T10 cos[3] = 0x30fa (12538)
+[PASS] T10 sin[0] = 0x0000 (0, exp=0)
+[PASS] T10 cos[0] = 0x7fff (32767, exp=32767)
+[PASS] T10 sin[1] = 0x30fb (12539, exp=12539)
+[PASS] T10 cos[1] = 0x7641 (30273, exp=30272)
+[PASS] T10 sin[2] = 0x5a82 (23170, exp=23170)
+[PASS] T10 cos[2] = 0x5a82 (23170, exp=23169)
+[PASS] T10 sin[3] = 0x7641 (30273, exp=30273)
+[PASS] T10 cos[3] = 0x30fb (12539, exp=12538)
 
 ========================================
 PASS: 33   FAIL: 0
 CI GATE: PASSED
 ========================================
 
-$finish called at time : 1276 ns : File "/home/zealatan/RTL_SYNC/tb/nco_phase_gen_tb.sv" Line 368
+$finish called at time : 1276 ns : File "/home/zealatan/RTL_SYNC/tb/nco_phase_gen_tb.sv" Line 372
 exit
-INFO: [Common 17-206] Exiting xsim at Tue May  5 11:16:36 2026...
+INFO: [Common 17-206] Exiting xsim at Thu May  7 13:24:52 2026...

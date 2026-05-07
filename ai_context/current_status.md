@@ -616,28 +616,95 @@ Then copy reports back to WSL:
 cp /mnt/c/RTL_SYNC/reports/step22_*.rpt /home/zealatan/RTL_SYNC/reports/
 ```
 
-Recommended Step 23 (if synthesis passes): CORDIC IP integration
-  — Replace `cordic_atan2.v` and `nco_phase_gen.v` with `cordic_v6_0` Vivado IP
-  — Re-run Step 21 xsim to verify PASS=176
-  — Re-run Step 22 synthesis without stubs for full pass
+---
 
-Recommended Step 24+: AXI-Lite debug/config wrapper, then `int_cfo_estimator.v`
+---
+
+### Step 23 — Replace Simulation-Only CORDIC/NCO with Synthesizable RTL
+
+Status: **COMPLETE**
+
+Files changed:
+- `rtl/cordic_atan2.v` — rewritten: 15-stage integer CORDIC vectoring pipeline (no `real`/`$atan2`)
+- `rtl/nco_phase_gen.v` — rewritten: 256-entry sin/cos ROM + LATENCY-stage pipeline (no `real`/`$sin`/`$cos`)
+- `tb/cordic_atan2_tb.sv` — added `PHASE_TOL=4` tolerance in `chk_phase` (integer vs float rounding)
+- `tb/nco_phase_gen_tb.sv` — added `COEFF_TOL=1` tolerance in `chk_coeff` (ROM vs float rounding)
+- `md_files/23_synthesizable_cordic_nco_prompt.md` — prompt archive
+
+RTL approach:
+- `cordic_atan2.v`: 35-bit signed x/y, 18-bit z; ATAN table = atan(2^-k)/π×32767 for k=0..14;
+  quadrant preprocessing for I<0 and (I=0,Q<0); d_k wires (sign of y) computed combinatorially
+  outside always block, not inside it (Verilog rule); 15-register pipeline, latency = 15 clocks.
+- `nco_phase_gen.v`: 256-entry `initial`-block ROM (synthesizes to LUTRAM); index = phase_acc[31:24];
+  NBA semantics capture pre-accumulation phase; LATENCY-stage shift register; no IP dependency.
+
+Simulation results:
+- `cordic_atan2_tb`: PASS=38, FAIL=0, CI GATE: PASSED (max observed CORDIC error = 3 LSB)
+- `nco_phase_gen_tb`: PASS=33, FAIL=0, CI GATE: PASSED (max observed ROM error = 1 LSB)
+- Integration `frac_cfo_frame_corrector_top_tb`: PASS=176, FAIL=0, CI GATE: PASSED
+
+RTL synthesis-ready: Yes (no `real`, no `$sin`, no `$cos`, no `$atan2`, no `$rtoi`/`$itor`).
+`scripts/synth_stubs/cordic_atan2_stub.v` and `nco_phase_gen_stub.v` no longer needed for
+synthesis but remain for reference.
+
+---
+
+---
+
+### Step 24 — ZCU102 OOC Synthesis Without CORDIC/NCO Stubs
+
+Status: **Prepared, pending Windows Vivado execution.**
+
+Files created:
+- `scripts/step24_synth_check_no_stubs.tcl` — Vivado TCL; reads all 15 real RTL files, no stubs
+- `scripts/windows/run_step24_zcu102_ooc_synth_no_stubs.bat` — Windows batch runner
+- `docs/step24_zcu102_ooc_synthesis_without_stubs.md` — step documentation
+- `md_files/24_zcu102_ooc_synthesis_without_stubs_prompt.md` — prompt archive
+
+Target:
+- Board: ZCU102, Part: `xczu9eg-ffvb1156-2-e`
+- Top: `frac_cfo_frame_corrector_top`, Clock: `aclk` at 100 MHz
+- Stubs used: **NONE** (real `rtl/cordic_atan2.v` and `rtl/nco_phase_gen.v` included)
+
+Sanity simulation (rerun in Step 24 session):
+- `cordic_atan2_tb`: PASS=38, FAIL=0, CI GATE: PASSED
+- `nco_phase_gen_tb`: PASS=33, FAIL=0, CI GATE: PASSED
+- Integration `frac_cfo_frame_corrector_top_tb`: PASS=176, FAIL=0, CI GATE: PASSED
+
+RTL modified: No.
+
+Recommended user action — run on Windows:
+```
+cd C:\RTL_SYNC
+scripts\windows\run_step24_zcu102_ooc_synth_no_stubs.bat
+```
+
+Then copy reports to WSL:
+```bash
+cp /mnt/c/RTL_SYNC/reports/step24_*.rpt /home/zealatan/RTL_SYNC/reports/
+cp /mnt/c/RTL_SYNC/reports/step24_synth_messages.log /home/zealatan/RTL_SYNC/reports/
+```
+
+Recommended Step 25 (if synthesis passes): AXI-Lite + AXI-Stream debug/config wrapper
+  for Phase-1 FPGA bring-up (ILA, VIO, JTAG access to `frame_found`, `frac_phase`, `threshold_in`).
+Recommended Step 25 (if synthesis fails): Fix no-stub synthesis blocker while preserving
+  Step 23 simulation behavior (PASS=176).
 
 ---
 
 ## Next Step
 
-### Step 23 — CORDIC IP Integration (recommended after Step 22 synthesis pass)
+### Step 25 — AXI-Lite Debug/Config Wrapper for Phase-1 FPGA Bring-Up
 
-Replace simulation-only CORDIC behavioral models with synthesizable Xilinx `cordic_v6_0` IP:
-- `rtl/cordic_atan2.v` → IP translate mode, 16-bit phase output, LATENCY=15
-- `rtl/nco_phase_gen.v` → IP rotate/sincos mode + phase accumulator, 16-bit coefficients
+_(contingent on Step 24 synthesis passing)_
 
-After integration:
-1. Re-run Step 21 simulation to verify PASS=176, FAIL=0 (behavior preserved)
-2. Re-run Step 22 synthesis without stubs for clean full-pass
+Add a thin AXI-Lite register interface and ILA/VIO hooks around `frac_cfo_frame_corrector_top`
+to enable ZCU102 board testing via JTAG:
+- AXI-Lite slave: read back `frame_found`, `frac_phase`, `frame_error`; write `threshold_in`
+- ILA probe on key internal signals: `busy`, `done`, `frac_phase`, `m_axis_dout_tvalid`
+- VIO for reset and loopback injection
 
 #### Deferred: `int_cfo_estimator.v`
 
-Integer CFO estimation deferred to Step 25+.
+Integer CFO estimation deferred to Step 26+.
 Reason: Phase 1 focus is functional FPGA bring-up, not full synchronizer chain completion.

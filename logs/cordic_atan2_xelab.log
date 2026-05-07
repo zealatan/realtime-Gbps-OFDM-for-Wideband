@@ -1,6 +1,6 @@
 Vivado Simulator v2022.2
 Copyright 1986-1999, 2001-2022 Xilinx, Inc. All Rights Reserved.
-Running: /home/zealatan/Vivado/2022.2/bin/unwrapped/lnx64.o/xelab cordic_atan2_tb -debug typical -s cordic_atan2_tb_sim 
+Running: /home/zealatan/Downloads/Vivado/2022.2/bin/unwrapped/lnx64.o/xelab cordic_atan2_tb -debug typical -s cordic_atan2_tb_sim 
 Multi-threading is on. Using 10 slave threads.
 Starting static elaboration
 Pass Through NonSizing Optimizer

@@ -16,12 +16,13 @@
 
 module nco_phase_gen_tb;
 
-    localparam int NW       = 32;   // NCO_PHASE_WIDTH
-    localparam int CPW      = 16;   // CORDIC_PHASE_WIDTH
-    localparam int RCW      = 16;   // ROTATOR_COEFF_WIDTH
-    localparam int LAT      = 15;   // LATENCY
-    localparam int CLK_HALF = 5;
-    localparam int TIMEOUT  = 2000;
+    localparam int NW        = 32;   // NCO_PHASE_WIDTH
+    localparam int CPW       = 16;   // CORDIC_PHASE_WIDTH
+    localparam int RCW       = 16;   // ROTATOR_COEFF_WIDTH
+    localparam int LAT       = 15;   // LATENCY
+    localparam int CLK_HALF  = 5;
+    localparam int TIMEOUT   = 2000;
+    localparam int COEFF_TOL = 1;   // ROM-to-float rounding error bound
 
     // -----------------------------------------------------------------------
     // Clock / reset
@@ -87,12 +88,15 @@ module nco_phase_gen_tb;
     task automatic chk_coeff(input string nm,
                               input logic signed [RCW-1:0] got,
                               input logic signed [RCW-1:0] exp);
-        if (got === exp)
-            begin $display("[PASS] %s = 0x%04X (%0d)",
-                           nm, got, $signed(got)); pass_cnt++; end
+        int diff;
+        diff = int'(got) - int'(exp);
+        if (diff < 0) diff = -diff;
+        if (diff <= COEFF_TOL)
+            begin $display("[PASS] %s = 0x%04X (%0d, exp=%0d)",
+                           nm, got, $signed(got), $signed(exp)); pass_cnt++; end
         else
-            begin $display("[FAIL] %s  got=0x%04X(%0d) exp=0x%04X(%0d)",
-                           nm, got, $signed(got), exp, $signed(exp)); fail_cnt++; end
+            begin $display("[FAIL] %s  got=0x%04X(%0d) exp=0x%04X(%0d) diff=%0d",
+                           nm, got, $signed(got), exp, $signed(exp), diff); fail_cnt++; end
     endtask
 
     // -----------------------------------------------------------------------
