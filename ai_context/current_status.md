@@ -692,19 +692,86 @@ Recommended Step 25 (if synthesis fails): Fix no-stub synthesis blocker while pr
 
 ---
 
+---
+
+### Step 25 — AXI-Lite + AXI-Stream Debug/Config Wrapper
+
+Status: **COMPLETE**
+
+Prompt archive: `md_files/25_axi_lite_stream_debug_config_wrapper_prompt.md`
+
+Files created:
+- `rtl/frac_cfo_sync_control_s_axi.v` — AXI4-Lite slave register file, 8 registers (0x00–0x1C), write FSM
+- `rtl/frac_cfo_sync_axi_stream_wrapper.v` — Top-level wrapper; integrates register file + DUT
+- `tb/frac_cfo_sync_axi_stream_wrapper_tb.sv` — T1–T11 test groups (23 checks)
+- `scripts/run_frac_cfo_sync_axi_stream_wrapper_sim.sh` — xsim compile + run
+- `docs/step25_axi_lite_stream_debug_config_wrapper.md` — step documentation
+
+Register map (AXI-Lite, 6-bit byte address):
+- 0x00 CONTROL: [2]=enable, [1]=clear_status, [0]=soft_reset_pulse
+- 0x04 STATUS: [6]=out_seen, [5]=in_seen, [4]=in_frame, [3]=frm_err, [2]=frm_det, [1]=done, [0]=busy
+- 0x08 CFG_CFO_STEP (stored; not yet routed to DUT)
+- 0x0C CFG_TIMING_OFFSET (stored)
+- 0x10 CFG_FRAME_LEN (stored)
+- 0x14 SAMPLE_COUNT (R/O)
+- 0x18 OUTPUT_COUNT (R/O)
+- 0x1C DEBUG_STATE: {4'd0, peak_lag[8:0], frac_phase[15:0], fsm_state[2:0]}
+
+Bugs fixed during implementation:
+1. `THRESHOLD[ENERGY_WIDTH-1:0]` where ENERGY_WIDTH=40 > 32-bit integer width produces X bits in xsim.
+   Fix: `{{(ENERGY_WIDTH-32){1'b0}}, THRESHOLD[31:0]}` explicit zero-extension.
+2. T5 byte-strobe expected value: `4'h8` changes only bits[31:24]; result is 0xFFADBEEF not 0xFF00BEEF.
+3. T10 integration: constant above-threshold signal triggers frame_detector Case B (no frame found).
+   Fix: send 8 quiet + 100 active samples so Case A applies.
+
+Simulation results:
+- Wrapper TB: PASS=23, FAIL=0, CI GATE: PASSED
+- Integration regression unchanged: PASS=176, FAIL=0, CI GATE: PASSED
+
+RTL modified: No (new files only).
+
+---
+
+---
+
+### Step 26 — BRAM Preload/Readback Wrapper
+
+Status: **COMPLETE**
+
+Prompt archive: `md_files/26_bram_preload_readback_wrapper_prompt.md`
+
+Files created:
+- `rtl/frac_cfo_sync_bram_test_wrapper.v` — AXI-Lite slave (16-bit addr), dual BRAM, stream FSMs, DUT
+- `tb/frac_cfo_sync_bram_test_wrapper_tb.sv` — T1–T12 test groups (23 checks)
+- `scripts/run_frac_cfo_sync_bram_test_wrapper_sim.sh` — xsim compile + run
+- `docs/step26_bram_preload_readback_wrapper.md` — step documentation
+
+Architecture: single AXI4-Lite slave (16-bit byte address)
+- 0x0000–0x0028: 11 control/status/config registers
+- 0x1000–0x1FFF: input_mem (1024 × 32-bit, R/W)
+- 0x2000–0x2FFF: output_mem (1024 × 32-bit, R/O)
+- Stream source FSM: input_mem → DUT s_axis
+- Stream sink FSM: DUT m_axis → output_mem (no backpressure)
+- frac_cfo_frame_corrector_top instantiated directly (Option A)
+
+Key CONTROL bits:
+- [0]=start_pulse (auto-clear), [1]=soft_reset_pulse (auto-clear)
+- [2]=clr_status_pulse (auto-clear), [3]=enable (sticky)
+
+Simulation results:
+- BRAM wrapper TB: PASS=23, FAIL=0, CI GATE: PASSED
+- Step 25 regression: PASS=23, FAIL=0, CI GATE: PASSED
+- Step 24 regression: PASS=176, FAIL=0, CI GATE: PASSED
+
+RTL modified: No (new files only).
+
+---
+
 ## Next Step
 
-### Step 25 — AXI-Lite Debug/Config Wrapper for Phase-1 FPGA Bring-Up
+### Step 27 Candidates
 
-_(contingent on Step 24 synthesis passing)_
-
-Add a thin AXI-Lite register interface and ILA/VIO hooks around `frac_cfo_frame_corrector_top`
-to enable ZCU102 board testing via JTAG:
-- AXI-Lite slave: read back `frame_found`, `frac_phase`, `frame_error`; write `threshold_in`
-- ILA probe on key internal signals: `busy`, `done`, `frac_phase`, `m_axis_dout_tvalid`
-- VIO for reset and loopback injection
-
-#### Deferred: `int_cfo_estimator.v`
-
-Integer CFO estimation deferred to Step 26+.
-Reason: Phase 1 focus is functional FPGA bring-up, not full synchronizer chain completion.
+1. Connect AXI-Lite CFG registers to DUT runtime inputs (THRESHOLD, WINDOW_LEN, HIT_COUNT)
+   so they can be tuned from JTAG without recompile.
+2. Integer CFO estimator (`int_cfo_estimator.v`) integration — deferred from earlier steps.
+3. Vivado project / XDC constraints + synthesis for FPGA bring-up.
