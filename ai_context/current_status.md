@@ -771,15 +771,23 @@ RTL modified: No (new files only).
 
 ### Step 27 — ZCU102 Vivado Block Design Integration (No ILA)
 
-Status: **Prepared — pending Windows Vivado execution**
+Status: **v1 failed — v2 prepared (Step 27B fix applied), pending Windows Vivado re-run**
 
-Prompt archive: `md_files/27_zcu102_bd_integration_no_ila_prompt.md`
+Prompt archives:
+- `md_files/27_zcu102_bd_integration_no_ila_prompt.md` (original Step 27)
+- `md_files/27b_package_wrapper_as_local_ip_prompt.md` (Step 27B fix)
 
-Files created:
-- `scripts/vivado/step27_create_zcu102_bd_no_ila.tcl` — Vivado Tcl: project, BD, connections, address map
-- `scripts/windows/run_step27_create_zcu102_bd_no_ila.bat` — Windows batch runner
-- `docs/step27_zcu102_bd_integration_no_ila.md` — step documentation
-- `reports/step27/` — output directory (empty until Windows run)
+v1 failure:
+- Error: `create_bd_cell -type module -reference frac_cfo_sync_bram_test_wrapper` rejected
+- Cause: `read_verilog -sv` marks .v files as SystemVerilog type; BD module-reference disallows SV tops
+- Fix: Package RTL as local Vivado IP (ipx::package_project), instantiate as -type ip -vlnv
+
+Files created/updated:
+- `scripts/vivado/step27_create_zcu102_bd_no_ila.tcl` — rewritten (v2): IP packaging + BD creation
+- `scripts/windows/run_step27_create_zcu102_bd_no_ila.bat` — unchanged
+- `docs/step27_zcu102_bd_integration_no_ila.md` — updated with failure, root cause, fix
+- `md_files/27b_package_wrapper_as_local_ip_prompt.md` — Step 27B prompt archive
+- `reports/step27/` — empty until Windows run
 
 Target:
 - Board: ZCU102
@@ -787,29 +795,31 @@ Target:
 - Vivado: 2022.2 (Windows only)
 - BD name: sync_phase1_bd
 - Vivado project: vivado/step27_zcu102_bd/
+- IP repo: vivado/ip_repo/frac_cfo_sync_bram_test_wrapper_1_0/
 
-Block design architecture:
+Block design architecture (unchanged):
 - PS (zynq_ultra_ps_e_0): M_AXI_HPM0_FPD master, pl_clk0 at 100 MHz
 - AXI SmartConnect (axi_smc): 1 master in → 1 slave out
 - proc_sys_reset_0: pl_resetn0 → peripheral_aresetn
 - xlconstant_0: dcm_locked tied to 1
-- wrapper_0 (frac_cfo_sync_bram_test_wrapper): AXI-Lite slave
+- wrapper_0 (frac_cfo_sync_bram_test_wrapper): AXI-Lite slave, packaged as local IP
 
-Xilinx IP list:
-- xilinx.com:ip:zynq_ultra_ps_e:* (PS)
-- xilinx.com:ip:smartconnect:* (AXI interconnect)
-- xilinx.com:ip:proc_sys_reset:* (reset synchronizer)
-- xilinx.com:ip:xlconstant:* (tie dcm_locked=1)
+Vivado integration approach (v2):
+- Raw module reference: removed
+- Packaged local IP: yes
+- IP VLNV: zealatan.local:user:frac_cfo_sync_bram_test_wrapper:1.0
+- IP packaging: ipx::package_project with add_files (no -sv flag)
+- S_AXI interface: auto-inferred + fallback manual definition
 
-ILA: omitted intentionally (user decision — no debug fabric in this step)
+ILA: omitted intentionally
 DMA: not added
-External BRAM IP: not added (wrapper uses inferred BRAM)
+External BRAM IP: not added
 
 Address map:
 - wrapper_0 base: 0xA0000000
-- wrapper_0 range: 64 KB (covers registers 0x0000-0x0028 + memories 0x1000-0x2FFF)
+- wrapper_0 range: 64 KB
 
-validate_bd_design: NOT RUN (pending Windows Vivado)
+validate_bd_design: NOT RUN (pending Windows Vivado re-run)
 Synthesis: NOT RUN
 Bitstream: NOT RUN
 RTL modified: No

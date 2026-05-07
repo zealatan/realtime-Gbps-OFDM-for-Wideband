@@ -1,5 +1,53 @@
 # Step 27 — ZCU102 Vivado Block Design Integration (No ILA)
 
+## Failure and Fix (Step 27B)
+
+### Original Failure
+
+The initial Tcl script (`v1`) failed at:
+
+```
+create_bd_cell -type module -reference frac_cfo_sync_bram_test_wrapper wrapper_0
+```
+
+Vivado 2022.2 error:
+
+```
+Reference 'frac_cfo_sync_bram_test_wrapper' contains top file
+'C:/RTL_SYNC/rtl/frac_cfo_sync_bram_test_wrapper.v' of type SystemVerilog.
+This type is not allowed as the top file in the reference.
+Unable to resolve module-source based on inputs: frac_cfo_sync_bram_test_wrapper.
+```
+
+### Root Cause
+
+The v1 script used `read_verilog -sv [list ...]` to add the RTL sources.  The `-sv` flag
+causes Vivado to mark all files — including `.v` files — as **SystemVerilog** type in the
+project.  Vivado BD's `create_bd_cell -type module -reference` only accepts files with
+Verilog type (not SystemVerilog) as the module top.
+
+This is a Vivado BD integration limitation, not an RTL bug.
+
+### Fix Applied (v2 Tcl script)
+
+Replace `create_bd_cell -type module -reference` with a two-phase flow:
+
+1. **Phase 1**: Package `frac_cfo_sync_bram_test_wrapper` as a local Vivado IP using
+   `ipx::package_project`.  RTL is added via `add_files` (without `-sv`), so Vivado
+   detects `.v` files as Verilog type.  IP is saved under
+   `vivado/ip_repo/frac_cfo_sync_bram_test_wrapper_1_0/`.
+
+2. **Phase 2**: Create the ZCU102 BD project, add the local IP repo, and instantiate the
+   packaged IP with:
+   ```tcl
+   create_bd_cell -type ip \
+       -vlnv zealatan.local:user:frac_cfo_sync_bram_test_wrapper:1.0 wrapper_0
+   ```
+
+RTL is **not modified**.  No simulation regressions affected.
+
+---
+
 ## Goal
 
 Create a minimal ZCU102 Vivado block design connecting the Zynq UltraScale+ MPSoC PS
@@ -120,28 +168,40 @@ All logic runs in a single 100 MHz clock domain — no CDC required.
 
 | File | Description |
 |------|-------------|
-| `scripts/vivado/step27_create_zcu102_bd_no_ila.tcl` | Vivado Tcl — creates project, BD, connects IPs, assigns addresses |
+| `scripts/vivado/step27_create_zcu102_bd_no_ila.tcl` | Vivado Tcl v2 — IP packaging + BD creation |
 | `scripts/windows/run_step27_create_zcu102_bd_no_ila.bat` | Windows batch — calls Vivado batch mode, saves log |
 | `docs/step27_zcu102_bd_integration_no_ila.md` | This document |
+| `vivado/ip_repo/frac_cfo_sync_bram_test_wrapper_1_0/` | Generated local IP (created by Tcl, not checked in) |
 
-## Tcl Script Description
+## Tcl Script Description (v2 — IP packaging)
 
 `scripts/vivado/step27_create_zcu102_bd_no_ila.tcl`:
 
-1. Creates project `step27_zcu102_bd` under `vivado/step27_zcu102_bd/`
-2. Attempts to load ZCU102 board preset (`xilinx.com:zcu102:part0:3.4`) — falls back to manual PS config if board files unavailable
-3. Reads all 18 RTL source files for the `frac_cfo_sync_bram_test_wrapper` hierarchy
-4. Creates block design `sync_phase1_bd`
-5. Adds PS (`zynq_ultra_ps_e_0`): enables HPM0 FPD master, FCLK0 at 100 MHz
-6. Adds `proc_sys_reset_0` with `dcm_locked` tied to 1
-7. Adds `axi_smc` (SmartConnect, 1S→1M)
-8. Adds `wrapper_0` (`frac_cfo_sync_bram_test_wrapper`)
-9. Connects all clocks and resets
-10. Connects `M_AXI_HPM0_FPD → axi_smc → wrapper_0/s_axi`
-11. Assigns addresses: wrapper base = `0xA0000000`, range = 64 KB
-12. Validates, saves BD
-13. Creates HDL wrapper `sync_phase1_bd_wrapper`, sets as top
-14. Generates output products (no synthesis)
+**Phase 1 — IP Packaging** (`vivado/ip_repo/pack_proj` temporary project):
+
+1. Creates packaging project; adds RTL via `add_files` (Verilog type, no `-sv` flag)
+2. Sets `frac_cfo_sync_bram_test_wrapper` as top
+3. Runs `ipx::package_project -root_dir vivado/ip_repo/frac_cfo_sync_bram_test_wrapper_1_0 -import_files`
+4. Sets IP metadata: vendor=`zealatan.local`, library=`user`, version=`1.0`
+5. Verifies/manually creates S_AXI bus interface from `s_axi_*` ports
+6. Associates `aclk` with S_AXI using `ipx::associate_bus_interfaces`
+7. Saves IP core, closes packaging project
+
+**Phase 2 — BD Creation** (`vivado/step27_zcu102_bd` main project):
+
+8. Creates project, adds IP repo path, runs `update_ip_catalog -rebuild`
+9. Attempts ZCU102 board automation; falls back to manual PS config
+10. Creates `sync_phase1_bd` block design
+11. Adds PS (`zynq_ultra_ps_e_0`): HPM0 FPD master, FCLK0 = 100 MHz
+12. Adds `proc_sys_reset_0` with `dcm_locked` tied to 1
+13. Adds `axi_smc` (SmartConnect 1S→1M)
+14. Adds `wrapper_0` via `create_bd_cell -type ip -vlnv zealatan.local:user:frac_cfo_sync_bram_test_wrapper:1.0`
+15. Connects all clocks and resets in 100 MHz domain
+16. Auto-detects wrapper AXI slave interface name; connects `M_AXI_HPM0_FPD → axi_smc → wrapper_0`
+17. Assigns addresses: wrapper base = `0xA0000000`, range = 64 KB
+18. Validates, saves BD
+19. Creates HDL wrapper `sync_phase1_bd_wrapper`, sets as top
+20. Generates output products (no synthesis)
 
 ## Windows Batch Command
 
@@ -154,11 +214,13 @@ Output log: `reports\step27\step27_create_bd.log`
 
 ## Execution Status
 
-**Prepared, pending Windows Vivado run.**
+**v1 failed** (Step 27B root cause: `-sv` flag → SystemVerilog type → BD module-reference rejected).
 
-The Tcl script and batch file have been authored in WSL and are ready for execution on Windows.
-Vivado block design creation, `validate_bd_design`, and output product generation
-have **not yet been run**.  No synthesis, no implementation, no bitstream.
+**v2 prepared — pending Windows Vivado re-run.**
+
+The v2 Tcl script (IP packaging approach) has been authored in WSL and is ready for execution on Windows.
+`validate_bd_design` and output product generation have **not yet been run**.
+No synthesis, no implementation, no bitstream.
 
 ## Known Limitations
 
@@ -176,7 +238,13 @@ have **not yet been run**.  No synthesis, no implementation, no bitstream.
    assignment (the base address is stripped; only the 16-bit offset reaches the wrapper).
    A DRC warning may appear but should not be critical.
 
-4. **Inferred memory synthesis**: The wrapper uses `reg [31:0] input_mem [0:1023]` and
+4. **IP packaging AXI interface auto-inference**: `ipx::package_project` may not always
+   auto-infer the AXI-Lite bus interface from `s_axi_*` ports in batch mode.  The v2 script
+   includes a fallback that manually defines the S_AXI interface with explicit port mapping.
+   If the interface name differs from `S_AXI`, the script auto-detects it by scanning
+   `get_bd_intf_pins` for the AXI-MM slave interface.
+
+5. **Inferred memory synthesis**: The wrapper uses `reg [31:0] input_mem [0:1023]` and
    `output_mem [0:1023]` — inferred BRAM.  Vivado synthesis should map these to RAMB36
    primitives.  If synthesis encounters issues with initial blocks or memory inference,
    the user should run synthesis in Step 28 and check the utilization report.
