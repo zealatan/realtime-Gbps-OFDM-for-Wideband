@@ -1,0 +1,686 @@
+#-----------------------------------------------------------
+# Vivado v2022.2 (64-bit)
+# SW Build 3671981 on Fri Oct 14 05:00:03 MDT 2022
+# IP Build 3669848 on Fri Oct 14 08:30:02 MDT 2022
+# Start of session at: Thu May  7 10:46:39 2026
+# Process ID: 28080
+# Current directory: C:/RTL_SYNC
+# Command line: vivado.exe -mode batch -source scripts\step22_synth_check.tcl -log reports\step22_synth_messages.log -journal reports\step22_synth.jou
+# Log file: C:/RTL_SYNC/reports/step22_synth_messages.log
+# Journal file: C:/RTL_SYNC\reports\step22_synth.jou
+# Running On: DESKTOP-FAIRVEG, OS: Windows, CPU Frequency: 2496 MHz, CPU Physical cores: 10, Host memory: 16793 MB
+#-----------------------------------------------------------
+source {scripts\step22_synth_check.tcl}
+# set TOP   frac_cfo_frame_corrector_top
+# set PART  xczu9eg-ffvb1156-2-e
+# set RTL   rtl
+# set STUBS scripts/synth_stubs
+# set RPTS  reports
+# puts "========================================================"
+========================================================
+# puts "Step 22 OOC Synthesis: $TOP on $PART"
+Step 22 OOC Synthesis: frac_cfo_frame_corrector_top on xczu9eg-ffvb1156-2-e
+# puts "========================================================"
+========================================================
+# file mkdir $RPTS
+# create_project synth_step22 ./build/step22_synth -part $PART -force
+create_project: Time (s): cpu = 00:00:12 ; elapsed = 00:00:14 . Memory (MB): peak = 377.492 ; gain = 44.871
+# set_property default_lib work [current_project]
+# puts "INFO: Reading synthesizable RTL sources..."
+INFO: Reading synthesizable RTL sources...
+# read_verilog -sv [list \
+#     $RTL/axis_complex_mult.v \
+#     $RTL/complex_mult_iq.v \
+#     $RTL/complex_rotator.v \
+#     $RTL/iq_frame_buffer.v \
+#     $RTL/frame_detector.v \
+#     $RTL/cp_autocorr_core.v \
+#     $RTL/timing_metric_core.v \
+#     $RTL/peak_detector.v \
+#     $RTL/frac_cfo_estimator.v \
+#     $RTL/frac_cfo_corrector_top.v \
+#     $RTL/timing_sync_top.v \
+#     $RTL/timing_frac_cfo_top.v \
+#     $RTL/frac_cfo_frame_corrector_top.v \
+# ]
+# puts "INFO: Reading synthesis stubs..."
+INFO: Reading synthesis stubs...
+# read_verilog -sv [list \
+#     $STUBS/cordic_atan2_stub.v \
+#     $STUBS/nco_phase_gen_stub.v \
+# ]
+# update_compile_order -fileset sources_1
+# puts "INFO: Running synthesis..."
+INFO: Running synthesis...
+# synth_design -top $TOP -part $PART -mode out_of_context
+Command: synth_design -top frac_cfo_frame_corrector_top -part xczu9eg-ffvb1156-2-e -mode out_of_context
+Starting synth_design
+Attempting to get a license for feature 'Synthesis' and/or device 'xczu9eg'
+INFO: [Common 17-349] Got license for feature 'Synthesis' and/or device 'xczu9eg'
+INFO: [Common 17-1540] The version limit for your license is '2025.09' and has expired for new software. A version limit expiration means that, although you may be able to continue to use the current version of tools or IP with this license, you will not be eligible for new releases.
+INFO: [Synth 8-7079] Multithreading enabled for synth_design using a maximum of 2 processes.
+INFO: [Synth 8-7078] Launching helper process for spawning children vivado processes
+INFO: [Synth 8-7075] Helper process launched with PID 31288
+INFO: [Synth 8-11241] undeclared symbol 'REGCCE', assumed default net type 'wire' [C:/Xilinx/Vivado/2022.2/data/verilog/src/unimacro/BRAM_SINGLE_MACRO.v:2170]
+---------------------------------------------------------------------------------
+Starting Synthesize : Time (s): cpu = 00:00:11 ; elapsed = 00:00:13 . Memory (MB): peak = 818.570 ; gain = 416.195
+---------------------------------------------------------------------------------
+INFO: [Synth 8-6157] synthesizing module 'frac_cfo_frame_corrector_top' [C:/RTL_SYNC/rtl/frac_cfo_frame_corrector_top.v:42]
+INFO: [Synth 8-6157] synthesizing module 'iq_frame_buffer' [C:/RTL_SYNC/rtl/iq_frame_buffer.v:27]
+	Parameter DATA_WIDTH bound to: 32 - type: integer 
+	Parameter ADDR_WIDTH bound to: 12 - type: integer 
+	Parameter DEPTH bound to: 4096 - type: integer 
+INFO: [Synth 8-6155] done synthesizing module 'iq_frame_buffer' (0#1) [C:/RTL_SYNC/rtl/iq_frame_buffer.v:27]
+INFO: [Synth 8-6157] synthesizing module 'frame_detector' [C:/RTL_SYNC/rtl/frame_detector.v:31]
+	Parameter DATA_WIDTH bound to: 32 - type: integer 
+	Parameter ADDR_WIDTH bound to: 12 - type: integer 
+	Parameter INDEX_WIDTH bound to: 12 - type: integer 
+	Parameter POWER_WIDTH bound to: 33 - type: integer 
+	Parameter ENERGY_WIDTH bound to: 40 - type: integer 
+	Parameter WINDOW_LEN bound to: 25 - type: integer 
+	Parameter HIT_COUNT bound to: 10 - type: integer 
+	Parameter THRESHOLD bound to: 10240000 - type: integer 
+INFO: [Synth 8-6155] done synthesizing module 'frame_detector' (0#1) [C:/RTL_SYNC/rtl/frame_detector.v:31]
+INFO: [Synth 8-6157] synthesizing module 'timing_frac_cfo_top' [C:/RTL_SYNC/rtl/timing_frac_cfo_top.v:31]
+	Parameter NSC bound to: 256 - type: integer 
+	Parameter CP_LEN bound to: 32 - type: integer 
+	Parameter ADDR_WIDTH bound to: 12 - type: integer 
+	Parameter ACC_WIDTH bound to: 40 - type: integer 
+	Parameter METRIC_WIDTH bound to: 32 - type: integer 
+	Parameter INDEX_WIDTH bound to: 9 - type: integer 
+	Parameter RESULT_WIDTH bound to: 32 - type: integer 
+	Parameter PHASE_WIDTH bound to: 16 - type: integer 
+INFO: [Synth 8-6157] synthesizing module 'timing_sync_top' [C:/RTL_SYNC/rtl/timing_sync_top.v:23]
+	Parameter NSC bound to: 256 - type: integer 
+	Parameter CP_LEN bound to: 32 - type: integer 
+	Parameter ADDR_WIDTH bound to: 12 - type: integer 
+	Parameter ACC_WIDTH bound to: 40 - type: integer 
+	Parameter METRIC_WIDTH bound to: 32 - type: integer 
+	Parameter INDEX_WIDTH bound to: 9 - type: integer 
+	Parameter RESULT_WIDTH bound to: 32 - type: integer 
+INFO: [Synth 8-6157] synthesizing module 'cp_autocorr_core' [C:/RTL_SYNC/rtl/cp_autocorr_core.v:26]
+	Parameter NSC bound to: 256 - type: integer 
+	Parameter CP_LEN bound to: 32 - type: integer 
+	Parameter ADDR_WIDTH bound to: 12 - type: integer 
+	Parameter ACC_WIDTH bound to: 40 - type: integer 
+	Parameter INDEX_WIDTH bound to: 9 - type: integer 
+	Parameter RESULT_WIDTH bound to: 32 - type: integer 
+INFO: [Synth 8-6155] done synthesizing module 'cp_autocorr_core' (0#1) [C:/RTL_SYNC/rtl/cp_autocorr_core.v:26]
+INFO: [Synth 8-6157] synthesizing module 'timing_metric_core' [C:/RTL_SYNC/rtl/timing_metric_core.v:30]
+	Parameter NSC bound to: 256 - type: integer 
+	Parameter METRIC_WIDTH bound to: 32 - type: integer 
+	Parameter ACC_WIDTH bound to: 40 - type: integer 
+INFO: [Synth 8-6155] done synthesizing module 'timing_metric_core' (0#1) [C:/RTL_SYNC/rtl/timing_metric_core.v:30]
+INFO: [Synth 8-6157] synthesizing module 'peak_detector' [C:/RTL_SYNC/rtl/peak_detector.v:25]
+	Parameter METRIC_WIDTH bound to: 32 - type: integer 
+	Parameter INDEX_WIDTH bound to: 9 - type: integer 
+	Parameter COUNT_WIDTH bound to: 10 - type: integer 
+INFO: [Synth 8-6155] done synthesizing module 'peak_detector' (0#1) [C:/RTL_SYNC/rtl/peak_detector.v:25]
+INFO: [Synth 8-6155] done synthesizing module 'timing_sync_top' (0#1) [C:/RTL_SYNC/rtl/timing_sync_top.v:23]
+INFO: [Synth 8-6157] synthesizing module 'frac_cfo_estimator' [C:/RTL_SYNC/rtl/frac_cfo_estimator.v:18]
+	Parameter PHASE_WIDTH bound to: 16 - type: integer 
+INFO: [Synth 8-6157] synthesizing module 'cordic_atan2' [C:/RTL_SYNC/scripts/synth_stubs/cordic_atan2_stub.v:8]
+	Parameter INPUT_WIDTH bound to: 32 - type: integer 
+	Parameter PHASE_WIDTH bound to: 16 - type: integer 
+	Parameter LATENCY bound to: 15 - type: integer 
+INFO: [Synth 8-226] default block is never used [C:/RTL_SYNC/rtl/frac_cfo_estimator.v:91]
+INFO: [Synth 8-6155] done synthesizing module 'frac_cfo_estimator' (0#1) [C:/RTL_SYNC/rtl/frac_cfo_estimator.v:18]
+INFO: [Synth 8-226] default block is never used [C:/RTL_SYNC/rtl/timing_frac_cfo_top.v:149]
+INFO: [Synth 8-6155] done synthesizing module 'timing_frac_cfo_top' (0#1) [C:/RTL_SYNC/rtl/timing_frac_cfo_top.v:31]
+INFO: [Synth 8-6157] synthesizing module 'frac_cfo_corrector_top' [C:/RTL_SYNC/rtl/frac_cfo_corrector_top.v:14]
+	Parameter DATA_WIDTH bound to: 32 - type: integer 
+	Parameter COMPONENT_WIDTH bound to: 16 - type: integer 
+	Parameter SHIFT bound to: 15 - type: integer 
+	Parameter NCO_PHASE_WIDTH bound to: 32 - type: integer 
+	Parameter CORDIC_PHASE_WIDTH bound to: 16 - type: integer 
+	Parameter ROTATOR_COEFF_WIDTH bound to: 16 - type: integer 
+	Parameter LATENCY bound to: 15 - type: integer 
+INFO: [Synth 8-6157] synthesizing module 'nco_phase_gen' [C:/RTL_SYNC/scripts/synth_stubs/nco_phase_gen_stub.v:9]
+	Parameter NCO_PHASE_WIDTH bound to: 32 - type: integer 
+	Parameter CORDIC_PHASE_WIDTH bound to: 16 - type: integer 
+	Parameter ROTATOR_COEFF_WIDTH bound to: 16 - type: integer 
+	Parameter LATENCY bound to: 15 - type: integer 
+INFO: [Synth 8-6157] synthesizing module 'complex_rotator' [C:/RTL_SYNC/rtl/complex_rotator.v:23]
+	Parameter DATA_WIDTH bound to: 32 - type: integer 
+	Parameter COMPONENT_WIDTH bound to: 16 - type: integer 
+	Parameter SHIFT bound to: 15 - type: integer 
+INFO: [Synth 8-6157] synthesizing module 'complex_mult_iq' [C:/RTL_SYNC/rtl/complex_mult_iq.v:41]
+	Parameter DATA_WIDTH bound to: 32 - type: integer 
+	Parameter COMPONENT_WIDTH bound to: 16 - type: integer 
+	Parameter SHIFT bound to: 15 - type: integer 
+	Parameter CONJ_A bound to: 0 - type: integer 
+	Parameter CONJ_B bound to: 1 - type: integer 
+INFO: [Synth 8-6157] synthesizing module 'axis_complex_mult' [C:/RTL_SYNC/rtl/axis_complex_mult.v:1]
+	Parameter DATA_WIDTH bound to: 32 - type: integer 
+	Parameter COMPONENT_WIDTH bound to: 16 - type: integer 
+	Parameter SHIFT bound to: 15 - type: integer 
+INFO: [Synth 8-6155] done synthesizing module 'axis_complex_mult' (0#1) [C:/RTL_SYNC/rtl/axis_complex_mult.v:1]
+INFO: [Synth 8-6155] done synthesizing module 'complex_mult_iq' (0#1) [C:/RTL_SYNC/rtl/complex_mult_iq.v:41]
+INFO: [Synth 8-6155] done synthesizing module 'complex_rotator' (0#1) [C:/RTL_SYNC/rtl/complex_rotator.v:23]
+INFO: [Synth 8-6155] done synthesizing module 'frac_cfo_corrector_top' (0#1) [C:/RTL_SYNC/rtl/frac_cfo_corrector_top.v:14]
+INFO: [Synth 8-6155] done synthesizing module 'frac_cfo_frame_corrector_top' (0#1) [C:/RTL_SYNC/rtl/frac_cfo_frame_corrector_top.v:42]
+WARNING: [Synth 8-6014] Unused sequential element found_flag_reg was removed.  [C:/RTL_SYNC/rtl/frame_detector.v:183]
+WARNING: [Synth 8-6014] Unused sequential element win_was_full_reg was removed.  [C:/RTL_SYNC/rtl/frame_detector.v:184]
+WARNING: [Synth 8-6014] Unused sequential element first_win_done_reg was removed.  [C:/RTL_SYNC/rtl/frame_detector.v:185]
+WARNING: [Synth 8-6014] Unused sequential element oldest_pwr_reg was removed.  [C:/RTL_SYNC/rtl/frame_detector.v:188]
+WARNING: [Synth 8-6014] Unused sequential element next_acc_reg was removed.  [C:/RTL_SYNC/rtl/frame_detector.v:194]
+WARNING: [Synth 8-6014] Unused sequential element prod_PI_reg was removed.  [C:/RTL_SYNC/rtl/cp_autocorr_core.v:176]
+WARNING: [Synth 8-6014] Unused sequential element prod_PQ_reg was removed.  [C:/RTL_SYNC/rtl/cp_autocorr_core.v:178]
+WARNING: [Synth 8-6014] Unused sequential element prod_E_reg was removed.  [C:/RTL_SYNC/rtl/cp_autocorr_core.v:180]
+WARNING: [Synth 8-6014] Unused sequential element new_P_I_reg was removed.  [C:/RTL_SYNC/rtl/cp_autocorr_core.v:186]
+WARNING: [Synth 8-6014] Unused sequential element new_P_Q_reg was removed.  [C:/RTL_SYNC/rtl/cp_autocorr_core.v:187]
+WARNING: [Synth 8-6014] Unused sequential element new_E_reg was removed.  [C:/RTL_SYNC/rtl/cp_autocorr_core.v:188]
+WARNING: [Synth 8-6014] Unused sequential element pd_start_r_reg was removed.  [C:/RTL_SYNC/rtl/timing_sync_top.v:154]
+WARNING: [Synth 8-6014] Unused sequential element frac_phase_valid_reg was removed.  [C:/RTL_SYNC/rtl/frac_cfo_estimator.v:84]
+WARNING: [Synth 8-6014] Unused sequential element peak_lag_r_reg was removed.  [C:/RTL_SYNC/rtl/frac_cfo_frame_corrector_top.v:342]
+WARNING: [Synth 8-7129] Port result_rd_addr[8] in module cp_autocorr_core is either unconnected or has no load
+---------------------------------------------------------------------------------
+Finished Synthesize : Time (s): cpu = 00:00:19 ; elapsed = 00:00:22 . Memory (MB): peak = 1024.312 ; gain = 621.938
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Finished Constraint Validation : Time (s): cpu = 00:00:21 ; elapsed = 00:00:24 . Memory (MB): peak = 1024.312 ; gain = 621.938
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Start Loading Part and Timing Information
+---------------------------------------------------------------------------------
+Loading part: xczu9eg-ffvb1156-2-e
+INFO: [Synth 8-6742] Reading net delay rules and data
+INFO: [Device 21-403] Loading part xczu9eg-ffvb1156-2-e
+---------------------------------------------------------------------------------
+Finished Loading Part and Timing Information : Time (s): cpu = 00:00:21 ; elapsed = 00:00:25 . Memory (MB): peak = 1024.312 ; gain = 621.938
+---------------------------------------------------------------------------------
+INFO: [Synth 8-802] inferred FSM for state register 'state_reg' in module 'frame_detector'
+INFO: [Synth 8-802] inferred FSM for state register 'state_reg' in module 'cp_autocorr_core'
+INFO: [Synth 8-802] inferred FSM for state register 'state_reg' in module 'timing_metric_core'
+INFO: [Synth 8-802] inferred FSM for state register 'state_reg' in module 'timing_sync_top'
+INFO: [Synth 8-802] inferred FSM for state register 'state_reg' in module 'frac_cfo_estimator'
+INFO: [Synth 8-802] inferred FSM for state register 'state_reg' in module 'timing_frac_cfo_top'
+INFO: [Synth 8-802] inferred FSM for state register 'state_reg' in module 'frac_cfo_frame_corrector_top'
+INFO: [Synth 8-6904] The RAM "frame_detector:/pow_buf_reg" of size (depth=64 x width=33) is automatically implemented using LUTRAM. BRAM implementation would be inefficient 
+---------------------------------------------------------------------------------------------------
+                   State |                     New Encoding |                Previous Encoding 
+---------------------------------------------------------------------------------------------------
+                  S_IDLE |                             0001 |                               00
+                 S_FETCH |                             0010 |                               01
+                  S_PROC |                             0100 |                               10
+                  S_DONE |                             1000 |                               11
+---------------------------------------------------------------------------------------------------
+INFO: [Synth 8-3354] encoded FSM with state register 'state_reg' using encoding 'one-hot' in module 'frame_detector'
+---------------------------------------------------------------------------------------------------
+                   State |                     New Encoding |                Previous Encoding 
+---------------------------------------------------------------------------------------------------
+                  S_IDLE |                              001 |                               00
+                   S_RUN |                              010 |                               01
+                  S_DONE |                              100 |                               10
+---------------------------------------------------------------------------------------------------
+INFO: [Synth 8-3354] encoded FSM with state register 'state_reg' using encoding 'one-hot' in module 'timing_metric_core'
+---------------------------------------------------------------------------------------------------
+                   State |                     New Encoding |                Previous Encoding 
+---------------------------------------------------------------------------------------------------
+                  S_IDLE |                              000 |                              000
+              S_AUTOCORR |                              001 |                              001
+                S_METRIC |                              010 |                              010
+                 S_LATCH |                              011 |                              011
+                  S_DONE |                              100 |                              100
+---------------------------------------------------------------------------------------------------
+INFO: [Synth 8-3354] encoded FSM with state register 'state_reg' using encoding 'sequential' in module 'timing_sync_top'
+---------------------------------------------------------------------------------------------------
+                   State |                     New Encoding |                Previous Encoding 
+---------------------------------------------------------------------------------------------------
+                  S_IDLE |                             0001 |                               00
+                  S_SEND |                             0010 |                               01
+                  S_WAIT |                             0100 |                               10
+                  S_DONE |                             1000 |                               11
+---------------------------------------------------------------------------------------------------
+INFO: [Synth 8-3354] encoded FSM with state register 'state_reg' using encoding 'one-hot' in module 'frac_cfo_estimator'
+---------------------------------------------------------------------------------------------------
+                   State |                     New Encoding |                Previous Encoding 
+---------------------------------------------------------------------------------------------------
+                  S_IDLE |                               00 |                               00
+                S_TIMING |                               01 |                               01
+              S_FRAC_CFO |                               10 |                               10
+                  S_DONE |                               11 |                               11
+---------------------------------------------------------------------------------------------------
+INFO: [Synth 8-3354] encoded FSM with state register 'state_reg' using encoding 'sequential' in module 'timing_frac_cfo_top'
+---------------------------------------------------------------------------------------------------
+                   State |                     New Encoding |                Previous Encoding 
+---------------------------------------------------------------------------------------------------
+                  S_IDLE |                          0000001 |                              000
+                  S_FILL |                          1000000 |                              001
+             S_FRAME_DET |                          0100000 |                              010
+            S_TIMING_CFO |                          0010000 |                              011
+              S_LOAD_NCO |                          0001000 |                              100
+               S_CORRECT |                          0000100 |                              101
+                  S_DONE |                          0000010 |                              110
+---------------------------------------------------------------------------------------------------
+INFO: [Synth 8-3354] encoded FSM with state register 'state_reg' using encoding 'one-hot' in module 'frac_cfo_frame_corrector_top'
+---------------------------------------------------------------------------------
+Finished RTL Optimization Phase 2 : Time (s): cpu = 00:00:45 ; elapsed = 00:00:39 . Memory (MB): peak = 1770.387 ; gain = 1368.012
+---------------------------------------------------------------------------------
+No constraint files found.
+---------------------------------------------------------------------------------
+Start RTL Component Statistics 
+---------------------------------------------------------------------------------
+Detailed RTL Component Info : 
++---Adders : 
+	   2 Input   40 Bit       Adders := 3     
+	   2 Input   33 Bit       Adders := 2     
+	   3 Input   32 Bit       Adders := 1     
+	   2 Input   32 Bit       Adders := 1     
+	   3 Input   31 Bit       Adders := 1     
+	   3 Input   15 Bit       Adders := 1     
+	   2 Input   13 Bit       Adders := 2     
+	   2 Input   12 Bit       Adders := 8     
+	   3 Input   12 Bit       Adders := 1     
+	   4 Input   12 Bit       Adders := 1     
+	   2 Input   10 Bit       Adders := 2     
+	   2 Input    9 Bit       Adders := 4     
+	   2 Input    7 Bit       Adders := 1     
+	   2 Input    6 Bit       Adders := 2     
+	   2 Input    5 Bit       Adders := 3     
+	   2 Input    4 Bit       Adders := 1     
++---Registers : 
+	               40 Bit    Registers := 5     
+	               32 Bit    Registers := 776   
+	               16 Bit    Registers := 8     
+	               13 Bit    Registers := 3     
+	               12 Bit    Registers := 8     
+	               10 Bit    Registers := 1     
+	                9 Bit    Registers := 6     
+	                7 Bit    Registers := 2     
+	                6 Bit    Registers := 1     
+	                5 Bit    Registers := 2     
+	                4 Bit    Registers := 2     
+	                1 Bit    Registers := 38    
++---Multipliers : 
+	               7x40  Multipliers := 1     
++---RAMs : 
+	             128K Bit	(4096 X 32 bit)          RAMs := 1     
+	               2K Bit	(64 X 33 bit)          RAMs := 1     
++---Muxes : 
+	   7 Input   40 Bit        Muxes := 3     
+	   2 Input   40 Bit        Muxes := 4     
+	   4 Input   40 Bit        Muxes := 1     
+	   2 Input   33 Bit        Muxes := 3     
+	   2 Input   32 Bit        Muxes := 4     
+	   7 Input   32 Bit        Muxes := 1     
+	   2 Input   31 Bit        Muxes := 1     
+	   2 Input   13 Bit        Muxes := 1     
+	   4 Input   13 Bit        Muxes := 1     
+	   7 Input   12 Bit        Muxes := 1     
+	   2 Input   12 Bit        Muxes := 6     
+	   4 Input   12 Bit        Muxes := 2     
+	   2 Input   10 Bit        Muxes := 2     
+	   7 Input    9 Bit        Muxes := 2     
+	   3 Input    9 Bit        Muxes := 1     
+	   2 Input    9 Bit        Muxes := 3     
+	   4 Input    7 Bit        Muxes := 1     
+	   7 Input    7 Bit        Muxes := 1     
+	   2 Input    7 Bit        Muxes := 1     
+	   7 Input    6 Bit        Muxes := 1     
+	   2 Input    6 Bit        Muxes := 2     
+	   4 Input    6 Bit        Muxes := 1     
+	   4 Input    5 Bit        Muxes := 1     
+	   7 Input    5 Bit        Muxes := 1     
+	   2 Input    4 Bit        Muxes := 3     
+	   4 Input    4 Bit        Muxes := 2     
+	   3 Input    3 Bit        Muxes := 1     
+	   7 Input    3 Bit        Muxes := 1     
+	   5 Input    3 Bit        Muxes := 1     
+	   4 Input    2 Bit        Muxes := 1     
+	   2 Input    2 Bit        Muxes := 1     
+	   3 Input    1 Bit        Muxes := 514   
+	   2 Input    1 Bit        Muxes := 36    
+	   7 Input    1 Bit        Muxes := 544   
+	   5 Input    1 Bit        Muxes := 9     
+	   4 Input    1 Bit        Muxes := 28    
+---------------------------------------------------------------------------------
+Finished RTL Component Statistics 
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Start Part Resource Summary
+---------------------------------------------------------------------------------
+Part Resources:
+DSPs: 2520 (col length:168)
+BRAMs: 1824 (col length: RAMB18 168 RAMB36 84)
+---------------------------------------------------------------------------------
+Finished Part Resource Summary
+---------------------------------------------------------------------------------
+No constraint files found.
+---------------------------------------------------------------------------------
+Start Cross Boundary and Area Optimization
+---------------------------------------------------------------------------------
+WARNING: [Synth 8-7080] Parallel synthesis criteria is not met
+DSP Report: Generating DSP acc_P_I2, operation Mode is: A2*B.
+DSP Report: register a_I_reg is absorbed into DSP acc_P_I2.
+DSP Report: operator acc_P_I2 is absorbed into DSP acc_P_I2.
+DSP Report: Generating DSP acc_P_I1, operation Mode is: PCIN+A2*B.
+DSP Report: register a_Q_reg is absorbed into DSP acc_P_I1.
+DSP Report: operator acc_P_I1 is absorbed into DSP acc_P_I1.
+DSP Report: operator acc_P_I2 is absorbed into DSP acc_P_I1.
+DSP Report: Generating DSP acc_P_Q2, operation Mode is: A*B2.
+DSP Report: register a_Q_reg is absorbed into DSP acc_P_Q2.
+DSP Report: operator acc_P_Q2 is absorbed into DSP acc_P_Q2.
+DSP Report: Generating DSP acc_P_Q1, operation Mode is: PCIN-A*B2.
+DSP Report: register a_I_reg is absorbed into DSP acc_P_Q1.
+DSP Report: operator acc_P_Q1 is absorbed into DSP acc_P_Q1.
+DSP Report: operator acc_P_Q3 is absorbed into DSP acc_P_Q1.
+DSP Report: Generating DSP acc_E2, operation Mode is: A*B.
+DSP Report: operator acc_E2 is absorbed into DSP acc_E2.
+DSP Report: Generating DSP acc_E1, operation Mode is: PCIN+A2*B2.
+DSP Report: register a_I_reg is absorbed into DSP acc_E1.
+DSP Report: register a_I_reg is absorbed into DSP acc_E1.
+DSP Report: operator acc_E1 is absorbed into DSP acc_E1.
+DSP Report: operator acc_E4 is absorbed into DSP acc_E1.
+DSP Report: Generating DSP acc_E1, operation Mode is: PCIN+A*B.
+DSP Report: operator acc_E1 is absorbed into DSP acc_E1.
+DSP Report: operator acc_E3 is absorbed into DSP acc_E1.
+DSP Report: Generating DSP acc_E1, operation Mode is: PCIN+A2*B2.
+DSP Report: register a_Q_reg is absorbed into DSP acc_E1.
+DSP Report: register a_Q_reg is absorbed into DSP acc_E1.
+DSP Report: operator acc_E1 is absorbed into DSP acc_E1.
+DSP Report: operator acc_E4 is absorbed into DSP acc_E1.
+DSP Report: Generating DSP u_fd/thresh_mult0, operation Mode is: A*B.
+DSP Report: operator u_fd/thresh_mult0 is absorbed into DSP u_fd/thresh_mult0.
+DSP Report: operator u_fd/thresh_mult0 is absorbed into DSP u_fd/thresh_mult0.
+DSP Report: Generating DSP u_fd/thresh_mult_reg, operation Mode is: (PCIN>>17)+A*B.
+DSP Report: register u_fd/thresh_mult_reg is absorbed into DSP u_fd/thresh_mult_reg.
+DSP Report: operator u_fd/thresh_mult0 is absorbed into DSP u_fd/thresh_mult_reg.
+DSP Report: operator u_fd/thresh_mult0 is absorbed into DSP u_fd/thresh_mult_reg.
+DSP Report: Generating DSP u_fd/new_power0, operation Mode is: A*B.
+DSP Report: operator u_fd/new_power0 is absorbed into DSP u_fd/new_power0.
+DSP Report: Generating DSP u_fd/new_power, operation Mode is: PCIN+A2*B2.
+DSP Report: register u_fd/new_power is absorbed into DSP u_fd/new_power.
+DSP Report: register u_fd/new_power is absorbed into DSP u_fd/new_power.
+DSP Report: operator u_fd/new_power is absorbed into DSP u_fd/new_power.
+DSP Report: operator u_fd/new_power0 is absorbed into DSP u_fd/new_power.
+INFO: [Synth 8-6904] The RAM "frac_cfo_frame_corrector_top/u_fd/pow_buf_reg" of size (depth=64 x width=33) is automatically implemented using LUTRAM. BRAM implementation would be inefficient 
+DSP Report: Generating DSP u_fd/next_acc0, operation Mode is: PCIN+A:B+C'.
+DSP Report: register u_fd/energy_acc_reg is absorbed into DSP u_fd/next_acc0.
+DSP Report: operator u_fd/next_acc0 is absorbed into DSP u_fd/next_acc0.
+DSP Report: Generating DSP u_corr/u_rot/u_mult/core/prod_ri, operation Mode is: A2*B.
+DSP Report: register play_hold_data_reg is absorbed into DSP u_corr/u_rot/u_mult/core/prod_ri.
+DSP Report: operator u_corr/u_rot/u_mult/core/prod_ri is absorbed into DSP u_corr/u_rot/u_mult/core/prod_ri.
+DSP Report: Generating DSP u_corr/u_rot/u_mult/core/full_imag, operation Mode is: C+A2*B.
+DSP Report: register u_corr/u_rot/u_mult/core/full_imag is absorbed into DSP u_corr/u_rot/u_mult/core/full_imag.
+DSP Report: operator u_corr/u_rot/u_mult/core/full_imag is absorbed into DSP u_corr/u_rot/u_mult/core/full_imag.
+DSP Report: operator u_corr/u_rot/u_mult/core/prod_ir is absorbed into DSP u_corr/u_rot/u_mult/core/full_imag.
+DSP Report: Generating DSP u_corr/u_rot/u_mult/core/prod_rr, operation Mode is: A2*B.
+DSP Report: register play_hold_data_reg is absorbed into DSP u_corr/u_rot/u_mult/core/prod_rr.
+DSP Report: operator u_corr/u_rot/u_mult/core/prod_rr is absorbed into DSP u_corr/u_rot/u_mult/core/prod_rr.
+DSP Report: Generating DSP u_corr/u_rot/u_mult/core/full_real, operation Mode is: C-A2*B.
+DSP Report: register u_corr/u_rot/u_mult/core/full_real is absorbed into DSP u_corr/u_rot/u_mult/core/full_real.
+DSP Report: operator u_corr/u_rot/u_mult/core/full_real is absorbed into DSP u_corr/u_rot/u_mult/core/full_real.
+DSP Report: operator u_corr/u_rot/u_mult/core/prod_ii is absorbed into DSP u_corr/u_rot/u_mult/core/full_real.
+---------------------------------------------------------------------------------
+Finished Cross Boundary and Area Optimization : Time (s): cpu = 00:01:48 ; elapsed = 00:02:16 . Memory (MB): peak = 1886.062 ; gain = 1483.688
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Start ROM, RAM, DSP, Shift Register and Retiming Reporting
+---------------------------------------------------------------------------------
+
+Distributed RAM: Preliminary Mapping Report (see note below)
++-----------------------------+------------------+-----------+----------------------+----------------+
+|Module Name                  | RTL Object       | Inference | Size (Depth x Width) | Primitives     | 
++-----------------------------+------------------+-----------+----------------------+----------------+
+|frac_cfo_frame_corrector_top | u_buf/mem_reg    | Implied   | 4 K x 32             | RAM64M8 x 640  | 
+|frac_cfo_frame_corrector_top | u_fd/pow_buf_reg | Implied   | 64 x 33              | RAM64X1S x 33  | 
++-----------------------------+------------------+-----------+----------------------+----------------+
+
+Note: The table above is a preliminary report that shows the Distributed RAMs at the current stage of the synthesis flow. Some Distributed RAMs may be reimplemented as non Distributed RAM primitives later in the synthesis flow. Multiple instantiated RAMs are reported only once.
+
+DSP: Preliminary Mapping Report (see note below. The ' indicates corresponding REG is set)
++-----------------------------+----------------+--------+--------+--------+--------+--------+------+------+------+------+-------+------+------+
+|Module Name                  | DSP Mapping    | A Size | B Size | C Size | D Size | P Size | AREG | BREG | CREG | DREG | ADREG | MREG | PREG | 
++-----------------------------+----------------+--------+--------+--------+--------+--------+------+------+------+------+-------+------+------+
+|cp_autocorr_core             | A2*B           | 16     | 16     | -      | -      | 32     | 1    | 0    | -    | -    | -     | 0    | 0    | 
+|cp_autocorr_core             | PCIN+A2*B      | 16     | 16     | -      | -      | 33     | 1    | 0    | -    | -    | -     | 0    | 0    | 
+|cp_autocorr_core             | A*B2           | 16     | 16     | -      | -      | 32     | 0    | 1    | -    | -    | -     | 0    | 0    | 
+|cp_autocorr_core             | PCIN-A*B2      | 16     | 16     | -      | -      | 32     | 0    | 1    | -    | -    | -     | 0    | 0    | 
+|cp_autocorr_core             | A*B            | 16     | 16     | -      | -      | 32     | 0    | 0    | -    | -    | -     | 0    | 0    | 
+|cp_autocorr_core             | PCIN+A2*B2     | 16     | 16     | -      | -      | 33     | 1    | 1    | -    | -    | -     | 0    | 0    | 
+|cp_autocorr_core             | PCIN+A*B       | 16     | 16     | -      | -      | 33     | 0    | 0    | -    | -    | -     | 0    | 0    | 
+|cp_autocorr_core             | PCIN+A2*B2     | 16     | 16     | -      | -      | 33     | 1    | 1    | -    | -    | -     | 0    | 0    | 
+|frac_cfo_frame_corrector_top | A*B            | 18     | 8      | -      | -      | 48     | 0    | 0    | -    | -    | -     | 0    | 0    | 
+|frac_cfo_frame_corrector_top | (PCIN>>17)+A*B | 24     | 8      | -      | -      | 48     | 0    | 0    | -    | -    | -     | 0    | 1    | 
+|frame_detector               | A*B            | 16     | 16     | -      | -      | 32     | 0    | 0    | -    | -    | -     | 0    | 0    | 
+|frac_cfo_frame_corrector_top | PCIN+A2*B2     | 16     | 16     | -      | -      | 33     | 1    | 1    | -    | -    | -     | 0    | 0    | 
+|frame_detector               | PCIN+A:B+C'    | 22     | 18     | 40     | -      | -1     | 0    | 0    | 1    | -    | -     | 0    | 0    | 
+|frac_cfo_frame_corrector_top | A2*B           | 16     | 16     | -      | -      | 32     | 1    | 0    | -    | -    | -     | 0    | 0    | 
+|frac_cfo_frame_corrector_top | C+A2*B         | 16     | 16     | 31     | -      | 31     | 1    | 0    | 0    | -    | -     | 0    | 0    | 
+|frac_cfo_frame_corrector_top | A2*B           | 16     | 16     | -      | -      | 32     | 1    | 0    | -    | -    | -     | 0    | 0    | 
+|frac_cfo_frame_corrector_top | C-A2*B         | 16     | 16     | 31     | -      | 31     | 1    | 0    | 0    | -    | -     | 0    | 0    | 
++-----------------------------+----------------+--------+--------+--------+--------+--------+------+------+------+------+-------+------+------+
+
+Note: The table above is a preliminary report that shows the DSPs inferred at the current stage of the synthesis flow. Some DSP may be reimplemented as non DSP primitives later in the synthesis flow. Multiple instantiated DSPs are reported only once.
+---------------------------------------------------------------------------------
+Finished ROM, RAM, DSP, Shift Register and Retiming Reporting
+---------------------------------------------------------------------------------
+No constraint files found.
+---------------------------------------------------------------------------------
+Start Timing Optimization
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Finished Timing Optimization : Time (s): cpu = 00:01:49 ; elapsed = 00:02:17 . Memory (MB): peak = 1886.062 ; gain = 1483.688
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Start ROM, RAM, DSP, Shift Register and Retiming Reporting
+---------------------------------------------------------------------------------
+
+Distributed RAM: Final Mapping Report
++-----------------------------+------------------+-----------+----------------------+----------------+
+|Module Name                  | RTL Object       | Inference | Size (Depth x Width) | Primitives     | 
++-----------------------------+------------------+-----------+----------------------+----------------+
+|frac_cfo_frame_corrector_top | u_buf/mem_reg    | Implied   | 4 K x 32             | RAM64M8 x 640  | 
+|frac_cfo_frame_corrector_top | u_fd/pow_buf_reg | Implied   | 64 x 33              | RAM64X1S x 33  | 
++-----------------------------+------------------+-----------+----------------------+----------------+
+
+---------------------------------------------------------------------------------
+Finished ROM, RAM, DSP, Shift Register and Retiming Reporting
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Start Technology Mapping
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Finished Technology Mapping : Time (s): cpu = 00:02:02 ; elapsed = 00:02:31 . Memory (MB): peak = 1886.062 ; gain = 1483.688
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Start IO Insertion
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Start Flattening Before IO Insertion
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Finished Flattening Before IO Insertion
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Start Final Netlist Cleanup
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Finished Final Netlist Cleanup
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Finished IO Insertion : Time (s): cpu = 00:02:15 ; elapsed = 00:02:44 . Memory (MB): peak = 1886.062 ; gain = 1483.688
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Start Renaming Generated Instances
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Finished Renaming Generated Instances : Time (s): cpu = 00:02:16 ; elapsed = 00:02:45 . Memory (MB): peak = 1886.062 ; gain = 1483.688
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Start Rebuilding User Hierarchy
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Finished Rebuilding User Hierarchy : Time (s): cpu = 00:02:19 ; elapsed = 00:02:48 . Memory (MB): peak = 1886.062 ; gain = 1483.688
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Start Renaming Generated Ports
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Finished Renaming Generated Ports : Time (s): cpu = 00:02:19 ; elapsed = 00:02:48 . Memory (MB): peak = 1886.062 ; gain = 1483.688
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Start Handling Custom Attributes
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Finished Handling Custom Attributes : Time (s): cpu = 00:02:20 ; elapsed = 00:02:49 . Memory (MB): peak = 1886.062 ; gain = 1483.688
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Start Renaming Generated Nets
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Finished Renaming Generated Nets : Time (s): cpu = 00:02:20 ; elapsed = 00:02:49 . Memory (MB): peak = 1886.062 ; gain = 1483.688
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Start Writing Synthesis Report
+---------------------------------------------------------------------------------
+
+DSP Final Report (the ' indicates corresponding REG is set)
++-----------------------------+-----------------+--------+--------+--------+--------+--------+------+------+------+------+-------+------+------+
+|Module Name                  | DSP Mapping     | A Size | B Size | C Size | D Size | P Size | AREG | BREG | CREG | DREG | ADREG | MREG | PREG | 
++-----------------------------+-----------------+--------+--------+--------+--------+--------+------+------+------+------+-------+------+------+
+|frac_cfo_frame_corrector_top | A'*B            | 30     | 18     | -      | -      | 32     | 1    | 0    | -    | -    | -     | 0    | 0    | 
+|frac_cfo_frame_corrector_top | (C+A'*B)'       | 30     | 18     | 31     | -      | 31     | 1    | 0    | 0    | -    | -     | 0    | 1    | 
+|frac_cfo_frame_corrector_top | A'*B            | 30     | 18     | -      | -      | 32     | 1    | 0    | -    | -    | -     | 0    | 0    | 
+|frac_cfo_frame_corrector_top | (not(C+A'*B))'  | 30     | 18     | 31     | -      | 31     | 1    | 0    | 0    | -    | -     | 0    | 1    | 
+|frac_cfo_frame_corrector_top | A*B             | 17     | 7      | -      | -      | 48     | 0    | 0    | -    | -    | -     | 0    | 0    | 
+|frac_cfo_frame_corrector_top | (PCIN>>17+A*B)' | 23     | 7      | -      | -      | 48     | 0    | 0    | -    | -    | -     | 0    | 1    | 
+|frame_detector               | A'*B'           | 30     | 18     | -      | -      | 32     | 1    | 1    | -    | -    | -     | 0    | 0    | 
+|frac_cfo_frame_corrector_top | PCIN+A'*B'      | 30     | 18     | -      | -      | 33     | 1    | 1    | -    | -    | -     | 0    | 0    | 
+|frame_detector               | PCIN+A:B+C'     | 22     | 18     | -      | -      | 40     | 0    | 0    | -    | -    | -     | 0    | 0    | 
+|cp_autocorr_core             | A'*B'           | 30     | 18     | -      | -      | 0      | 1    | 1    | -    | -    | -     | 0    | 0    | 
+|cp_autocorr_core             | PCIN+A'*B'      | 30     | 18     | -      | -      | 33     | 1    | 1    | -    | -    | -     | 0    | 0    | 
+|cp_autocorr_core             | A'*B'           | 30     | 18     | -      | -      | 0      | 1    | 1    | -    | -    | -     | 0    | 0    | 
+|cp_autocorr_core             | not(PCIN+A'*B') | 30     | 18     | -      | -      | 32     | 1    | 1    | -    | -    | -     | 0    | 0    | 
+|cp_autocorr_core             | A'*B'           | 30     | 18     | -      | -      | 32     | 1    | 1    | -    | -    | -     | 0    | 0    | 
+|cp_autocorr_core             | PCIN+A'*B'      | 30     | 18     | -      | -      | 0      | 1    | 1    | -    | -    | -     | 0    | 0    | 
+|cp_autocorr_core             | PCIN+A'*B'      | 30     | 18     | -      | -      | 33     | 1    | 1    | -    | -    | -     | 0    | 0    | 
+|cp_autocorr_core             | PCIN+A'*B'      | 30     | 18     | -      | -      | 33     | 1    | 1    | -    | -    | -     | 0    | 0    | 
++-----------------------------+-----------------+--------+--------+--------+--------+--------+------+------+------+------+-------+------+------+
+
+
+Report BlackBoxes: 
++------+--------------+----------+
+|      |BlackBox name |Instances |
++------+--------------+----------+
+|1     |nco_phase_gen |         1|
+|2     |cordic_atan2  |         1|
++------+--------------+----------+
+
+Report Cell Usage: 
++------+-------------------+------+
+|      |Cell               |Count |
++------+-------------------+------+
+|1     |cordic_atan2_bbox  |     1|
+|2     |nco_phase_gen_bbox |     1|
+|3     |CARRY8             |    60|
+|4     |DSP48E2            |     8|
+|5     |DSP_ALU            |     9|
+|6     |DSP_A_B_DATA       |     9|
+|7     |DSP_C_DATA         |     9|
+|8     |DSP_MULTIPLIER     |     9|
+|9     |DSP_M_DATA         |     9|
+|10    |DSP_OUTPUT         |     9|
+|11    |DSP_PREADD         |     9|
+|12    |DSP_PREADD_DATA    |     9|
+|13    |LUT1               |    67|
+|14    |LUT2               |   482|
+|15    |LUT3               |   160|
+|16    |LUT4               |   199|
+|17    |LUT5               |   521|
+|18    |LUT6               |  8085|
+|19    |MUXF7              |  3776|
+|20    |MUXF8              |  1888|
+|21    |RAM64M8            |   640|
+|22    |RAM64X1S           |    33|
+|23    |FDCE               |   224|
+|24    |FDRE               | 25071|
+|25    |FDSE               |     4|
++------+-------------------+------+
+
+Report Instance Areas: 
++------+--------------------+-----------------------------------------------+------+
+|      |Instance            |Module                                         |Cells |
++------+--------------------+-----------------------------------------------+------+
+|1     |top                 |                                               | 41373|
+|2     |  u_buf             |iq_frame_buffer                                |  3004|
+|3     |  u_corr            |frac_cfo_corrector_top                         |   164|
+|4     |    u_rot           |complex_rotator                                |    79|
+|5     |      u_mult        |complex_mult_iq                                |    79|
+|6     |        core        |axis_complex_mult                              |    79|
+|7     |          full_imag |\u_corr/u_rot/u_mult/core/full_imag_funnel     |     8|
+|8     |          full_real |\u_corr/u_rot/u_mult/core/full_imag_funnel__1  |     8|
+|9     |  u_fd              |frame_detector                                 |   425|
+|10    |    new_power0      |\u_fd/new_power0_funnel                        |     8|
+|11    |  u_tfc             |timing_frac_cfo_top                            | 37676|
+|12    |    u_fce           |frac_cfo_estimator                             |    58|
+|13    |    u_tst           |timing_sync_top                                | 37606|
+|14    |      u_ac          |cp_autocorr_core                               | 37193|
+|15    |        acc_P_I2    |\u_fd/new_power0_funnel__6                     |     8|
+|16    |        acc_P_I1    |\u_fd/new_power0_funnel__5                     |     8|
+|17    |        acc_P_Q2    |\u_fd/new_power0_funnel__4                     |     8|
+|18    |        acc_P_Q1    |\u_fd/new_power0_funnel__3                     |     8|
+|19    |        acc_E2      |\u_fd/new_power0_funnel__2                     |     8|
+|20    |        acc_E1__0   |\u_fd/new_power0_funnel__1                     |     8|
+|21    |      u_pd          |peak_detector                                  |   154|
+|22    |      u_tmc         |timing_metric_core                             |   128|
++------+--------------------+-----------------------------------------------+------+
+---------------------------------------------------------------------------------
+Finished Writing Synthesis Report : Time (s): cpu = 00:02:20 ; elapsed = 00:02:49 . Memory (MB): peak = 1886.062 ; gain = 1483.688
+---------------------------------------------------------------------------------
+Synthesis finished with 0 errors, 0 critical warnings and 16 warnings.
+Synthesis Optimization Runtime : Time (s): cpu = 00:02:20 ; elapsed = 00:02:49 . Memory (MB): peak = 1886.062 ; gain = 1483.688
+Synthesis Optimization Complete : Time (s): cpu = 00:02:20 ; elapsed = 00:02:49 . Memory (MB): peak = 1886.062 ; gain = 1483.688
+INFO: [Project 1-571] Translating synthesized netlist
+Netlist sorting complete. Time (s): cpu = 00:00:01 ; elapsed = 00:00:00.824 . Memory (MB): peak = 1886.062 ; gain = 0.000
+INFO: [Netlist 29-17] Analyzing 6414 Unisim elements for replacement
+INFO: [Netlist 29-28] Unisim Transformation completed in 2 CPU seconds
+WARNING: [Netlist 29-101] Netlist 'frac_cfo_frame_corrector_top' is not ideal for floorplanning, since the cellview 'cp_autocorr_core' contains a large number of primitives.  Please consider enabling hierarchy in synthesis if you want to do floorplanning.
+INFO: [Project 1-570] Preparing netlist for logic optimization
+INFO: [Opt 31-138] Pushed 0 inverter(s) to 0 load pin(s).
+Netlist sorting complete. Time (s): cpu = 00:00:01 ; elapsed = 00:00:00.018 . Memory (MB): peak = 1938.078 ; gain = 0.000
+INFO: [Project 1-111] Unisim Transformation Summary:
+  A total of 690 instances were transformed.
+  DSP48E2 => DSP48E2 (DSP_ALU, DSP_A_B_DATA, DSP_C_DATA, DSP_MULTIPLIER, DSP_M_DATA, DSP_OUTPUT, DSP_PREADD, DSP_PREADD_DATA): 17 instances
+  RAM64M8 => RAM64M8 (RAMD64E(x8)): 640 instances
+  RAM64X1S => RAM64X1S (RAMS64E): 33 instances
+
+Synth Design complete, checksum: 8156aea3
+INFO: [Common 17-83] Releasing license: Synthesis
+60 Infos, 17 Warnings, 0 Critical Warnings and 0 Errors encountered.
+synth_design completed successfully
+synth_design: Time (s): cpu = 00:02:37 ; elapsed = 00:03:08 . Memory (MB): peak = 1938.078 ; gain = 1560.555
+# puts "INFO: Applying 100 MHz clock constraint on aclk..."
+INFO: Applying 100 MHz clock constraint on aclk...
+# create_clock -period 10.000 [get_ports aclk]
+create_clock: Time (s): cpu = 00:00:09 ; elapsed = 00:00:10 . Memory (MB): peak = 1938.078 ; gain = 0.000
+# puts "INFO: Writing reports..."
+INFO: Writing reports...
+# report_utilization -file $RPTS/step22_synth_utilization.rpt
+# report_timing_summary -file $RPTS/step22_timing_summary.rpt
+INFO: [Timing 38-35] Done setting XDC timing constraints.
+INFO: [Timing 38-91] UpdateTimingParams: Speed grade: -2, Temperature grade: E, Delay Type: min_max.
+INFO: [Timing 38-191] Multithreading enabled for timing update using a maximum of 2 CPUs
+WARNING: [Timing 38-242] The property HD.CLK_SRC of clock port "aclk" is not set. In out-of-context mode, this prevents timing estimation for clock delay/skew
+Resolution: Set the HD.CLK_SRC property of the out-of-context port to the location of the clock buffer instance in the top-level design
+report_timing_summary: Time (s): cpu = 00:01:37 ; elapsed = 00:01:36 . Memory (MB): peak = 3511.133 ; gain = 1573.055
+# report_drc -file $RPTS/step22_drc.rpt
+Command: report_drc -file reports/step22_drc.rpt
+INFO: [IP_Flow 19-234] Refreshing IP repositories
+INFO: [IP_Flow 19-1704] No user IP repositories specified
+INFO: [IP_Flow 19-2313] Loaded Vivado IP repository 'C:/Xilinx/Vivado/2022.2/data/ip'.
+INFO: [DRC 23-27] Running DRC with 2 threads
+INFO: [Vivado_Tcl 2-168] The results of DRC are in file C:/RTL_SYNC/reports/step22_drc.rpt.
+report_drc completed successfully
+report_drc: Time (s): cpu = 00:00:12 ; elapsed = 00:00:11 . Memory (MB): peak = 3511.133 ; gain = 0.000
+# puts "========================================================"
+========================================================
+# puts "Step 22 synthesis completed successfully."
+Step 22 synthesis completed successfully.
+# puts "Reports written under $RPTS"
+Reports written under reports
+# puts "========================================================"
+========================================================
+# exit 0
+INFO: [Common 17-206] Exiting Vivado at Thu May  7 10:52:15 2026...
