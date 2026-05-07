@@ -767,11 +767,71 @@ RTL modified: No (new files only).
 
 ---
 
+---
+
+### Step 27 — ZCU102 Vivado Block Design Integration (No ILA)
+
+Status: **Prepared — pending Windows Vivado execution**
+
+Prompt archive: `md_files/27_zcu102_bd_integration_no_ila_prompt.md`
+
+Files created:
+- `scripts/vivado/step27_create_zcu102_bd_no_ila.tcl` — Vivado Tcl: project, BD, connections, address map
+- `scripts/windows/run_step27_create_zcu102_bd_no_ila.bat` — Windows batch runner
+- `docs/step27_zcu102_bd_integration_no_ila.md` — step documentation
+- `reports/step27/` — output directory (empty until Windows run)
+
+Target:
+- Board: ZCU102
+- Part: xczu9eg-ffvb1156-2-e
+- Vivado: 2022.2 (Windows only)
+- BD name: sync_phase1_bd
+- Vivado project: vivado/step27_zcu102_bd/
+
+Block design architecture:
+- PS (zynq_ultra_ps_e_0): M_AXI_HPM0_FPD master, pl_clk0 at 100 MHz
+- AXI SmartConnect (axi_smc): 1 master in → 1 slave out
+- proc_sys_reset_0: pl_resetn0 → peripheral_aresetn
+- xlconstant_0: dcm_locked tied to 1
+- wrapper_0 (frac_cfo_sync_bram_test_wrapper): AXI-Lite slave
+
+Xilinx IP list:
+- xilinx.com:ip:zynq_ultra_ps_e:* (PS)
+- xilinx.com:ip:smartconnect:* (AXI interconnect)
+- xilinx.com:ip:proc_sys_reset:* (reset synchronizer)
+- xilinx.com:ip:xlconstant:* (tie dcm_locked=1)
+
+ILA: omitted intentionally (user decision — no debug fabric in this step)
+DMA: not added
+External BRAM IP: not added (wrapper uses inferred BRAM)
+
+Address map:
+- wrapper_0 base: 0xA0000000
+- wrapper_0 range: 64 KB (covers registers 0x0000-0x0028 + memories 0x1000-0x2FFF)
+
+validate_bd_design: NOT RUN (pending Windows Vivado)
+Synthesis: NOT RUN
+Bitstream: NOT RUN
+RTL modified: No
+
+Recommended user action — run on Windows:
+```
+cd C:\RTL_SYNC
+scripts\windows\run_step27_create_zcu102_bd_no_ila.bat
+```
+
+Log output: reports\step27\step27_create_bd.log
+
+---
+
 ## Next Step
 
-### Step 27 Candidates
+### Step 28 — Synthesis / Implementation / Bitstream / XSA Export
 
-1. Connect AXI-Lite CFG registers to DUT runtime inputs (THRESHOLD, WINDOW_LEN, HIT_COUNT)
-   so they can be tuned from JTAG without recompile.
-2. Integer CFO estimator (`int_cfo_estimator.v`) integration — deferred from earlier steps.
-3. Vivado project / XDC constraints + synthesis for FPGA bring-up.
+Run the Step 27 block design through the full Vivado flow on Windows:
+- Synthesis + implementation + write_bitstream
+- write_hw_platform → sync_phase1.xsa
+- Open XSA in Vitis for ARM firmware development
+
+Or alternatively: connect AXI-Lite CFG registers to DUT runtime inputs
+(THRESHOLD, WINDOW_LEN, HIT_COUNT) before implementation.

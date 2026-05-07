@@ -28,6 +28,7 @@ INFO: [VRFC 10-2263] Analyzing SystemVerilog file "/home/zealatan/RTL_SYNC/rtl/f
 INFO: [VRFC 10-311] analyzing module frame_detector
 INFO: [VRFC 10-2263] Analyzing SystemVerilog file "/home/zealatan/RTL_SYNC/rtl/frac_cfo_frame_corrector_top.v" into library work
 INFO: [VRFC 10-311] analyzing module frac_cfo_frame_corrector_top
-INFO: [VRFC 10-2263] Analyzing SystemVerilog file "/home/zealatan/RTL_SYNC/tb/frac_cfo_frame_corrector_top_tb.sv" into library work
-INFO: [VRFC 10-311] analyzing module frac_cfo_frame_corrector_top_tb
-WARNING: [VRFC 10-3824] variable 'n99' must explicitly be declared as automatic or static [/home/zealatan/RTL_SYNC/tb/frac_cfo_frame_corrector_top_tb.sv:393]
+INFO: [VRFC 10-2263] Analyzing SystemVerilog file "/home/zealatan/RTL_SYNC/rtl/frac_cfo_sync_bram_test_wrapper.v" into library work
+INFO: [VRFC 10-311] analyzing module frac_cfo_sync_bram_test_wrapper
+INFO: [VRFC 10-2263] Analyzing SystemVerilog file "/home/zealatan/RTL_SYNC/tb/frac_cfo_sync_bram_test_wrapper_tb.sv" into library work
+INFO: [VRFC 10-311] analyzing module frac_cfo_sync_bram_test_wrapper_tb

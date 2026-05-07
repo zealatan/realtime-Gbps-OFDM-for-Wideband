@@ -1,6 +1,6 @@
 Vivado Simulator v2022.2
 Copyright 1986-1999, 2001-2022 Xilinx, Inc. All Rights Reserved.
-Running: /home/zealatan/Downloads/Vivado/2022.2/bin/unwrapped/lnx64.o/xelab frac_cfo_frame_corrector_top_tb -debug typical -timescale 1ns/1ps -s frac_cfo_frame_corrector_top_tb_sim 
+Running: /home/zealatan/Downloads/Vivado/2022.2/bin/unwrapped/lnx64.o/xelab frac_cfo_sync_bram_test_wrapper_tb -debug typical -timescale 1ns/1ps -s frac_cfo_sync_bram_test_wrapper_tb_sim 
 Multi-threading is on. Using 10 slave threads.
 Starting static elaboration
 Pass Through NonSizing Optimizer
@@ -23,5 +23,6 @@ Compiling module work.complex_mult_iq(CONJ_B=1)
 Compiling module work.complex_rotator
 Compiling module work.frac_cfo_corrector_top
 Compiling module work.frac_cfo_frame_corrector_top(NSC...
-Compiling module work.frac_cfo_frame_corrector_top_tb
-Built simulation snapshot frac_cfo_frame_corrector_top_tb_sim
+Compiling module work.frac_cfo_sync_bram_test_wrapper(...
+Compiling module work.frac_cfo_sync_bram_test_wrapper_...
+Built simulation snapshot frac_cfo_sync_bram_test_wrapper_tb_sim

@@ -1,7 +1,0 @@
-Running: xsim.dir/frac_cfo_frame_corrector_top_tb_sim/xsimk -runall -simmode gui -wdb frac_cfo_frame_corrector_top_tb_sim.wdb -simrunnum 0 -socket 43799
-Design successfully loaded
-Design Loading Memory Usage: 29600 KB (Peak: 29928 KB)
-Design Loading CPU Usage: 40 ms
-Simulation completed
-Simulation Memory Usage: 124408 KB (Peak: 168868 KB)
-Simulation CPU Usage: 1920 ms

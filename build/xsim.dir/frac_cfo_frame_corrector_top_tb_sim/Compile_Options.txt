@@ -1,1 +1,0 @@
-"frac_cfo_frame_corrector_top_tb" -debug "typical" -timescale "1ns/1ps" -s "frac_cfo_frame_corrector_top_tb_sim" 

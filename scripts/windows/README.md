@@ -108,3 +108,63 @@ Depends on Step 22 result:
   → Step 23 = AXI-Lite debug/config wrapper for Phase-1 FPGA bring-up
 - If synthesis fails (unexpected RTL blocker):
   → Step 23 = Fix synthesis blocker while preserving Step 21 simulation (PASS=176)
+
+---
+
+## Step 27 — ZCU102 Block Design (No ILA)
+
+### Command
+
+Run from Windows PowerShell or CMD:
+
+```bat
+cd C:\RTL_SYNC
+scripts\windows\run_step27_create_zcu102_bd_no_ila.bat
+```
+
+### What it does
+
+1. Calls Vivado 2022.2 in batch mode.
+2. Runs `scripts/vivado/step27_create_zcu102_bd_no_ila.tcl`.
+3. Creates Vivado project `step27_zcu102_bd` under `vivado/step27_zcu102_bd/`.
+4. Adds all RTL sources for `frac_cfo_sync_bram_test_wrapper`.
+5. Creates block design `sync_phase1_bd`.
+6. Instantiates: Zynq UltraScale+ MPSoC PS, AXI SmartConnect, proc_sys_reset, xlconstant.
+7. Adds `frac_cfo_sync_bram_test_wrapper` as a BD module cell.
+8. Connects: PS M_AXI_HPM0_FPD → SmartConnect → wrapper AXI-Lite slave.
+9. Clock: PS pl_clk0 (100 MHz) → all IP.
+10. Reset: PS pl_resetn0 → proc_sys_reset → peripheral_aresetn → wrapper + SmartConnect.
+11. Assigns wrapper base address: 0xA0000000, range 64 KB.
+12. Validates BD, creates HDL wrapper, generates output products.
+13. Does NOT run synthesis, implementation, or bitstream generation.
+
+### Output
+
+| File/Directory | Contents |
+|----------------|----------|
+| `vivado\step27_zcu102_bd\` | Vivado project |
+| `vivado\step27_zcu102_bd\step27_zcu102_bd.xpr` | Project file (open in Vivado GUI) |
+| `reports\step27\step27_create_bd.log` | Console log |
+| `reports\step27\step27_create_bd.jou` | Journal |
+
+### No ILA / No DMA
+
+ILA and DMA are intentionally omitted. Phase 1 bring-up uses PS AXI reads/writes only.
+
+### Constraints
+
+- **Do NOT run implementation in Step 27.** Block design creation only.
+- **Do NOT run bitstream generation in Step 27.**
+- **Do NOT add ILA or DMA.**
+
+### Copying results back to WSL
+
+```bash
+# From WSL after Windows run:
+cp /mnt/c/RTL_SYNC/reports/step27/step27_create_bd.log \
+   /home/zealatan/RTL_SYNC/reports/step27/
+```
+
+### Recommended Step 28
+
+Run the Step 27 block design through synthesis + implementation + bitstream + XSA export.
