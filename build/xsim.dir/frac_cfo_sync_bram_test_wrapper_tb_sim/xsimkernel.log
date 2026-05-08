@@ -1,0 +1,7 @@
+Running: xsim.dir/frac_cfo_sync_bram_test_wrapper_tb_sim/xsimk -runall -simmode gui -wdb frac_cfo_sync_bram_test_wrapper_tb_sim.wdb -simrunnum 0 -socket 40479
+Design successfully loaded
+Design Loading Memory Usage: 29548 KB (Peak: 29872 KB)
+Design Loading CPU Usage: 70 ms
+Simulation completed
+Simulation Memory Usage: 115644 KB (Peak: 168816 KB)
+Simulation CPU Usage: 180 ms

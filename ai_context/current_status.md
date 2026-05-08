@@ -1025,10 +1025,79 @@ Recommended manual action:
 See `docs/step29b_zcu102_vitis_bringup_uart_test.md` for the full procedure, expected
 output, and debug checklist.
 
+---
+
+---
+
+### Step 29E — ZCU102 Board Test Execution (Anomalous Result)
+
+Status: **COMPLETE — anomalous result; root cause under investigation (Step 29F)**
+
+Board observation:
+- STATUS=0x00000192 (done_sticky + frame_error_sticky + output_done bits set)
+- INPUT_COUNT=0, OUTPUT_COUNT=0, DEBUG_STATE=4096 (old RTL encoding — pre-29F)
+
+Root cause analysis:
+- DEBUG_STATE=4096=0x1000 indicated old RTL (pre-Step-29F). New encoding returns 0xFxxxxxxx.
+- INPUT_COUNT=0 with done_sticky firing indicates source data never reached DUT.
+- Two plausible causes identified:
+  1. dut_start (combinatorial) fires same posedge as src_state transitions SRC_IDLE→SRC_STREAM
+     via NBA — at that posedge tvalid=0 (src_state still IDLE), tready=0 (iq_frame_buffer not busy yet).
+  2. Multiple rapid start_pulse writes reset input_count_r before it accumulated.
+- frame_error follows because DUT received no samples → frame detector found nothing → S_FRAME_DET exit.
+
+RTL modified: No (Step 29E analysis only)
+Board required: Yes (board already used for Step 29E)
+
+---
+
+---
+
+### Step 29F — DEBUG_STATE RTL Patch + Diagnostic Board Test
+
+Status: **COMPLETE — RTL patched and simulation verified (PASS=23). Pending board re-run.**
+
+Files changed:
+- `rtl/frac_cfo_sync_bram_test_wrapper.v` — patched:
+  - Added 4 sticky debug registers (cleared by soft_reset or clr_status):
+    `dbg_internal_start_seen`, `dbg_source_start_seen`, `dbg_dut_busy_seen`, `dbg_handshake_seen`
+  - Added `dut_busy_prev` for rising-edge detection of dut_busy
+  - Replaced old `debug_state_word` (simple 0-5 FSM code) with 32-bit structured encoding
+    (version tag 0xF in bits[31:28]; detailed field map in register_map.h / source header)
+  - Added always block driving the 4 sticky registers and `dut_busy_prev`
+
+Files created:
+- `sw/step29f_debug_board_test/src/main.c` — diagnostic C app:
+  - Correct start sequence: soft_reset → clr_status → CTRL_ENABLE → CTRL_ENABLE|CTRL_START_PULSE
+  - Reads DEBUG_STATE immediately after start (sticky snapshot)
+  - Polls STATUS, prints DEBUG_STATE and decodes all fields per poll interval
+  - `diagnose()` function identifies which sticky flag is 0 to pinpoint the failure step
+  - Pass criterion: INPUT_COUNT > 0
+
+DEBUG_STATE bit encoding (version 0xF, Step 29F):
+- [31:28]=0xF  [27]=int_start_seen  [26]=src_start_seen  [25]=src_active  [24]=input_done
+- [23]=dut_busy_seen  [22]=dut_busy  [21]=tvalid  [20]=tready  [19]=handshake_seen
+- [18:16]=src_state{0,1,0]  [15]=enable  [14]=running  [13]=done_sticky  [12]=frame_err
+- [11:0]=input_count[11:0]
+
+Simulation after patch:
+- `frac_cfo_sync_bram_test_wrapper_tb`: PASS=23, FAIL=0, CI GATE: PASSED (unchanged)
+
+Board re-run required:
+- Rebuild Step 28C bitstream with Step 29F RTL (re-run Step 27 → Step 28C on Windows)
+- Deploy `sw/step29f_debug_board_test/src/main.c` as new Vitis app
+- Read UART output; if INPUT_COUNT > 0: PASS, proceed to Step 30
+- If INPUT_COUNT = 0: read sticky flags to identify failure point
+
 ## Next Step
 
-### Step 30 — Post-Bring-Up (after Step 29B PASS)
+### Step 29F Board Re-Run
 
-After Step 29B UART capture and PASS confirmation, choose:
-- If RESULT is PASS: proceed to Phase 2 streaming redesign, or add ILA for deeper observability.
-- If RESULT is FAIL: diagnose using the Step 29B debug checklist before advancing.
+1. On Windows: re-run Step 27 (repackages IP with Step 29F RTL), then Step 28C (new bitstream).
+2. In Vitis: create new app `debug_board_test` from `sw/step29f_debug_board_test/src/main.c`.
+3. Program ZCU102 with new bitstream; run app; capture UART output.
+4. Classify result and report: INPUT_COUNT > 0 = PASS; else use DEBUG_STATE diagnosis.
+
+After Step 29F PASS (INPUT_COUNT > 0):
+- If frame_error: check stimulus/threshold, iterate known-vector test.
+- If PASS fully: proceed to Step 30 (Phase 2 streaming redesign or ILA observability).

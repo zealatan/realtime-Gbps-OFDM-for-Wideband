@@ -127,7 +127,19 @@ module frac_cfo_sync_bram_test_wrapper #(
     reg [31:0] output_count_r;
     reg [31:0] timeout_cnt;
 
+    // -----------------------------------------------------------------------
+    // Step 29F debug sticky registers (cleared by soft_reset or clr_status)
+    // Capture one-cycle events for board-visible post-mortem.
+    // -----------------------------------------------------------------------
+    reg dbg_internal_start_seen;  // dut_start combinatorial was 1
+    reg dbg_source_start_seen;    // source FSM transitioned SRC_IDLE→SRC_STREAM
+    reg dbg_dut_busy_seen;        // dut_busy rising edge (DUT accepted start)
+    reg dbg_handshake_seen;       // at least one tvalid&&tready handshake
+
     wire clear_sticky = soft_reset_pulse_r || clr_status_pulse_r;
+
+    // dut_busy_prev for rising-edge detection
+    reg dut_busy_prev;
 
     // -----------------------------------------------------------------------
     // Source FSM
@@ -358,13 +370,47 @@ module frac_cfo_sync_bram_test_wrapper #(
 
     wire [31:0] control_readback = {28'd0, enable_r, 3'd0};
 
-    wire [31:0] debug_state_word =
-        frame_error_sticky_r ? 32'd5 :
-        done_sticky_r        ? 32'd4 :
-        (src_state == SRC_DONE && snk_state == SNK_CAPTURE) ? 32'd3 :
-        (src_state == SRC_STREAM)                           ? 32'd2 :
-        (enable_r && !running_r)                            ? 32'd1 :
-        32'd0;
+    // Step 29F debug state word — version 0xF marker in bits[31:28]
+    // bit[31:28] = 4'hF  (version tag — distinguishes from old 0-5 encoding)
+    // bit[27]    = dbg_internal_start_seen (sticky: dut_start pulsed)
+    // bit[26]    = dbg_source_start_seen  (sticky: source FSM left IDLE)
+    // bit[25]    = source currently active (SRC_STREAM)
+    // bit[24]    = source done (input_done_r)
+    // bit[23]    = dbg_dut_busy_seen      (sticky: DUT accepted start)
+    // bit[22]    = dut_busy               (DUT currently running)
+    // bit[21]    = dut_s_axis_tvalid      (source presenting data)
+    // bit[20]    = dut_s_axis_tready      (DUT accepting data)
+    // bit[19]    = dbg_handshake_seen     (sticky: ≥1 tvalid&&tready)
+    // bit[18:16] = src_state[2:0]         (SRC_IDLE=0 SRC_STREAM=1 SRC_DONE=2)
+    // bit[15]    = enable_r
+    // bit[14]    = running_r
+    // bit[13]    = done_sticky_r
+    // bit[12]    = frame_error_sticky_r
+    // bit[11:0]  = input_count_r[11:0]   (lower 12 bits of INPUT_COUNT)
+    // Step 29F DEBUG_STATE word — total 32 bits
+    // [31:28]=4'hF  [27]=int_start_sticky [26]=src_start_sticky
+    // [25]=src_active [24]=src_done [23]=dut_busy_seen [22]=dut_busy
+    // [21]=tvalid [20]=tready [19]=handshake_seen [18:16]={0,src_state}
+    // [15]=enable [14]=running [13]=done_sticky [12]=frame_err
+    // [11:0]=input_count[11:0]
+    wire [31:0] debug_state_word = {
+        4'hF,                            // [31:28] version tag
+        dbg_internal_start_seen,         // [27] dut_start was high (sticky)
+        dbg_source_start_seen,           // [26] source FSM left IDLE (sticky)
+        (src_state == SRC_STREAM),       // [25] source currently streaming
+        input_done_r,                    // [24] source completed
+        dbg_dut_busy_seen,               // [23] DUT accepted start (sticky)
+        dut_busy,                        // [22] DUT currently busy
+        dut_s_axis_tvalid,               // [21] source presenting data
+        dut_s_axis_tready,               // [20] DUT accepting data
+        dbg_handshake_seen,              // [19] ≥1 tvalid&&tready seen (sticky)
+        1'b0, src_state[1:0],            // [18:16] 0 + src state (IDLE=0 STREAM=1 DONE=2)
+        enable_r,                        // [15]
+        running_r,                       // [14]
+        done_sticky_r,                   // [13]
+        frame_error_sticky_r,            // [12]
+        input_count_r[11:0]              // [11:0]
+    };
 
     wire [31:0] error_status_word = {
         28'd0,
@@ -579,6 +625,36 @@ module frac_cfo_sync_bram_test_wrapper #(
                 end
                 default: snk_state <= SNK_IDLE;
             endcase
+        end
+    end
+
+    // -----------------------------------------------------------------------
+    // Step 29F debug sticky register driver
+    // -----------------------------------------------------------------------
+    always @(posedge aclk) begin
+        if (!aresetn) begin
+            dut_busy_prev           <= 1'b0;
+            dbg_internal_start_seen <= 1'b0;
+            dbg_source_start_seen   <= 1'b0;
+            dbg_dut_busy_seen       <= 1'b0;
+            dbg_handshake_seen      <= 1'b0;
+        end else begin
+            dut_busy_prev <= dut_busy;
+            if (clear_sticky) begin
+                dbg_internal_start_seen <= 1'b0;
+                dbg_source_start_seen   <= 1'b0;
+                dbg_dut_busy_seen       <= 1'b0;
+                dbg_handshake_seen      <= 1'b0;
+            end else begin
+                if (dut_start)
+                    dbg_internal_start_seen <= 1'b1;
+                if (dut_start && (src_state == SRC_IDLE))
+                    dbg_source_start_seen <= 1'b1;
+                if (!dut_busy_prev && dut_busy)
+                    dbg_dut_busy_seen <= 1'b1;
+                if (dut_s_axis_tvalid && dut_s_axis_tready)
+                    dbg_handshake_seen <= 1'b1;
+            end
         end
     end
 
