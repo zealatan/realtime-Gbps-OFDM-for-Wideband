@@ -841,13 +841,14 @@ RTL modified: No
 
 ---
 
-### Step 28 / 28B — ZCU102 Synthesis, Implementation, Bitstream, and XSA Export
+### Step 28 / 28B / 28C — ZCU102 Synthesis, Implementation, Bitstream, and XSA Export
 
-Status: **Step 28 failed synthesis; Step 28B RTL fix applied; pending Windows re-run.**
+Status: **Step 28 COMPLETE (WNS=+0.891 ns). Step 28C prepared — pending Windows Vivado execution for embedded-bitstream XSA.**
 
 Prompt archives:
 - `md_files/28_zcu102_bitstream_xsa_export_prompt.md` (Step 28)
 - `md_files/28b_fix_ip_packaged_verilog_syntax_prompt.md` (Step 28B)
+- `md_files/28c_export_xsa_with_embedded_bitstream_prompt.md` (Step 28C)
 
 Step 28B failure and fix:
 - Vivado error: `[Synth 8-2716] syntax error near '''` in `cp_autocorr_core.v:97`
@@ -878,6 +879,7 @@ Vivado: 2022.2 (Windows only)
 Expected outputs (after Windows run):
 - `outputs/step28/sync_phase1_bd_wrapper.bit`
 - `outputs/step28/sync_phase1_bd_wrapper.xsa`
+- `outputs/step28/sync_phase1_bd_wrapper_with_bit.xsa` (Step 28C — embedded bitstream)
 
 Build steps performed by Tcl:
 1. Open Step 27 project; verify top = `sync_phase1_bd_wrapper`
@@ -898,19 +900,35 @@ Synthesis run: PASS (after Step 28B RTL fix)
 Implementation run: PASS
 Timing: PASS — WNS = +0.891 ns, WHS = +0.010 ns
 Bitstream: GENERATED — `outputs/step28/sync_phase1_bd_wrapper.bit`
-XSA: GENERATED — `outputs/step28/sync_phase1_bd_wrapper.xsa`
-Note: write_hw_platform -include_bit failed; XSA does not contain embedded bitstream.
-      Bitstream must be programmed separately in Step 29B.
+XSA (no embedded bitstream): GENERATED — `outputs/step28/sync_phase1_bd_wrapper.xsa`
+Note: write_hw_platform -include_bit failed in Step 28; XSA does not contain embedded bitstream.
+      Step 28C fixes this by using launch_runs impl_1 -to_step write_bitstream.
 RTL modified: Yes (Step 28B — 8 SV cast patterns replaced with Verilog-2001 equivalents)
 
-Log: `reports\step28\step28_build.log`
+Step 28C files created:
+- `scripts/vivado/step28c_export_xsa_with_bitstream.tcl` — Vivado Tcl; impl_1 with -to_step write_bitstream
+- `scripts/windows/run_step28c_export_xsa_with_bitstream.bat` — Windows batch runner
+- `docs/step28c_export_xsa_with_embedded_bitstream.md` — step documentation
+- `reports/step28c/` — empty until Windows run
+
+Step 28C output target: `outputs/step28/sync_phase1_bd_wrapper_with_bit.xsa`
+Step 28C execution: NOT RUN (Windows Vivado required)
+Step 28C RTL modified: No
+
+Recommended Windows command for Step 28C:
+```bat
+cd C:\RTL_SYNC
+.\scripts\windows\run_step28c_export_xsa_with_bitstream.bat
+```
 
 Then copy results back to WSL:
 ```bash
 cp /mnt/c/RTL_SYNC/outputs/step28/sync_phase1_bd_wrapper.bit /home/zealatan/RTL_SYNC/outputs/step28/
 cp /mnt/c/RTL_SYNC/outputs/step28/sync_phase1_bd_wrapper.xsa /home/zealatan/RTL_SYNC/outputs/step28/
+cp /mnt/c/RTL_SYNC/outputs/step28/sync_phase1_bd_wrapper_with_bit.xsa /home/zealatan/RTL_SYNC/outputs/step28/
 cp /mnt/c/RTL_SYNC/reports/step28/*.rpt /home/zealatan/RTL_SYNC/reports/step28/
-cp /mnt/c/RTL_SYNC/reports/step28/step28_build.log /home/zealatan/RTL_SYNC/reports/step28/
+cp /mnt/c/RTL_SYNC/reports/step28c/*.rpt /home/zealatan/RTL_SYNC/reports/step28c/
+cp /mnt/c/RTL_SYNC/reports/step28c/step28c_export_xsa_with_bitstream.log /home/zealatan/RTL_SYNC/reports/step28c/
 ```
 
 ---

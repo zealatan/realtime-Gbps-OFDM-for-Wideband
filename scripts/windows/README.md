@@ -229,7 +229,109 @@ cp /mnt/c/RTL_SYNC/reports/step28/step28_build.log \
    /home/zealatan/RTL_SYNC/reports/step28/
 ```
 
-### Recommended Step 29
+### Recommended Step 28C
+
+Run Step 28C to re-export the XSA with the embedded bitstream (see below).
+
+---
+
+## Step 28C — Export XSA with Embedded Bitstream
+
+### Command
+
+Run from Windows PowerShell or CMD:
+
+```bat
+cd C:\RTL_SYNC
+.\scripts\windows\run_step28c_export_xsa_with_bitstream.bat
+```
+
+### Prerequisite
+
+Step 27 block design project must exist:
+
+```
+vivado\step27_zcu102_bd\step27_zcu102_bd.xpr
+```
+
+If not, run Step 27 first:
+
+```bat
+.\scripts\windows\run_step27_create_zcu102_bd_no_ila.bat
+```
+
+### Why this step exists
+
+Step 28 generated `sync_phase1_bd_wrapper.xsa` **without** the embedded bitstream.
+`write_hw_platform -include_bit` failed because bitstream generation was called as a
+standalone `write_bitstream` command rather than through the Vivado run infrastructure.
+
+Step 28C fixes this by using:
+
+```tcl
+launch_runs impl_1 -to_step write_bitstream -jobs 4
+```
+
+This drives `impl_1` all the way through bitstream generation as a run step, after which
+`write_hw_platform -include_bit` succeeds.
+
+### What it does
+
+1. Opens Step 27 project: `vivado\step27_zcu102_bd\step27_zcu102_bd.xpr`
+2. Resets prior runs (idempotent)
+3. Runs synthesis (`synth_1`, 4 jobs)
+4. Runs implementation **to write_bitstream** (`impl_1 -to_step write_bitstream`, 4 jobs)
+5. Verifies bitstream exists in run directory before proceeding
+6. Generates timing, utilization, DRC, and power reports
+7. Checks timing: exits non-zero if WNS < 0 or WHS < 0
+8. Exports `outputs\step28\sync_phase1_bd_wrapper_with_bit.xsa` with embedded bitstream
+   — **no fallback to no-bit XSA**
+9. Checks that the XSA file was actually written
+
+### Outputs
+
+| File | Contents |
+|------|----------|
+| `outputs\step28\sync_phase1_bd_wrapper_with_bit.xsa` | XSA with embedded bitstream |
+| `reports\step28c\step28c_synth_utilization.rpt` | Synthesis resource usage |
+| `reports\step28c\step28c_synth_timing_summary.rpt` | Synthesis timing |
+| `reports\step28c\step28c_impl_utilization.rpt` | Implementation resource usage |
+| `reports\step28c\step28c_timing_summary.rpt` | Implementation timing |
+| `reports\step28c\step28c_drc.rpt` | DRC results |
+| `reports\step28c\step28c_power.rpt` | Power estimate |
+| `reports\step28c\step28c_export_xsa_with_bitstream.log` | Full console log |
+
+### Step 28 outputs preserved
+
+| File | Status |
+|------|--------|
+| `outputs\step28\sync_phase1_bd_wrapper.bit` | Preserved |
+| `outputs\step28\sync_phase1_bd_wrapper.xsa` | Preserved (no embedded bitstream) |
+
+### Copying results back to WSL
+
+```bash
+# From WSL after Windows run:
+cp /mnt/c/RTL_SYNC/outputs/step28/sync_phase1_bd_wrapper_with_bit.xsa \
+   /home/zealatan/RTL_SYNC/outputs/step28/
+cp /mnt/c/RTL_SYNC/reports/step28c/*.rpt \
+   /home/zealatan/RTL_SYNC/reports/step28c/
+cp /mnt/c/RTL_SYNC/reports/step28c/step28c_export_xsa_with_bitstream.log \
+   /home/zealatan/RTL_SYNC/reports/step28c/
+```
+
+### Recommended next action after Step 28C
+
+Use `sync_phase1_bd_wrapper_with_bit.xsa` as the Vitis platform input.
+Vitis will automatically program the FPGA when launching the application —
+no separate Vivado Hardware Manager programming step required.
+
+See `docs/step29b_zcu102_vitis_bringup_uart_test.md` for the board bring-up procedure.
+
+---
+
+## Step 29 — ZCU102 Vitis Bring-Up (Recommended next action after Step 28C)
 
 Create a Vitis baremetal C application for known-vector testing.
-Import `sync_phase1_bd_wrapper.xsa` into Vitis 2022.2 as the hardware platform.
+Import `sync_phase1_bd_wrapper_with_bit.xsa` into Vitis 2022.2 as the hardware platform.
+See `sw/step29a_vitis_known_vector/README.md` for detailed Vitis GUI steps.
