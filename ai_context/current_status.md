@@ -953,19 +953,64 @@ App build: NOT RUN
 Board execution: NOT RUN (Step 29B)
 Board required now: No
 
+---
+
+---
+
+### Step 29B — ZCU102 Vitis Bring-Up and UART Known-Vector Test
+
+Status: **Prepared, pending physical ZCU102 board execution.**
+
+Prompt archive: `md_files/29b_zcu102_vitis_bringup_uart_test_prompt.md`
+
+Files created:
+- `docs/step29b_zcu102_vitis_bringup_uart_test.md` — full bring-up guide
+- `reports/step29b/README.md` — reports directory note
+
+Target:
+- Board: ZCU102 / xczu9eg-ffvb1156-2-e
+- Processor: Cortex-A53 (psu_cortexa53_0), standalone baremetal
+- Vivado/Vitis: 2022.2 (Windows)
+- Base address: 0xA0000000
+- Bitstream: `outputs/step28/sync_phase1_bd_wrapper.bit` (program separately — not in XSA)
+- XSA: `outputs/step28/sync_phase1_bd_wrapper.xsa`
+- Software: `sw/step29a_vitis_known_vector/`
+
+Execution status:
+- FPGA programmed: NOT RUN
+- Vitis platform created: NOT RUN
+- Application built: NOT RUN
+- Board run: NOT RUN
+- UART captured: NOT RUN
+- Result: NOT RUN
+
+Board required: Yes
+RTL modified: No
+
+Pass criteria:
+- done_sticky = 1 (hard)
+- frame_error_sticky = 0 (hard)
+- ERROR_STATUS = 0 (hard)
+- INPUT_COUNT = 28 (hard)
+- OUTPUT_COUNT ≥ 1 (hard)
+
+Recommended manual action:
+1. Connect ZCU102 (JTAG + UART, 115200 baud, SW6=JTAG mode)
+2. Program bitstream via Vivado Hardware Manager
+3. Open Vitis 2022.2, create workspace at `C:\RTL_SYNC\vitis\step29`
+4. Create platform from XSA, processor psu_cortexa53_0, standalone
+5. Create application `known_vector_test`, import Step 29A source files
+6. Build and run on hardware
+7. Capture UART output → `reports/step29b/step29b_uart_log.txt`
+8. Report: INPUT_COUNT, OUTPUT_COUNT, RESULT: PASS/FAIL
+
+See `docs/step29b_zcu102_vitis_bringup_uart_test.md` for the full procedure, expected
+output, and debug checklist.
+
 ## Next Step
 
-### Step 29B — ZCU102 Board Bring-Up
+### Step 30 — Post-Bring-Up (after Step 29B PASS)
 
-1. Connect ZCU102 (JTAG + UART at 115200 baud)
-2. Power on ZCU102
-3. Program bitstream via Vivado Hardware Manager: `outputs/step28/sync_phase1_bd_wrapper.bit`
-4. Open Vitis 2022.2, create workspace at `C:\RTL_SYNC\vitis\step29`
-5. Create platform from `outputs/step28/sync_phase1_bd_wrapper.xsa`, select psu_cortexa53_0 standalone
-6. Create application project `known_vector_test`, add:
-   - `sw/step29a_vitis_known_vector/src/main.c`
-   - `sw/step29a_vitis_known_vector/register_map.h`
-   - `sw/step29a_vitis_known_vector/known_vector.h`
-7. Build and run on hardware
-8. Capture UART output to `reports/step29b/step29b_uart_log.txt`
-9. Report: INPUT_COUNT, OUTPUT_COUNT, RESULT: PASS/FAIL
+After Step 29B UART capture and PASS confirmation, choose:
+- If RESULT is PASS: proceed to Phase 2 streaming redesign, or add ILA for deeper observability.
+- If RESULT is FAIL: diagnose using the Step 29B debug checklist before advancing.
