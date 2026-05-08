@@ -894,18 +894,14 @@ Timing check: prints `TIMING CHECK: PASS` or `TIMING CHECK: FAIL`; exits non-zer
 
 No ILA, no DMA, no VIO, no integer CFO, no Vitis firmware in this step.
 
-Synthesis run: FAILED (Step 28B fix applied; re-run required)
-Implementation run: NOT RUN
-Bitstream: NOT GENERATED
-XSA: NOT EXPORTED
+Synthesis run: PASS (after Step 28B RTL fix)
+Implementation run: PASS
+Timing: PASS — WNS = +0.891 ns, WHS = +0.010 ns
+Bitstream: GENERATED — `outputs/step28/sync_phase1_bd_wrapper.bit`
+XSA: GENERATED — `outputs/step28/sync_phase1_bd_wrapper.xsa`
+Note: write_hw_platform -include_bit failed; XSA does not contain embedded bitstream.
+      Bitstream must be programmed separately in Step 29B.
 RTL modified: Yes (Step 28B — 8 SV cast patterns replaced with Verilog-2001 equivalents)
-
-Recommended user action — run on Windows (Step 27 first to repackage IP with fixed RTL):
-```
-cd C:\RTL_SYNC
-.\scripts\windows\run_step27_create_zcu102_bd_no_ila.bat
-.\scripts\windows\run_step28_build_bitstream_xsa.bat
-```
 
 Log: `reports\step28\step28_build.log`
 
@@ -919,29 +915,57 @@ cp /mnt/c/RTL_SYNC/reports/step28/step28_build.log /home/zealatan/RTL_SYNC/repor
 
 ---
 
+---
+
+---
+
+### Step 29A — Vitis Baremetal Known-Vector Control Application
+
+Status: **Prepared, pending Vitis workspace creation and ZCU102 board bring-up (Step 29B).**
+
+Prompt archive: `md_files/29a_vitis_baremetal_known_vector_app_prompt.md`
+
+Files created:
+- `sw/step29a_vitis_known_vector/src/main.c` — Vitis baremetal C app: reset, load vector, start, poll, read, print
+- `sw/step29a_vitis_known_vector/register_map.h` — register offsets, bit masks, accessors (verified from RTL)
+- `sw/step29a_vitis_known_vector/known_vector.h` — 28-sample test vector (8 quiet + 20 active, mirrors Step 26 T7)
+- `sw/step29a_vitis_known_vector/README.md` — Vitis GUI setup, FPGA programming, UART config, expected output
+- `docs/step29a_vitis_baremetal_known_vector_app.md` — step documentation
+
+Key verified RTL facts (from `rtl/frac_cfo_sync_bram_test_wrapper.v`):
+- CONTROL bit[0]=start_pulse, bit[1]=soft_reset, bit[2]=clr_status, bit[3]=enable
+- STATUS bit[0]=busy, bit[1]=done_sticky, bit[2]=running, bit[8]=frame_error_sticky
+- IQ packing: tdata[15:0]=I (lower), tdata[31:16]=Q (upper)
+- Active sample value: I=100, Q=0 → packed as 0x00000064
+
+Target:
+- Board: ZCU102 / xczu9eg-ffvb1156-2-e
+- Processor: Cortex-A53 (psu_cortexa53_0)
+- Base address: 0xA0000000
+- XSA: `outputs/step28/sync_phase1_bd_wrapper.xsa`
+- Bitstream: `outputs/step28/sync_phase1_bd_wrapper.bit` (program separately — not in XSA)
+
+Known-vector: 8 quiet + 20 active = 28 samples total
+Expected INPUT_COUNT = 28 (hard), OUTPUT_COUNT ≥ 1 (hard), done_sticky = 1 (hard)
+
+Vitis workspace: NOT CREATED
+App build: NOT RUN
+Board execution: NOT RUN (Step 29B)
+Board required now: No
+
 ## Next Step
 
-### Immediate — Re-run Step 27 + Step 28 on Windows (with Step 28B RTL fix)
+### Step 29B — ZCU102 Board Bring-Up
 
-Step 27 must be run first to repackage the IP with the corrected RTL:
-```
-cd C:\RTL_SYNC
-.\scripts\windows\run_step27_create_zcu102_bd_no_ila.bat
-.\scripts\windows\run_step28_build_bitstream_xsa.bat
-```
-
-Expected: Step 28 synthesis should now pass the `cp_autocorr_core.v:97` error.
-Step 28 reports `TIMING CHECK: PASS` → bitstream and XSA generated.
-
-### Step 29 — Vitis Baremetal Control Application for Known-Vector Test
-
-Create a Vitis 2022.2 baremetal C application (Cortex-A53 APU) that:
-1. Writes known IQ samples into input memory window (`0xA0001000`–`0xA0001FFF`)
-2. Programs CFG_CFO_STEP, CFG_TIMING_OFFSET, CFG_FRAME_LEN, INPUT_LEN, OUTPUT_MAX_LEN
-3. Enables wrapper + writes start_pulse
-4. Polls STATUS.done_sticky
-5. Reads INPUT_COUNT, OUTPUT_COUNT, output memory window
-6. Prints results over UART
-
-Prerequisite: Step 28 bitstream and XSA must be generated.
-Import `sync_phase1_bd_wrapper.xsa` into Vitis 2022.2 to create the baremetal platform.
+1. Connect ZCU102 (JTAG + UART at 115200 baud)
+2. Power on ZCU102
+3. Program bitstream via Vivado Hardware Manager: `outputs/step28/sync_phase1_bd_wrapper.bit`
+4. Open Vitis 2022.2, create workspace at `C:\RTL_SYNC\vitis\step29`
+5. Create platform from `outputs/step28/sync_phase1_bd_wrapper.xsa`, select psu_cortexa53_0 standalone
+6. Create application project `known_vector_test`, add:
+   - `sw/step29a_vitis_known_vector/src/main.c`
+   - `sw/step29a_vitis_known_vector/register_map.h`
+   - `sw/step29a_vitis_known_vector/known_vector.h`
+7. Build and run on hardware
+8. Capture UART output to `reports/step29b/step29b_uart_log.txt`
+9. Report: INPUT_COUNT, OUTPUT_COUNT, RESULT: PASS/FAIL
