@@ -1,0 +1,661 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>RTL_SYNC_CFO Block Diagram — Exact Spectral Palette</title>
+  <style>
+    :root {
+      /* Exact Coolors palette: https://coolors.co/palette/f94144-f3722c-f8961e-f9844a-f9c74f-90be6d-43aa8b-4d908e-577590-277da1 */
+      --c0: #F94144;
+      --c1: #F3722C;
+      --c2: #F8961E;
+      --c3: #F9844A;
+      --c4: #F9C74F;
+      --c5: #90BE6D;
+      --c6: #43AA8B;
+      --c7: #4D908E;
+      --c8: #577590;
+      --c9: #277DA1;
+
+      --bg: #F8FAFC;
+      --panel: #FFFFFF;
+      --panel2: #F1F5F9;
+      --ink: #0F172A;
+      --muted: #475569;
+      --soft: #CBD5E1;
+      --line: #334155;
+      --shadow: 0 18px 44px rgba(15, 23, 42, 0.10);
+      --shadow2: 0 8px 22px rgba(15, 23, 42, 0.08);
+      --radius: 24px;
+      --sans: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      --mono: "JetBrains Mono", "SFMono-Regular", Consolas, Menlo, monospace;
+    }
+
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      background: var(--bg);
+      color: var(--ink);
+      font-family: var(--sans);
+      line-height: 1.45;
+    }
+    .page { width: min(1440px, calc(100% - 40px)); margin: 0 auto; padding: 38px 0 68px; }
+    .hero {
+      background: var(--panel);
+      border: 1px solid #E2E8F0;
+      border-radius: 34px;
+      box-shadow: var(--shadow);
+      padding: 34px 36px 30px;
+      position: relative;
+      overflow: hidden;
+    }
+    .hero:before {
+      content: "";
+      position: absolute;
+      inset: 0 auto 0 0;
+      width: 12px;
+      background: var(--c9);
+    }
+    .eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      color: var(--c9);
+      font-weight: 800;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      font-size: 12px;
+      margin-bottom: 10px;
+    }
+    h1 { margin: 0; font-size: clamp(34px, 4vw, 58px); letter-spacing: -0.055em; line-height: 1.02; }
+    .subtitle { max-width: 980px; color: var(--muted); font-size: 17px; margin: 18px 0 0; }
+    .mono { font-family: var(--mono); }
+
+    .palette {
+      display: grid;
+      grid-template-columns: repeat(10, 1fr);
+      gap: 8px;
+      margin-top: 26px;
+    }
+    .swatch {
+      height: 44px;
+      border-radius: 14px;
+      border: 1px solid rgba(15, 23, 42, 0.16);
+      box-shadow: inset 0 -1px 0 rgba(0,0,0,0.12);
+      position: relative;
+      overflow: hidden;
+    }
+    .swatch span {
+      position: absolute;
+      right: 8px;
+      bottom: 7px;
+      font: 700 10px var(--mono);
+      color: #0F172A;
+      background: rgba(255,255,255,0.84);
+      border-radius: 7px;
+      padding: 2px 5px;
+    }
+
+    .legend {
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      gap: 12px;
+      margin-top: 22px;
+    }
+    .legend-item {
+      display: flex;
+      gap: 10px;
+      align-items: center;
+      background: var(--panel2);
+      border: 1px solid #E2E8F0;
+      border-radius: 16px;
+      padding: 11px 12px;
+      color: var(--muted);
+      font-size: 13px;
+      font-weight: 700;
+    }
+    .legend-dot { width: 13px; height: 13px; border-radius: 50%; flex: 0 0 auto; }
+
+    section {
+      margin-top: 24px;
+      background: var(--panel);
+      border: 1px solid #E2E8F0;
+      border-radius: var(--radius);
+      box-shadow: var(--shadow2);
+      padding: 26px;
+    }
+    .section-head {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 18px;
+      margin-bottom: 18px;
+    }
+    h2 { margin: 0; font-size: 26px; letter-spacing: -0.035em; }
+    .section-lead { color: var(--muted); margin: 8px 0 0; max-width: 960px; }
+    .tag {
+      border-radius: 999px;
+      padding: 8px 12px;
+      font: 800 11px var(--mono);
+      color: var(--ink);
+      background: #FFF7ED;
+      border: 1px solid #FED7AA;
+      white-space: nowrap;
+    }
+
+    .diagram-wrap {
+      overflow-x: auto;
+      background: #FFFFFF;
+      border: 1px solid #E2E8F0;
+      border-radius: 22px;
+      padding: 12px;
+    }
+    svg { display: block; width: 100%; min-width: 1080px; height: auto; }
+    .svg-title { fill: var(--ink); font-size: 22px; font-weight: 850; letter-spacing: -0.03em; }
+    .svg-sub { fill: var(--muted); font-size: 13px; }
+    .boundary { fill: #F8FAFC; stroke: #CBD5E1; stroke-width: 1.4; }
+    .block { fill: #FFFFFF; stroke-width: 3; filter: url(#shadow); }
+    .bar { stroke: none; }
+    .block-title { fill: var(--ink); font-size: 16px; font-weight: 850; letter-spacing: -0.02em; }
+    .block-sub { fill: var(--muted); font-size: 12px; font-weight: 650; }
+    .block-file { fill: #475569; font-size: 10px; font-family: var(--mono); }
+    .small { fill: #64748B; font-size: 11px; font-weight: 800; letter-spacing: 0.06em; text-transform: uppercase; }
+    .arrow-label { fill: #334155; font-size: 11px; font-weight: 800; }
+    .note { fill: #475569; font-size: 12px; font-weight: 700; }
+
+    .fsm {
+      display: grid;
+      grid-template-columns: repeat(7, minmax(140px, 1fr));
+      gap: 12px;
+    }
+    .state {
+      background: #FFFFFF;
+      border: 1px solid #E2E8F0;
+      border-top: 10px solid var(--c9);
+      border-radius: 18px;
+      padding: 14px;
+      min-height: 170px;
+      box-shadow: var(--shadow2);
+    }
+    .state .num {
+      display: inline-grid;
+      place-items: center;
+      width: 26px;
+      height: 26px;
+      border-radius: 50%;
+      background: var(--panel2);
+      font: 900 13px var(--mono);
+      margin-bottom: 10px;
+    }
+    .state h3 { margin: 0 0 8px; font-size: 16px; letter-spacing: -0.02em; }
+    .state p { margin: 0; color: var(--muted); font-size: 12px; }
+    .state code { display: block; margin-top: 10px; color: #334155; font: 700 10px var(--mono); }
+
+    .grid-2 { display: grid; grid-template-columns: 1.15fr 0.85fr; gap: 18px; align-items: stretch; }
+    table { width: 100%; border-collapse: collapse; overflow: hidden; border-radius: 18px; border: 1px solid #E2E8F0; }
+    th, td { padding: 12px 14px; text-align: left; border-bottom: 1px solid #E2E8F0; font-size: 13px; }
+    th { background: #F8FAFC; color: var(--ink); font-weight: 850; }
+    td { color: var(--muted); }
+    td:first-child { font-family: var(--mono); color: var(--ink); font-weight: 850; }
+    tr:last-child td { border-bottom: none; }
+    .callout {
+      border: 1px solid #E2E8F0;
+      border-left: 10px solid var(--c0);
+      border-radius: 20px;
+      padding: 18px;
+      background: #FFFFFF;
+      height: 100%;
+    }
+    .callout h3 { margin: 0 0 8px; font-size: 19px; }
+    .callout p { color: var(--muted); margin: 0 0 12px; }
+    .callout ul { margin: 0; padding-left: 19px; color: var(--muted); }
+    .callout li { margin: 7px 0; }
+
+    .color-note {
+      margin-top: 16px;
+      border-radius: 18px;
+      border: 1px dashed #CBD5E1;
+      background: #F8FAFC;
+      padding: 14px 16px;
+      color: var(--muted);
+      font-size: 13px;
+    }
+    .color-note strong { color: var(--ink); }
+
+    @media (max-width: 980px) {
+      .page { width: min(100% - 22px, 1440px); padding-top: 18px; }
+      .hero, section { padding: 20px; }
+      .legend { grid-template-columns: repeat(2, 1fr); }
+      .palette { grid-template-columns: repeat(5, 1fr); }
+      .fsm { grid-template-columns: 1fr; }
+      .grid-2 { grid-template-columns: 1fr; }
+      .section-head { flex-direction: column; }
+    }
+  </style>
+</head>
+<body>
+  <main class="page">
+    <header class="hero">
+      <div class="eyebrow"><span class="legend-dot" style="background:var(--c9)"></span> RTL_SYNC_CFO · OFDM Synchronizer</div>
+      <h1>Block Diagram of the Fractional CFO Synchronization RTL</h1>
+      <p class="subtitle">
+        Bright-background version with <strong>exact Coolors palette usage</strong>. The original colors are now used directly as block headers,
+        strokes, arrows, and subsystem accents, while the diagram body stays white and readable with dark text.
+      </p>
+      <div class="palette" aria-label="Exact color palette">
+        <div class="swatch" style="background:var(--c0)"><span>#F94144</span></div>
+        <div class="swatch" style="background:var(--c1)"><span>#F3722C</span></div>
+        <div class="swatch" style="background:var(--c2)"><span>#F8961E</span></div>
+        <div class="swatch" style="background:var(--c3)"><span>#F9844A</span></div>
+        <div class="swatch" style="background:var(--c4)"><span>#F9C74F</span></div>
+        <div class="swatch" style="background:var(--c5)"><span>#90BE6D</span></div>
+        <div class="swatch" style="background:var(--c6)"><span>#43AA8B</span></div>
+        <div class="swatch" style="background:var(--c7)"><span>#4D908E</span></div>
+        <div class="swatch" style="background:var(--c8)"><span>#577590</span></div>
+        <div class="swatch" style="background:var(--c9)"><span>#277DA1</span></div>
+      </div>
+      <div class="legend">
+        <div class="legend-item"><span class="legend-dot" style="background:var(--c9)"></span> Interface / AXI</div>
+        <div class="legend-item"><span class="legend-dot" style="background:var(--c5)"></span> Memory / Buffer</div>
+        <div class="legend-item"><span class="legend-dot" style="background:var(--c4)"></span> Control / FSM</div>
+        <div class="legend-item"><span class="legend-dot" style="background:var(--c6)"></span> DSP Core</div>
+        <div class="legend-item"><span class="legend-dot" style="background:var(--c0)"></span> Future Integer CFO</div>
+      </div>
+    </header>
+
+    <section>
+      <div class="section-head">
+        <div>
+          <h2>1. Board-Level Test Architecture</h2>
+          <p class="section-lead">
+            The ZCU102 board test wrapper exposes AXI-Lite registers and BRAM-style sample memory, then drives the internal AXI-Stream DUT.
+            The Step 29F fix delays <span class="mono">dut_start</span> until the source FSM reaches <span class="mono">SRC_STREAM</span>.
+          </p>
+        </div>
+        <div class="tag">frac_cfo_sync_bram_test_wrapper.v</div>
+      </div>
+      <div class="diagram-wrap">
+        <svg viewBox="0 0 1320 560" role="img" aria-label="Board-level test architecture block diagram">
+          <defs>
+            <filter id="shadow" x="-20%" y="-20%" width="140%" height="150%">
+              <feDropShadow dx="0" dy="10" stdDeviation="10" flood-color="#0F172A" flood-opacity="0.12"/>
+            </filter>
+            <marker id="arrBlue" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto" markerUnits="strokeWidth"><path d="M0,0 L0,6 L8,3 z" fill="#277DA1"/></marker>
+            <marker id="arrYellow" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto" markerUnits="strokeWidth"><path d="M0,0 L0,6 L8,3 z" fill="#F9C74F"/></marker>
+            <marker id="arrGreen" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto" markerUnits="strokeWidth"><path d="M0,0 L0,6 L8,3 z" fill="#43AA8B"/></marker>
+            <marker id="arrOrange" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto" markerUnits="strokeWidth"><path d="M0,0 L0,6 L8,3 z" fill="#F8961E"/></marker>
+          </defs>
+
+          <text x="30" y="42" class="svg-title">AXI-Lite preload/readback wrapper around the fractional CFO DUT</text>
+          <text x="30" y="64" class="svg-sub">Exact palette usage: blue = interface, green = memory, yellow/orange = control path, teal = DSP datapath</text>
+          <rect x="24" y="92" width="1272" height="420" rx="28" class="boundary"/>
+          <text x="54" y="124" class="small">FPGA PL wrapper boundary</text>
+
+          <rect x="54" y="166" width="182" height="104" rx="18" class="block" stroke="#277DA1"/>
+          <rect x="54" y="166" width="182" height="13" rx="7" class="bar" fill="#277DA1"/>
+          <text x="78" y="202" class="block-title">AXI-Lite Slave</text>
+          <text x="78" y="225" class="block-sub">register + memory map</text>
+          <text x="78" y="246" class="block-file">0x0000 / 0x1000 / 0x2000</text>
+
+          <rect x="54" y="326" width="182" height="104" rx="18" class="block" stroke="#577590"/>
+          <rect x="54" y="326" width="182" height="13" rx="7" class="bar" fill="#577590"/>
+          <text x="78" y="362" class="block-title">PS / Vitis App</text>
+          <text x="78" y="385" class="block-sub">write vector · poll status</text>
+          <text x="78" y="406" class="block-file">step29f_debug_board_test</text>
+
+          <rect x="304" y="150" width="192" height="100" rx="18" class="block" stroke="#90BE6D"/>
+          <rect x="304" y="150" width="192" height="13" rx="7" class="bar" fill="#90BE6D"/>
+          <text x="330" y="186" class="block-title">Input BRAM</text>
+          <text x="330" y="209" class="block-sub">0x1000–0x1FFF</text>
+          <text x="330" y="230" class="block-file">input_mem[1024]</text>
+
+          <rect x="304" y="330" width="192" height="100" rx="18" class="block" stroke="#43AA8B"/>
+          <rect x="304" y="330" width="192" height="13" rx="7" class="bar" fill="#43AA8B"/>
+          <text x="330" y="366" class="block-title">Output BRAM</text>
+          <text x="330" y="389" class="block-sub">0x2000–0x2FFF</text>
+          <text x="330" y="410" class="block-file">output_mem[1024]</text>
+
+          <rect x="570" y="150" width="184" height="100" rx="18" class="block" stroke="#F9C74F"/>
+          <rect x="570" y="150" width="184" height="13" rx="7" class="bar" fill="#F9C74F"/>
+          <text x="596" y="186" class="block-title">Source FSM</text>
+          <text x="596" y="209" class="block-sub">input_mem → DUT AXIS</text>
+          <text x="596" y="230" class="block-file">SRC_STREAM alignment</text>
+
+          <rect x="570" y="330" width="184" height="100" rx="18" class="block" stroke="#F8961E"/>
+          <rect x="570" y="330" width="184" height="13" rx="7" class="bar" fill="#F8961E"/>
+          <text x="596" y="366" class="block-title">Sink FSM</text>
+          <text x="596" y="389" class="block-sub">DUT AXIS → output_mem</text>
+          <text x="596" y="410" class="block-file">capture corrected frame</text>
+
+          <rect x="830" y="190" width="270" height="170" rx="24" class="block" stroke="#4D908E"/>
+          <rect x="830" y="190" width="270" height="15" rx="8" class="bar" fill="#4D908E"/>
+          <text x="862" y="230" class="block-title">Fractional CFO DUT</text>
+          <text x="862" y="254" class="block-sub">capture → detect → timing/CFO → correct</text>
+          <text x="862" y="278" class="block-file">frac_cfo_frame_corrector_top.v</text>
+          <text x="862" y="309" class="note">AXI-Stream input/output</text>
+          <text x="862" y="331" class="note">frame_index · peak_lag · frac_phase</text>
+
+          <rect x="1148" y="190" width="132" height="170" rx="20" class="block" stroke="#F3722C"/>
+          <rect x="1148" y="190" width="132" height="15" rx="8" class="bar" fill="#F3722C"/>
+          <text x="1170" y="230" class="block-title">Status</text>
+          <text x="1170" y="254" class="block-sub">done_sticky</text>
+          <text x="1170" y="276" class="block-sub">input_count</text>
+          <text x="1170" y="298" class="block-sub">output_count</text>
+          <text x="1170" y="320" class="block-sub">debug_state</text>
+
+          <path d="M236 202 H304" stroke="#277DA1" stroke-width="3.2" fill="none" marker-end="url(#arrBlue)"/>
+          <text x="247" y="190" class="arrow-label">write samples</text>
+          <path d="M236 382 H304" stroke="#277DA1" stroke-width="3.2" fill="none" marker-end="url(#arrBlue)"/>
+          <text x="249" y="370" class="arrow-label">read output</text>
+
+          <path d="M496 200 H570" stroke="#90BE6D" stroke-width="3.2" fill="none" marker-end="url(#arrGreen)"/>
+          <text x="510" y="188" class="arrow-label">BRAM read</text>
+          <path d="M754 200 C790 200 796 238 830 238" stroke="#F9C74F" stroke-width="3.2" fill="none" marker-end="url(#arrYellow)"/>
+          <text x="766" y="210" class="arrow-label">s_axis</text>
+          <path d="M830 322 C796 322 790 380 754 380" stroke="#4D908E" stroke-width="3.2" fill="none" marker-end="url(#arrGreen)"/>
+          <text x="770" y="358" class="arrow-label">m_axis</text>
+          <path d="M570 380 H496" stroke="#43AA8B" stroke-width="3.2" fill="none" marker-end="url(#arrGreen)"/>
+          <text x="510" y="368" class="arrow-label">write BRAM</text>
+          <path d="M1100 270 H1148" stroke="#F3722C" stroke-width="3.2" fill="none" marker-end="url(#arrOrange)"/>
+          <text x="1107" y="258" class="arrow-label">status</text>
+
+          <path d="M662 150 C662 122 875 126 875 190" stroke="#F9844A" stroke-width="3.2" fill="none" marker-end="url(#arrOrange)"/>
+          <text x="688" y="130" class="arrow-label">dut_start delayed until SRC_STREAM</text>
+        </svg>
+      </div>
+    </section>
+
+    <section>
+      <div class="section-head">
+        <div>
+          <h2>2. Core DSP Pipeline</h2>
+          <p class="section-lead">
+            The current core is a frame-buffered functional pipeline. It estimates timing and fractional CFO from the captured frame,
+            then applies NCO-driven complex rotation to produce a corrected output frame.
+          </p>
+        </div>
+        <div class="tag">frac_cfo_frame_corrector_top.v</div>
+      </div>
+      <div class="diagram-wrap">
+        <svg viewBox="0 0 1320 620" role="img" aria-label="Core DSP pipeline block diagram">
+          <defs>
+            <filter id="shadow2" x="-20%" y="-20%" width="140%" height="150%"><feDropShadow dx="0" dy="8" stdDeviation="9" flood-color="#0F172A" flood-opacity="0.10"/></filter>
+            <marker id="pipeArr" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto" markerUnits="strokeWidth"><path d="M0,0 L0,6 L8,3 z" fill="#4D908E"/></marker>
+            <marker id="ctrlArr" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto" markerUnits="strokeWidth"><path d="M0,0 L0,6 L8,3 z" fill="#F9C74F"/></marker>
+            <marker id="rotArr" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto" markerUnits="strokeWidth"><path d="M0,0 L0,6 L8,3 z" fill="#F3722C"/></marker>
+          </defs>
+          <text x="30" y="42" class="svg-title">Frame-buffered fractional CFO correction path</text>
+          <text x="30" y="64" class="svg-sub">The blocks below reflect the current RTL hierarchy before the future streaming refactor.</text>
+
+          <rect x="34" y="126" width="180" height="108" rx="18" class="block" stroke="#277DA1" filter="url(#shadow2)"/>
+          <rect x="34" y="126" width="180" height="13" rx="7" fill="#277DA1"/>
+          <text x="62" y="164" class="block-title">AXIS Input</text>
+          <text x="62" y="188" class="block-sub">I/Q samples</text>
+          <text x="62" y="211" class="block-file">s_axis_tdata</text>
+
+          <rect x="274" y="126" width="210" height="108" rx="18" class="block" stroke="#90BE6D" filter="url(#shadow2)"/>
+          <rect x="274" y="126" width="210" height="13" rx="7" fill="#90BE6D"/>
+          <text x="302" y="164" class="block-title">IQ Frame Buffer</text>
+          <text x="302" y="188" class="block-sub">store complete frame</text>
+          <text x="302" y="211" class="block-file">iq_frame_buffer.v</text>
+
+          <rect x="548" y="126" width="206" height="108" rx="18" class="block" stroke="#F9C74F" filter="url(#shadow2)"/>
+          <rect x="548" y="126" width="206" height="13" rx="7" fill="#F9C74F"/>
+          <text x="576" y="164" class="block-title">Frame Detector</text>
+          <text x="576" y="188" class="block-sub">energy threshold + hit count</text>
+          <text x="576" y="211" class="block-file">frame_detector.v</text>
+
+          <rect x="822" y="126" width="238" height="108" rx="18" class="block" stroke="#43AA8B" filter="url(#shadow2)"/>
+          <rect x="822" y="126" width="238" height="13" rx="7" fill="#43AA8B"/>
+          <text x="850" y="164" class="block-title">Timing + Frac CFO</text>
+          <text x="850" y="188" class="block-sub">CP autocorr · metric · atan2</text>
+          <text x="850" y="211" class="block-file">timing_frac_cfo_top.v</text>
+
+          <rect x="1124" y="126" width="166" height="108" rx="18" class="block" stroke="#F3722C" filter="url(#shadow2)"/>
+          <rect x="1124" y="126" width="166" height="13" rx="7" fill="#F3722C"/>
+          <text x="1152" y="164" class="block-title">Corrected</text>
+          <text x="1152" y="188" class="block-sub">AXIS output</text>
+          <text x="1152" y="211" class="block-file">m_axis_tdata</text>
+
+          <path d="M214 180 H274" stroke="#4D908E" stroke-width="3.2" fill="none" marker-end="url(#pipeArr)"/>
+          <path d="M484 180 H548" stroke="#4D908E" stroke-width="3.2" fill="none" marker-end="url(#pipeArr)"/>
+          <path d="M754 180 H822" stroke="#4D908E" stroke-width="3.2" fill="none" marker-end="url(#pipeArr)"/>
+          <path d="M1060 180 H1124" stroke="#F3722C" stroke-width="3.2" fill="none" marker-end="url(#rotArr)"/>
+
+          <rect x="770" y="412" width="172" height="86" rx="16" class="block" stroke="#F8961E" filter="url(#shadow2)"/>
+          <rect x="770" y="412" width="172" height="12" rx="6" fill="#F8961E"/>
+          <text x="795" y="448" class="block-title">NCO Phase Gen</text>
+          <text x="795" y="470" class="block-sub">phase accumulator</text>
+          <text x="795" y="491" class="block-file">nco_phase_gen.v</text>
+
+          <rect x="974" y="412" width="184" height="86" rx="16" class="block" stroke="#F9844A" filter="url(#shadow2)"/>
+          <rect x="974" y="412" width="184" height="12" rx="6" fill="#F9844A"/>
+          <text x="1000" y="448" class="block-title">Complex Rotator</text>
+          <text x="1000" y="470" class="block-sub">I/Q phase correction</text>
+          <text x="1000" y="491" class="block-file">complex_rotator.v</text>
+
+          <rect x="1186" y="412" width="104" height="86" rx="16" class="block" stroke="#F3722C" filter="url(#shadow2)"/>
+          <rect x="1186" y="412" width="104" height="12" rx="6" fill="#F3722C"/>
+          <text x="1210" y="448" class="block-title">Output</text>
+          <text x="1210" y="470" class="block-sub">valid/last</text>
+
+          <path d="M942 455 H974" stroke="#F8961E" stroke-width="3" fill="none" marker-end="url(#ctrlArr)"/>
+          <path d="M1158 455 H1186" stroke="#F3722C" stroke-width="3" fill="none" marker-end="url(#rotArr)"/>
+          <path d="M940 234 C940 300 856 340 856 412" stroke="#F9C74F" stroke-width="2.8" fill="none" marker-end="url(#ctrlArr)"/>
+          <text x="742" y="325" class="arrow-label">frac_phase → step_word</text>
+          <path d="M379 234 C379 350 1055 346 1055 412" stroke="#90BE6D" stroke-width="2.8" fill="none" marker-end="url(#pipeArr)"/>
+          <text x="496" y="348" class="arrow-label">buffer playback from slot_start</text>
+
+          <rect x="34" y="304" width="560" height="62" rx="18" fill="#F8FAFC" stroke="#CBD5E1"/>
+          <text x="58" y="330" class="note">Important architectural note</text>
+          <text x="58" y="352" class="svg-sub">This is not yet a true 1-sample/clock streaming pipeline. It is a safe frame-buffered bring-up structure.</text>
+        </svg>
+      </div>
+    </section>
+
+    <section>
+      <div class="section-head">
+        <div>
+          <h2>3. RTL Module Hierarchy</h2>
+          <p class="section-lead">
+            This hierarchy separates the board wrapper, frame-level DUT, synchronization/timing estimation, and reusable arithmetic kernels.
+          </p>
+        </div>
+        <div class="tag">module-level view</div>
+      </div>
+      <div class="diagram-wrap">
+        <svg viewBox="0 0 1320 760" role="img" aria-label="RTL module hierarchy diagram">
+          <defs>
+            <filter id="treeShadow" x="-20%" y="-20%" width="140%" height="150%"><feDropShadow dx="0" dy="8" stdDeviation="8" flood-color="#0F172A" flood-opacity="0.10"/></filter>
+            <marker id="treeA" markerWidth="9" markerHeight="9" refX="7" refY="3" orient="auto" markerUnits="strokeWidth"><path d="M0,0 L0,6 L7,3 z" fill="#577590"/></marker>
+          </defs>
+          <text x="30" y="42" class="svg-title">Hierarchy from wrapper to DSP kernels</text>
+          <text x="30" y="64" class="svg-sub">Color bars are exact palette colors, assigned by subsystem type.</text>
+
+          <rect x="70" y="104" width="280" height="94" rx="18" class="block" stroke="#277DA1" filter="url(#treeShadow)"/>
+          <rect x="70" y="104" width="280" height="13" rx="7" fill="#277DA1"/>
+          <text x="98" y="142" class="block-title">BRAM Test Wrapper</text>
+          <text x="98" y="165" class="block-file">frac_cfo_sync_bram_test_wrapper.v</text>
+
+          <rect x="970" y="104" width="280" height="94" rx="18" class="block" stroke="#277DA1" filter="url(#treeShadow)"/>
+          <rect x="970" y="104" width="280" height="13" rx="7" fill="#277DA1"/>
+          <text x="998" y="142" class="block-title">AXI-Stream Wrapper</text>
+          <text x="998" y="165" class="block-file">frac_cfo_sync_axi_stream_wrapper.v</text>
+
+          <rect x="472" y="246" width="376" height="104" rx="22" class="block" stroke="#4D908E" filter="url(#treeShadow)"/>
+          <rect x="472" y="246" width="376" height="15" rx="8" fill="#4D908E"/>
+          <text x="502" y="288" class="block-title">Frame-Level Fractional CFO Corrector</text>
+          <text x="502" y="314" class="block-file">frac_cfo_frame_corrector_top.v</text>
+
+          <path d="M350 150 C440 150 442 298 472 298" stroke="#577590" stroke-width="2.8" fill="none" marker-end="url(#treeA)"/>
+          <path d="M970 150 C880 150 878 298 848 298" stroke="#577590" stroke-width="2.8" fill="none" marker-end="url(#treeA)"/>
+
+          <rect x="70" y="444" width="210" height="86" rx="16" class="block" stroke="#90BE6D" filter="url(#treeShadow)"/>
+          <rect x="70" y="444" width="210" height="12" rx="6" fill="#90BE6D"/>
+          <text x="94" y="480" class="block-title">iq_frame_buffer</text>
+          <text x="94" y="504" class="block-file">buffer + readback</text>
+
+          <rect x="320" y="444" width="210" height="86" rx="16" class="block" stroke="#F9C74F" filter="url(#treeShadow)"/>
+          <rect x="320" y="444" width="210" height="12" rx="6" fill="#F9C74F"/>
+          <text x="344" y="480" class="block-title">frame_detector</text>
+          <text x="344" y="504" class="block-file">threshold / hit_count</text>
+
+          <rect x="570" y="444" width="220" height="86" rx="16" class="block" stroke="#43AA8B" filter="url(#treeShadow)"/>
+          <rect x="570" y="444" width="220" height="12" rx="6" fill="#43AA8B"/>
+          <text x="594" y="480" class="block-title">timing_frac_cfo_top</text>
+          <text x="594" y="504" class="block-file">sync metric + atan2</text>
+
+          <rect x="830" y="444" width="220" height="86" rx="16" class="block" stroke="#F9844A" filter="url(#treeShadow)"/>
+          <rect x="830" y="444" width="220" height="12" rx="6" fill="#F9844A"/>
+          <text x="854" y="480" class="block-title">frac_cfo_corrector</text>
+          <text x="854" y="504" class="block-file">NCO + rotator</text>
+
+          <path d="M660 350 V398 H175 V444" stroke="#577590" stroke-width="2.5" fill="none" marker-end="url(#treeA)"/>
+          <path d="M660 350 V398 H425 V444" stroke="#577590" stroke-width="2.5" fill="none" marker-end="url(#treeA)"/>
+          <path d="M660 350 V444" stroke="#577590" stroke-width="2.5" fill="none" marker-end="url(#treeA)"/>
+          <path d="M660 350 V398 H940 V444" stroke="#577590" stroke-width="2.5" fill="none" marker-end="url(#treeA)"/>
+
+          <rect x="426" y="618" width="170" height="78" rx="15" class="block" stroke="#43AA8B" filter="url(#treeShadow)"/>
+          <rect x="426" y="618" width="170" height="10" rx="5" fill="#43AA8B"/>
+          <text x="449" y="653" class="block-title">cp_autocorr</text>
+          <text x="449" y="675" class="block-file">complex multiply</text>
+
+          <rect x="618" y="618" width="170" height="78" rx="15" class="block" stroke="#43AA8B" filter="url(#treeShadow)"/>
+          <rect x="618" y="618" width="170" height="10" rx="5" fill="#43AA8B"/>
+          <text x="641" y="653" class="block-title">timing_metric</text>
+          <text x="641" y="675" class="block-file">peak detector</text>
+
+          <rect x="810" y="618" width="170" height="78" rx="15" class="block" stroke="#F8961E" filter="url(#treeShadow)"/>
+          <rect x="810" y="618" width="170" height="10" rx="5" fill="#F8961E"/>
+          <text x="833" y="653" class="block-title">nco_phase_gen</text>
+          <text x="833" y="675" class="block-file">phase LUT</text>
+
+          <rect x="1002" y="618" width="170" height="78" rx="15" class="block" stroke="#F3722C" filter="url(#treeShadow)"/>
+          <rect x="1002" y="618" width="170" height="10" rx="5" fill="#F3722C"/>
+          <text x="1025" y="653" class="block-title">complex_rotator</text>
+          <text x="1025" y="675" class="block-file">I/Q rotate</text>
+
+          <path d="M680 530 V584 H511 V618" stroke="#577590" stroke-width="2.2" fill="none" marker-end="url(#treeA)"/>
+          <path d="M680 530 V618" stroke="#577590" stroke-width="2.2" fill="none" marker-end="url(#treeA)"/>
+          <path d="M940 530 V584 H895 V618" stroke="#577590" stroke-width="2.2" fill="none" marker-end="url(#treeA)"/>
+          <path d="M940 530 V584 H1087 V618" stroke="#577590" stroke-width="2.2" fill="none" marker-end="url(#treeA)"/>
+        </svg>
+      </div>
+    </section>
+
+    <section>
+      <div class="section-head">
+        <div>
+          <h2>4. Processing FSM</h2>
+          <p class="section-lead">The main DUT uses a sequential frame-level FSM. Each state below uses one exact palette color as its top accent.</p>
+        </div>
+        <div class="tag">control sequence</div>
+      </div>
+      <div class="fsm">
+        <article class="state" style="border-top-color:var(--c8)"><span class="num">0</span><h3>S_IDLE</h3><p>Wait for start pulse. Outputs remain stable.</p><code>control entry</code></article>
+        <article class="state" style="border-top-color:var(--c5)"><span class="num">1</span><h3>S_FILL</h3><p>Capture incoming AXI-Stream samples into the internal frame buffer.</p><code>iq_frame_buffer</code></article>
+        <article class="state" style="border-top-color:var(--c4)"><span class="num">2</span><h3>S_FRAME_DET</h3><p>Search active frame start using threshold, window length, and hit count.</p><code>frame_detector</code></article>
+        <article class="state" style="border-top-color:var(--c6)"><span class="num">3</span><h3>S_TIMING_CFO</h3><p>Run CP autocorrelation, timing metric, peak detection, and atan2.</p><code>timing_frac_cfo_top</code></article>
+        <article class="state" style="border-top-color:var(--c2)"><span class="num">4</span><h3>S_LOAD_NCO</h3><p>Convert estimated fractional phase into NCO step and warm up the phase generator.</p><code>nco_phase_gen</code></article>
+        <article class="state" style="border-top-color:var(--c1)"><span class="num">5</span><h3>S_CORRECT</h3><p>Replay frame samples from the selected start index and apply complex rotation.</p><code>complex_rotator</code></article>
+        <article class="state" style="border-top-color:var(--c9)"><span class="num">6</span><h3>S_DONE</h3><p>Assert done and expose status to the board wrapper.</p><code>status outputs</code></article>
+      </div>
+    </section>
+
+    <section>
+      <div class="section-head">
+        <div>
+          <h2>5. AXI-Lite Register and Memory Map</h2>
+          <p class="section-lead">The board wrapper maps control/status registers and sample memories into an AXI-Lite accessible address space.</p>
+        </div>
+        <div class="tag">PS ↔ PL interface</div>
+      </div>
+      <div class="grid-2">
+        <table>
+          <thead><tr><th>Address</th><th>Name / Region</th><th>Purpose</th></tr></thead>
+          <tbody>
+            <tr><td>0x0000</td><td>CONTROL</td><td>enable, start, soft reset, and run control bits.</td></tr>
+            <tr><td>0x0004</td><td>STATUS</td><td>busy, done_sticky, frame_error, and run state.</td></tr>
+            <tr><td>0x0008</td><td>CFG_INPUT_LEN</td><td>Number of input samples pushed into the internal stream source.</td></tr>
+            <tr><td>0x000C</td><td>CFG_OUTPUT_MAX</td><td>Maximum number of samples captured from DUT output.</td></tr>
+            <tr><td>0x0010</td><td>CFG_FRAME_LEN</td><td>Frame length used by the board-level test sequence.</td></tr>
+            <tr><td>0x0014</td><td>INPUT_COUNT</td><td>Observed number of samples consumed by source/DUT path.</td></tr>
+            <tr><td>0x0018</td><td>OUTPUT_COUNT</td><td>Observed number of samples captured from the corrected stream.</td></tr>
+            <tr><td>0x001C</td><td>DEBUG_STATE</td><td>Encoded debug state. New wrapper version should expose the expected version field.</td></tr>
+            <tr><td>0x1000–0x1FFF</td><td>Input memory</td><td>Preloaded IQ samples for the DUT run.</td></tr>
+            <tr><td>0x2000–0x2FFF</td><td>Output memory</td><td>Corrected output frame read back by PS/Vitis software.</td></tr>
+          </tbody>
+        </table>
+        <div class="callout">
+          <h3>Board bring-up checkpoint</h3>
+          <p>The first thing to confirm after rebuilding bitstream/XSA is that the board is running the updated wrapper, not a stale bitstream.</p>
+          <ul>
+            <li><span class="mono">DEBUG_STATE[31:28]</span> should indicate the new wrapper/debug version.</li>
+            <li><span class="mono">INPUT_COUNT &gt; 0</span> proves that the source stream and <span class="mono">dut_start</span> are aligned.</li>
+            <li>If input increases but output does not, debug the DUT FSM boundary and frame detection path.</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <section>
+      <div class="section-head">
+        <div>
+          <h2>6. Future Extension: FFT-Based Integer CFO</h2>
+          <p class="section-lead">
+            A safe next milestone is to add integer CFO first in the frame-buffered architecture, then refactor the full chain into a true streaming implementation later.
+          </p>
+        </div>
+        <div class="tag">next architecture step</div>
+      </div>
+      <div class="diagram-wrap">
+        <svg viewBox="0 0 1320 420" role="img" aria-label="Future integer CFO extension block diagram">
+          <defs>
+            <filter id="futureShadow" x="-20%" y="-20%" width="140%" height="150%"><feDropShadow dx="0" dy="8" stdDeviation="9" flood-color="#0F172A" flood-opacity="0.10"/></filter>
+            <marker id="nowA" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto" markerUnits="strokeWidth"><path d="M0,0 L0,6 L8,3 z" fill="#4D908E"/></marker>
+            <marker id="futA" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto" markerUnits="strokeWidth"><path d="M0,0 L0,6 L8,3 z" fill="#F94144"/></marker>
+          </defs>
+          <text x="30" y="42" class="svg-title">Recommended next path: integer CFO before streaming refactor</text>
+          <text x="30" y="64" class="svg-sub">Red blocks are not implemented yet. They are proposed insertion points for FFT/PSS-based integer CFO.</text>
+
+          <rect x="70" y="148" width="180" height="96" rx="18" class="block" stroke="#90BE6D" filter="url(#futureShadow)"/>
+          <rect x="70" y="148" width="180" height="13" rx="7" fill="#90BE6D"/>
+          <text x="98" y="185" class="block-title">Frame Buffer</text>
+          <text x="98" y="208" class="block-sub">current structure</text>
+
+          <rect x="320" y="148" width="206" height="96" rx="18" class="block" stroke="#4D908E" filter="url(#futureShadow)"/>
+          <rect x="320" y="148" width="206" height="13" rx="7" fill="#4D908E"/>
+          <text x="348" y="185" class="block-title">Fractional CFO</text>
+          <text x="348" y="208" class="block-sub">already implemented</text>
+
+          <rect x="596" y="148" width="174" height="96" rx="18" class="block" stroke="#F94144" filter="url(#futureShadow)"/>
+          <rect x="596" y="148" width="174" height="13" rx="7" fill="#F94144"/>
+          <text x="624" y="185" class="block-title">FFT Window</text>
+          <text x="624" y="208" class="block-sub">new stage</text>
+
+          <rect x="840" y="148" width="212" height="96" rx="18" class="block" stroke="#F94144" filter="url(#futureShadow)"/>
+          <rect x="840" y="148" width="212" height="13" rx="7" fill="#F94144"/>
+          <text x="868" y="185" class="block-title">PSS / CFO Search</text>
+          <text x="868" y="208" class="block-sub">frequency-domain correlation</text>
+
+          <rect x="1122" y="148" width="150" height="96" rx="18" class="block" stroke="#F94144" filter="url(#futureShadow)"/>
+          <rect x="1122" y="148" width="150" height="13" rx="7" fill="#F94144"/>
+          <text x="1150" y="185" class="block-title">Bin Shift</text>
+          <text x="1150" y="208" class="block-sub">integer CFO fix</text>
+
+          <path d="M250 196 H320" stroke="#4D908E" stroke-width="3.2" fill="none" marker-end="url(#nowA)"/>
+          <path d="M526 196 H596" stroke="#F94144" stroke-width="3.2" fill="none" marker-end="url(#futA)"/>
+          <path d="M770 196 H840" stroke="#F94144" stroke-width="3.2" fill="none" marker-end="url(#futA)"/>
+          <path d="M1052 196 H1122" stroke="#F94144" stroke-width="3.2" fill="none" marker-end="url(#futA)"/>
+
+          <rect x="320" y="306" width="732" height="56" rx="16" fill="#FFFFFF" stroke="#F94144" stroke-width="2"/>
+          <rect x="320" y="306" width="732" height="10" rx="5" fill="#F94144"/>
+          <text x="346" y="342" class="note">Do this before the 1-sample/clock streaming refactor to keep debugging boundaries clean.</text>
+        </svg>
+      </div>
+      <div class="color-note"><strong>Color correction applied:</strong> this version does not dilute the palette into pastel fills. The exact Coolors colors are used directly as subsystem bars, strokes, arrows, FSM accents, and the future-path highlight. White card bodies keep the diagram readable with dark text.</div>
+    </section>
+  </main>
+</body>
+</html>
