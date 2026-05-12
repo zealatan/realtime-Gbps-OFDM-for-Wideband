@@ -1,0 +1,1 @@
+"meyr_integer_cfo_core_tb" -debug "typical" -timescale "1ns/1ps" -s "meyr_integer_cfo_core_snap" 

@@ -658,4 +658,4 @@ Step 27 known-vector FPGA run
 
 ## 15. One-Line Summary
 
-`RTL_SYNC` is now a Phase-1 AI-assisted RTL/FPGA synchronizer verification project. The fractional-CFO frame synchronizer top has passed integration testing and a stronger randomized verification campaign, while integer CFO has been deferred so the current synchronizer block can first be closed as a functional FPGA-ready subsystem.
+`RTL_SYNC` is now a Phase-1 AI-assisted RTL/FPGA synchronizer verification project. The fractional-CFO frame synchronizer top has passed integration testing, randomized verification, synthesis, and board bring-up (Step 29I PASS on ZCU102). Step 30 specifies the Meyr-based integer CFO / PSS-SSS architecture (term1=PSS·conj(SSS), term2=mU·conj(goldU), intCFO=peakIndex−255). Step 31: Meyr integer CFO direct-correlation core implemented and verified with synthetic term1/term2 vectors before FFT integration (PASS: 32, FAIL: 0, CI GATE: PASSED).

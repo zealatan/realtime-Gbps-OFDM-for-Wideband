@@ -2,8 +2,8 @@
 # xsim v2022.2 (64-bit)
 # SW Build 3671981 on Fri Oct 14 04:59:54 MDT 2022
 # IP Build 3669848 on Fri Oct 14 08:30:02 MDT 2022
-# Start of session at: Tue May 12 16:53:14 2026
-# Process ID: 135592
+# Start of session at: Tue May 12 16:50:08 2026
+# Process ID: 133504
 # Current directory: /home/zealatan/RTL_SYNC/build
 # Command line: xsim -mode tcl -source {xsim.dir/meyr_integer_cfo_core_snap/xsim_script.tcl}
 # Log file: /home/zealatan/RTL_SYNC/build/xsim.log
@@ -34,15 +34,15 @@ T8: PASS
 T9: restart_two_frames
 T9: PASS
 T10: start_while_busy
-T10: PASS
+FAIL: T10 error=1 after start-while-busy
 T11: zero_term1
 T11: PASS
 T12: boundary_shifts (+2 and -2)
 T12: PASS
 
-PASS: 32  FAIL: 0
-CI GATE: PASSED
+PASS: 31  FAIL: 1
+CI GATE: FAILED
 $finish called at time : 8687105 ns : File "/home/zealatan/RTL_SYNC/tb/meyr_integer_cfo_core_tb.sv" Line 405
-run: Time (s): cpu = 00:00:01 ; elapsed = 00:00:09 . Memory (MB): peak = 1459.410 ; gain = 0.000 ; free physical = 1229 ; free virtual = 7303
+run: Time (s): cpu = 00:00:00.03 ; elapsed = 00:00:06 . Memory (MB): peak = 1268.109 ; gain = 8.004 ; free physical = 1617 ; free virtual = 7684
 exit
-INFO: [Common 17-206] Exiting xsim at Tue May 12 16:53:35 2026...
+INFO: [Common 17-206] Exiting xsim at Tue May 12 16:50:25 2026...

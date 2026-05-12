@@ -1089,15 +1089,144 @@ Board re-run required:
 - Read UART output; if INPUT_COUNT > 0: PASS, proceed to Step 30
 - If INPUT_COUNT = 0: read sticky flags to identify failure point
 
+---
+
+---
+
+### Step 29I — Board Regression Host Test for BRAM Wrapper
+
+Status: **COMPLETE — PASS on ZCU102**
+
+Board: ZCU102 rev 1.0, IP base: 0xA0000000
+
+Result:
+```
+Case A: negative short-quiet detector stress : PASS
+  STATUS=0x0000019A, INPUT_COUNT=116, OUTPUT_COUNT=0
+  DEBUG_STATE=0xFD88B074, ERROR_STATUS=0, FRAME_ERROR=1, handshake_seen=1
+
+Case B: positive long-quiet frame detection : PASS
+  STATUS=0x0000009A, INPUT_COUNT=632, OUTPUT_COUNT=288
+  DEBUG_STATE=0xFD88A278, ERROR_STATUS=0, FRAME_ERROR=0, handshake_seen=1
+
+RESULT: PASS
+```
+
+This confirms that the board-level BRAM wrapper, AXI-Lite control, BRAM source, AXI-Stream
+handshake, frame detector, output BRAM, and PS readback are all working on real hardware.
+
+Files created:
+- `scripts/board_regression.py` — host Python UART regression script (--port, --baud, --timeout, --verbose)
+- `scripts/run_board_regression.sh` — shell wrapper (activates venv if present)
+- `logs/board_regression_sample.log` — representative sample log
+- `requirements_board.txt` — pyserial>=3.5
+
+RTL modified: No.
+
+---
+
+---
+
+### Step 30 — Meyr-Based Integer CFO / PSS-SSS Architecture Spec
+
+Status: **COMPLETE — architecture/specification step (Meyr-verified revision)**
+
+Purpose:
+- Define how integer CFO estimation should be added after the validated frame/timing/fractional CFO path.
+- Align the design with the exact C reference Meyr algorithm (`carrierFreqOffsetEstMeyr`,
+  `fft_correlation_Meyr` in `ref/receiver.c`).
+- Specify the PSS/SSS product-based Meyr correlation (verified against C code):
+    term1[j] = PSS_FFT[j] · conj(SSS_FFT[j])        (received product)
+    term2[j] = mU[j+CP_LEN] · conj(goldU[j+CP_LEN]) (reference product — static ROM)
+    R[n]     = Σ_j conj(term2[j]) · term1[j+n]       (cross-correlation, 511 lags)
+    score[n] = |R[n]|²
+    intCFO   = argmax_n score[n] − (NSC−1)            = peakIndexMeyr − 255
+- Recommend frequency-domain PSS/SSS representation for the main integer CFO path.
+- Define a staged RTL roadmap that starts with a synthetic-input Meyr direct-correlation core
+  before adding FFT.
+
+Key decisions:
+- term2 is entirely precomputed (static): stored in ROM at synthesis or loaded at init from
+  offline-generated fixed-point tables.
+- Direct-lag correlation used in Step 31 (no FFT IP dependency).
+- FFT-based correlation (512-pt FFT/IFFT) deferred to Step 32+ as acceleration path.
+- 56-bit complex accumulator for R_I/R_Q; 64-bit score for peak_detector.
+- Existing `peak_detector.v` (METRIC_WIDTH=64, INDEX_WIDTH=9) handles all 511 lags without
+  modification.
+- Frame buffer output must be extended from 288 to ≥576 samples for Step 35 integration
+  (to cover both PSS and SSS symbols).
+
+Architecture documents:
+- `docs/step30_meyr_integer_cfo_pss_sss_architecture.md` — authoritative Meyr-verified spec
+- `docs/step30_integer_cfo_pss_sss_architecture.md` — earlier preliminary (superseded)
+
+Prompt archives:
+- `md_files/30_meyr_integer_cfo_pss_sss_architecture_prompt.md`
+- `md_files/30_integer_cfo_pss_sss_architecture_prompt.md`
+
+RTL modified: No.
+
+---
+
+---
+
+### Step 31 — Meyr Integer CFO Direct-Correlation Core
+
+Status: **COMPLETE — PASS: 32, FAIL: 0, CI GATE: PASSED**
+
+Purpose:
+- Implement and verify the Meyr cross-correlation engine in isolation — no FFT IP, no PSS/SSS
+  symbol extraction, no board wrapper changes.
+- Use a synthetic XOR-shift32 PRNG term2 ROM (seed `32'hCAFE_B0BB`) shared between RTL and
+  testbench to enable fully deterministic shift-recovery tests.
+- Verify all 12 test groups (shifts −8 to +8, error protocol, zero-input tie-break) before
+  adding FFT integration in Step 32.
+
+Files created:
+- `rtl/meyr_integer_cfo_core.v` — 7-state FSM: S_IDLE → S_LOAD → S_PD_START → S_CORR →
+  S_LAG_END → S_WAIT_PD → S_DONE; 511-lag direct-lag correlator; instantiates peak_detector.v
+- `tb/meyr_integer_cfo_core_tb.sv` — 12 test groups (T1–T12), 32 total checks
+- `scripts/run_meyr_integer_cfo_core_sim.sh` — Vivado xsim compile + run script
+- `docs/step31_meyr_integer_cfo_core.md` — step documentation
+
+Key implementation decisions:
+- NSC=256, PROD_WIDTH=32, ACC_WIDTH=56, SCORE_WIDTH=64, INDEX_WIDTH=9
+- LAG_COUNT=511, CENTER=255 (zero-CFO peak index)
+- term2 ROM: XOR-shift32 PRNG, seed `32'hCAFE_B0BB`; 8-bit values sign-extended to 32-bit
+- Score uses lower 32 bits of 56-bit accumulator; safe for synthetic 8-bit data (max |acc| ≈ 2^22)
+- Verilog-2001 intermediate wires for n_end computation (expression slicing not supported)
+- Global start-while-busy guard fires in any FSM state (not just S_IDLE)
+- int_cfo = `$signed({7'b0, pd_peak_index}) − 16'sd255`
+- peak_detector.v reused unmodified (METRIC_WIDTH=64, INDEX_WIDTH=9, COUNT_WIDTH=10, max_count=0)
+
+Simulation result (12 groups, 32 checks):
+
+| Test | Shift | peak_index | int_cfo | Result |
+|------|-------|-----------|---------|--------|
+| T1 reset_defaults | — | — | — | PASS |
+| T2 zero_cfo | 0 | 255 | 0 | PASS |
+| T3 positive_shift_plus1 | +1 | 256 | +1 | PASS |
+| T4 negative_shift_minus1 | −1 | 254 | −1 | PASS |
+| T5 positive_shift_plus3 | +3 | 258 | +3 | PASS |
+| T6 negative_shift_minus4 | −4 | 251 | −4 | PASS |
+| T7 positive_shift_plus8 | +8 | 263 | +8 | PASS |
+| T8 negative_shift_minus8 | −8 | 247 | −8 | PASS |
+| T9 restart_two_frames | 0,+3 | 255,258 | 0,+3 | PASS |
+| T10 start_while_busy | — | — | error=1 | PASS |
+| T11 zero_term1 | 0 | 0 | −255 | PASS |
+| T12 boundary_shifts | +2,−2 | 257,253 | +2,−2 | PASS |
+
+RTL modified: No (new files only; peak_detector.v unchanged).
+
+---
+
 ## Next Step
 
-### Step 29F Board Re-Run
+### Step 32 — PSS/SSS Product Generator and Real term2 ROM
 
-1. On Windows: re-run Step 27 (repackages IP with Step 29F RTL), then Step 28C (new bitstream).
-2. In Vitis: create new app `debug_board_test` from `sw/step29f_debug_board_test/src/main.c`.
-3. Program ZCU102 with new bitstream; run app; capture UART output.
-4. Classify result and report: INPUT_COUNT > 0 = PASS; else use DEBUG_STATE diagnosis.
-
-After Step 29F PASS (INPUT_COUNT > 0):
-- If frame_error: check stimulus/threshold, iterate known-vector test.
-- If PASS fully: proceed to Step 30 (Phase 2 streaming redesign or ILA observability).
+Implement:
+- PSS/SSS FFT wrapper (or direct frequency-domain input) to generate
+  `term1[j] = PSS_FFT[j] · conj(SSS_FFT[j])`
+- Replace synthetic XOR-shift32 term2 ROM with real `mU · conj(goldU)` reference data
+  derived from `ref/receiver.c` reference sequences.
+- Target: `rtl/meyr_pss_sss_product_gen.v` feeding `meyr_integer_cfo_core.v`.
