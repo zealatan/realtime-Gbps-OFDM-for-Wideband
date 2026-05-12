@@ -230,8 +230,6 @@ Interactive architecture views:
 
 This diagram shows the top-level ports, internal submodules, shared buffer read-port muxing, and FSM-controlled data/control paths of `frac_cfo_frame_corrector_top`.
 
-[![RTL Design Block Diagram — frac_cfo_frame_corrector_top](docs/rtl_design_block_diagram_frac_cfo_frame_corrector_top_exact.svg)](docs/rtl_design_block_diagram_frac_cfo_frame_corrector_top_exact.svg)
-
 
 
 
