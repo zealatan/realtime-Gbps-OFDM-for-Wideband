@@ -213,11 +213,55 @@ NCO-based fractional CFO correction
 AXI-Stream corrected IQ output
 ```
 
-### Block Diagram
+### Block Diagrams
+
+The following diagrams summarize the current Phase-1 RTL_SYNC_CFO architecture.
+
+#### System-Level Architecture
 
 ![RTL_SYNC_CFO Block Diagram](docs/rtl_sync_cfo_block.svg)
 
-> Interactive version with hover tooltips: [GitHub Pages](https://zealatan.github.io/realtime-Gbps-OFDM-for-Wideband/)
+Interactive architecture views:
+
+- [Open RTL_SYNC_CFO Architecture Block Diagram — HTML](https://zealatan.github.io/realtime-Gbps-OFDM-for-Wideband/rtl_sync_cfo_block_diagram_spectral_bright_exact.html)
+- [Open repository HTML file](docs/rtl_sync_cfo_block_diagram_spectral_bright_exact.html)
+
+#### RTL Module Connectivity
+
+This diagram shows the top-level ports, internal submodules, shared buffer read-port muxing, and FSM-controlled data/control paths of `frac_cfo_frame_corrector_top`.
+
+[![RTL Design Block Diagram — frac_cfo_frame_corrector_top](docs/rtl_design_block_diagram_frac_cfo_frame_corrector_top_exact.svg)](docs/rtl_design_block_diagram_frac_cfo_frame_corrector_top_exact.svg)
+
+
+
+
+Key RTL blocks:
+
+```text
+AXI-Stream IQ input
+  ↓
+iq_frame_buffer
+  ↓
+frame_detector
+  ↓
+timing_frac_cfo_top
+  ├── timing_sync_top
+  └── frac_cfo_estimator
+  ↓
+frac_cfo_corrector_top
+  ├── nco_phase_gen
+  └── complex_rotator
+  ↓
+AXI-Stream corrected IQ output
+```
+
+Legend:
+
+```text
+Solid arrow  = IQ sample data path
+Dashed arrow = control/status/FSM sequencing
+Nested box   = hierarchical RTL submodule
+```
 
 The current architecture is best described as:
 
