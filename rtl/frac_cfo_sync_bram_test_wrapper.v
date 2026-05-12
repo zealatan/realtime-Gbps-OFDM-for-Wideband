@@ -11,53 +11,59 @@
 //
 //   Stream source FSM reads input_mem → DUT s_axis
 //   Stream sink  FSM receives DUT m_axis → output_mem
-//   frac_cfo_frame_corrector_top instantiated directly (Option A: avoids dual AXI slave)
+//   frac_cfo_frame_corrector_top instantiated directly.
 //
 // Run sequence:
 //   1. Write input samples to 0x1000 window
 //   2. Set CFG/INPUT_LEN/OUTPUT_MAX_LEN registers
-//   3. Write CONTROL.enable=1, CONTROL.start_pulse=1 (same write or separate)
+//   3. Write CONTROL.enable=1, CONTROL.start_pulse=1
 //   4. Poll STATUS.done_sticky
 //   5. Read OUTPUT_COUNT and 0x2000 window
+//
+// Step 29F fix:
+//   The source FSM starts first. The DUT start pulse is delayed until the
+//   source is already in SRC_STREAM, so the DUT sees start while
+//   s_axis_tvalid is already asserted.
 
 module frac_cfo_sync_bram_test_wrapper #(
-    // frac_cfo_frame_corrector_top parameters
     parameter integer NSC              = 256,
-    parameter integer CP_LEN          = 32,
-    parameter integer BUF_AW          = 12,
-    parameter integer ACC_WIDTH       = 40,
-    parameter integer METRIC_WIDTH    = 32,
-    parameter integer INDEX_WIDTH     = 9,
-    parameter integer RESULT_WIDTH    = 32,
-    parameter integer PHASE_WIDTH     = 16,
-    parameter integer POWER_WIDTH     = 33,
-    parameter integer ENERGY_WIDTH    = 40,
-    parameter integer WINDOW_LEN      = 25,
-    parameter integer HIT_COUNT       = 10,
-    parameter integer THRESHOLD       = 10240000,
-    parameter integer NCO_PHASE_WIDTH = 32,
-    parameter integer LATENCY         = 15,
-    // Memory: 2^MEM_ADDR_WIDTH entries per buffer (1024 at default of 10)
-    parameter integer MEM_ADDR_WIDTH  = 10,
-    parameter integer TIMEOUT_CYCLES  = 100000
+    parameter integer CP_LEN           = 32,
+    parameter integer BUF_AW           = 12,
+    parameter integer ACC_WIDTH        = 40,
+    parameter integer METRIC_WIDTH     = 32,
+    parameter integer INDEX_WIDTH      = 9,
+    parameter integer RESULT_WIDTH     = 32,
+    parameter integer PHASE_WIDTH      = 16,
+    parameter integer POWER_WIDTH      = 33,
+    parameter integer ENERGY_WIDTH     = 40,
+    parameter integer WINDOW_LEN       = 25,
+    parameter integer HIT_COUNT        = 10,
+    parameter integer THRESHOLD        = 10240000,
+    parameter integer NCO_PHASE_WIDTH  = 32,
+    parameter integer LATENCY          = 15,
+    parameter integer MEM_ADDR_WIDTH   = 10,
+    parameter integer TIMEOUT_CYCLES   = 100000
 ) (
     input  wire        aclk,
     input  wire        aresetn,
 
-    // AXI4-Lite slave (16-bit byte address, 32-bit data)
     input  wire [15:0] s_axi_awaddr,
     input  wire        s_axi_awvalid,
     output reg         s_axi_awready,
+
     input  wire [31:0] s_axi_wdata,
     input  wire [3:0]  s_axi_wstrb,
     input  wire        s_axi_wvalid,
     output reg         s_axi_wready,
+
     output reg  [1:0]  s_axi_bresp,
     output reg         s_axi_bvalid,
     input  wire        s_axi_bready,
+
     input  wire [15:0] s_axi_araddr,
     input  wire        s_axi_arvalid,
     output reg         s_axi_arready,
+
     output reg  [31:0] s_axi_rdata,
     output reg  [1:0]  s_axi_rresp,
     output reg         s_axi_rvalid,
@@ -67,9 +73,6 @@ module frac_cfo_sync_bram_test_wrapper #(
     localparam [1:0] RESP_OKAY   = 2'b00;
     localparam [1:0] RESP_SLVERR = 2'b10;
 
-    // -----------------------------------------------------------------------
-    // Memories
-    // -----------------------------------------------------------------------
     localparam integer MEM_DEPTH = 1 << MEM_ADDR_WIDTH;
 
     reg [31:0] input_mem  [0:MEM_DEPTH-1];
@@ -84,28 +87,29 @@ module frac_cfo_sync_bram_test_wrapper #(
     end
 
     // -----------------------------------------------------------------------
-    // AXI-Lite write channel — single-outstanding write FSM
+    // AXI-Lite write channel
     // -----------------------------------------------------------------------
-    localparam [1:0] WS_IDLE = 2'd0, WS_AW = 2'd1, WS_W = 2'd2, WS_EXEC = 2'd3;
+    localparam [1:0] WS_IDLE = 2'd0;
+    localparam [1:0] WS_AW   = 2'd1;
+    localparam [1:0] WS_W    = 2'd2;
+    localparam [1:0] WS_EXEC = 2'd3;
 
     reg [1:0]  wr_state;
     reg [15:0] wr_addr_r;
     reg [31:0] wr_data_r;
     reg [3:0]  wr_strb_r;
 
-    // Address region decode (registered address)
-    wire [3:0]  wr_region  = wr_addr_r[15:12];
-    wire [9:0]  wr_word    = wr_addr_r[11:2];   // word index within region
-    wire [9:0]  wr_reg_idx = wr_addr_r[11:2];   // same, for control-reg region
+    wire [3:0] wr_region  = wr_addr_r[15:12];
+    wire [9:0] wr_word    = wr_addr_r[11:2];
+    wire [9:0] wr_reg_idx = wr_addr_r[11:2];
 
     // -----------------------------------------------------------------------
-    // Control/status registers
+    // Control/config registers
     // -----------------------------------------------------------------------
-    // Pulse registers (auto-clear every cycle)
-    reg start_pulse_r;
-    reg soft_reset_pulse_r;
-    reg clr_status_pulse_r;
-    // Sticky config registers
+    reg        start_pulse_r;
+    reg        soft_reset_pulse_r;
+    reg        clr_status_pulse_r;
+
     reg        enable_r;
     reg [31:0] cfg_cfo_step_r;
     reg [31:0] cfg_timing_offset_r;
@@ -118,42 +122,35 @@ module frac_cfo_sync_bram_test_wrapper #(
     // -----------------------------------------------------------------------
     reg        done_sticky_r;
     reg        frame_error_sticky_r;
-    reg        input_underflow_sticky_r;   // reserved/always 0 in current impl
+    reg        input_underflow_sticky_r;
     reg        output_overflow_sticky_r;
     reg        running_r;
     reg        input_done_r;
     reg        output_done_r;
+
     reg [31:0] input_count_r;
     reg [31:0] output_count_r;
     reg [31:0] timeout_cnt;
 
     // -----------------------------------------------------------------------
-    // Step 29F debug sticky registers (cleared by soft_reset or clr_status)
-    // Capture one-cycle events for board-visible post-mortem.
-    // -----------------------------------------------------------------------
-    reg dbg_internal_start_seen;  // dut_start combinatorial was 1
-    reg dbg_source_start_seen;    // source FSM transitioned SRC_IDLE→SRC_STREAM
-    reg dbg_dut_busy_seen;        // dut_busy rising edge (DUT accepted start)
-    reg dbg_handshake_seen;       // at least one tvalid&&tready handshake
-
-    wire clear_sticky = soft_reset_pulse_r || clr_status_pulse_r;
-
-    // dut_busy_prev for rising-edge detection
-    reg dut_busy_prev;
-
-    // -----------------------------------------------------------------------
     // Source FSM
     // -----------------------------------------------------------------------
-    localparam [1:0] SRC_IDLE = 2'd0, SRC_STREAM = 2'd1, SRC_DONE = 2'd2;
-    reg [1:0]                    src_state;
-    reg [MEM_ADDR_WIDTH-1:0]     src_ptr;
+    localparam [1:0] SRC_IDLE   = 2'd0;
+    localparam [1:0] SRC_STREAM = 2'd1;
+    localparam [1:0] SRC_DONE   = 2'd2;
+
+    reg [1:0]                src_state;
+    reg [MEM_ADDR_WIDTH-1:0] src_ptr;
 
     // -----------------------------------------------------------------------
     // Sink FSM
     // -----------------------------------------------------------------------
-    localparam [1:0] SNK_IDLE = 2'd0, SNK_CAPTURE = 2'd1, SNK_DONE = 2'd2;
-    reg [1:0]                    snk_state;
-    reg [MEM_ADDR_WIDTH-1:0]     snk_ptr;
+    localparam [1:0] SNK_IDLE    = 2'd0;
+    localparam [1:0] SNK_CAPTURE = 2'd1;
+    localparam [1:0] SNK_DONE    = 2'd2;
+
+    reg [1:0]                snk_state;
+    reg [MEM_ADDR_WIDTH-1:0] snk_ptr;
 
     // -----------------------------------------------------------------------
     // DUT signals
@@ -175,27 +172,72 @@ module frac_cfo_sync_bram_test_wrapper #(
     wire        dut_busy;
     wire        dut_frame_error;
 
-    wire [BUF_AW-1:0]      dut_frame_index;
-    wire                   dut_frame_found;
-    wire [INDEX_WIDTH-1:0] dut_peak_lag;
-    wire [METRIC_WIDTH-1:0] dut_peak_metric;
-    wire [PHASE_WIDTH-1:0] dut_frac_phase;
-    wire                   dut_frac_phase_valid;
+    wire [BUF_AW-1:0]        dut_frame_index;
+    wire                     dut_frame_found;
+    wire [INDEX_WIDTH-1:0]   dut_peak_lag;
+    wire [METRIC_WIDTH-1:0]  dut_peak_metric;
+    wire [PHASE_WIDTH-1:0]   dut_frac_phase;
+    wire                     dut_frac_phase_valid;
 
     // -----------------------------------------------------------------------
-    // DUT control wires
+    // Step 29F start alignment fix
     // -----------------------------------------------------------------------
+    wire run_request;
+
+    reg dut_start_r;
+    reg dut_start_pending_r;
+
+    assign run_request = start_pulse_r && enable_r && !running_r;
+
     assign dut_aresetn = aresetn && !soft_reset_pulse_r;
-    assign dut_start   = start_pulse_r && enable_r && !running_r;
+    assign dut_start   = dut_start_r;
 
+    always @(posedge aclk) begin
+        if (!aresetn || soft_reset_pulse_r) begin
+            dut_start_r         <= 1'b0;
+            dut_start_pending_r <= 1'b0;
+        end else begin
+            dut_start_r <= 1'b0;
+
+            if (clr_status_pulse_r) begin
+                dut_start_pending_r <= 1'b0;
+            end else begin
+                if (run_request) begin
+                    dut_start_pending_r <= 1'b1;
+                end
+
+                // Delay DUT start until source is already streaming.
+                if (dut_start_pending_r && (src_state == SRC_STREAM)) begin
+                    dut_start_r         <= 1'b1;
+                    dut_start_pending_r <= 1'b0;
+                end
+            end
+        end
+    end
+
+    // -----------------------------------------------------------------------
     // Stream source → DUT
+    // -----------------------------------------------------------------------
     assign dut_s_axis_tdata  = input_mem[src_ptr];
     assign dut_s_axis_tvalid = (src_state == SRC_STREAM);
     assign dut_s_axis_tlast  = (src_state == SRC_STREAM) &&
-                                (src_ptr == input_len_r[MEM_ADDR_WIDTH-1:0] - 1);
+                               (src_ptr == input_len_r[MEM_ADDR_WIDTH-1:0] - 1'b1);
 
-    // DUT → stream sink (always accept samples in CAPTURE state; no backpressure)
+    // -----------------------------------------------------------------------
+    // DUT → stream sink
+    // -----------------------------------------------------------------------
     assign dut_m_axis_tready = (snk_state == SNK_CAPTURE);
+
+    // -----------------------------------------------------------------------
+    // Step 29F debug sticky registers
+    // -----------------------------------------------------------------------
+    reg dbg_internal_start_seen;
+    reg dbg_source_start_seen;
+    reg dbg_dut_busy_seen;
+    reg dbg_handshake_seen;
+    reg dut_busy_prev;
+
+    wire clear_sticky = soft_reset_pulse_r || clr_status_pulse_r;
 
     // -----------------------------------------------------------------------
     // AXI-Lite write FSM
@@ -210,25 +252,24 @@ module frac_cfo_sync_bram_test_wrapper #(
             wr_addr_r     <= 16'd0;
             wr_data_r     <= 32'd0;
             wr_strb_r     <= 4'd0;
-            // Config regs reset
-            start_pulse_r      <= 1'b0;
-            soft_reset_pulse_r <= 1'b0;
-            clr_status_pulse_r <= 1'b0;
-            enable_r           <= 1'b0;
-            cfg_cfo_step_r     <= 32'd0;
+
+            start_pulse_r       <= 1'b0;
+            soft_reset_pulse_r  <= 1'b0;
+            clr_status_pulse_r  <= 1'b0;
+            enable_r            <= 1'b0;
+            cfg_cfo_step_r      <= 32'd0;
             cfg_timing_offset_r <= 32'd0;
-            cfg_frame_len_r    <= 32'd0;
-            input_len_r        <= 32'd0;
-            output_max_len_r   <= 32'd0;
+            cfg_frame_len_r     <= 32'd0;
+            input_len_r         <= 32'd0;
+            output_max_len_r    <= 32'd0;
         end else begin
-            // Auto-clear pulses every cycle
             start_pulse_r      <= 1'b0;
             soft_reset_pulse_r <= 1'b0;
             clr_status_pulse_r <= 1'b0;
 
-            // Clear B response when accepted
-            if (s_axi_bvalid && s_axi_bready)
+            if (s_axi_bvalid && s_axi_bready) begin
                 s_axi_bvalid <= 1'b0;
+            end
 
             case (wr_state)
                 WS_IDLE: begin
@@ -276,12 +317,11 @@ module frac_cfo_sync_bram_test_wrapper #(
                     wr_state      <= WS_IDLE;
 
                     if (wr_region == 4'h0) begin
-                        // Control/status register region
                         if (wr_reg_idx > 10) begin
                             s_axi_bresp <= RESP_SLVERR;
                         end else begin
                             case (wr_reg_idx)
-                                10'd0: begin // CONTROL
+                                10'd0: begin
                                     if (wr_strb_r[0]) begin
                                         start_pulse_r      <= wr_data_r[0];
                                         soft_reset_pulse_r <= wr_data_r[1];
@@ -289,61 +329,73 @@ module frac_cfo_sync_bram_test_wrapper #(
                                         enable_r           <= wr_data_r[3];
                                     end
                                 end
-                                10'd1: begin // STATUS — R/O, writes are no-op
+
+                                10'd1: begin
+                                    // STATUS is read-only.
                                 end
-                                10'd2: begin // CFG_CFO_STEP
-                                    if (wr_strb_r[0]) cfg_cfo_step_r[ 7: 0] <= wr_data_r[ 7: 0];
-                                    if (wr_strb_r[1]) cfg_cfo_step_r[15: 8] <= wr_data_r[15: 8];
+
+                                10'd2: begin
+                                    if (wr_strb_r[0]) cfg_cfo_step_r[7:0]   <= wr_data_r[7:0];
+                                    if (wr_strb_r[1]) cfg_cfo_step_r[15:8]  <= wr_data_r[15:8];
                                     if (wr_strb_r[2]) cfg_cfo_step_r[23:16] <= wr_data_r[23:16];
                                     if (wr_strb_r[3]) cfg_cfo_step_r[31:24] <= wr_data_r[31:24];
                                 end
-                                10'd3: begin // CFG_TIMING_OFFSET
-                                    if (wr_strb_r[0]) cfg_timing_offset_r[ 7: 0] <= wr_data_r[ 7: 0];
-                                    if (wr_strb_r[1]) cfg_timing_offset_r[15: 8] <= wr_data_r[15: 8];
+
+                                10'd3: begin
+                                    if (wr_strb_r[0]) cfg_timing_offset_r[7:0]   <= wr_data_r[7:0];
+                                    if (wr_strb_r[1]) cfg_timing_offset_r[15:8]  <= wr_data_r[15:8];
                                     if (wr_strb_r[2]) cfg_timing_offset_r[23:16] <= wr_data_r[23:16];
                                     if (wr_strb_r[3]) cfg_timing_offset_r[31:24] <= wr_data_r[31:24];
                                 end
-                                10'd4: begin // CFG_FRAME_LEN
-                                    if (wr_strb_r[0]) cfg_frame_len_r[ 7: 0] <= wr_data_r[ 7: 0];
-                                    if (wr_strb_r[1]) cfg_frame_len_r[15: 8] <= wr_data_r[15: 8];
+
+                                10'd4: begin
+                                    if (wr_strb_r[0]) cfg_frame_len_r[7:0]   <= wr_data_r[7:0];
+                                    if (wr_strb_r[1]) cfg_frame_len_r[15:8]  <= wr_data_r[15:8];
                                     if (wr_strb_r[2]) cfg_frame_len_r[23:16] <= wr_data_r[23:16];
                                     if (wr_strb_r[3]) cfg_frame_len_r[31:24] <= wr_data_r[31:24];
                                 end
-                                10'd5: begin // INPUT_LEN
-                                    if (wr_strb_r[0]) input_len_r[ 7: 0] <= wr_data_r[ 7: 0];
-                                    if (wr_strb_r[1]) input_len_r[15: 8] <= wr_data_r[15: 8];
+
+                                10'd5: begin
+                                    if (wr_strb_r[0]) input_len_r[7:0]   <= wr_data_r[7:0];
+                                    if (wr_strb_r[1]) input_len_r[15:8]  <= wr_data_r[15:8];
                                     if (wr_strb_r[2]) input_len_r[23:16] <= wr_data_r[23:16];
                                     if (wr_strb_r[3]) input_len_r[31:24] <= wr_data_r[31:24];
                                 end
-                                10'd6: begin // OUTPUT_MAX_LEN
-                                    if (wr_strb_r[0]) output_max_len_r[ 7: 0] <= wr_data_r[ 7: 0];
-                                    if (wr_strb_r[1]) output_max_len_r[15: 8] <= wr_data_r[15: 8];
+
+                                10'd6: begin
+                                    if (wr_strb_r[0]) output_max_len_r[7:0]   <= wr_data_r[7:0];
+                                    if (wr_strb_r[1]) output_max_len_r[15:8]  <= wr_data_r[15:8];
                                     if (wr_strb_r[2]) output_max_len_r[23:16] <= wr_data_r[23:16];
                                     if (wr_strb_r[3]) output_max_len_r[31:24] <= wr_data_r[31:24];
                                 end
-                                10'd7,  // INPUT_COUNT  — R/O
-                                10'd8,  // OUTPUT_COUNT — R/O
-                                10'd9,  // DEBUG_STATE  — R/O
-                                10'd10: begin // ERROR_STATUS — R/O
+
+                                10'd7,
+                                10'd8,
+                                10'd9,
+                                10'd10: begin
+                                    // Read-only registers.
                                 end
-                                default: s_axi_bresp <= RESP_SLVERR;
+
+                                default: begin
+                                    s_axi_bresp <= RESP_SLVERR;
+                                end
                             endcase
                         end
                     end else if (wr_region == 4'h1) begin
-                        // Input memory write (byte-strobe capable)
                         if (wr_strb_r[0]) input_mem[wr_word][7:0]   <= wr_data_r[7:0];
                         if (wr_strb_r[1]) input_mem[wr_word][15:8]  <= wr_data_r[15:8];
                         if (wr_strb_r[2]) input_mem[wr_word][23:16] <= wr_data_r[23:16];
                         if (wr_strb_r[3]) input_mem[wr_word][31:24] <= wr_data_r[31:24];
                     end else if (wr_region == 4'h2) begin
-                        // Output memory — write-protected, return SLVERR
                         s_axi_bresp <= RESP_SLVERR;
                     end else begin
                         s_axi_bresp <= RESP_SLVERR;
                     end
                 end
 
-                default: wr_state <= WS_IDLE;
+                default: begin
+                    wr_state <= WS_IDLE;
+                end
             endcase
         end
     end
@@ -358,7 +410,7 @@ module frac_cfo_sync_bram_test_wrapper #(
     wire [31:0] status_word = {
         23'd0,
         frame_error_sticky_r,      // bit[8]
-        done_sticky_r,             // bit[7] = wrapped_done_sticky
+        done_sticky_r,             // bit[7]
         output_overflow_sticky_r,  // bit[6]
         input_underflow_sticky_r,  // bit[5]
         output_done_r,             // bit[4]
@@ -370,54 +422,32 @@ module frac_cfo_sync_bram_test_wrapper #(
 
     wire [31:0] control_readback = {28'd0, enable_r, 3'd0};
 
-    // Step 29F debug state word — version 0xF marker in bits[31:28]
-    // bit[31:28] = 4'hF  (version tag — distinguishes from old 0-5 encoding)
-    // bit[27]    = dbg_internal_start_seen (sticky: dut_start pulsed)
-    // bit[26]    = dbg_source_start_seen  (sticky: source FSM left IDLE)
-    // bit[25]    = source currently active (SRC_STREAM)
-    // bit[24]    = source done (input_done_r)
-    // bit[23]    = dbg_dut_busy_seen      (sticky: DUT accepted start)
-    // bit[22]    = dut_busy               (DUT currently running)
-    // bit[21]    = dut_s_axis_tvalid      (source presenting data)
-    // bit[20]    = dut_s_axis_tready      (DUT accepting data)
-    // bit[19]    = dbg_handshake_seen     (sticky: ≥1 tvalid&&tready)
-    // bit[18:16] = src_state[2:0]         (SRC_IDLE=0 SRC_STREAM=1 SRC_DONE=2)
-    // bit[15]    = enable_r
-    // bit[14]    = running_r
-    // bit[13]    = done_sticky_r
-    // bit[12]    = frame_error_sticky_r
-    // bit[11:0]  = input_count_r[11:0]   (lower 12 bits of INPUT_COUNT)
-    // Step 29F DEBUG_STATE word — total 32 bits
-    // [31:28]=4'hF  [27]=int_start_sticky [26]=src_start_sticky
-    // [25]=src_active [24]=src_done [23]=dut_busy_seen [22]=dut_busy
-    // [21]=tvalid [20]=tready [19]=handshake_seen [18:16]={0,src_state}
-    // [15]=enable [14]=running [13]=done_sticky [12]=frame_err
-    // [11:0]=input_count[11:0]
     wire [31:0] debug_state_word = {
-        4'hF,                            // [31:28] version tag
-        dbg_internal_start_seen,         // [27] dut_start was high (sticky)
-        dbg_source_start_seen,           // [26] source FSM left IDLE (sticky)
-        (src_state == SRC_STREAM),       // [25] source currently streaming
-        input_done_r,                    // [24] source completed
-        dbg_dut_busy_seen,               // [23] DUT accepted start (sticky)
-        dut_busy,                        // [22] DUT currently busy
-        dut_s_axis_tvalid,               // [21] source presenting data
-        dut_s_axis_tready,               // [20] DUT accepting data
-        dbg_handshake_seen,              // [19] ≥1 tvalid&&tready seen (sticky)
-        1'b0, src_state[1:0],            // [18:16] 0 + src state (IDLE=0 STREAM=1 DONE=2)
-        enable_r,                        // [15]
-        running_r,                       // [14]
-        done_sticky_r,                   // [13]
-        frame_error_sticky_r,            // [12]
-        input_count_r[11:0]              // [11:0]
+        4'hF,                       // [31:28] version marker
+        dbg_internal_start_seen,    // [27] delayed dut_start pulsed
+        dbg_source_start_seen,      // [26] run_request/source start seen
+        (src_state == SRC_STREAM),  // [25] source active
+        input_done_r,               // [24] source done
+        dbg_dut_busy_seen,          // [23] DUT busy rising seen
+        dut_busy,                   // [22] DUT busy current
+        dut_s_axis_tvalid,          // [21] source valid current
+        dut_s_axis_tready,          // [20] DUT ready current
+        dbg_handshake_seen,         // [19] at least one tvalid && tready
+        1'b0,
+        src_state[1:0],             // [18:16] source FSM state
+        enable_r,                   // [15]
+        running_r,                  // [14]
+        done_sticky_r,              // [13]
+        frame_error_sticky_r,       // [12]
+        input_count_r[11:0]         // [11:0]
     };
 
     wire [31:0] error_status_word = {
         28'd0,
-        (running_r && timeout_cnt >= TIMEOUT_CYCLES[31:0]), // bit[3] timeout
-        1'b0,                        // bit[2]
-        output_overflow_sticky_r,    // bit[1]
-        input_underflow_sticky_r     // bit[0]
+        (running_r && timeout_cnt >= TIMEOUT_CYCLES[31:0]), // bit[3]
+        1'b0,                                               // bit[2]
+        output_overflow_sticky_r,                           // bit[1]
+        input_underflow_sticky_r                            // bit[0]
     };
 
     always @(posedge aclk) begin
@@ -477,81 +507,82 @@ module frac_cfo_sync_bram_test_wrapper #(
     // -----------------------------------------------------------------------
     always @(posedge aclk) begin
         if (!aresetn) begin
-            done_sticky_r           <= 1'b0;
-            frame_error_sticky_r    <= 1'b0;
+            done_sticky_r            <= 1'b0;
+            frame_error_sticky_r     <= 1'b0;
             input_underflow_sticky_r <= 1'b0;
             output_overflow_sticky_r <= 1'b0;
-            running_r               <= 1'b0;
-            input_done_r            <= 1'b0;
-            output_done_r           <= 1'b0;
-            input_count_r           <= 32'd0;
-            output_count_r          <= 32'd0;
-            timeout_cnt             <= 32'd0;
+            running_r                <= 1'b0;
+            input_done_r             <= 1'b0;
+            output_done_r            <= 1'b0;
+            input_count_r            <= 32'd0;
+            output_count_r           <= 32'd0;
+            timeout_cnt              <= 32'd0;
         end else if (soft_reset_pulse_r) begin
-            done_sticky_r           <= 1'b0;
-            frame_error_sticky_r    <= 1'b0;
+            done_sticky_r            <= 1'b0;
+            frame_error_sticky_r     <= 1'b0;
             input_underflow_sticky_r <= 1'b0;
             output_overflow_sticky_r <= 1'b0;
-            running_r               <= 1'b0;
-            input_done_r            <= 1'b0;
-            output_done_r           <= 1'b0;
-            input_count_r           <= 32'd0;
-            output_count_r          <= 32'd0;
-            timeout_cnt             <= 32'd0;
+            running_r                <= 1'b0;
+            input_done_r             <= 1'b0;
+            output_done_r            <= 1'b0;
+            input_count_r            <= 32'd0;
+            output_count_r           <= 32'd0;
+            timeout_cnt              <= 32'd0;
         end else begin
-            // Clear-status pulse
             if (clr_status_pulse_r) begin
-                done_sticky_r           <= 1'b0;
-                frame_error_sticky_r    <= 1'b0;
+                done_sticky_r            <= 1'b0;
+                frame_error_sticky_r     <= 1'b0;
                 input_underflow_sticky_r <= 1'b0;
                 output_overflow_sticky_r <= 1'b0;
-                input_done_r            <= 1'b0;
-                output_done_r           <= 1'b0;
-                input_count_r           <= 32'd0;
-                output_count_r          <= 32'd0;
-                timeout_cnt             <= 32'd0;
+                input_done_r             <= 1'b0;
+                output_done_r            <= 1'b0;
+                input_count_r            <= 32'd0;
+                output_count_r           <= 32'd0;
+                timeout_cnt              <= 32'd0;
             end else begin
-                // Running: set on start, clear on done or timeout
-                if (start_pulse_r && enable_r && !running_r) begin
-                    running_r     <= 1'b1;
-                    input_count_r <= 32'd0;
+                if (run_request) begin
+                    running_r      <= 1'b1;
+                    input_count_r  <= 32'd0;
                     output_count_r <= 32'd0;
-                    input_done_r  <= 1'b0;
-                    output_done_r <= 1'b0;
-                    timeout_cnt   <= 32'd0;
+                    input_done_r   <= 1'b0;
+                    output_done_r  <= 1'b0;
+                    timeout_cnt    <= 32'd0;
                 end else begin
-                    if (dut_done || (running_r && timeout_cnt >= TIMEOUT_CYCLES[31:0]))
+                    if (dut_done || (running_r && timeout_cnt >= TIMEOUT_CYCLES[31:0])) begin
                         running_r <= 1'b0;
-
-                    // Timeout counter
-                    if (running_r && timeout_cnt < TIMEOUT_CYCLES[31:0])
-                        timeout_cnt <= timeout_cnt + 1;
-
-                    // Done sticky (from DUT done or timeout)
-                    if (dut_done || (running_r && timeout_cnt >= TIMEOUT_CYCLES[31:0]))
-                        done_sticky_r <= 1'b1;
-
-                    // Frame error sticky
-                    if (dut_frame_error)
-                        frame_error_sticky_r <= 1'b1;
-
-                    // Input count: increment on each source handshake
-                    if (dut_s_axis_tvalid && dut_s_axis_tready)
-                        input_count_r <= input_count_r + 1;
-
-                    // Output count (capped at OUTPUT_MAX_LEN) and overflow
-                    if (dut_m_axis_tvalid && dut_m_axis_tready) begin
-                        if (output_count_r < output_max_len_r)
-                            output_count_r <= output_count_r + 1;
-                        else
-                            output_overflow_sticky_r <= 1'b1;
                     end
 
-                    // Input/output done from FSM transitions
-                    if (src_state == SRC_DONE)
+                    if (running_r && timeout_cnt < TIMEOUT_CYCLES[31:0]) begin
+                        timeout_cnt <= timeout_cnt + 1'b1;
+                    end
+
+                    if (dut_done || (running_r && timeout_cnt >= TIMEOUT_CYCLES[31:0])) begin
+                        done_sticky_r <= 1'b1;
+                    end
+
+                    if (dut_frame_error) begin
+                        frame_error_sticky_r <= 1'b1;
+                    end
+
+                    if (dut_s_axis_tvalid && dut_s_axis_tready) begin
+                        input_count_r <= input_count_r + 1'b1;
+                    end
+
+                    if (dut_m_axis_tvalid && dut_m_axis_tready) begin
+                        if (output_count_r < output_max_len_r) begin
+                            output_count_r <= output_count_r + 1'b1;
+                        end else begin
+                            output_overflow_sticky_r <= 1'b1;
+                        end
+                    end
+
+                    if (src_state == SRC_DONE) begin
                         input_done_r <= 1'b1;
-                    if (snk_state == SNK_DONE)
+                    end
+
+                    if (snk_state == SNK_DONE) begin
                         output_done_r <= 1'b1;
+                    end
                 end
             end
         end
@@ -567,24 +598,29 @@ module frac_cfo_sync_bram_test_wrapper #(
         end else begin
             case (src_state)
                 SRC_IDLE: begin
-                    if (start_pulse_r && enable_r && !running_r) begin
+                    if (run_request) begin
                         src_ptr   <= {MEM_ADDR_WIDTH{1'b0}};
                         src_state <= SRC_STREAM;
                     end
                 end
+
                 SRC_STREAM: begin
                     if (dut_s_axis_tvalid && dut_s_axis_tready) begin
                         if (dut_s_axis_tlast) begin
                             src_state <= SRC_DONE;
                         end else begin
-                            src_ptr <= src_ptr + 1;
+                            src_ptr <= src_ptr + 1'b1;
                         end
                     end
                 end
+
                 SRC_DONE: begin
                     src_state <= SRC_IDLE;
                 end
-                default: src_state <= SRC_IDLE;
+
+                default: begin
+                    src_state <= SRC_IDLE;
+                end
             endcase
         end
     end
@@ -599,37 +635,38 @@ module frac_cfo_sync_bram_test_wrapper #(
         end else begin
             case (snk_state)
                 SNK_IDLE: begin
-                    if (start_pulse_r && enable_r && !running_r) begin
+                    if (run_request) begin
                         snk_ptr   <= {MEM_ADDR_WIDTH{1'b0}};
                         snk_state <= SNK_CAPTURE;
                     end
                 end
+
                 SNK_CAPTURE: begin
-                    // Capture sample into output_mem when accepted
                     if (dut_m_axis_tvalid && dut_m_axis_tready) begin
                         if (output_count_r < output_max_len_r) begin
                             output_mem[snk_ptr] <= dut_m_axis_tdata;
-                            snk_ptr <= snk_ptr + 1;
+                            snk_ptr <= snk_ptr + 1'b1;
                         end
-                        // Extra samples beyond OUTPUT_MAX_LEN are discarded
-                        // (overflow_sticky set in status block above)
                     end
-                    // Terminate on done_sticky (set 1 cycle after dut_done)
-                    // or on timeout done
+
                     if (done_sticky_r) begin
                         snk_state <= SNK_DONE;
                     end
                 end
+
                 SNK_DONE: begin
                     snk_state <= SNK_IDLE;
                 end
-                default: snk_state <= SNK_IDLE;
+
+                default: begin
+                    snk_state <= SNK_IDLE;
+                end
             endcase
         end
     end
 
     // -----------------------------------------------------------------------
-    // Step 29F debug sticky register driver
+    // Step 29F debug sticky driver
     // -----------------------------------------------------------------------
     always @(posedge aclk) begin
         if (!aresetn) begin
@@ -640,26 +677,34 @@ module frac_cfo_sync_bram_test_wrapper #(
             dbg_handshake_seen      <= 1'b0;
         end else begin
             dut_busy_prev <= dut_busy;
+
             if (clear_sticky) begin
                 dbg_internal_start_seen <= 1'b0;
                 dbg_source_start_seen   <= 1'b0;
                 dbg_dut_busy_seen       <= 1'b0;
                 dbg_handshake_seen      <= 1'b0;
             end else begin
-                if (dut_start)
+                if (dut_start) begin
                     dbg_internal_start_seen <= 1'b1;
-                if (dut_start && (src_state == SRC_IDLE))
+                end
+
+                if (run_request) begin
                     dbg_source_start_seen <= 1'b1;
-                if (!dut_busy_prev && dut_busy)
+                end
+
+                if (!dut_busy_prev && dut_busy) begin
                     dbg_dut_busy_seen <= 1'b1;
-                if (dut_s_axis_tvalid && dut_s_axis_tready)
+                end
+
+                if (dut_s_axis_tvalid && dut_s_axis_tready) begin
                     dbg_handshake_seen <= 1'b1;
+                end
             end
         end
     end
 
     // -----------------------------------------------------------------------
-    // DUT: frac_cfo_frame_corrector_top
+    // DUT instance
     // -----------------------------------------------------------------------
     frac_cfo_frame_corrector_top #(
         .NSC             (NSC),

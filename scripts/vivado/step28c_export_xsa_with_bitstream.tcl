@@ -1,53 +1,32 @@
-# =============================================================================
 # step28c_export_xsa_with_bitstream.tcl
-# Step 28C: Export XSA with embedded bitstream for Phase-1 ZCU102 bring-up.
 #
-# Root cause of Step 28 XSA issue:
-#   write_hw_platform -include_bit failed because the impl_1 run was launched
-#   without -to_step write_bitstream.  Vivado's write_hw_platform -include_bit
-#   requires that write_bitstream was invoked through the run infrastructure
-#   (not a standalone write_bitstream call), so the run's BIT file pointer is set.
+# Step 28C:
+#   Re-run synthesis/implementation up to write_bitstream,
+#   then export XSA with embedded bitstream.
 #
-# Fix applied here:
-#   launch_runs impl_1 -to_step write_bitstream
-#   This drives impl_1 all the way through write_bitstream as a run step,
-#   after which write_hw_platform -include_bit succeeds.
+# Purpose:
+#   Fix Step 28 issue where standalone write_bitstream succeeded,
+#   but write_hw_platform -include_bit failed because Vivado run object
+#   did not know the implementation-run BIT file.
 #
-# Key differences from step28_build_bitstream_xsa.tcl:
-#   1. impl_1 launched with -to_step write_bitstream (not default route_design stop)
-#   2. Bitstream existence verified in run directory before XSA export
-#   3. No fallback to no-bit XSA — exits non-zero if -include_bit fails
-#   4. Output XSA: sync_phase1_bd_wrapper_with_bit.xsa (additive, does not overwrite)
-#   5. Reports go to reports/step28c/ (not reports/step28/)
-#
-# Run from Windows Vivado 2022.2 batch mode, from C:\RTL_SYNC:
-#   C:\Xilinx\Vivado\2022.2\bin\vivado.bat -mode batch ^
-#       -source scripts/vivado/step28c_export_xsa_with_bitstream.tcl ^
-#       -log    reports/step28c/step28c_export_xsa_with_bitstream.log ^
-#       -journal reports/step28c/step28c_export_xsa_with_bitstream.jou
-#
-# Outputs (additive — does not delete Step 28 outputs):
-#   outputs/step28/sync_phase1_bd_wrapper_with_bit.xsa  <-- NEW
-#   reports/step28c/step28c_synth_utilization.rpt
-#   reports/step28c/step28c_synth_timing_summary.rpt
-#   reports/step28c/step28c_impl_utilization.rpt
-#   reports/step28c/step28c_timing_summary.rpt
-#   reports/step28c/step28c_drc.rpt
-#   reports/step28c/step28c_power.rpt
-#
-# Preserved Step 28 outputs (not touched):
-#   outputs/step28/sync_phase1_bd_wrapper.bit
-#   outputs/step28/sync_phase1_bd_wrapper.xsa
-# =============================================================================
+# Important:
+#   This script intentionally uses -to_step write_bitstream.
+#   It also uses jobs=1 / maxThreads=1 to avoid Windows Vivado OOM
+#   during ZCU102 PS + SmartConnect OOC synthesis.
 
 set PROJ_FILE    "vivado/step27_zcu102_bd/step27_zcu102_bd.xpr"
 set BD_TOP       "sync_phase1_bd_wrapper"
 set RPTS         "reports/step28c"
 set OUT          "outputs/step28"
 set XSA_WITH_BIT "${OUT}/sync_phase1_bd_wrapper_with_bit.xsa"
-
-# impl_1 run directory — bitstream will be written here by the run infrastructure
 set IMPL_RUN_DIR "vivado/step27_zcu102_bd/step27_zcu102_bd.runs/impl_1"
+
+# -------------------------------------------------------------------------
+# Memory safety for Windows Vivado
+# -------------------------------------------------------------------------
+# On Windows, ZCU102 PS IP OOC synthesis can hit out-of-memory when multiple
+# OOC runs are launched in parallel. Keep everything serialized.
+set_param general.maxThreads 1
 
 puts "========================================================"
 puts "Step 28C: Export XSA with embedded bitstream"
@@ -57,33 +36,40 @@ puts "Out XSA:  $XSA_WITH_BIT"
 puts ""
 puts "Key fix: impl_1 launched with -to_step write_bitstream"
 puts "         so write_hw_platform -include_bit can locate the BIT file."
-puts "No ILA | No DMA | No RTL changes"
+puts "Memory:  jobs=1, general.maxThreads=1 to avoid Windows OOM"
+puts "No ILA | No DMA | No RTL changes in this script"
 puts "========================================================"
+puts ""
 
 file mkdir $RPTS
 file mkdir $OUT
 
-# =============================================================================
-# Preflight: verify Step 27 project exists
-# =============================================================================
+# Remove stale output first.
+# This prevents a previous good XSA from making the wrapper BAT falsely pass.
+if {[file exists $XSA_WITH_BIT]} {
+    file delete -force $XSA_WITH_BIT
+    puts "INFO: Removed stale XSA: $XSA_WITH_BIT"
+}
+
 if {![file exists $PROJ_FILE]} {
     puts "ERROR: Step 27 project not found: $PROJ_FILE"
     puts "       Run Step 27 first:"
     puts "       scripts\\windows\\run_step27_create_zcu102_bd_no_ila.bat"
     exit 1
 }
-puts "INFO: Step 27 project found: $PROJ_FILE"
 
-# =============================================================================
-# Open Step 27 project
-# =============================================================================
+puts "INFO: Step 27 project found: $PROJ_FILE"
 puts ""
+
+# -------------------------------------------------------------------------
+# Open project
+# -------------------------------------------------------------------------
 puts "--- Opening Step 27 Vivado project ---"
 open_project $PROJ_FILE
 
-# Verify / set top module
 set cur_top [get_property TOP [get_fileset sources_1]]
 puts "INFO: Current top: $cur_top"
+
 if {$cur_top ne $BD_TOP} {
     puts "WARNING: Top is '$cur_top', expected '$BD_TOP'."
     puts "         Attempting to set top to $BD_TOP..."
@@ -94,140 +80,228 @@ if {$cur_top ne $BD_TOP} {
     set cur_top [get_property TOP [get_fileset sources_1]]
     puts "INFO: Top is now: $cur_top"
 }
-
-# =============================================================================
-# Reset prior runs (idempotent — safe to call on a fresh or used project)
-# =============================================================================
 puts ""
+
+# -------------------------------------------------------------------------
+# Reset old runs
+# -------------------------------------------------------------------------
 puts "--- Resetting prior run state ---"
+
+if {[llength [get_runs synth_1]] == 0} {
+    puts "ERROR: synth_1 run not found in project."
+    exit 1
+}
+
+if {[llength [get_runs impl_1]] == 0} {
+    puts "ERROR: impl_1 run not found in project."
+    exit 1
+}
+
 set synth_status [get_property STATUS [get_runs synth_1]]
 set impl_status  [get_property STATUS [get_runs impl_1]]
 puts "INFO: synth_1 status before reset: $synth_status"
 puts "INFO: impl_1  status before reset: $impl_status"
+
 catch {reset_run impl_1}
 catch {reset_run synth_1}
-puts "INFO: Runs reset."
 
-# =============================================================================
-# SYNTHESIS
-# =============================================================================
+puts "INFO: Runs reset."
 puts ""
-puts "--- Launching synthesis (synth_1, 4 jobs) ---"
-launch_runs synth_1 -jobs 4
+
+# -------------------------------------------------------------------------
+# Synthesis
+# -------------------------------------------------------------------------
+puts "--- Launching synthesis ---"
+puts "    launch_runs synth_1 -jobs 1"
+puts "    Reason: avoid Windows Vivado OOM during ZCU102 OOC IP synthesis"
+launch_runs synth_1 -jobs 1
+
 wait_on_run synth_1
 
 set synth_progress [get_property PROGRESS [get_runs synth_1]]
 set synth_status   [get_property STATUS   [get_runs synth_1]]
+
 puts "INFO: synth_1 progress: $synth_progress"
 puts "INFO: synth_1 status:   $synth_status"
 
 if {$synth_progress ne "100%"} {
-    puts "ERROR: Synthesis did not complete (progress = $synth_progress)."
+    puts "ERROR: Synthesis did not complete."
+    puts "       Progress = $synth_progress"
+    puts "       Status   = $synth_status"
+    puts ""
+    puts "Check logs:"
+    puts "  vivado/step27_zcu102_bd/step27_zcu102_bd.runs/synth_1/runme.log"
+    puts "  vivado/step27_zcu102_bd/step27_zcu102_bd.runs/*_synth_1/runme.log"
     exit 1
 }
+
 if {[string match "*fail*" [string tolower $synth_status]]} {
-    puts "ERROR: Synthesis failed: $synth_status"
+    puts "ERROR: Synthesis failed."
+    puts "       Status = $synth_status"
     exit 1
 }
+
 puts "INFO: Synthesis COMPLETE."
-
-# Open synthesized design and generate reports
-puts "INFO: Opening synthesized design for reporting..."
-open_run synth_1 -name synth_1
-
-report_utilization \
-    -file ${RPTS}/step28c_synth_utilization.rpt \
-    -quiet
-puts "INFO: Synthesis utilization report: ${RPTS}/step28c_synth_utilization.rpt"
-
-report_timing_summary \
-    -delay_type min_max \
-    -report_unconstrained \
-    -check_timing_verbose \
-    -max_paths 10 \
-    -input_pins \
-    -file ${RPTS}/step28c_synth_timing_summary.rpt \
-    -quiet
-puts "INFO: Synthesis timing report:      ${RPTS}/step28c_synth_timing_summary.rpt"
-
-# =============================================================================
-# IMPLEMENTATION — to_step write_bitstream
-# =============================================================================
-# The critical difference from Step 28:
-#   -to_step write_bitstream makes the run infrastructure invoke write_bitstream
-#   as part of impl_1.  The run then records the path to the generated BIT file.
-#   write_hw_platform -include_bit queries this path; if it was not set via the
-#   run infrastructure, the command fails with "Unable to get BIT file".
-# =============================================================================
 puts ""
+
+# -------------------------------------------------------------------------
+# Synthesis reports
+# -------------------------------------------------------------------------
+puts "INFO: Opening synthesized design for reporting..."
+if {[catch {open_run synth_1 -name synth_1} open_synth_err]} {
+    puts "WARNING: Could not open synth_1 for reporting: $open_synth_err"
+} else {
+    if {[catch {
+        report_utilization \
+            -file ${RPTS}/step28c_synth_utilization.rpt \
+            -quiet
+    } rpt_err]} {
+        puts "WARNING: Could not write synth utilization report: $rpt_err"
+    } else {
+        puts "INFO: Synthesis utilization report: ${RPTS}/step28c_synth_utilization.rpt"
+    }
+
+    if {[catch {
+        report_timing_summary \
+            -delay_type min_max \
+            -report_unconstrained \
+            -check_timing_verbose \
+            -max_paths 10 \
+            -input_pins \
+            -file ${RPTS}/step28c_synth_timing_summary.rpt \
+            -quiet
+    } rpt_err]} {
+        puts "WARNING: Could not write synth timing report: $rpt_err"
+    } else {
+        puts "INFO: Synthesis timing report:      ${RPTS}/step28c_synth_timing_summary.rpt"
+    }
+
+    catch {close_design}
+}
+puts ""
+
+# -------------------------------------------------------------------------
+# Implementation to write_bitstream
+# -------------------------------------------------------------------------
 puts "--- Launching implementation to write_bitstream stage ---"
-puts "    (launch_runs impl_1 -to_step write_bitstream -jobs 4)"
-launch_runs impl_1 -to_step write_bitstream -jobs 4
+puts "    launch_runs impl_1 -to_step write_bitstream -jobs 1"
+puts "    Reason: register implementation-run BIT file for write_hw_platform -include_bit"
+launch_runs impl_1 -to_step write_bitstream -jobs 1
+
 wait_on_run impl_1
 
 set impl_progress [get_property PROGRESS [get_runs impl_1]]
 set impl_status   [get_property STATUS   [get_runs impl_1]]
+
 puts "INFO: impl_1 progress: $impl_progress"
 puts "INFO: impl_1 status:   $impl_status"
 
 if {$impl_progress ne "100%"} {
-    puts "ERROR: Implementation did not complete (progress = $impl_progress)."
+    puts "ERROR: Implementation did not complete."
+    puts "       Progress = $impl_progress"
+    puts "       Status   = $impl_status"
+    puts ""
+    puts "Check log:"
+    puts "  vivado/step27_zcu102_bd/step27_zcu102_bd.runs/impl_1/runme.log"
     exit 1
 }
-if {[string match "*fail*" [string tolower $impl_status]]} {
-    puts "ERROR: Implementation failed: $impl_status"
-    exit 1
-}
-puts "INFO: Implementation COMPLETE."
 
-# Verify the bitstream file was actually written inside the run directory.
-# This is an additional guard — write_hw_platform -include_bit requires this file.
+if {[string match "*fail*" [string tolower $impl_status]]} {
+    puts "ERROR: Implementation failed."
+    puts "       Status = $impl_status"
+    exit 1
+}
+
+if {![string match "*write_bitstream Complete*" $impl_status]} {
+    puts "ERROR: impl_1 did not finish at write_bitstream step."
+    puts "       Status = $impl_status"
+    puts "       Expected status containing: write_bitstream Complete!"
+    exit 1
+}
+
+puts "INFO: Implementation COMPLETE."
+puts ""
+
+# -------------------------------------------------------------------------
+# Verify run-directory bitstream
+# -------------------------------------------------------------------------
 puts "INFO: Verifying bitstream in run directory: $IMPL_RUN_DIR"
+
 set bit_files [glob -nocomplain "${IMPL_RUN_DIR}/*.bit"]
+
 if {[llength $bit_files] == 0} {
     puts "ERROR: No .bit file found in run directory: $IMPL_RUN_DIR"
     puts "       write_bitstream may not have run as part of impl_1."
     puts "       Check the implementation log for errors."
     exit 1
 }
-puts "INFO: Bitstream found in run directory: [lindex $bit_files 0]"
 
-# =============================================================================
-# Open implemented design and generate reports
-# =============================================================================
-puts "INFO: Opening implemented design for reporting..."
-open_run impl_1 -name impl_1
-
-report_utilization \
-    -file ${RPTS}/step28c_impl_utilization.rpt \
-    -quiet
-puts "INFO: Impl utilization report: ${RPTS}/step28c_impl_utilization.rpt"
-
-report_timing_summary \
-    -delay_type min_max \
-    -report_unconstrained \
-    -check_timing_verbose \
-    -max_paths 10 \
-    -input_pins \
-    -file ${RPTS}/step28c_timing_summary.rpt \
-    -quiet
-puts "INFO: Impl timing report:      ${RPTS}/step28c_timing_summary.rpt"
-
-report_drc \
-    -file ${RPTS}/step28c_drc.rpt \
-    -quiet
-puts "INFO: DRC report:              ${RPTS}/step28c_drc.rpt"
-
-report_power \
-    -file ${RPTS}/step28c_power.rpt \
-    -quiet
-puts "INFO: Power report:            ${RPTS}/step28c_power.rpt"
-
-# =============================================================================
-# TIMING CHECK
-# =============================================================================
+set RUN_BIT_FILE [lindex $bit_files 0]
+puts "INFO: Bitstream found in run directory: $RUN_BIT_FILE"
 puts ""
+
+# -------------------------------------------------------------------------
+# Implementation reports
+# -------------------------------------------------------------------------
+puts "INFO: Opening implemented design for reporting..."
+
+if {[catch {open_run impl_1 -name impl_1} open_impl_err]} {
+    puts "ERROR: Could not open impl_1: $open_impl_err"
+    exit 1
+}
+
+if {[catch {
+    report_utilization \
+        -file ${RPTS}/step28c_impl_utilization.rpt \
+        -quiet
+} rpt_err]} {
+    puts "WARNING: Could not write impl utilization report: $rpt_err"
+} else {
+    puts "INFO: Impl utilization report: ${RPTS}/step28c_impl_utilization.rpt"
+}
+
+if {[catch {
+    report_timing_summary \
+        -delay_type min_max \
+        -report_unconstrained \
+        -check_timing_verbose \
+        -max_paths 10 \
+        -input_pins \
+        -file ${RPTS}/step28c_timing_summary.rpt \
+        -quiet
+} rpt_err]} {
+    puts "WARNING: Could not write impl timing report: $rpt_err"
+} else {
+    puts "INFO: Impl timing report:      ${RPTS}/step28c_timing_summary.rpt"
+}
+
+if {[catch {
+    report_drc \
+        -file ${RPTS}/step28c_drc.rpt \
+        -quiet
+} rpt_err]} {
+    puts "WARNING: Could not write DRC report: $rpt_err"
+} else {
+    puts "INFO: DRC report:              ${RPTS}/step28c_drc.rpt"
+}
+
+if {[catch {
+    report_power \
+        -file ${RPTS}/step28c_power.rpt \
+        -quiet
+} rpt_err]} {
+    puts "WARNING: Could not write power report: $rpt_err"
+} else {
+    puts "INFO: Power report:            ${RPTS}/step28c_power.rpt"
+}
+
+puts ""
+
+# -------------------------------------------------------------------------
+# Timing gate
+# -------------------------------------------------------------------------
 puts "--- Checking timing ---"
+
 set setup_paths [get_timing_paths -max_paths 1 -nworst 1 -setup -quiet]
 set hold_paths  [get_timing_paths -max_paths 1 -nworst 1 -hold  -quiet]
 
@@ -238,8 +312,9 @@ set whs_val   "N/A"
 if {[llength $setup_paths] > 0} {
     set wns_val [get_property SLACK [lindex $setup_paths 0]]
     puts "INFO: WNS (setup) = $wns_val ns"
+
     if {$wns_val < 0} {
-        puts "ERROR: Setup timing violated (WNS = $wns_val ns)"
+        puts "ERROR: Setup timing violated. WNS = $wns_val ns"
         set timing_ok 0
     }
 } else {
@@ -249,8 +324,9 @@ if {[llength $setup_paths] > 0} {
 if {[llength $hold_paths] > 0} {
     set whs_val [get_property SLACK [lindex $hold_paths 0]]
     puts "INFO: WHS (hold)  = $whs_val ns"
+
     if {$whs_val < 0} {
-        puts "ERROR: Hold timing violated (WHS = $whs_val ns)"
+        puts "ERROR: Hold timing violated. WHS = $whs_val ns"
         set timing_ok 0
     }
 } else {
@@ -267,14 +343,11 @@ if {$timing_ok} {
     exit 1
 }
 
-# =============================================================================
-# XSA EXPORT — with embedded bitstream, no fallback
-# =============================================================================
-# write_hw_platform -include_bit succeeds here because impl_1 was launched with
-# -to_step write_bitstream, so the run infrastructure has the BIT file path set.
-# We intentionally do NOT fall back to a no-bit XSA in this step.
-# =============================================================================
 puts ""
+
+# -------------------------------------------------------------------------
+# Export embedded-bitstream XSA
+# -------------------------------------------------------------------------
 puts "--- Exporting XSA with embedded bitstream ---"
 puts "    write_hw_platform -fixed -include_bit -force -file $XSA_WITH_BIT"
 
@@ -285,36 +358,36 @@ if {[catch {
         -force       \
         -file $XSA_WITH_BIT
 } xsa_err]} {
-    puts "ERROR: Embedded-bitstream XSA export failed: $xsa_err"
+    puts "ERROR: Embedded-bitstream XSA export failed:"
+    puts "       $xsa_err"
     puts ""
-    puts "Possible causes:"
-    puts "  - The run bitstream path was not registered (should not happen with"
-    puts "    -to_step write_bitstream, but check impl_1 status)."
-    puts "  - Vivado version incompatibility with -include_bit flag."
-    puts ""
-    puts "Do NOT fall back to no-bit XSA — this step is specifically for"
-    puts "embedded-bitstream export.  Investigate the error above."
+    puts "Do NOT fall back to no-bit XSA in Step 28C."
+    puts "This step is specifically for embedded-bitstream export."
     exit 1
 }
+
 puts "INFO: XSA written: $XSA_WITH_BIT"
 
-# Verify file was created
 if {![file exists $XSA_WITH_BIT]} {
     puts "ERROR: XSA file not found after export: $XSA_WITH_BIT"
     puts "       write_hw_platform did not raise an error but the file is missing."
     exit 1
 }
-puts "INFO: XSA file verified: $XSA_WITH_BIT"
 
-# =============================================================================
-# Done
-# =============================================================================
+puts "INFO: XSA file verified: $XSA_WITH_BIT"
 puts ""
+
+# -------------------------------------------------------------------------
+# Final summary
+# -------------------------------------------------------------------------
 puts "========================================================"
 puts "Step 28C COMPLETE."
 puts ""
 puts "XSA with embedded bitstream:"
 puts "  $XSA_WITH_BIT"
+puts ""
+puts "Implementation-run bitstream:"
+puts "  $RUN_BIT_FILE"
 puts ""
 puts "Timing:"
 puts "  WNS (setup) = $wns_val ns"
@@ -328,14 +401,10 @@ puts "  ${RPTS}/step28c_timing_summary.rpt"
 puts "  ${RPTS}/step28c_drc.rpt"
 puts "  ${RPTS}/step28c_power.rpt"
 puts ""
-puts "Step 28 outputs preserved (not modified):"
-puts "  outputs/step28/sync_phase1_bd_wrapper.bit"
-puts "  outputs/step28/sync_phase1_bd_wrapper.xsa"
-puts ""
 puts "Recommended Vitis platform input:"
 puts "  $XSA_WITH_BIT"
 puts ""
-puts "No ILA, no DMA, no RTL changes."
+puts "No ILA, no DMA, no RTL changes in this script."
 puts "========================================================"
 
 exit 0
