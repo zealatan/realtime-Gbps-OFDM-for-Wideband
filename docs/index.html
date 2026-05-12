@@ -1,0 +1,763 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>RTL_SYNC_CFO — Block Diagram</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      background: #0d1117;
+      color: #c9d1d9;
+      font-family: 'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, monospace;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 20px;
+    }
+
+    header {
+      width: 100%;
+      max-width: 1160px;
+      margin-bottom: 18px;
+    }
+
+    header h1 {
+      font-size: 1.4rem;
+      font-weight: 600;
+      color: #e6edf3;
+      letter-spacing: 0.02em;
+    }
+
+    header p {
+      font-size: 0.78rem;
+      color: #8b949e;
+      margin-top: 4px;
+    }
+
+    .badge-row {
+      display: flex;
+      gap: 8px;
+      margin-top: 10px;
+      flex-wrap: wrap;
+    }
+
+    .badge {
+      font-size: 0.7rem;
+      padding: 2px 8px;
+      border-radius: 12px;
+      border: 1px solid;
+      letter-spacing: 0.04em;
+    }
+
+    .badge-blue  { border-color: #1f6feb; color: #58a6ff; background: #0c2d6b33; }
+    .badge-green { border-color: #3fb950; color: #56d364; background: #0c33203a; }
+    .badge-gold  { border-color: #d29922; color: #e3b341; background: #2d200033; }
+    .badge-gray  { border-color: #484f58; color: #8b949e; background: #21262d33; }
+
+    .diagram-wrapper {
+      width: 100%;
+      max-width: 1160px;
+      overflow-x: auto;
+    }
+
+    svg {
+      display: block;
+      border: 1px solid #30363d;
+      border-radius: 8px;
+      background: #161b22;
+    }
+
+    /* tooltip */
+    .tt {
+      position: fixed;
+      pointer-events: none;
+      background: #21262d;
+      border: 1px solid #30363d;
+      border-radius: 6px;
+      padding: 8px 12px;
+      font-size: 0.72rem;
+      color: #c9d1d9;
+      max-width: 280px;
+      z-index: 999;
+      display: none;
+      line-height: 1.5;
+    }
+
+    .tt.visible { display: block; }
+
+    footer {
+      margin-top: 24px;
+      font-size: 0.7rem;
+      color: #484f58;
+      text-align: center;
+    }
+
+    footer a { color: #58a6ff; text-decoration: none; }
+    footer a:hover { text-decoration: underline; }
+
+    .sig-table {
+      width: 100%;
+      max-width: 1160px;
+      margin-top: 20px;
+      border-collapse: collapse;
+      font-size: 0.72rem;
+    }
+
+    .sig-table th {
+      background: #21262d;
+      color: #8b949e;
+      text-align: left;
+      padding: 6px 12px;
+      border-bottom: 1px solid #30363d;
+      font-weight: 600;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+    }
+
+    .sig-table td {
+      padding: 5px 12px;
+      border-bottom: 1px solid #21262d;
+      color: #c9d1d9;
+    }
+
+    .sig-table tr:hover td { background: #21262d; }
+
+    .sig-name { color: #58a6ff; font-weight: 600; }
+    .sig-dir  { color: #e3b341; }
+    .sig-w    { color: #56d364; }
+
+    .fsm-row {
+      width: 100%;
+      max-width: 1160px;
+      margin-top: 20px;
+      display: flex;
+      gap: 0;
+      align-items: center;
+      flex-wrap: wrap;
+    }
+
+    .fsm-state {
+      background: #21262d;
+      border: 1px solid #30363d;
+      border-radius: 4px;
+      padding: 6px 14px;
+      font-size: 0.7rem;
+      color: #c9d1d9;
+      letter-spacing: 0.04em;
+    }
+
+    .fsm-arrow {
+      color: #484f58;
+      font-size: 1rem;
+      padding: 0 4px;
+    }
+
+    .section-label {
+      width: 100%;
+      max-width: 1160px;
+      margin-top: 22px;
+      margin-bottom: 8px;
+      font-size: 0.72rem;
+      color: #8b949e;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      border-bottom: 1px solid #21262d;
+      padding-bottom: 4px;
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <h1>RTL_SYNC_CFO — Block Diagram</h1>
+  <p>realtime-Gbps-OFDM-for-Wideband · Fractional CFO Frame Corrector Pipeline</p>
+  <div class="badge-row">
+    <span class="badge badge-blue">AXI-Stream I/O</span>
+    <span class="badge badge-green">NSC=256 · CP_LEN=32</span>
+    <span class="badge badge-gold">NCO 32-bit · CORDIC 16-bit</span>
+    <span class="badge badge-gray">Xilinx ZCU102 · Vivado 2023</span>
+  </div>
+</header>
+
+<div class="diagram-wrapper">
+<svg id="bd" viewBox="0 0 1100 950" width="1100" height="950" xmlns="http://www.w3.org/2000/svg">
+<defs>
+  <!-- arrowhead markers -->
+  <marker id="arr" markerWidth="7" markerHeight="5" refX="6" refY="2.5" orient="auto">
+    <polygon points="0 0, 7 2.5, 0 5" fill="#8b949e"/>
+  </marker>
+  <marker id="arr-blue" markerWidth="7" markerHeight="5" refX="6" refY="2.5" orient="auto">
+    <polygon points="0 0, 7 2.5, 0 5" fill="#58a6ff"/>
+  </marker>
+  <marker id="arr-green" markerWidth="7" markerHeight="5" refX="6" refY="2.5" orient="auto">
+    <polygon points="0 0, 7 2.5, 0 5" fill="#56d364"/>
+  </marker>
+  <marker id="arr-gold" markerWidth="7" markerHeight="5" refX="6" refY="2.5" orient="auto">
+    <polygon points="0 0, 7 2.5, 0 5" fill="#e3b341"/>
+  </marker>
+  <marker id="arr-bus" markerWidth="7" markerHeight="5" refX="6" refY="2.5" orient="auto">
+    <polygon points="0 0, 7 2.5, 0 5" fill="#388bfd"/>
+  </marker>
+</defs>
+
+<!-- ═══════════════════════════════════════════════════════════════════
+     OUTER CONTAINER — frac_cfo_frame_corrector_top
+═══════════════════════════════════════════════════════════════════ -->
+<rect x="4" y="4" width="1092" height="942" rx="8"
+      fill="#161b22" stroke="#30363d" stroke-width="1.5"/>
+
+<!-- Top-level module label -->
+<text x="548" y="26" text-anchor="middle" font-size="12" font-weight="600"
+      fill="#8b949e" letter-spacing="0.08em">frac_cfo_frame_corrector_top</text>
+
+<!-- Clock / reset badge -->
+<rect x="12" y="10" width="140" height="22" rx="3" fill="#21262d" stroke="#484f58" stroke-width="1"/>
+<text x="82" y="24" text-anchor="middle" font-size="9" fill="#8b949e">aclk · aresetn (sync, active-low)</text>
+
+<!-- ─── FSM state annotation (top-right corner) ─── -->
+<text x="1080" y="26" text-anchor="end" font-size="9" fill="#484f58">FSM: IDLE→FILL→FRAME_DET→TIMING_CFO→LOAD_NCO→CORRECT→DONE</text>
+
+<!-- ═══════════════════════════════════════════════════════════════════
+     AXI-STREAM INPUT  (top)
+═══════════════════════════════════════════════════════════════════ -->
+<!-- s_axis arrow from top -->
+<line x1="195" y1="34" x2="195" y2="64" stroke="#58a6ff" stroke-width="2"
+      marker-end="url(#arr-blue)"/>
+<text x="205" y="47" font-size="9" fill="#58a6ff">s_axis_tdata [31:0]</text>
+<text x="205" y="58" font-size="9" fill="#8b949e">tvalid / tready / tlast</text>
+
+<!-- start signal -->
+<line x1="350" y1="34" x2="350" y2="64" stroke="#8b949e" stroke-width="1.5"
+      stroke-dasharray="4,3" marker-end="url(#arr)"/>
+<text x="355" y="53" font-size="9" fill="#8b949e">start</text>
+
+<!-- threshold / window / hit_count inputs (top-right area) -->
+<line x1="800" y1="34" x2="800" y2="64" stroke="#8b949e" stroke-width="1.5"
+      stroke-dasharray="4,3" marker-end="url(#arr)"/>
+<text x="725" y="47" font-size="9" fill="#8b949e">threshold_in [39:0]</text>
+<text x="730" y="58" font-size="9" fill="#8b949e">window_len_in / hit_count_in</text>
+
+<!-- ═══════════════════════════════════════════════════════════════════
+     BLOCK 1 — iq_frame_buffer
+═══════════════════════════════════════════════════════════════════ -->
+<g id="g-buf" class="module" data-tip="iq_frame_buffer&#10;&#10;AXI-Stream sink with random-access read port.&#10;4096 × 32-bit BRAM (BUF_AW=12).&#10;&#10;Fills on capture_start, exposes&#10;1-cycle-latency rd_en/rd_addr/rd_data bus.&#10;Shared by frame_detector, timing_frac_cfo_top,&#10;and frac_cfo_corrector_top (FSM-muxed).">
+  <rect x="30" y="65" width="380" height="95" rx="5"
+        fill="#0c2d6b33" stroke="#1f6feb" stroke-width="2"/>
+  <text x="220" y="88" text-anchor="middle" font-size="11" font-weight="600"
+        fill="#58a6ff">iq_frame_buffer</text>
+  <text x="220" y="103" text-anchor="middle" font-size="9"
+        fill="#8b949e">AXI-Stream capture  ·  4096 × 32-bit BRAM  (BUF_AW=12)</text>
+  <text x="220" y="116" text-anchor="middle" font-size="9"
+        fill="#8b949e">fill on capture_start  ·  1-cycle rd_en / rd_addr / rd_data bus</text>
+  <text x="220" y="130" text-anchor="middle" font-size="9"
+        fill="#8b949e">capture_done  →  FRAME_DET state</text>
+</g>
+
+<!-- buf_rd_data bus line (vertical, right side) x=810 from y=112 to y=750 -->
+<line x1="810" y1="112" x2="810" y2="750" stroke="#388bfd" stroke-width="2"
+      stroke-dasharray="6,4"/>
+<text x="820" y="430" font-size="9" fill="#388bfd"
+      transform="rotate(90 820 430)">buf_rd_data [31:0]  ·  buf_rd_addr [11:0]  ·  buf_rd_en  (FSM-muxed)</text>
+
+<!-- buf → bus (right of block 1) -->
+<line x1="410" y1="112" x2="808" y2="112" stroke="#388bfd" stroke-width="1.5"
+      marker-end="url(#arr-bus)" stroke-dasharray="5,3"/>
+<text x="540" y="107" font-size="8" fill="#388bfd">buf_rd_data bus</text>
+
+<!-- ═══════════════════════════════════════════════════════════════════
+     ARROW: buf → frame_detector
+═══════════════════════════════════════════════════════════════════ -->
+<line x1="195" y1="160" x2="195" y2="192" stroke="#8b949e" stroke-width="1.5"
+      marker-end="url(#arr)"/>
+<text x="200" y="178" font-size="8" fill="#484f58">capture_done / FSM</text>
+
+<!-- ═══════════════════════════════════════════════════════════════════
+     BLOCK 2 — frame_detector
+═══════════════════════════════════════════════════════════════════ -->
+<g id="g-fd" class="module" data-tip="frame_detector&#10;&#10;Sliding-window power detector.&#10;Reads buf_rd_data, computes per-sample |I|²+|Q|².&#10;Accumulates over window_len samples.&#10;Asserts frame_found when energy > threshold_in&#10;for hit_count consecutive windows.&#10;&#10;Outputs:&#10;  frame_index [11:0]  — buffer address of frame start&#10;  frame_found         — 1 if detected, 0 if search exhausted">
+  <rect x="30" y="192" width="380" height="95" rx="5"
+        fill="#0c2d6b33" stroke="#388bfd" stroke-width="2"/>
+  <text x="220" y="215" text-anchor="middle" font-size="11" font-weight="600"
+        fill="#388bfd">frame_detector</text>
+  <text x="220" y="230" text-anchor="middle" font-size="9"
+        fill="#8b949e">sliding-window energy  ·  |I|²+|Q|² accumulation</text>
+  <text x="220" y="243" text-anchor="middle" font-size="9"
+        fill="#8b949e">threshold compare  ·  hit_count hysteresis</text>
+  <text x="220" y="256" text-anchor="middle" font-size="9"
+        fill="#8b949e">→  frame_index  ·  frame_found  ·  done</text>
+</g>
+
+<!-- bus → frame_detector read port -->
+<line x1="810" y1="239" x2="412" y2="239" stroke="#388bfd" stroke-width="1.5"
+      stroke-dasharray="4,3" marker-end="url(#arr-bus)"/>
+
+<!-- frame_detector outputs (right) -->
+<line x1="410" y1="230" x2="510" y2="230" stroke="#56d364" stroke-width="1.5"
+      marker-end="url(#arr-green)"/>
+<text x="515" y="226" font-size="9" fill="#56d364">frame_index [11:0]</text>
+<text x="515" y="238" font-size="9" fill="#56d364">frame_found</text>
+
+<!-- ─── Arrow from frame_detector → timing_frac_cfo_top ─── -->
+<line x1="195" y1="287" x2="195" y2="322" stroke="#8b949e" stroke-width="1.5"
+      marker-end="url(#arr)"/>
+<text x="200" y="307" font-size="8" fill="#484f58">fd_done / FSM</text>
+
+<!-- ═══════════════════════════════════════════════════════════════════
+     BLOCK 3 CONTAINER — timing_frac_cfo_top
+═══════════════════════════════════════════════════════════════════ -->
+<g id="g-tfc" class="module" data-tip="timing_frac_cfo_top&#10;&#10;Two-stage pipeline:&#10;  1. timing_sync_top  — CP autocorrelation + timing metric + peak&#10;  2. frac_cfo_estimator — CORDIC atan2 of peak autocorr value&#10;&#10;Reads buffer via shared bus (starting from base_addr = frame_index).&#10;&#10;Outputs (stable after done):&#10;  peak_lag [8:0]     — CP-peak sample offset&#10;  peak_metric [31:0] — timing metric at peak&#10;  frac_phase [15:0]  — Q1.15 fractional phase (rad × 2¹⁵/π)">
+  <rect x="30" y="322" width="750" height="330" rx="5"
+        fill="#0c332033" stroke="#3fb950" stroke-width="2"/>
+  <text x="40" y="340" font-size="9" font-weight="600"
+        fill="#3fb950" letter-spacing="0.06em">timing_frac_cfo_top</text>
+</g>
+
+<!-- bus → timing_frac_cfo_top read port -->
+<line x1="810" y1="487" x2="782" y2="487" stroke="#388bfd" stroke-width="1.5"
+      stroke-dasharray="4,3" marker-end="url(#arr-bus)"/>
+
+<!-- ─────────────────────────────────────────
+     BLOCK 3a — timing_sync_top (nested)
+───────────────────────────────────────── -->
+<g id="g-tst" class="module" data-tip="timing_sync_top&#10;&#10;Coordinates three sub-blocks:&#10;  1. cp_autocorr_core  — accumulate I/Q autocorrelation over CP_LEN lag&#10;  2. timing_metric_core — compute OFDM timing metric M(n)&#10;  3. peak_detector      — track max-metric lag across NSC positions&#10;&#10;Outputs:&#10;  peak_lag, peak_metric, peak_corr_i/q, peak_energy">
+  <rect x="48" y="348" width="560" height="280" rx="5"
+        fill="#12271833" stroke="#2ea043" stroke-width="1.5"/>
+  <text x="58" y="365" font-size="9" font-weight="600"
+        fill="#2ea043">timing_sync_top</text>
+</g>
+
+<!-- ── cp_autocorr_core ── -->
+<g id="g-ac" class="module" data-tip="cp_autocorr_core&#10;&#10;Computes CP lag autocorrelation:&#10;  R(n) = Σ x[n+k]·x*[n+k−NSC]  for k=0..CP_LEN−1&#10;&#10;Accumulates I and Q components over CP_LEN samples.&#10;Outputs: autocorr_I [ACC_WIDTH-1:0], autocorr_Q [ACC_WIDTH-1:0]&#10;ACC_WIDTH = 40">
+  <rect x="66" y="374" width="390" height="68" rx="4"
+        fill="#1c323633" stroke="#39d353" stroke-width="1.2"/>
+  <text x="261" y="397" text-anchor="middle" font-size="10" font-weight="600"
+        fill="#39d353">cp_autocorr_core</text>
+  <text x="261" y="412" text-anchor="middle" font-size="8.5"
+        fill="#8b949e">CP-lag I/Q autocorrelation  ·  ACC_WIDTH=40  ·  CP_LEN=32</text>
+  <text x="261" y="426" text-anchor="middle" font-size="8.5"
+        fill="#8b949e">R(n) = Σ x[n+k]·x*[n+k−NSC]  →  peak_corr_i / peak_corr_q</text>
+</g>
+
+<!-- ── timing_metric_core ── -->
+<g id="g-tmc" class="module" data-tip="timing_metric_core&#10;&#10;Computes Schmidl-Cox timing metric:&#10;  M(n) = |P(n)|² / E(n)²&#10;  P(n) = autocorr, E(n) = CP-window energy&#10;&#10;METRIC_WIDTH=32 fixed-point output.">
+  <rect x="66" y="450" width="390" height="68" rx="4"
+        fill="#1c323633" stroke="#39d353" stroke-width="1.2"/>
+  <text x="261" y="473" text-anchor="middle" font-size="10" font-weight="600"
+        fill="#39d353">timing_metric_core</text>
+  <text x="261" y="488" text-anchor="middle" font-size="8.5"
+        fill="#8b949e">OFDM timing metric  ·  METRIC_WIDTH=32</text>
+  <text x="261" y="502" text-anchor="middle" font-size="8.5"
+        fill="#8b949e">M(n) = |P(n)|² / E(n)²  →  peak_metric [31:0]</text>
+</g>
+
+<!-- ── peak_detector ── -->
+<g id="g-pd" class="module" data-tip="peak_detector&#10;&#10;Scans NSC timing-metric values,&#10;tracks the maximum and its lag index.&#10;&#10;Outputs:&#10;  peak_lag [INDEX_WIDTH-1:0]   — offset with highest M(n)&#10;  peak_metric [METRIC_WIDTH-1:0]&#10;INDEX_WIDTH=9, covers NSC=256 lags.">
+  <rect x="66" y="526" width="390" height="68" rx="4"
+        fill="#1c323633" stroke="#39d353" stroke-width="1.2"/>
+  <text x="261" y="549" text-anchor="middle" font-size="10" font-weight="600"
+        fill="#39d353">peak_detector</text>
+  <text x="261" y="564" text-anchor="middle" font-size="8.5"
+        fill="#8b949e">max-metric lag tracking  ·  INDEX_WIDTH=9  ·  NSC=256 lags</text>
+  <text x="261" y="578" text-anchor="middle" font-size="8.5"
+        fill="#8b949e">→  peak_lag [8:0]  ·  peak_metric [31:0]</text>
+</g>
+
+<!-- internal arrows inside timing_sync_top -->
+<line x1="261" y1="442" x2="261" y2="450" stroke="#484f58" stroke-width="1" marker-end="url(#arr)"/>
+<line x1="261" y1="518" x2="261" y2="526" stroke="#484f58" stroke-width="1" marker-end="url(#arr)"/>
+
+<!-- ── frac_cfo_estimator ── -->
+<g id="g-fce" class="module" data-tip="frac_cfo_estimator&#10;&#10;Computes fractional CFO phase via CORDIC atan2:&#10;  frac_phase = atan2(peak_corr_q, peak_corr_i) / π&#10;  result: Q1.15 signed fixed-point&#10;&#10;PHASE_WIDTH=16.&#10;Feeds NCO step_word:&#10;  step = {-frac_phase[15:0], 16'h0000}  (negated, 32-bit)">
+  <rect x="630" y="374" width="135" height="180" rx="4"
+        fill="#12271833" stroke="#56d364" stroke-width="1.5"/>
+  <text x="697" y="397" text-anchor="middle" font-size="9.5" font-weight="600"
+        fill="#56d364">frac_cfo</text>
+  <text x="697" y="411" text-anchor="middle" font-size="9.5" font-weight="600"
+        fill="#56d364">estimator</text>
+  <text x="697" y="430" text-anchor="middle" font-size="8"
+        fill="#8b949e">CORDIC</text>
+  <text x="697" y="443" text-anchor="middle" font-size="8"
+        fill="#8b949e">atan2(Q, I)</text>
+  <text x="697" y="460" text-anchor="middle" font-size="8"
+        fill="#8b949e">→ phase</text>
+  <text x="697" y="473" text-anchor="middle" font-size="8"
+        fill="#56d364">Q1.15</text>
+  <text x="697" y="494" text-anchor="middle" font-size="7.5"
+        fill="#8b949e">PHASE_WIDTH</text>
+  <text x="697" y="506" text-anchor="middle" font-size="7.5"
+        fill="#8b949e">= 16</text>
+  <text x="697" y="527" text-anchor="middle" font-size="7.5"
+        fill="#8b949e">LATENCY</text>
+  <text x="697" y="539" text-anchor="middle" font-size="7.5"
+        fill="#8b949e">= 15 clks</text>
+</g>
+
+<!-- peak_corr_i/q from timing_sync to frac_cfo_estimator -->
+<line x1="456" y1="484" x2="628" y2="484" stroke="#484f58" stroke-width="1.2"
+      marker-end="url(#arr)" stroke-dasharray="4,3"/>
+<text x="468" y="479" font-size="7.5" fill="#484f58">peak_corr_i/q [31:0]</text>
+
+<!-- timing_frac_cfo outputs (right side) -->
+<line x1="765" y1="450" x2="840" y2="450" stroke="#56d364" stroke-width="1.5"
+      marker-end="url(#arr-green)"/>
+<text x="845" y="445" font-size="9" fill="#56d364">peak_lag [8:0]</text>
+<text x="845" y="457" font-size="9" fill="#56d364">peak_metric [31:0]</text>
+<line x1="765" y1="508" x2="840" y2="508" stroke="#e3b341" stroke-width="1.5"
+      marker-end="url(#arr-gold)"/>
+<text x="845" y="503" font-size="9" fill="#e3b341">frac_phase [15:0]</text>
+<text x="845" y="515" font-size="9" fill="#e3b341">Q1.15 · valid</text>
+
+<!-- ─── Arrow from timing_frac → frac_cfo_corrector ─── -->
+<line x1="195" y1="652" x2="195" y2="690" stroke="#8b949e" stroke-width="1.5"
+      marker-end="url(#arr)"/>
+<text x="200" y="672" font-size="8" fill="#e3b341">frac_phase → step_word</text>
+<text x="200" y="682" font-size="8" fill="#484f58">LOAD_NCO state</text>
+
+<!-- ═══════════════════════════════════════════════════════════════════
+     BLOCK 4 CONTAINER — frac_cfo_corrector_top
+═══════════════════════════════════════════════════════════════════ -->
+<g id="g-corr" class="module" data-tip="frac_cfo_corrector_top&#10;&#10;Applies fractional CFO correction to each IQ sample.&#10;&#10;Programs NCO with step_word = {-frac_phase, 16'h0}&#10;then rotates buffered samples by exp(-j·2π·frac_phase·n).&#10;&#10;Outputs NSC+CP_LEN=288 corrected samples as AXI-Stream,&#10;tlast on final sample.  1 sample per 2 clocks throughput.">
+  <rect x="30" y="690" width="750" height="228" rx="5"
+        fill="#2d200033" stroke="#d29922" stroke-width="2"/>
+  <text x="40" y="708" font-size="9" font-weight="600"
+        fill="#d29922" letter-spacing="0.06em">frac_cfo_corrector_top</text>
+</g>
+
+<!-- bus → corrector (buffer re-play) -->
+<line x1="810" y1="750" x2="782" y2="750" stroke="#388bfd" stroke-width="1.5"
+      stroke-dasharray="4,3" marker-end="url(#arr-bus)"/>
+<text x="730" y="745" font-size="8" fill="#388bfd">buf replay</text>
+
+<!-- ── nco_phase_gen ── -->
+<g id="g-nco" class="module" data-tip="nco_phase_gen&#10;&#10;32-bit phase accumulator driven by step_word.&#10;step_word = {-frac_phase[15:0], 16'h0000}&#10;&#10;Feeds truncated phase to CORDIC sin/cos LUT pipeline.&#10;LATENCY=15 clocks from enable to sincos_valid.&#10;&#10;Outputs: sin_out [15:0], cos_out [15:0], sincos_valid&#10;NCO_PHASE_WIDTH=32, CORDIC_PHASE_WIDTH=16">
+  <rect x="48" y="715" width="290" height="180" rx="4"
+        fill="#3d2e0033" stroke="#e3b341" stroke-width="1.5"/>
+  <text x="193" y="738" text-anchor="middle" font-size="10" font-weight="600"
+        fill="#e3b341">nco_phase_gen</text>
+  <text x="193" y="754" text-anchor="middle" font-size="8.5"
+        fill="#8b949e">32-bit phase accumulator</text>
+  <text x="193" y="768" text-anchor="middle" font-size="8.5"
+        fill="#8b949e">step_word = {−frac_phase, 16'h0}</text>
+  <text x="193" y="784" text-anchor="middle" font-size="8.5"
+        fill="#8b949e">CORDIC sin/cos pipeline</text>
+  <text x="193" y="798" text-anchor="middle" font-size="8.5"
+        fill="#8b949e">LATENCY = 15 clocks</text>
+  <text x="193" y="814" text-anchor="middle" font-size="8.5"
+        fill="#8b949e">NCO_PHASE_WIDTH = 32</text>
+  <text x="193" y="830" text-anchor="middle" font-size="8.5"
+        fill="#8b949e">CORDIC_PHASE_WIDTH = 16</text>
+  <text x="193" y="850" text-anchor="middle" font-size="8.5"
+        fill="#e3b341">→ sin [15:0] · cos [15:0] · sincos_valid</text>
+  <text x="193" y="864" text-anchor="middle" font-size="8.5"
+        fill="#e3b341">→ phase_acc [31:0] (debug)</text>
+</g>
+
+<!-- ── complex_rotator ── -->
+<g id="g-rot" class="module" data-tip="complex_rotator&#10;&#10;Multiplies each IQ sample by exp(−jθ) = cos − j·sin.&#10;  I_out = I·cos − Q·sin  (>> SHIFT=15)&#10;  Q_out = I·sin + Q·cos  (>> SHIFT=15)&#10;&#10;AXI-Stream interface with back-pressure.&#10;DATA_WIDTH=32, COMPONENT_WIDTH=16, SHIFT=15&#10;1-cycle output latency (registered).">
+  <rect x="358" y="715" width="400" height="180" rx="4"
+        fill="#3d2e0033" stroke="#ffc53d" stroke-width="1.5"/>
+  <text x="558" y="738" text-anchor="middle" font-size="10" font-weight="600"
+        fill="#ffc53d">complex_rotator</text>
+  <text x="558" y="754" text-anchor="middle" font-size="8.5"
+        fill="#8b949e">IQ sample × exp(−jθ)  ·  AXI-Stream I/O</text>
+  <text x="558" y="768" text-anchor="middle" font-size="8.5"
+        fill="#8b949e">I_out = I·cos − Q·sin  (>> 15)</text>
+  <text x="558" y="782" text-anchor="middle" font-size="8.5"
+        fill="#8b949e">Q_out = I·sin + Q·cos  (>> 15)</text>
+  <text x="558" y="796" text-anchor="middle" font-size="8.5"
+        fill="#8b949e">DATA_WIDTH=32  ·  COMPONENT_WIDTH=16  ·  SHIFT=15</text>
+  <text x="558" y="814" text-anchor="middle" font-size="8.5"
+        fill="#8b949e">back-pressure via tready  ·  1-cycle latency</text>
+  <text x="558" y="850" text-anchor="middle" font-size="8.5"
+        fill="#ffc53d">NSC+CP_LEN = 288 corrected IQ samples out</text>
+  <text x="558" y="864" text-anchor="middle" font-size="8.5"
+        fill="#ffc53d">tlast on final sample</text>
+</g>
+
+<!-- nco → rotator (sin/cos) -->
+<line x1="338" y1="805" x2="356" y2="805" stroke="#e3b341" stroke-width="1.5"
+      marker-end="url(#arr-gold)"/>
+<text x="340" y="800" font-size="7.5" fill="#e3b341">sin·cos</text>
+
+<!-- ═══════════════════════════════════════════════════════════════════
+     m_axis OUTPUT arrow
+═══════════════════════════════════════════════════════════════════ -->
+<line x1="558" y1="895" x2="558" y2="920" stroke="#e3b341" stroke-width="2"
+      marker-end="url(#arr-gold)"/>
+<text x="440" y="910" font-size="9.5" fill="#e3b341" font-weight="600">m_axis_tdata [31:0]  ·  m_axis_tvalid  ·  m_axis_tready  ·  m_axis_tlast</text>
+
+<!-- done / busy / frame_error outputs (bottom-left) -->
+<line x1="195" y1="918" x2="195" y2="895" stroke="#8b949e" stroke-width="1.5"
+      marker-end="url(#arr)"/>
+<text x="30" y="935" font-size="8" fill="#8b949e">done · busy · frame_error  (control outputs)</text>
+
+<!-- ═══════════════════════════════════════════════════════════════════
+     LEGEND (bottom-right)
+═══════════════════════════════════════════════════════════════════ -->
+<rect x="860" y="850" width="220" height="82" rx="4"
+      fill="#21262d" stroke="#30363d" stroke-width="1"/>
+<text x="870" y="866" font-size="8" font-weight="600" fill="#8b949e" letter-spacing="0.08em">LEGEND</text>
+<!-- buf -->
+<rect x="870" y="872" width="14" height="10" fill="#0c2d6b33" stroke="#1f6feb" stroke-width="1.2"/>
+<text x="890" y="881" font-size="8" fill="#8b949e">Buffer / Capture</text>
+<!-- timing -->
+<rect x="870" y="888" width="14" height="10" fill="#0c332033" stroke="#3fb950" stroke-width="1.2"/>
+<text x="890" y="897" font-size="8" fill="#8b949e">Timing / CFO Estimation</text>
+<!-- corrector -->
+<rect x="870" y="904" width="14" height="10" fill="#2d200033" stroke="#d29922" stroke-width="1.2"/>
+<text x="890" y="913" font-size="8" fill="#8b949e">CFO Correction</text>
+<!-- bus line -->
+<line x1="870" y1="924" x2="884" y2="924" stroke="#388bfd" stroke-width="2" stroke-dasharray="4,2"/>
+<text x="890" y="928" font-size="8" fill="#8b949e">Shared buffer read bus</text>
+
+</svg>
+</div>
+
+<!-- ═══ FSM STATES ═══ -->
+<div class="section-label">Top-Level FSM Sequence</div>
+<div class="fsm-row">
+  <span class="fsm-state">IDLE</span>
+  <span class="fsm-arrow">→</span>
+  <span class="fsm-state">FILL<br><small style="color:#8b949e;font-size:0.62rem">AXI-Stream → BRAM</small></span>
+  <span class="fsm-arrow">→</span>
+  <span class="fsm-state">FRAME_DET<br><small style="color:#8b949e;font-size:0.62rem">frame_detector</small></span>
+  <span class="fsm-arrow">→</span>
+  <span class="fsm-state">TIMING_CFO<br><small style="color:#8b949e;font-size:0.62rem">timing_frac_cfo_top</small></span>
+  <span class="fsm-arrow">→</span>
+  <span class="fsm-state">LOAD_NCO<br><small style="color:#8b949e;font-size:0.62rem">step_word load + phase_reset</small></span>
+  <span class="fsm-arrow">→</span>
+  <span class="fsm-state">CORRECT<br><small style="color:#8b949e;font-size:0.62rem">buf replay → rotator → m_axis</small></span>
+  <span class="fsm-arrow">→</span>
+  <span class="fsm-state">DONE<br><small style="color:#8b949e;font-size:0.62rem">done pulse</small></span>
+</div>
+
+<!-- ═══ SIGNAL TABLE ═══ -->
+<div class="section-label" style="margin-top:22px;">Top-Level Interface Signals</div>
+<table class="sig-table">
+  <thead>
+    <tr>
+      <th>Signal</th>
+      <th>Dir</th>
+      <th>Width</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td class="sig-name">s_axis_tdata</td>
+      <td class="sig-dir">IN</td>
+      <td class="sig-w">[31:0]</td>
+      <td>IQ input stream: {Q[31:16], I[15:0]}</td>
+    </tr>
+    <tr>
+      <td class="sig-name">s_axis_tvalid / tready / tlast</td>
+      <td class="sig-dir">IN/OUT/IN</td>
+      <td class="sig-w">1</td>
+      <td>AXI-Stream handshake for IQ input</td>
+    </tr>
+    <tr>
+      <td class="sig-name">start</td>
+      <td class="sig-dir">IN</td>
+      <td class="sig-w">1</td>
+      <td>Pulse-high to begin capture + processing sequence</td>
+    </tr>
+    <tr>
+      <td class="sig-name">threshold_in</td>
+      <td class="sig-dir">IN</td>
+      <td class="sig-w">[39:0]</td>
+      <td>Frame detection energy threshold (ENERGY_WIDTH=40)</td>
+    </tr>
+    <tr>
+      <td class="sig-name">window_len_in</td>
+      <td class="sig-dir">IN</td>
+      <td class="sig-w">[6:0]</td>
+      <td>Sliding window length override (default: WINDOW_LEN=25)</td>
+    </tr>
+    <tr>
+      <td class="sig-name">hit_count_in</td>
+      <td class="sig-dir">IN</td>
+      <td class="sig-w">[3:0]</td>
+      <td>Required consecutive threshold crossings (default: HIT_COUNT=10)</td>
+    </tr>
+    <tr>
+      <td class="sig-name">frame_index</td>
+      <td class="sig-dir">OUT</td>
+      <td class="sig-w">[11:0]</td>
+      <td>Buffer address of detected frame start (stable after done)</td>
+    </tr>
+    <tr>
+      <td class="sig-name">frame_found</td>
+      <td class="sig-dir">OUT</td>
+      <td class="sig-w">1</td>
+      <td>1 = frame detected; 0 = search exhausted without hit</td>
+    </tr>
+    <tr>
+      <td class="sig-name">peak_lag</td>
+      <td class="sig-dir">OUT</td>
+      <td class="sig-w">[8:0]</td>
+      <td>CP-peak sample offset within frame (INDEX_WIDTH=9)</td>
+    </tr>
+    <tr>
+      <td class="sig-name">peak_metric</td>
+      <td class="sig-dir">OUT</td>
+      <td class="sig-w">[31:0]</td>
+      <td>Schmidl-Cox timing metric at peak lag</td>
+    </tr>
+    <tr>
+      <td class="sig-name">frac_phase</td>
+      <td class="sig-dir">OUT</td>
+      <td class="sig-w">[15:0]</td>
+      <td>Fractional CFO phase, Q1.15 fixed-point (stable after done)</td>
+    </tr>
+    <tr>
+      <td class="sig-name">frac_phase_valid</td>
+      <td class="sig-dir">OUT</td>
+      <td class="sig-w">1</td>
+      <td>CORDIC result valid qualifier</td>
+    </tr>
+    <tr>
+      <td class="sig-name">m_axis_tdata</td>
+      <td class="sig-dir">OUT</td>
+      <td class="sig-w">[31:0]</td>
+      <td>Corrected IQ output: {Q[31:16], I[15:0]}, NSC+CP_LEN=288 samples</td>
+    </tr>
+    <tr>
+      <td class="sig-name">m_axis_tvalid / tready / tlast</td>
+      <td class="sig-dir">OUT/IN/OUT</td>
+      <td class="sig-w">1</td>
+      <td>AXI-Stream handshake for corrected output; tlast on sample 287</td>
+    </tr>
+    <tr>
+      <td class="sig-name">done</td>
+      <td class="sig-dir">OUT</td>
+      <td class="sig-w">1</td>
+      <td>1-clock pulse: all 288 corrected samples delivered</td>
+    </tr>
+    <tr>
+      <td class="sig-name">busy</td>
+      <td class="sig-dir">OUT</td>
+      <td class="sig-w">1</td>
+      <td>High while any FSM state ≠ IDLE</td>
+    </tr>
+    <tr>
+      <td class="sig-name">frame_error</td>
+      <td class="sig-dir">OUT</td>
+      <td class="sig-w">1</td>
+      <td>Set when frame_found=0 after FRAME_DET; cleared on next start</td>
+    </tr>
+  </tbody>
+</table>
+
+<!-- ═══ MODULE HIERARCHY ═══ -->
+<div class="section-label" style="margin-top:22px;">Module Hierarchy</div>
+<table class="sig-table">
+  <thead>
+    <tr><th>Module</th><th>Instance</th><th>Function</th></tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td class="sig-name">frac_cfo_frame_corrector_top</td>
+      <td style="color:#8b949e">— (top)</td>
+      <td>Master FSM: FILL→FRAME_DET→TIMING_CFO→LOAD_NCO→CORRECT→DONE</td>
+    </tr>
+    <tr>
+      <td class="sig-name" style="padding-left:24px;">iq_frame_buffer</td>
+      <td style="color:#8b949e">u_buf</td>
+      <td>AXI-Stream capture into 4K×32-bit BRAM; shared random-access read port</td>
+    </tr>
+    <tr>
+      <td class="sig-name" style="padding-left:24px;">frame_detector</td>
+      <td style="color:#8b949e">u_fd</td>
+      <td>Sliding-window energy detector → frame_index, frame_found</td>
+    </tr>
+    <tr>
+      <td class="sig-name" style="padding-left:24px;">timing_frac_cfo_top</td>
+      <td style="color:#8b949e">u_tfc</td>
+      <td>CP autocorr + timing sync + fractional CFO phase estimation</td>
+    </tr>
+    <tr>
+      <td class="sig-name" style="padding-left:48px;">timing_sync_top</td>
+      <td style="color:#8b949e">u_tst</td>
+      <td>Coordinates autocorr → metric → peak pipeline</td>
+    </tr>
+    <tr>
+      <td class="sig-name" style="padding-left:72px;">cp_autocorr_core</td>
+      <td style="color:#8b949e">u_ac</td>
+      <td>R(n) = Σ x[n+k]·x*[n+k−NSC], k=0..CP_LEN−1, ACC_WIDTH=40</td>
+    </tr>
+    <tr>
+      <td class="sig-name" style="padding-left:72px;">timing_metric_core</td>
+      <td style="color:#8b949e">u_tmc</td>
+      <td>M(n) = |P(n)|² / E(n)², METRIC_WIDTH=32</td>
+    </tr>
+    <tr>
+      <td class="sig-name" style="padding-left:72px;">peak_detector</td>
+      <td style="color:#8b949e">u_pd</td>
+      <td>Max-metric lag tracker over NSC=256 positions, INDEX_WIDTH=9</td>
+    </tr>
+    <tr>
+      <td class="sig-name" style="padding-left:48px;">frac_cfo_estimator</td>
+      <td style="color:#8b949e">u_fce</td>
+      <td>CORDIC atan2(peak_corr_q, peak_corr_i) → frac_phase Q1.15, PHASE_WIDTH=16</td>
+    </tr>
+    <tr>
+      <td class="sig-name" style="padding-left:24px;">frac_cfo_corrector_top</td>
+      <td style="color:#8b949e">u_corr</td>
+      <td>NCO + complex rotator: applies exp(−j·2π·frac_phase·n) to each sample</td>
+    </tr>
+    <tr>
+      <td class="sig-name" style="padding-left:48px;">nco_phase_gen</td>
+      <td style="color:#8b949e">u_nco</td>
+      <td>32-bit phase acc + CORDIC sin/cos, LATENCY=15 clks, step={−frac_phase,16'h0}</td>
+    </tr>
+    <tr>
+      <td class="sig-name" style="padding-left:48px;">complex_rotator</td>
+      <td style="color:#8b949e">u_rot</td>
+      <td>I×cos−Q×sin / I×sin+Q×cos, COMPONENT_WIDTH=16, SHIFT=15, AXI-Stream</td>
+    </tr>
+  </tbody>
+</table>
+
+<footer>
+  <p style="margin-bottom:4px;">
+    <a href="https://github.com/zealatan/realtime-Gbps-OFDM-for-Wideband">
+      zealatan/realtime-Gbps-OFDM-for-Wideband
+    </a>
+    &nbsp;·&nbsp; RTL_SYNC_CFO Block Diagram &nbsp;·&nbsp; auto-generated 2026-05-12
+  </p>
+  <p>ZCU102 &nbsp;·&nbsp; Vivado 2023 &nbsp;·&nbsp; NSC=256 &nbsp;·&nbsp; CP_LEN=32 &nbsp;·&nbsp; NCO 32-bit &nbsp;·&nbsp; CORDIC 16-bit</p>
+</footer>
+
+<div class="tt" id="tooltip"></div>
+
+<script>
+  const tooltip = document.getElementById('tooltip');
+  document.querySelectorAll('.module').forEach(el => {
+    el.style.cursor = 'help';
+    el.addEventListener('mouseenter', e => {
+      const tip = el.getAttribute('data-tip');
+      if (!tip) return;
+      tooltip.textContent = '';
+      tip.split('&#10;').join('\n').split('\n').forEach((line, i) => {
+        const span = document.createElement('span');
+        span.textContent = line;
+        span.style.display = 'block';
+        if (i === 0) { span.style.fontWeight = '600'; span.style.color = '#e6edf3'; span.style.marginBottom = '6px'; }
+        tooltip.appendChild(span);
+      });
+      tooltip.classList.add('visible');
+    });
+    el.addEventListener('mousemove', e => {
+      tooltip.style.left = (e.clientX + 14) + 'px';
+      tooltip.style.top  = (e.clientY + 14) + 'px';
+    });
+    el.addEventListener('mouseleave', () => {
+      tooltip.classList.remove('visible');
+    });
+  });
+</script>
+</body>
+</html>
