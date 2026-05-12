@@ -224,7 +224,6 @@ The following diagrams summarize the current Phase-1 RTL_SYNC_CFO architecture.
 Interactive architecture views:
 
 - [Open RTL_SYNC_CFO Architecture Block Diagram — HTML](https://zealatan.github.io/realtime-Gbps-OFDM-for-Wideband/rtl_sync_cfo_block_diagram_spectral_bright_exact.html)
-- [Open repository HTML file](docs/rtl_sync_cfo_block_diagram_spectral_bright_exact.html)
 
 #### RTL Module Connectivity
 
