@@ -213,6 +213,12 @@ NCO-based fractional CFO correction
 AXI-Stream corrected IQ output
 ```
 
+### Block Diagram
+
+![RTL_SYNC_CFO Block Diagram](docs/rtl_sync_cfo_block.svg)
+
+> Interactive version with hover tooltips: [GitHub Pages](https://zealatan.github.io/realtime-Gbps-OFDM-for-Wideband/)
+
 The current architecture is best described as:
 
 ```text
