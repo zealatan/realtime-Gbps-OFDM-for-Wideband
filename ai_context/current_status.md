@@ -1299,12 +1299,140 @@ RTL modified: No.
 
 ---
 
+---
+
+---
+
+### Step 34 — FFT256 Frontend Wrapper and Behavioral FFT Integration
+
+Status: **COMPLETE — PASS: 31, FAIL: 0, CI GATE: PASSED**
+
+Purpose:
+- Connect a synthesizable FFT256 dual-symbol frontend to the Meyr integer CFO estimator.
+- Validate the pipeline: PSS/SSS time-domain input → FFT → bin pairing → integer CFO estimation.
+- Use a placeholder S_COMPUTE bypass (buffer copy) to enable simulation without Xilinx FFT IP.
+
+Files created:
+- `rtl/fft256_dual_symbol_frontend.v` — 6-state FSM: S_IDLE → S_FILL → S_COMPUTE → S_STREAM_PSS → S_STREAM_SSS → S_DONE
+- `rtl/meyr_integer_cfo_fft_frontend_top.v` — top connecting frontend to estimator; PSS bin buffer + SSS pairing
+- `tb/fft256_behavioral_model.sv` — simulation-only unnormalized DFT reference (synthesis translate_off)
+- `tb/meyr_integer_cfo_fft_frontend_top_tb.sv` — T1–T12 test groups (31 checks)
+- `scripts/run_meyr_integer_cfo_fft_frontend_top_sim.sh` — xsim compile + run
+- `docs/step34_fft256_frontend_behavioral_integration.md` — step documentation including debug note
+
+Key implementation decisions:
+- Bypass mode: S_COMPUTE copies input buffers unchanged; testbench injects freq-domain vectors as "time-domain" input
+- Natural FFT bin order (no fftshift): k=0 DC, k=1..127 positive, k=128..255 negative
+- meyr_integer_cfo_fft_frontend_top FSM: S_IDLE → S_FILL_PSS → S_START_EST → S_STREAM_SSS → S_WAIT_EST → S_DONE
+- PSS FFT bins buffered in pss_fft_buf; each SSS bin paired with same-index PSS bin before estimator
+- term2 ROM: synthetic PRNG fallback (real mU/goldU still pending from Step 33)
+
+Debug fix applied (SSS bin alignment):
+- Root cause: NBA timing in S_STREAM_SSS caused stale m_symbol_sel=0 in first transition cycle to
+  spuriously advance stream_ptr; combined with unconditional `m_index <= stream_ptr` NBA creating
+  a one-cycle duplicate at the first handshake, SSS bin 0 was skipped and bin 255 never delivered.
+- Fix: (1) guard advance with `if (m_ready && m_symbol_sel)`; (2) look-ahead NBA
+  (`m_index <= stream_ptr + 8'd1` etc.) in advance branch so last NBA wins, eliminating duplicate.
+
+Simulation results:
+
+| Test | Description | Result |
+|------|-------------|--------|
+| T1 | reset_defaults | PASS |
+| T2 | fft_model_single_bin (behavioral DFT DC) | PASS |
+| T3 | zero_cfo (shift=0, peak=255) | PASS |
+| T4 | positive_shift +1 (peak=256) | PASS |
+| T5 | negative_shift −1 (peak=254) | PASS |
+| T6 | positive_shift +3 (peak=258) | PASS |
+| T7 | negative_shift −4 (peak=251) | PASS |
+| T8 | positive_shift +8 (peak=263) | PASS |
+| T9 | negative_shift −8 (peak=247) | PASS |
+| T10 | restart_two_frames (0, +3) | PASS |
+| T11 | start_while_busy (error=1) | PASS |
+| T12 | index_alignment (+2, −2) | PASS |
+
+RTL modified: Yes (new files + S_STREAM_SSS NBA look-ahead fix in fft256_dual_symbol_frontend.v).
+
+---
+
+---
+
+### Step 35A — CORDIC atan2 Xilinx Wrapper Preparation
+
+Status: **COMPLETE — PASS: 35, FAIL: 0, CI GATE: PASSED**
+
+Purpose:
+- Prepare a synthesizable wrapper for a Xilinx CORDIC IP (translate/atan2 mode) so the
+  integer CFO and fractional CFO paths can share a hardware-accurate phase computation unit.
+- Validate the wrapper interface and behavior in simulation; defer actual XCI generation.
+
+Files merged:
+- `rtl/cordic_atan2_xilinx_wrapper.v` — AXI4-Stream wrapper around Xilinx CORDIC IP placeholder
+- `tb/cordic_atan2_xilinx_wrapper_tb.sv` — 35 checks
+- `scripts/run_cordic_atan2_xilinx_wrapper_sim.sh` — xsim compile + run
+- `scripts/create_cordic_atan2_ip.tcl` — Vivado IP generation TCL (pending execution)
+- `docs/step35A_cordic_atan2_xilinx_wrapper.md` — step documentation
+
+Simulation result: PASS: 35, FAIL: 0, CI GATE: PASSED
+
+Limitations (explicit):
+- Actual Xilinx CORDIC IP XCI not generated yet (create_cordic_atan2_ip.tcl prepared but not run).
+- Fractional CFO top integration not performed.
+
+RTL modified: No (new files only).
+
+---
+
+---
+
+### Step 35B — NCO sin/cos Xilinx Wrapper Preparation
+
+Status: **COMPLETE — PASS: 88, FAIL: 0, CI GATE: PASSED**
+
+Purpose:
+- Prepare a synthesizable wrapper for a Xilinx CORDIC/DDS IP (sin/cos mode) for NCO-based
+  fractional CFO correction in the integer CFO path.
+- Capture and validate the existing NCO convention (256-entry ROM, 32-bit phase accumulator).
+- Defer actual XCI generation.
+
+Files merged:
+- `rtl/nco_phase_gen_xilinx_wrapper.v` — wrapper around Xilinx CORDIC/DDS IP placeholder
+- `tb/nco_phase_gen_xilinx_wrapper_tb.sv` — 88 checks
+- `scripts/run_nco_phase_gen_xilinx_wrapper_sim.sh` — xsim compile + run
+- `scripts/create_cordic_sincos_ip.tcl` — Vivado IP generation TCL (pending execution)
+- `docs/step35B_nco_phase_gen_xilinx_wrapper.md` — step documentation
+
+Existing NCO convention captured:
+- `phase_acc[31:24]` selects 256-entry ROM index
+- Full 2π corresponds to 2^32 accumulator wrap
+- Legacy-compatible ROM behavior preserved
+
+Simulation result: PASS: 88, FAIL: 0, CI GATE: PASSED
+
+Limitations (explicit):
+- Actual Xilinx CORDIC/DDS IP XCI not generated yet (create_cordic_sincos_ip.tcl prepared but not run).
+- Fractional CFO top integration not performed.
+
+RTL modified: No (new files only).
+
+---
+
 ## Next Step
 
-### Step 34 — FFT256 Wrapper and PSS/SSS Symbol Extraction
+### Step 36 — Integration Planning
 
-Options:
-- Add an FFT256 wrapper that converts received time-domain PSS and SSS symbols to frequency
-  domain and feeds them into `meyr_integer_cfo_freq_estimator_top`.
-- Extend the frame buffer to ≥576 samples to cover both PSS and SSS symbols.
-- Real mU/goldU ROM activation (Step 33 path B): resume if transmitter source becomes available.
+Recommended decision point before proceeding:
+
+1. **Option A — Legacy-compatible wrapper integration first**: wire the Step 35A/35B
+   wrappers into the existing `frac_cfo_frame_corrector_top` and integer CFO paths;
+   validate end-to-end with simulation before generating IP XCI.
+
+2. **Option B — Generate actual Xilinx IP XCI first**: run `create_cordic_atan2_ip.tcl`
+   and `create_cordic_sincos_ip.tcl` in Vivado (Windows) to produce real XCI files;
+   then integrate into the wrappers and re-run simulation.
+
+3. **Option C — Xilinx FFT256 IP wrapper**: proceed to the production FFT integration
+   (replacing the Step 34 S_COMPUTE bypass) using Xilinx FFT IP v9.1 (AXI4-Stream).
+
+All three options are valid next steps. The choice depends on whether board execution or
+simulation accuracy is the immediate priority.
