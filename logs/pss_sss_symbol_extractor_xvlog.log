@@ -1,0 +1,4 @@
+INFO: [VRFC 10-2263] Analyzing SystemVerilog file "/home/zealatan/RTL_SYNC_STEP36C_EXTRACTOR/rtl/pss_sss_symbol_extractor.v" into library work
+INFO: [VRFC 10-311] analyzing module pss_sss_symbol_extractor
+INFO: [VRFC 10-2263] Analyzing SystemVerilog file "/home/zealatan/RTL_SYNC_STEP36C_EXTRACTOR/tb/pss_sss_symbol_extractor_tb.sv" into library work
+INFO: [VRFC 10-311] analyzing module pss_sss_symbol_extractor_tb
