@@ -189,11 +189,14 @@ module fft256_dual_symbol_frontend #(
                     m_index      <= stream_ptr;
                     m_i          <= fft_sss_i[stream_ptr];
                     m_q          <= fft_sss_q[stream_ptr];
-                    if (m_ready) begin
+                    if (m_ready && m_symbol_sel) begin
                         if (stream_ptr == FFT_LEN - 1) begin
                             state <= S_DONE;
                         end else begin
                             stream_ptr <= stream_ptr + 8'd1;
+                            m_index    <= stream_ptr + 8'd1;
+                            m_i        <= fft_sss_i[stream_ptr + 8'd1];
+                            m_q        <= fft_sss_q[stream_ptr + 8'd1];
                         end
                     end
                 end

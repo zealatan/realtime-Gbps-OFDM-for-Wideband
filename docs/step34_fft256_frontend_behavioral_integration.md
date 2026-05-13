@@ -141,6 +141,41 @@ bash scripts/run_meyr_integer_cfo_fft_frontend_top_sim.sh
 
 See `logs/meyr_integer_cfo_fft_frontend_top_xsim.log` after running the script.
 
+## Debug Note — SSS Bin Alignment Fix (Step 34)
+
+**Root cause**: `fft256_dual_symbol_frontend` S_STREAM_SSS used unconditional NBA
+`m_index <= stream_ptr` every cycle.  When the first handshake fired, stream_ptr
+advanced but the NBA committed the PRE-advance value, so m_index stayed at the
+old value for one extra cycle.  This caused SSS bin 0 to be presented twice and
+SSS bin 255 to be skipped, shifting the correlation peak by ±8 depending on
+whether the stale PSS→SSS transition cycle spuriously advanced stream_ptr.
+
+**Fix applied to `rtl/fft256_dual_symbol_frontend.v` S_STREAM_SSS**:
+
+1. Guard advance with `if (m_ready && m_symbol_sel)` — prevents the stale
+   first cycle (m_symbol_sel still 0 from S_STREAM_PSS) from spuriously
+   advancing stream_ptr.
+
+2. Look-ahead NBA in the advance branch — when stream_ptr increments, override
+   m_index/m_i/m_q with the NEXT value so the last NBA wins and the consumer
+   sees the correct next bin immediately:
+   ```verilog
+   stream_ptr <= stream_ptr + 8'd1;
+   m_index    <= stream_ptr + 8'd1;
+   m_i        <= fft_sss_i[stream_ptr + 8'd1];
+   m_q        <= fft_sss_q[stream_ptr + 8'd1];
+   ```
+
+The stale first cycle still delivers PSS bin 255 to the top's PSS buffer
+(m_index=255, m_symbol_sel=0 at start of S_STREAM_SSS) — this is intentional
+and correct.  The fix preserves that behavior.
+
+**Other invariants confirmed correct**:
+- Natural FFT bin order preserved (no fftshift).
+- Behavioral DFT model is simulation-only (synthesis translate_off guards).
+- Synthetic term2 PRNG fallback still used; real mU/goldU still pending.
+- Xilinx FFT IP not integrated (S_COMPUTE is a buffer bypass placeholder).
+
 ## Known Limitations
 
 1. FFT is a placeholder (buffer bypass).  True time-domain → FFT → estimator path
