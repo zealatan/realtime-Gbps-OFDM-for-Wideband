@@ -1220,13 +1220,91 @@ RTL modified: No (new files only; peak_detector.v unchanged).
 
 ---
 
+---
+
+### Step 32 — Meyr PSS/SSS Product Generator and term2 Reference ROM
+
+Status: **COMPLETE — product gen PASS: 13, estimator top PASS: 32, CI GATE: PASSED**
+
+Purpose:
+- Add the received-product generator for `term1 = PSS_FFT * conj(SSS_FFT)`.
+- Add a term2 reference ROM module; synthetic PRNG fallback implemented (real mU/goldU pending).
+- Connect product generation and term2 reference into the Meyr integer CFO core.
+- Verify the frequency-domain estimator path using deterministic synthetic PSS_FFT/SSS_FFT inputs.
+
+Files created:
+- `rtl/meyr_pss_sss_product_gen.v` — 1-cycle registered pipeline; 16-bit IQ → 32-bit PROD output
+- `rtl/meyr_term2_ref_rom.v` — ROM with USE_SYNTHETIC_FALLBACK=1 (PRNG seed 32'hCAFE_B0BB)
+- `rtl/meyr_integer_cfo_freq_estimator_top.v` — 6-state FSM wrapper: S_IDLE → S_RECV → S_START_CORE → S_STREAM → S_WAIT_CORE → S_DONE
+- `tb/meyr_pss_sss_product_gen_tb.sv` — 8 tests, 13 checks
+- `tb/meyr_integer_cfo_freq_estimator_top_tb.sv` — 12 tests (T1–T12), 32 checks
+- `scripts/run_meyr_pss_sss_product_gen_sim.sh`
+- `scripts/run_meyr_integer_cfo_freq_estimator_top_sim.sh`
+- `docs/step32_meyr_product_generator_real_term2.md`
+
+Key design decisions:
+- `meyr_integer_cfo_core.v` unchanged (Step 31 behavior preserved; no regression needed)
+- term1 buffer (256×32b I/Q) filled by product_gen, then streamed combinatorially to core
+- meyr_term2_ref_rom instantiated in top as architecture placeholder (Step 33+ external term2 routing)
+- Synthetic test vectors: PSS_FFT[n]=term2[n−s], SSS_FFT[n]=1+j0 → same shift-recovery as Step 31
+- Real mU/goldU ROM: **pending** (mU/goldU are external params in ref/receiver.c, not defined there)
+
+Simulation results:
+- `meyr_pss_sss_product_gen_tb`: PASS=13, FAIL=0, CI GATE: PASSED
+- `meyr_integer_cfo_freq_estimator_top_tb`: PASS=32, FAIL=0, CI GATE: PASSED
+
+RTL modified: No (new files only; meyr_integer_cfo_core.v unchanged).
+
+---
+
+---
+
+---
+
+### Step 33 — Real mU/goldU Reference Audit
+
+Status: **COMPLETE — Outcome C: real data unavailable; template generator ready**
+
+Purpose:
+- Audit the repository to determine whether real mU/goldU sequences exist.
+- Answer the 11 audit questions from the Step 33 prompt.
+- Create `scripts/generate_meyr_term2_rom.py` for when real data becomes available.
+- Document the term2 ROM status honestly.
+
+Files created:
+- `md_files/33_real_mU_goldU_term2_reference_audit_prompt.md` — prompt archive
+- `scripts/generate_meyr_term2_rom.py` — template generator; accepts `--input-json`,
+  `--input-csv`, or `--test-synthetic`; emits `$readmemh` packed `{term2_q, term2_i}`
+- `docs/step33_real_mU_goldU_term2_reference_audit.md` — full audit; all 11 Qs answered
+
+Audit findings:
+- Only `ref/receiver.c` exists in `ref/`. No `pluto.h`, no data files.
+- `mU` and `goldU` are `float*` struct fields (`signal_process->mUI` etc.) defined in
+  `pluto.h` and supplied by the transmitter application — not generated in `receiver.c`.
+- `CP_LEN=32`, `NSC=256` from Step 2 docs (pluto.h constants).
+- No `.csv`, `.json`, `.mat`, `.bin`, or `.npy` sequence data exists anywhere in the repo.
+- **Outcome C: real data unavailable.**
+
+Term2 ROM status:
+- Synthetic PRNG fallback (`USE_SYNTHETIC_FALLBACK=1`): verified in Steps 31–32
+- Real mU/goldU-derived ROM: **pending** (requires transmitter source)
+- `generate_meyr_term2_rom.py --test-synthetic`: self-test mode; reproduces PRNG ROM
+- To activate real ROM: supply `data/mu_goldu.json`, run generator, set `USE_SYNTHETIC_FALLBACK=0`
+
+Simulation regression: None (no RTL changes). Step 32 results remain:
+- `meyr_pss_sss_product_gen_tb`: PASS=13, FAIL=0
+- `meyr_integer_cfo_freq_estimator_top_tb`: PASS=32, FAIL=0
+
+RTL modified: No.
+
+---
+
 ## Next Step
 
-### Step 32 — PSS/SSS Product Generator and Real term2 ROM
+### Step 34 — FFT256 Wrapper and PSS/SSS Symbol Extraction
 
-Implement:
-- PSS/SSS FFT wrapper (or direct frequency-domain input) to generate
-  `term1[j] = PSS_FFT[j] · conj(SSS_FFT[j])`
-- Replace synthetic XOR-shift32 term2 ROM with real `mU · conj(goldU)` reference data
-  derived from `ref/receiver.c` reference sequences.
-- Target: `rtl/meyr_pss_sss_product_gen.v` feeding `meyr_integer_cfo_core.v`.
+Options:
+- Add an FFT256 wrapper that converts received time-domain PSS and SSS symbols to frequency
+  domain and feeds them into `meyr_integer_cfo_freq_estimator_top`.
+- Extend the frame buffer to ≥576 samples to cover both PSS and SSS symbols.
+- Real mU/goldU ROM activation (Step 33 path B): resume if transmitter source becomes available.
