@@ -1,0 +1,28 @@
+# Property existence audit for fft256_xilinx configuration
+# Shows which target property names exist in this Vivado version
+
+Target Property                                    Exists?    Current Value
+------------------------------------------------------------------------------------------
+CONFIG.transform_length                            YES        1024
+CONFIG.Transform_Length                            NO         N/A
+CONFIG.implementation_options                      YES        automatically_select
+CONFIG.Implementation_Options                      NO         N/A
+CONFIG.data_format                                 YES        fixed_point
+CONFIG.Data_Format                                 NO         N/A
+CONFIG.input_width                                 YES        16
+CONFIG.Input_Data_Width                            NO         N/A
+CONFIG.Input_Width                                 NO         N/A
+CONFIG.phase_factor_width                          YES        16
+CONFIG.Phase_Factor_Width                          NO         N/A
+CONFIG.output_ordering                             YES        bit_reversed_order
+CONFIG.Output_Ordering                             NO         N/A
+CONFIG.throttle_scheme                             YES        nonrealtime
+CONFIG.Throttle_Scheme                             NO         N/A
+CONFIG.rounding_modes                              YES        truncation
+CONFIG.Rounding_Modes                              NO         N/A
+CONFIG.scaling_options                             YES        scaled
+CONFIG.Scaling_Options                             NO         N/A
+CONFIG.aclken                                      YES        false
+CONFIG.Has_ACLKEN                                  NO         N/A
+CONFIG.ovflo                                       YES        false
+CONFIG.xk_index                                    YES        false
