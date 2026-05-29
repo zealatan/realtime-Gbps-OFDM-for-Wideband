@@ -1,0 +1,66 @@
+======================================================
+Session I / P3-20A — AXI Backpressure Stress
+======================================================
+
+--- I1: S_AXIS Backpressure ---
+  TC1: s_stall=0 (baseline)
+  [PASS] TC1-C1: output_count=576
+  [PASS] TC1-C2: TLAST at beat 575
+  [PASS] TC1-C3: INT_CFO_APPLIED=1
+  TC2: s_stall=1/10 (every 10th)
+  [PASS] TC2-C1: output_count=576
+  [PASS] TC2-C2: TLAST at beat 575
+  [PASS] TC2-C3: INT_CFO_APPLIED=1
+  TC3: s_stall=1/4  (every 4th)
+  [PASS] TC3-C1: output_count=576
+  [PASS] TC3-C2: TLAST at beat 575
+  [PASS] TC3-C3: INT_CFO_APPLIED=1
+  TC4: s_stall=1/2  (every 2nd)
+  [PASS] TC4-C1: output_count=576
+  [PASS] TC4-C2: TLAST at beat 575
+  [PASS] TC4-C3: INT_CFO_APPLIED=1
+
+--- I2: M_AXIS Backpressure ---
+  TC5: m_stall=1/10 (every 10th)
+  [PASS] TC5-C1: output_count=576
+  [PASS] TC5-C2: TLAST at beat 575
+  [PASS] TC5-C3: INT_CFO_APPLIED=1
+  TC6: m_stall=1/4  (every 4th)
+  [PASS] TC6-C1: output_count=576
+  [PASS] TC6-C2: TLAST at beat 575
+  [PASS] TC6-C3: INT_CFO_APPLIED=1
+  TC7: m_stall=1/2  (every 2nd)
+  [PASS] TC7-C1: output_count=576
+  [PASS] TC7-C2: TLAST at beat 575
+  [PASS] TC7-C3: INT_CFO_APPLIED=1
+
+--- I3: Replay Burst Stall ---
+  TC8: burst=1
+  [PASS] TC8-C1: output_count=576
+  [PASS] TC8-C2: TLAST at beat 575
+  [PASS] TC8-C3: INT_CFO_APPLIED=1
+  TC9: burst=4
+  [PASS] TC9-C1: output_count=576
+  [PASS] TC9-C2: TLAST at beat 575
+  [PASS] TC9-C3: INT_CFO_APPLIED=1
+  TC10: burst=8
+  [PASS] TC10-C1: output_count=576
+  [PASS] TC10-C2: TLAST at beat 575
+  [PASS] TC10-C3: INT_CFO_APPLIED=1
+  TC11: burst=16
+  [PASS] TC11-C1: output_count=576
+  [PASS] TC11-C2: TLAST at beat 575
+  [PASS] TC11-C3: INT_CFO_APPLIED=1
+  TC12: burst=32
+  [PASS] TC12-C1: output_count=576
+  [PASS] TC12-C2: TLAST at beat 575
+  [PASS] TC12-C3: INT_CFO_APPLIED=1
+
+--- I4: AXI Protocol Assertions ---
+  [PASS] TC13-I4: 0 protocol violations
+
+======================================================
+  PASS: 37
+  FAIL: 0
+
+AXI_GATE: PASS

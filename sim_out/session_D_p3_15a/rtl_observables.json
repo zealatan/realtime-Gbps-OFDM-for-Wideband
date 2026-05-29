@@ -1,0 +1,35 @@
+{
+  "_meta": {
+    "session": "D / P3-15A",
+    "source": "RTL simulation (iverilog/xsim)",
+    "generated_by": "scripts/normalize_rtl_phase3_outputs.py",
+    "obs_file": "sim_out/session_D_p3_15a/rtl_observables.txt",
+    "meta_file": "sim_out/session_D_p3_15a/rtl_m_axis_meta.txt",
+    "iq_file_used": "sim_out/session_D_p3_15a/rtl_m_axis_iq.txt"
+  },
+  "frame_found": true,
+  "frame_index": 40,
+  "peak_lag": 23,
+  "slot_start_index": 63,
+  "frac_cfo_valid": true,
+  "frac_cfo_offset_float": 0.05001831,
+  "frac_cfo_word": 3278,
+  "int_cfo_valid": true,
+  "int_cfo_index": 256,
+  "int_cfo_est_bins": 1,
+  "int_cfo_word_nco": -16777216,
+  "int_cfo_word_axi": -16777216,
+  "int_cfo_index_axi": 256,
+  "int_cfo_applied": 1,
+  "done_cycle": 101956,
+  "m_axis": {
+    "available": true,
+    "length": 576,
+    "tlast_count": 1,
+    "tlast_index": 575,
+    "captured": 576,
+    "frame_len": 576,
+    "iq_file": "sim_out/session_D_p3_15a/rtl_m_axis_iq.txt",
+    "iq_pairs": 576
+  }
+}

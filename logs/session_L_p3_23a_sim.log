@@ -1,0 +1,73 @@
+
+=== [L1] Multi-frame (10 frames back-to-back) ===
+  [L1] Frame 1 — beat_start=0
+  [L1] Frame 1 done  last_tlast_beat=575  expected=575
+  [L1] Frame 2 — beat_start=576
+  [L1] Frame 2 done  last_tlast_beat=1151  expected=1151
+  [L1] Frame 3 — beat_start=1152
+  [L1] Frame 3 done  last_tlast_beat=1727  expected=1727
+  [L1] Frame 4 — beat_start=1728
+  [L1] Frame 4 done  last_tlast_beat=2303  expected=2303
+  [L1] Frame 5 — beat_start=2304
+  [L1] Frame 5 done  last_tlast_beat=2879  expected=2879
+  [L1] Frame 6 — beat_start=2880
+  [L1] Frame 6 done  last_tlast_beat=3455  expected=3455
+  [L1] Frame 7 — beat_start=3456
+  [L1] Frame 7 done  last_tlast_beat=4031  expected=4031
+  [L1] Frame 8 — beat_start=4032
+  [L1] Frame 8 done  last_tlast_beat=4607  expected=4607
+  [L1] Frame 9 — beat_start=4608
+  [L1] Frame 9 done  last_tlast_beat=5183  expected=5183
+  [L1] Frame 10 — beat_start=5184
+  [L1] Frame 10 done  last_tlast_beat=5759  expected=5759
+  [L1] total_beats=5760  exp=5760
+  [L1] total_tlast=10  exp=10
+  [L1] reg_out_count=0x00001680  reg_tlast=0x0000000a
+  [PASS] L1_beat_count
+  [PASS] L1_tlast_count
+  [PASS] L1_last_tlast_position
+  [PASS] L1_reg_out_count
+  [PASS] L1_reg_tlast_count
+  [PASS] L1_no_error
+
+=== [L2] Soft reset during acquisition (after 300 samples) ===
+  [L2] Feeding first 300 samples...
+  [L2] Asserting soft reset at cycle 1031378...
+  [L2] Reset done at cycle 1031395; feeding recovery frame...
+  [L2] beats_delta=576  reg_out=0x00000240  int_cfo_a=0x00000001
+  [PASS] L2_recovery_beat_count
+  [PASS] L2_recovery_tlast_count
+  [PASS] L2_recovery_tlast_position
+  [PASS] L2_reg_out_count_post_reset
+  [PASS] L2_int_cfo_applied
+  [PASS] L2_no_error
+
+=== [L3] Soft reset during replay (after 50 M_AXIS beats) ===
+  [L3] Feeding stimulus; waiting for 50 replay beats...
+  [L3] 50 replay beats received — asserting soft reset at cycle 1135246
+  [L3] Reset done; feeding recovery frame (beat_baseline=6336)...
+  [L3] beats_delta=576  reg_out=0x00000240  int_cfo_a=0x00000001
+  [PASS] L3_recovery_beat_count
+  [PASS] L3_recovery_tlast_count
+  [PASS] L3_recovery_tlast_position
+  [PASS] L3_reg_out_count_post_reset
+  [PASS] L3_int_cfo_applied
+  [PASS] L3_no_error
+
+=== [L4] Enable toggle (off at samples 100 and 350, 20-cycle pause) ===
+  [L4] Enable toggled at sample 100, cycle=1238539
+  [L4] Enable toggled at sample 350, cycle=1238820
+  [L4] beats_delta=576  reg_out=0x00000240  int_cfo_a=0x00000001
+  [PASS] L4_beat_count
+  [PASS] L4_tlast_count
+  [PASS] L4_tlast_position
+  [PASS] L4_int_cfo_applied
+  [PASS] L4_no_error
+
+=== [P3-23A] STRESS SUMMARY ===
+  Total checks: 23   PASS: 23   FAIL: 0
+  L1 beat/TLAST continuity — 10 frames
+  L2 reset during acquisition (sample 300)
+  L3 reset during replay (beat 50)
+  L4 enable toggle (samples 100, 350)
+STRESS_GATE: PASS

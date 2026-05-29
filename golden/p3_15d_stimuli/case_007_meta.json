@@ -1,0 +1,21 @@
+{
+  "case_id": "case_007",
+  "nsamples_total": 704,
+  "pre_zeros": 47,
+  "post_zeros": 81,
+  "nsc": 256,
+  "cp_len": 32,
+  "frame_len": 576,
+  "eps_frac": 0.09575221102940124,
+  "integer_cfo": 4,
+  "amplitude": 1709.2587991771134,
+  "snr_db": 40.28055781214544,
+  "stim_seed": 1572198880,
+  "detection_ok": true,
+  "expected_frame_start": 25,
+  "expected_peak_index_auto": 22,
+  "expected_slot_start": 47,
+  "expected_frac_cfo": 0.09585787965586147,
+  "expected_meyr_peak_index": 255,
+  "expected_integer_cfo_word": 0
+}

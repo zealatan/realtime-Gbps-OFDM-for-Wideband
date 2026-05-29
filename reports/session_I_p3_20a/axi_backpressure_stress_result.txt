@@ -1,0 +1,52 @@
+# Session I / P3-20A — AXI Backpressure Stress Result
+# Generated: 2026-05-29 12:08:03
+# Simulator: iverilog
+
+GATE: SANITY_AXI_GATE: PASS (iverilog)
+
+TC_PASS:          37
+TC_FAIL:          0
+AXI_ASSERT_FAIL:  0
+WATCHDOG_HITS:    0
+
+--- Per-test case results ---
+  [PASS] TC1-C1: output_count=576
+  [PASS] TC1-C2: TLAST at beat 575
+  [PASS] TC1-C3: INT_CFO_APPLIED=1
+  [PASS] TC2-C1: output_count=576
+  [PASS] TC2-C2: TLAST at beat 575
+  [PASS] TC2-C3: INT_CFO_APPLIED=1
+  [PASS] TC3-C1: output_count=576
+  [PASS] TC3-C2: TLAST at beat 575
+  [PASS] TC3-C3: INT_CFO_APPLIED=1
+  [PASS] TC4-C1: output_count=576
+  [PASS] TC4-C2: TLAST at beat 575
+  [PASS] TC4-C3: INT_CFO_APPLIED=1
+  [PASS] TC5-C1: output_count=576
+  [PASS] TC5-C2: TLAST at beat 575
+  [PASS] TC5-C3: INT_CFO_APPLIED=1
+  [PASS] TC6-C1: output_count=576
+  [PASS] TC6-C2: TLAST at beat 575
+  [PASS] TC6-C3: INT_CFO_APPLIED=1
+  [PASS] TC7-C1: output_count=576
+  [PASS] TC7-C2: TLAST at beat 575
+  [PASS] TC7-C3: INT_CFO_APPLIED=1
+  [PASS] TC8-C1: output_count=576
+  [PASS] TC8-C2: TLAST at beat 575
+  [PASS] TC8-C3: INT_CFO_APPLIED=1
+  [PASS] TC9-C1: output_count=576
+  [PASS] TC9-C2: TLAST at beat 575
+  [PASS] TC9-C3: INT_CFO_APPLIED=1
+  [PASS] TC10-C1: output_count=576
+  [PASS] TC10-C2: TLAST at beat 575
+  [PASS] TC10-C3: INT_CFO_APPLIED=1
+  [PASS] TC11-C1: output_count=576
+  [PASS] TC11-C2: TLAST at beat 575
+  [PASS] TC11-C3: INT_CFO_APPLIED=1
+  [PASS] TC12-C1: output_count=576
+  [PASS] TC12-C2: TLAST at beat 575
+  [PASS] TC12-C3: INT_CFO_APPLIED=1
+  [PASS] TC13-I4: 0 protocol violations
+
+--- AXI assertion violations ---
+(none)

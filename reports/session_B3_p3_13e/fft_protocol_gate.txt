@@ -1,0 +1,16 @@
+SANITY_FFT_PROTOCOL_GATE: FAIL
+Simulator: iverilog
+Date: 2026-05-29 10:55:51 UTC
+
+Raw gate: FFT_PROTOCOL_GATE: FAIL (watchdog timeout)
+
+Pass/Fail summary:
+PASS [B3-1/pss1]: PSS 256/256 accepted
+PASS [B3-1/sss1]: SSS 256/256 accepted
+PASS [B3-1/io1]: out 513/512 (input_count==output_count)
+PASS [B3-1/done1]: fft_done fired
+PASS [B3-1/pss2]: PSS 256/256 accepted
+PASS [B3-1/sss2]: SSS 256/256 accepted
+PASS [B3-1/io2]: out 512/512 (input_count==output_count)
+PASS [B3-1/done2]: fft_done fired
+FAIL [watchdog]: simulation timeout at 700k cycles

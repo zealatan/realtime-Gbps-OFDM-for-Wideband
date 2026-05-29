@@ -39,7 +39,9 @@ module meyr_integer_cfo_core #(
     parameter integer PROD_WIDTH  = 32,
     parameter integer ACC_WIDTH   = 56,
     parameter integer SCORE_WIDTH = 64,
-    parameter integer INDEX_WIDTH = 9
+    parameter integer INDEX_WIDTH = 9,
+    parameter PSS_ROM_FILE = "vectors/meyr_pss_reference_romhex.txt",
+    parameter SSS_ROM_FILE = "vectors/meyr_sss_reference_romhex.txt"
 )(
     input  wire                          aclk,
     input  wire                          aresetn,      // active-low synchronous reset
@@ -90,25 +92,32 @@ module meyr_integer_cfo_core #(
     reg signed [PROD_WIDTH-1:0] term1_q_ram [0:NSC-1];
 
     // ---------------------------------------------------------------------------
-    // term2 reference ROM — Step 31 synthetic PRNG placeholder
-    // Testbench must use the same seed (32'hCAFE_B0BB) and XOR-shift sequence.
+    // term2 reference ROM — real PSS/SSS ZC/BPSK sequences (Step 41)
+    // Packed format: {Q_q15[31:16], I_q15[15:0]} per 32-bit word.
+    // term2[j] = PSS_ref[j] × sign(SSS_ref_I[j]):  Q1.15 range, stored in PROD_WIDTH=32.
     // ---------------------------------------------------------------------------
     reg signed [PROD_WIDTH-1:0] term2_i_rom [0:NSC-1];
     reg signed [PROD_WIDTH-1:0] term2_q_rom [0:NSC-1];
 
+    reg [31:0] _pss_rom_packed [0:NSC-1];
+    reg [31:0] _sss_rom_packed [0:NSC-1];
     integer _j;
-    reg [31:0] _seed;
+    integer _pss_i_val, _pss_q_val, _sss_i_val;
     initial begin
-        _seed = 32'hCAFE_B0BB;
+        $readmemh(PSS_ROM_FILE, _pss_rom_packed);
+        $readmemh(SSS_ROM_FILE, _sss_rom_packed);
         for (_j = 0; _j < NSC; _j = _j + 1) begin
-            _seed = _seed ^ (_seed << 13);
-            _seed = _seed ^ (_seed >> 17);
-            _seed = _seed ^ (_seed << 5);
-            term2_i_rom[_j] = {{(PROD_WIDTH-8){_seed[7]}}, _seed[7:0]};  // sign-extend 8-bit
-            _seed = _seed ^ (_seed << 13);
-            _seed = _seed ^ (_seed >> 17);
-            _seed = _seed ^ (_seed << 5);
-            term2_q_rom[_j] = {{(PROD_WIDTH-8){_seed[7]}}, _seed[7:0]};
+            _pss_i_val = $signed(_pss_rom_packed[_j][15:0]);
+            _pss_q_val = $signed(_pss_rom_packed[_j][31:16]);
+            _sss_i_val = $signed(_sss_rom_packed[_j][15:0]);
+            // term2 = PSS × sign(SSS_I): active bins get PSS×(±1), zero bins stay 0
+            if (_sss_i_val >= 0) begin
+                term2_i_rom[_j] = _pss_i_val;
+                term2_q_rom[_j] = _pss_q_val;
+            end else begin
+                term2_i_rom[_j] = -_pss_i_val;
+                term2_q_rom[_j] = -_pss_q_val;
+            end
         end
     end
 
@@ -192,23 +201,25 @@ module meyr_integer_cfo_core #(
     wire signed [PROD_WIDTH-1:0] t2_q_w = term2_q_rom[n_cnt];
 
     // product = term1 * conj(term2) = (a+jb)(c-jd)
-    //   real = ac + bd
-    //   imag = bc - ad
-    // For synthetic 8-bit data: max product magnitude ≈ 127*127 ≈ 16K, no 32-bit overflow.
-    wire signed [PROD_WIDTH-1:0] mac_i_w = t1_i_w * t2_i_w + t1_q_w * t2_q_w;
-    wire signed [PROD_WIDTH-1:0] mac_q_w = t1_q_w * t2_i_w - t1_i_w * t2_q_w;
+    //   real = ac + bd,  imag = bc - ad
+    // t1 is Q1.30 (product of two Q1.15 values, max 2^30); t2 is Q1.15 (max 2^15).
+    // Scale t1 by 2^-16 before MAC to keep products within PROD_WIDTH=32 bits:
+    //   (t1 >> 16) ≤ 2^14;  t2 ≤ 2^15;  product ≤ 2^29;  sum ≤ 2^30 — safe.
+    wire signed [PROD_WIDTH-1:0] mac_i_w = (t1_i_w >>> 16) * t2_i_w
+                                           + (t1_q_w >>> 16) * t2_q_w;
+    wire signed [PROD_WIDTH-1:0] mac_q_w = (t1_q_w >>> 16) * t2_i_w
+                                           - (t1_i_w >>> 16) * t2_q_w;
 
     // Sign-extend 32-bit product to ACC_WIDTH=56 for accumulation
     wire signed [ACC_WIDTH-1:0] mac_i = {{(ACC_WIDTH-PROD_WIDTH){mac_i_w[PROD_WIDTH-1]}}, mac_i_w};
     wire signed [ACC_WIDTH-1:0] mac_q = {{(ACC_WIDTH-PROD_WIDTH){mac_q_w[PROD_WIDTH-1]}}, mac_q_w};
 
     // ---------------------------------------------------------------------------
-    // Score: |acc|^2 — uses lower 32 bits of 56-bit accumulator.
-    // Safe for Step 31 synthetic 8-bit data (max |acc| ≈ 2^22 << 2^31).
-    // For real FFT data (16-bit IQ, 32-bit products): scale accumulators first.
+    // Score: |acc|^2 — accumulator max ≈ 2^38 after 256 terms with Q1.14×Q1.15 MAC.
+    // Use bits [39:8] for a 32-bit slice in the significant range.
     // ---------------------------------------------------------------------------
-    wire signed [31:0] si_s    = acc_i[31:0];
-    wire signed [31:0] sq_s    = acc_q[31:0];
+    wire signed [31:0] si_s    = acc_i[39:8];
+    wire signed [31:0] sq_s    = acc_q[39:8];
     wire [31:0]        si_abs  = si_s[31] ? ~si_s + 32'd1 : si_s;
     wire [31:0]        sq_abs  = sq_s[31] ? ~sq_s + 32'd1 : sq_s;
     wire [SCORE_WIDTH-1:0] score_w = {32'd0, si_abs} * {32'd0, si_abs}

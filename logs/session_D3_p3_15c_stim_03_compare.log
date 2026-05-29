@@ -1,0 +1,29 @@
+
+========== stim_03 ==========
+  golden:   /home/zealatan/RTL_SYNC_PHASE3/golden/p3_15c_stimuli/stim_03_golden.txt
+  status:   /home/zealatan/RTL_SYNC_PHASE3/sim_out/session_D3_p3_15c/stim_03_status.txt
+  frame_len=576
+
+--- Stage D2: Metadata (stim_03) ---
+PASS [D2/frame_start]: RTL=40  C=41  diff=1  tol=±2
+PASS [D2/peak_lag]: RTL=24  C=23  diff=1  tol=±3
+PASS [D2/slot_start]: RTL=64  C=64  diff=0  tol=±1
+PASS [D2/frac_cfo]: RTL=-0.100009156  C=-0.100000001  rel_err=0.0092%  tol=1.0%
+PASS [D2/meyr_peak]: RTL=255  C=255  diff=0  tol=±3
+  [D2/int_cfo] RTL step_word=0x00000000 → k_int_rtl=0  C k_int=0
+PASS [D2/int_cfo_bins]: RTL=0  C=0  diff=0  tol=±3
+  D2 result: PASS  (0 failures)
+
+--- Stage D3: IQ equivalence (stim_03) ---
+  step_word = 0x00000000  tolerance = 0 LSB
+  Max I error: 0  at n=-1
+  Max Q error: 0
+  Mismatches:  0/576
+  Sample preview (first 4):
+    n=0: frac=( -1236,  1009)  ref=( -1236,  1008)  rtl=( -1236,  1008)
+    n=1: frac=( -1236,  1009)  ref=( -1236,  1008)  rtl=( -1236,  1008)
+    n=2: frac=( -1261,  1161)  ref=( -1261,  1160)  rtl=( -1261,  1160)
+    n=3: frac=( -1261,  1161)  ref=( -1261,  1160)  rtl=( -1261,  1160)
+PASS [D3]: All 576 IQ samples within tolerance
+
+STIM_EQUIV_GATE: PASS  (stim_03)

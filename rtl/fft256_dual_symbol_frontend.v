@@ -170,12 +170,15 @@ module fft256_dual_symbol_frontend #(
                     m_index      <= stream_ptr;
                     m_i          <= fft_pss_i[stream_ptr];
                     m_q          <= fft_pss_q[stream_ptr];
-                    if (m_ready) begin
+                    if (m_valid && m_ready) begin
                         if (stream_ptr == FFT_LEN - 1) begin
                             stream_ptr <= 8'd0;
                             state      <= S_STREAM_SSS;
                         end else begin
                             stream_ptr <= stream_ptr + 8'd1;
+                            m_index    <= stream_ptr + 8'd1;
+                            m_i        <= fft_pss_i[stream_ptr + 8'd1];
+                            m_q        <= fft_pss_q[stream_ptr + 8'd1];
                         end
                     end
                 end
@@ -191,7 +194,8 @@ module fft256_dual_symbol_frontend #(
                     m_q          <= fft_sss_q[stream_ptr];
                     if (m_ready && m_symbol_sel) begin
                         if (stream_ptr == FFT_LEN - 1) begin
-                            state <= S_DONE;
+                            state   <= S_DONE;
+                            m_valid <= 1'b0;
                         end else begin
                             stream_ptr <= stream_ptr + 8'd1;
                             m_index    <= stream_ptr + 8'd1;

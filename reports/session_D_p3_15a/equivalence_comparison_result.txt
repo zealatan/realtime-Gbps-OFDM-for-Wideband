@@ -1,0 +1,16 @@
+Session D / P3-15A — Equivalence Comparison Result
+C reference: /home/zealatan/RTL_SYNC_PHASE3/golden/session_D_p3_15a/c_reference_observables.json
+RTL        : /home/zealatan/RTL_SYNC_PHASE3/sim_out/session_D_p3_15a/rtl_observables.json
+
+Stage 0: PASS
+Stage 1: PASS
+Stage 2: PASS
+Stage 3: PASS
+Stage 4: PASS
+Stage 5: PASS
+
+EQUIV_GATE: PASS
+
+Runner gate: SANITY_EQUIV_GATE: PASS (iverilog)
+Simulator: iverilog
+Date: 2026-05-28 17:56:36 UTC

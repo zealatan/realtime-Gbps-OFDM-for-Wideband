@@ -1,0 +1,16 @@
+[D3] === case_039 ===
+[D3] STIM_FILE  = /home/zealatan/RTL_SYNC_PHASE3/golden/p3_15d_stimuli/case_039.mem
+[D3] OUT_PREFIX = /home/zealatan/RTL_SYNC_PHASE3/sim_out/session_D4_p3_15d/case_039
+[D3] Feeding 704 stimulus samples...
+[D3] Waiting for 576 M_AXIS beats...
+[D3] Files written:
+  /home/zealatan/RTL_SYNC_PHASE3/sim_out/session_D4_p3_15d/case_039_status.txt
+  /home/zealatan/RTL_SYNC_PHASE3/sim_out/session_D4_p3_15d/case_039_m_axis_iq.txt  (576 samples)
+  /home/zealatan/RTL_SYNC_PHASE3/sim_out/session_D4_p3_15d/case_039_frac_iq.txt    (576 samples)
+[D3] Structural checks:
+PASS [S1]: INT_CFO_APPLIED=1
+PASS [S2]: M_AXIS=576 == FRAME_LEN
+PASS [S3]: TLAST at 575 (FRAME_LEN-1)
+PASS [S4]: frac captured=576 == FRAME_LEN
+[D3] frame_start=60  slot=82  frac_cfo_word=-346  peak=235  step=0x14000000
+STIM_GATE: PASS

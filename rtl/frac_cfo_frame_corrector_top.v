@@ -18,9 +18,9 @@
 // slot_start = frame_index + peak_lag (CP start, timing-corrected)
 // Output: TOTAL_SAMPLES = NSC+CP_LEN corrected IQ samples, tlast on last.
 //
-// NCO step word: step = round(-frac_phase × 2^32 / 2π)
-//   frac_phase is Q1.15 (radians × 2^15/π), so:
-//   step = -frac_phase × 2^16  →  {(-frac_phase[15:0]), 16'h0}
+// NCO step word: step = -frac_phase × 2^8  [A-FIX2]
+//   frac_phase Q1.15: per-symbol total phase. Per-sample step = phase / NSC (NSC=256=2^8).
+//   step = sign_ext({-frac_phase, 8'b0})
 //
 // NCO sequencing in S_LOAD_NCO (counted by nco_cnt, combinatorial decode):
 //   nco_cnt=0: load_step=1 (latch step_word into NCO)
@@ -42,6 +42,7 @@
 module frac_cfo_frame_corrector_top #(
     parameter integer NSC          = 256,
     parameter integer CP_LEN       = 32,
+    parameter integer OUTPUT_SAMPLES = 0,   // 0 = default to NSC+CP_LEN
     parameter integer BUF_AW       = 12,
     parameter integer ACC_WIDTH    = 40,
     parameter integer METRIC_WIDTH = 32,
@@ -54,7 +55,13 @@ module frac_cfo_frame_corrector_top #(
     parameter integer HIT_COUNT    = 10,
     parameter integer THRESHOLD    = 10240000,
     parameter integer NCO_PHASE_WIDTH = 32,
-    parameter integer LATENCY         = 15
+    parameter integer LATENCY         = 15,
+    // Acquisition watchdog: counts cycles with no accepted sample during S_FILL.
+    // 0 = disabled (default, preserves backward compatibility).
+    // Non-zero N: if N consecutive cycles pass without a valid IQ sample accepted,
+    // frame_error=1 and error_code=6 (INPUT_ACQ_TIMEOUT) are asserted and the FSM
+    // exits to a safe terminal state.
+    parameter integer ACQ_WATCHDOG_CYCLES = 0
 ) (
     input  wire                       aclk,
     input  wire                       aresetn,
@@ -70,6 +77,9 @@ module frac_cfo_frame_corrector_top #(
     output reg                        done,
     output reg                        busy,
     output reg                        frame_error,
+    // error_code: 0=none, 6=INPUT_ACQ_TIMEOUT (Step 43).
+    // Stable after done; cleared when next transaction starts.
+    output wire [3:0]                 error_code,
 
     // Frame detector run-time config (sampled at start)
     input  wire [ENERGY_WIDTH-1:0]    threshold_in,
@@ -91,7 +101,7 @@ module frac_cfo_frame_corrector_top #(
     output wire                       m_axis_tlast
 );
 
-    localparam integer TOTAL_SAMPLES = NSC + CP_LEN;
+    localparam integer TOTAL_SAMPLES = (OUTPUT_SAMPLES > 0) ? OUTPUT_SAMPLES : (NSC + CP_LEN);
     localparam integer PLAY_CNT_W    = $clog2(TOTAL_SAMPLES + 1);
     localparam integer NCO_WAIT      = LATENCY + 2; // nco_cnt value at sincos_valid
 
@@ -105,6 +115,38 @@ module frac_cfo_frame_corrector_top #(
         S_DONE       = 3'd6;
 
     reg [2:0] state;
+
+    // -----------------------------------------------------------------------
+    // Acquisition watchdog (Step 43)
+    // -----------------------------------------------------------------------
+    // iq_accept_w: AXI handshake — one sample accepted this cycle.
+    // acq_wdog_r : inactivity counter; counts cycles with no accepted sample in S_FILL.
+    // acq_timeout_w: fires when counter reaches ACQ_WATCHDOG_CYCLES-1 and no sample
+    //   is being accepted. (ACQ_WATCHDOG_CYCLES>0) is a constant, so when disabled
+    //   the entire expression elaborates to 0 (dead code eliminated).
+    wire       iq_accept_w   = s_axis_tvalid && s_axis_tready;
+    reg [15:0] acq_wdog_r;
+    reg [3:0]  error_code_r;
+    wire       acq_timeout_w = (ACQ_WATCHDOG_CYCLES > 0) &&
+                                (state == S_FILL) &&
+                                !iq_accept_w &&
+                                (acq_wdog_r == ACQ_WATCHDOG_CYCLES[15:0] - 16'd1);
+
+    assign error_code = error_code_r;
+
+    // Counter: resets outside S_FILL and on accepted sample; counts idle cycles.
+    always @(posedge aclk) begin
+        if (!aresetn) begin
+            acq_wdog_r <= 16'd0;
+        end else if (state == S_FILL) begin
+            if (iq_accept_w || acq_timeout_w)
+                acq_wdog_r <= 16'd0;
+            else if (ACQ_WATCHDOG_CYCLES > 0)
+                acq_wdog_r <= acq_wdog_r + 16'd1;
+        end else begin
+            acq_wdog_r <= 16'd0;
+        end
+    end
 
     // -----------------------------------------------------------------------
     // iq_frame_buffer control
@@ -155,8 +197,9 @@ module frac_cfo_frame_corrector_top #(
     wire nco_enable_w      = ((state == S_LOAD_NCO) && (nco_cnt >= 5'd2)) ||
                               (state == S_CORRECT);
 
-    // step_word = -frac_phase × 2^16 = {two's-complement(-frac_phase), 16'b0}
-    wire signed [31:0] step_word_w = {(-frac_phase_r), 16'h0000};
+    // step_word = +frac_phase × 2^8: frac_phase = atan2(P_Q,P_I)/π×2^15, so
+    // +frac_phase×256/2^32 = frac_cfo/NSC cycles/sample (correct removal direction).
+    wire signed [31:0] step_word_w = {{8{frac_phase_r[PHASE_WIDTH-1]}}, frac_phase_r, 8'h00};
 
     wire               sincos_valid;
     wire               corr_tready;
@@ -335,6 +378,7 @@ module frac_cfo_frame_corrector_top #(
             done              <= 1'b0;
             busy              <= 1'b0;
             frame_error       <= 1'b0;
+            error_code_r      <= 4'd0;
             buf_capture_start <= 1'b0;
             fd_start_r        <= 1'b0;
             tfc_start_r       <= 1'b0;
@@ -361,13 +405,19 @@ module frac_cfo_frame_corrector_top #(
                     frame_error <= 1'b0;
                     if (start && !busy) begin
                         busy              <= 1'b1;
+                        error_code_r      <= 4'd0;  // clear previous error code
                         buf_capture_start <= 1'b1;
                         state             <= S_FILL;
                     end
                 end
 
                 S_FILL: begin
-                    if (buf_capture_done) begin
+                    if (acq_timeout_w) begin
+                        // Inactivity watchdog expired during buffer fill
+                        frame_error  <= 1'b1;
+                        error_code_r <= 4'd6;   // INPUT_ACQ_TIMEOUT
+                        state        <= S_DONE;
+                    end else if (buf_capture_done) begin
                         fd_start_r <= 1'b1;
                         state      <= S_FRAME_DET;
                     end

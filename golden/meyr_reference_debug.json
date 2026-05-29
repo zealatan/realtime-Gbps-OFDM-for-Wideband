@@ -1,0 +1,36 @@
+{
+  "generator": "gen_meyr_reference_roms.py",
+  "strategy": "stimulus-derived time-domain cross-product (bypass-compatible)",
+  "parameters": {
+    "NSC": 256,
+    "CP_LEN": 32,
+    "SLOT_START": 64,
+    "PSS_start_in_frame": 96,
+    "SSS_start_in_frame": 384,
+    "TARGET_PEAK": 3000.0,
+    "EPS_FRAC": 0.05,
+    "SEED": 12648430,
+    "q15_scale": 0.005802072257198584,
+    "max_abs_term1": 5647465
+  },
+  "pss_rom_first_entry": {
+    "I": 7325,
+    "Q": -3203,
+    "packed_hex": "f37d1c9d"
+  },
+  "pss_rom_last_entry": {
+    "I": 6518,
+    "Q": 5633,
+    "packed_hex": "16011976"
+  },
+  "sss_rom_convention": "all I=+32767 Q=0 \u2192 sign=+1 \u2192 term2[j]=PSS_rom[j]",
+  "nonzero_pss_bins": 256,
+  "predicted_peak_lag": 255,
+  "predicted_int_cfo": 0,
+  "predicted_step_word": 0,
+  "predicted_score_at_peak": 4580111832126925,
+  "expected_RTL_INTEGER_CFO_WORD": 0,
+  "expected_RTL_MEYR_PEAK_INDEX": 255,
+  "rom_packing": "{Q[31:16], I[15:0]} as 8-hex-digit lines",
+  "note": "PSS_rom[j] = term1_ref[j] = PSS_td_ref[j] \u00d7 conj(SSS_td_ref[j]) normalized to Q1.15. Valid only for the current stimulus (INT_CFO=0, SEED=0xC0FFEE). For \u00b11 CFO variants, re-run with CFO-shifted stimulus."
+}

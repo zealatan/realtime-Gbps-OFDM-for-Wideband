@@ -1,0 +1,5 @@
+cycle,frame_start_valid,frame_start_index,peak_valid,peak_index,slot_start_valid,slot_start_index,frac_cfo_valid,frac_cfo_word,pss_start,sss_start,integer_cfo_valid,integer_cfo_word,done,error_code
+37310,1,41,1,23,0,0,1,3276,32,320,0,0,0,0
+38486,0,41,0,23,1,64,0,3276,32,320,0,0,0,0
+105320,0,41,0,23,0,64,0,3276,32,320,1,0,0,0
+105321,0,41,0,23,0,64,0,3276,32,320,0,0,1,0

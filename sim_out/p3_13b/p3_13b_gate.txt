@@ -1,0 +1,4 @@
+SANITY_GATE: PASS (behavioral DFT, iverilog)
+OFFICIAL_GATE: FAIL — xsim unavailable
+SANITY_GATE: PASS (behavioral DFT, iverilog)
+OFFICIAL_GATE: FAIL — xsim unavailable

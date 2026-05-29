@@ -1,0 +1,29 @@
+WARNING: /home/zealatan/RTL_SYNC_PHASE3/tb/session_A_p3_12c_full_phase3_regression_tb.sv:234: $readmemh(golden/phase3_iq_stimulus_q15.hex): Not enough words in the file for the requested range [0:65535].
+[TB] @4258 modular_fsm_frame_found asserted
+[TB] @37314 frame_start_valid: index=41
+[TB] @37314 peak_valid: peak_lag=23
+[TB] @38490 slot_start_valid: slot=64
+[TB] @105324 integer_cfo_valid: word=0x00000000
+[TB] @105325 DONE: error=0 error_code=0
+
+=== Session A / P3-12C Full Phase3 Regression Checks ===
+    DUT: phase3_sync_top + modular frame_detector (P3-12A)
+
+[PASS] C1 frame_found==1 (frame_start_valid observed)
+[PASS] C2 frame_index==41  got=41 exp=41 tol=±1
+[PASS] C3 peak_lag==23  got=23 exp=23 tol=±1
+[PASS] C4 slot_start==64  got=64 exp=64 tol=±1
+[PASS] C5 slot_start==frame_index+peak_lag  got=64 exp=64 tol=±1
+[PASS] C6 done asserted
+[PASS] C7 error_code==0
+[PASS] C8 modular_fsm_frame_found observed (modular hierarchy intact)
+[PASS] C9 slot_start_valid observed (PSS/SSS windows computed)
+[PASS] C10 integer_cfo_valid observed (Meyr pipeline reached done)
+
+  frame_index  = 41  (golden=41)
+  peak_lag     = 23  (golden=23)
+  slot_start   = 64  (golden=64)
+  cycles       = 105326
+
+--- P3-12C: 10 PASS  0 FAIL ---
+CI GATE: PASSED

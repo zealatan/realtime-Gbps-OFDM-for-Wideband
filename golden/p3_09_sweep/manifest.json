@@ -1,0 +1,282 @@
+{
+  "generator": "gen_phase3_integer_cfo_sweep_vectors.py",
+  "date": "2026-05-28",
+  "sweep_k_int": [
+    -8,
+    -4,
+    -2,
+    -1,
+    0,
+    1,
+    2,
+    4,
+    8
+  ],
+  "nsc": 256,
+  "cp_len": 32,
+  "center": 255,
+  "int_cfo_shift": 24,
+  "seed": 12648430,
+  "eps_frac": 0.05,
+  "amplitude": 3000.0,
+  "formula": {
+    "peak_index": "255 + k_int",
+    "int_cfo": "k_int",
+    "integer_cfo_word": "-k_int * 2^INT_CFO_SHIFT = -k_int * 16777216"
+  },
+  "bypass_fft_limitation": "With bypass fft256_dual_symbol_frontend.v, integer CFO cancels in PSS_td \u00d7 conj(SSS_td) cross-product.  All k_int cases yield peak=255 and int_cfo=0.  Real FFT backend is required for k_int\u22600 sweep.",
+  "cases": {
+    "km8": {
+      "k_int": -8,
+      "stimulus_file": "case_km8.mem",
+      "n_samples": 704,
+      "real_fft_mode": {
+        "expected_meyr_peak_index": 247,
+        "expected_int_cfo": -8,
+        "expected_integer_cfo_word": 134217728,
+        "note": "Valid only when fft256_dual_symbol_frontend uses real FFT"
+      },
+      "bypass_fft_mode": {
+        "expected_meyr_peak_index": 255,
+        "expected_int_cfo": 0,
+        "expected_integer_cfo_word": 0,
+        "note": "Bypass mode: integer CFO cancels in PSS\u00d7conj(SSS) cross-product"
+      },
+      "front_end_expected": {
+        "DETECTION_STATUS": 1,
+        "frameStart": 41,
+        "peakIndexAuto": 23,
+        "slotStartIndex": 64,
+        "PSS_START": 32,
+        "SSS_START": 320,
+        "PSS_SAMPLE_COUNT": 256,
+        "SSS_SAMPLE_COUNT": 256,
+        "note": "Front-end outputs are k_int-independent (integer CFO does not shift autocorr peak)"
+      }
+    },
+    "km4": {
+      "k_int": -4,
+      "stimulus_file": "case_km4.mem",
+      "n_samples": 704,
+      "real_fft_mode": {
+        "expected_meyr_peak_index": 251,
+        "expected_int_cfo": -4,
+        "expected_integer_cfo_word": 67108864,
+        "note": "Valid only when fft256_dual_symbol_frontend uses real FFT"
+      },
+      "bypass_fft_mode": {
+        "expected_meyr_peak_index": 255,
+        "expected_int_cfo": 0,
+        "expected_integer_cfo_word": 0,
+        "note": "Bypass mode: integer CFO cancels in PSS\u00d7conj(SSS) cross-product"
+      },
+      "front_end_expected": {
+        "DETECTION_STATUS": 1,
+        "frameStart": 41,
+        "peakIndexAuto": 23,
+        "slotStartIndex": 64,
+        "PSS_START": 32,
+        "SSS_START": 320,
+        "PSS_SAMPLE_COUNT": 256,
+        "SSS_SAMPLE_COUNT": 256,
+        "note": "Front-end outputs are k_int-independent (integer CFO does not shift autocorr peak)"
+      }
+    },
+    "km2": {
+      "k_int": -2,
+      "stimulus_file": "case_km2.mem",
+      "n_samples": 704,
+      "real_fft_mode": {
+        "expected_meyr_peak_index": 253,
+        "expected_int_cfo": -2,
+        "expected_integer_cfo_word": 33554432,
+        "note": "Valid only when fft256_dual_symbol_frontend uses real FFT"
+      },
+      "bypass_fft_mode": {
+        "expected_meyr_peak_index": 255,
+        "expected_int_cfo": 0,
+        "expected_integer_cfo_word": 0,
+        "note": "Bypass mode: integer CFO cancels in PSS\u00d7conj(SSS) cross-product"
+      },
+      "front_end_expected": {
+        "DETECTION_STATUS": 1,
+        "frameStart": 41,
+        "peakIndexAuto": 23,
+        "slotStartIndex": 64,
+        "PSS_START": 32,
+        "SSS_START": 320,
+        "PSS_SAMPLE_COUNT": 256,
+        "SSS_SAMPLE_COUNT": 256,
+        "note": "Front-end outputs are k_int-independent (integer CFO does not shift autocorr peak)"
+      }
+    },
+    "km1": {
+      "k_int": -1,
+      "stimulus_file": "case_km1.mem",
+      "n_samples": 704,
+      "real_fft_mode": {
+        "expected_meyr_peak_index": 254,
+        "expected_int_cfo": -1,
+        "expected_integer_cfo_word": 16777216,
+        "note": "Valid only when fft256_dual_symbol_frontend uses real FFT"
+      },
+      "bypass_fft_mode": {
+        "expected_meyr_peak_index": 255,
+        "expected_int_cfo": 0,
+        "expected_integer_cfo_word": 0,
+        "note": "Bypass mode: integer CFO cancels in PSS\u00d7conj(SSS) cross-product"
+      },
+      "front_end_expected": {
+        "DETECTION_STATUS": 1,
+        "frameStart": 41,
+        "peakIndexAuto": 23,
+        "slotStartIndex": 64,
+        "PSS_START": 32,
+        "SSS_START": 320,
+        "PSS_SAMPLE_COUNT": 256,
+        "SSS_SAMPLE_COUNT": 256,
+        "note": "Front-end outputs are k_int-independent (integer CFO does not shift autocorr peak)"
+      }
+    },
+    "k0": {
+      "k_int": 0,
+      "stimulus_file": "case_k0.mem",
+      "n_samples": 704,
+      "real_fft_mode": {
+        "expected_meyr_peak_index": 255,
+        "expected_int_cfo": 0,
+        "expected_integer_cfo_word": 0,
+        "note": "Valid only when fft256_dual_symbol_frontend uses real FFT"
+      },
+      "bypass_fft_mode": {
+        "expected_meyr_peak_index": 255,
+        "expected_int_cfo": 0,
+        "expected_integer_cfo_word": 0,
+        "note": "Bypass mode: integer CFO cancels in PSS\u00d7conj(SSS) cross-product"
+      },
+      "front_end_expected": {
+        "DETECTION_STATUS": 1,
+        "frameStart": 41,
+        "peakIndexAuto": 23,
+        "slotStartIndex": 64,
+        "PSS_START": 32,
+        "SSS_START": 320,
+        "PSS_SAMPLE_COUNT": 256,
+        "SSS_SAMPLE_COUNT": 256,
+        "note": "Front-end outputs are k_int-independent (integer CFO does not shift autocorr peak)"
+      }
+    },
+    "kp1": {
+      "k_int": 1,
+      "stimulus_file": "case_kp1.mem",
+      "n_samples": 704,
+      "real_fft_mode": {
+        "expected_meyr_peak_index": 256,
+        "expected_int_cfo": 1,
+        "expected_integer_cfo_word": -16777216,
+        "note": "Valid only when fft256_dual_symbol_frontend uses real FFT"
+      },
+      "bypass_fft_mode": {
+        "expected_meyr_peak_index": 255,
+        "expected_int_cfo": 0,
+        "expected_integer_cfo_word": 0,
+        "note": "Bypass mode: integer CFO cancels in PSS\u00d7conj(SSS) cross-product"
+      },
+      "front_end_expected": {
+        "DETECTION_STATUS": 1,
+        "frameStart": 41,
+        "peakIndexAuto": 23,
+        "slotStartIndex": 64,
+        "PSS_START": 32,
+        "SSS_START": 320,
+        "PSS_SAMPLE_COUNT": 256,
+        "SSS_SAMPLE_COUNT": 256,
+        "note": "Front-end outputs are k_int-independent (integer CFO does not shift autocorr peak)"
+      }
+    },
+    "kp2": {
+      "k_int": 2,
+      "stimulus_file": "case_kp2.mem",
+      "n_samples": 704,
+      "real_fft_mode": {
+        "expected_meyr_peak_index": 257,
+        "expected_int_cfo": 2,
+        "expected_integer_cfo_word": -33554432,
+        "note": "Valid only when fft256_dual_symbol_frontend uses real FFT"
+      },
+      "bypass_fft_mode": {
+        "expected_meyr_peak_index": 255,
+        "expected_int_cfo": 0,
+        "expected_integer_cfo_word": 0,
+        "note": "Bypass mode: integer CFO cancels in PSS\u00d7conj(SSS) cross-product"
+      },
+      "front_end_expected": {
+        "DETECTION_STATUS": 1,
+        "frameStart": 41,
+        "peakIndexAuto": 23,
+        "slotStartIndex": 64,
+        "PSS_START": 32,
+        "SSS_START": 320,
+        "PSS_SAMPLE_COUNT": 256,
+        "SSS_SAMPLE_COUNT": 256,
+        "note": "Front-end outputs are k_int-independent (integer CFO does not shift autocorr peak)"
+      }
+    },
+    "kp4": {
+      "k_int": 4,
+      "stimulus_file": "case_kp4.mem",
+      "n_samples": 704,
+      "real_fft_mode": {
+        "expected_meyr_peak_index": 259,
+        "expected_int_cfo": 4,
+        "expected_integer_cfo_word": -67108864,
+        "note": "Valid only when fft256_dual_symbol_frontend uses real FFT"
+      },
+      "bypass_fft_mode": {
+        "expected_meyr_peak_index": 255,
+        "expected_int_cfo": 0,
+        "expected_integer_cfo_word": 0,
+        "note": "Bypass mode: integer CFO cancels in PSS\u00d7conj(SSS) cross-product"
+      },
+      "front_end_expected": {
+        "DETECTION_STATUS": 1,
+        "frameStart": 41,
+        "peakIndexAuto": 23,
+        "slotStartIndex": 64,
+        "PSS_START": 32,
+        "SSS_START": 320,
+        "PSS_SAMPLE_COUNT": 256,
+        "SSS_SAMPLE_COUNT": 256,
+        "note": "Front-end outputs are k_int-independent (integer CFO does not shift autocorr peak)"
+      }
+    },
+    "kp8": {
+      "k_int": 8,
+      "stimulus_file": "case_kp8.mem",
+      "n_samples": 704,
+      "real_fft_mode": {
+        "expected_meyr_peak_index": 263,
+        "expected_int_cfo": 8,
+        "expected_integer_cfo_word": -134217728,
+        "note": "Valid only when fft256_dual_symbol_frontend uses real FFT"
+      },
+      "bypass_fft_mode": {
+        "expected_meyr_peak_index": 255,
+        "expected_int_cfo": 0,
+        "expected_integer_cfo_word": 0,
+        "note": "Bypass mode: integer CFO cancels in PSS\u00d7conj(SSS) cross-product"
+      },
+      "front_end_expected": {
+        "DETECTION_STATUS": 1,
+        "frameStart": 41,
+        "peakIndexAuto": 23,
+        "slotStartIndex": 64,
+        "PSS_START": 32,
+        "SSS_START": 320,
+        "PSS_SAMPLE_COUNT": 256,
+        "SSS_SAMPLE_COUNT": 256,
+        "note": "Front-end outputs are k_int-independent (integer CFO does not shift autocorr peak)"
+      }
+    }
+  }
+}

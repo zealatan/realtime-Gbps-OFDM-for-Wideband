@@ -331,19 +331,24 @@ module nco_phase_gen #(
             else if (enable)
                 phase_acc_r <= phase_acc_r + step_word_r;
 
-            // Capture LUT output for PRE-ACCUMULATION phase (lut_idx uses old phase_acc_r).
-            // NBA semantics guarantee phase_acc_r is not yet updated at RHS evaluation.
-            sin_pipe  [0] <= SIN_ROM[lut_idx];
-            cos_pipe  [0] <= COS_ROM[lut_idx];
-            valid_pipe[0] <= enable && !phase_reset;
-            for (k = 1; k < LATENCY; k = k + 1) begin
-                sin_pipe  [k] <= sin_pipe  [k-1];
-                cos_pipe  [k] <= cos_pipe  [k-1];
-                valid_pipe[k] <= valid_pipe[k-1];
+            // Gate entire sin/cos pipeline on enable so it freezes during backpressure stalls.
+            // When enable=0, every stage holds its value; phase_acc also holds (above).
+            // This keeps the NCO output aligned with accepted samples, not wall-clock time.
+            if (enable) begin
+                // Capture LUT output for PRE-ACCUMULATION phase (lut_idx uses old phase_acc_r).
+                // NBA semantics guarantee phase_acc_r is not yet updated at RHS evaluation.
+                sin_pipe  [0] <= SIN_ROM[lut_idx];
+                cos_pipe  [0] <= COS_ROM[lut_idx];
+                valid_pipe[0] <= !phase_reset;
+                for (k = 1; k < LATENCY; k = k + 1) begin
+                    sin_pipe  [k] <= sin_pipe  [k-1];
+                    cos_pipe  [k] <= cos_pipe  [k-1];
+                    valid_pipe[k] <= valid_pipe[k-1];
+                end
+                sin_out_r      <= sin_pipe  [LATENCY-1];
+                cos_out_r      <= cos_pipe  [LATENCY-1];
+                sincos_valid_r <= valid_pipe[LATENCY-1];
             end
-            sin_out_r      <= sin_pipe  [LATENCY-1];
-            cos_out_r      <= cos_pipe  [LATENCY-1];
-            sincos_valid_r <= valid_pipe[LATENCY-1];
         end
     end
 

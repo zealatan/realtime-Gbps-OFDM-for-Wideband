@@ -1,0 +1,23 @@
+WARNING: tb/p3_12b_frame_detector_golden_regression_tb.sv:203: $readmemh(golden/phase3_iq_stimulus_q15.hex): Not enough words in the file for the requested range [0:65535].
+[TB] @37314 frame_start_valid: index=41
+[TB] @38490 slot_start_valid: slot=64
+[TB] @105325 DONE: error=0 error_code=0
+
+=== P3-12B Golden Regression Checks ===
+    (DUT: phase3_sync_top with modular frame_detector P3-12A)
+
+[PASS] C1 frame_found=1 (frame_start_valid observed)
+[PASS] C2 frame_index == 41  got=41 exp=41 tol=±1
+[PASS] C3 frame_start_valid pulse observed
+[PASS] C4 slot_start == frame_index+peak_lag  got=64 exp=64 tol=±1
+[PASS] C4b slot_start == golden(64)  got=64 exp=64 tol=±1
+[PASS] C5 done asserted
+[PASS] C6 error_code == 0
+
+  frame_index  observed = 41  (golden=41)
+  peak_lag     observed = 23
+  slot_start   observed = 64  (golden=64)
+  cycles = 105326
+
+--- P3-12B: 7 PASS  0 FAIL ---
+CI GATE: PASSED

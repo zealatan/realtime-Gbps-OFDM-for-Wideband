@@ -1,0 +1,25 @@
+VCD info: dumpfile logs/p3_14b_replay_sim.vcd opened for output.
+PASS [C1]: AXI-Lite outputs valid after reset
+PASS [C1b]: AXIS signals not X after reset
+PASS [C2]: VERSION=0x00316001
+PASS [C3]: CONTROL enable=1 confirmed
+PASS [C4]: INT_CFO_APPLIED=0 (no replay yet)
+PASS [C5]: OUTPUT_COUNT=0 initially
+PASS [C6]: TLAST_COUNT=0 initially
+[C7] Bypass mode: sending 16 beats, checking AXIS continuity...
+PASS [C7]: Bypass AXIS continuity OK
+PASS [C8]: TLAST correct after 16-beat frame
+PASS [C9]: OUTPUT_COUNT=16 (>= 16)
+PASS [C10]: TLAST_COUNT=1 (>= 1)
+PASS [C11]: m_axis_tvalid=1, tdata=0xdeadbeef (not X)
+PASS [C12]: m_axis_tvalid=0 when disabled
+PASS [C13]: SLVERR on unmapped address
+PASS [C14]: No deadlock/X during M_AXIS stall
+==============================================
+SANITY_GATE: PASS
+All 14 checks passed (C1-C14).
+Replay + integer correction verified at interface level.
+OFFICIAL_GATE: PASS requires full pipeline run under xsim
+  with real IQ stimulus confirming INT_CFO_APPLIED=1 and
+  verifying corrected IQ stream against golden reference.
+==============================================

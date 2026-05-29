@@ -1,0 +1,380 @@
+{
+  "generator": "scripts/gen_p3_22a_channel_vectors.py",
+  "session": "K / P3-22A",
+  "n_cases": 15,
+  "n_required_for_gate": 11,
+  "golden_stimulus": "golden/phase3_iq_stimulus.mem",
+  "output_dir": "golden/p3_22a",
+  "signal_power_est": 1672933.3,
+  "n_total_samples": 704,
+  "pre_zeros": 64,
+  "frame_len": 576,
+  "cp_len": 32,
+  "threshold_tb": 40000,
+  "channel_gate_pass_req": "All gate_required cases must show CASE_PASS",
+  "cases": [
+    {
+      "name": "awgn_snr30dB",
+      "channel": "awgn",
+      "mem_file": "golden/p3_22a/awgn_snr30dB.mem",
+      "gate_required": true,
+      "expected": "CASE_PASS",
+      "meta": {
+        "snr_db": 30,
+        "sig_power_per_sample": 1672933.3,
+        "sigma_per_component": 28.92,
+        "noise_floor_est": 1672.9,
+        "threshold_tb": 40000,
+        "noise_exceeds_threshold": false,
+        "detection_risk": "low",
+        "seed": 100
+      }
+    },
+    {
+      "name": "awgn_snr20dB",
+      "channel": "awgn",
+      "mem_file": "golden/p3_22a/awgn_snr20dB.mem",
+      "gate_required": true,
+      "expected": "CASE_PASS",
+      "meta": {
+        "snr_db": 20,
+        "sig_power_per_sample": 1672933.3,
+        "sigma_per_component": 91.46,
+        "noise_floor_est": 16729.3,
+        "threshold_tb": 40000,
+        "noise_exceeds_threshold": false,
+        "detection_risk": "low",
+        "seed": 200
+      }
+    },
+    {
+      "name": "awgn_snr15dB",
+      "channel": "awgn",
+      "mem_file": "golden/p3_22a/awgn_snr15dB.mem",
+      "gate_required": false,
+      "expected": "CASE_PARTIAL_PASS or CASE_FAIL (threshold limited)",
+      "meta": {
+        "snr_db": 15,
+        "sig_power_per_sample": 1672933.3,
+        "sigma_per_component": 162.64,
+        "noise_floor_est": 52902.8,
+        "threshold_tb": 40000,
+        "noise_exceeds_threshold": true,
+        "detection_risk": "high",
+        "seed": 300
+      }
+    },
+    {
+      "name": "awgn_snr10dB",
+      "channel": "awgn",
+      "mem_file": "golden/p3_22a/awgn_snr10dB.mem",
+      "gate_required": false,
+      "expected": "CASE_PARTIAL_PASS or CASE_FAIL (threshold limited)",
+      "meta": {
+        "snr_db": 10,
+        "sig_power_per_sample": 1672933.3,
+        "sigma_per_component": 289.22,
+        "noise_floor_est": 167293.3,
+        "threshold_tb": 40000,
+        "noise_exceeds_threshold": true,
+        "detection_risk": "high",
+        "seed": 400
+      }
+    },
+    {
+      "name": "mp2tap_d1",
+      "channel": "multipath_2tap",
+      "mem_file": "golden/p3_22a/mp2tap_d1.mem",
+      "gate_required": true,
+      "expected": "CASE_PASS (delay <= CP_LEN)",
+      "meta": {
+        "taps": [
+          {
+            "delay": 0,
+            "gain": 1.0
+          },
+          {
+            "delay": 1,
+            "gain": 0.5
+          }
+        ],
+        "tap_count": 2,
+        "max_delay_samples": 1,
+        "total_power_raw": 1.25,
+        "cp_len": 32,
+        "max_delay_vs_cp": "1/32",
+        "isi_expected": false
+      }
+    },
+    {
+      "name": "mp2tap_d4",
+      "channel": "multipath_2tap",
+      "mem_file": "golden/p3_22a/mp2tap_d4.mem",
+      "gate_required": true,
+      "expected": "CASE_PASS (delay <= CP_LEN)",
+      "meta": {
+        "taps": [
+          {
+            "delay": 0,
+            "gain": 1.0
+          },
+          {
+            "delay": 4,
+            "gain": 0.5
+          }
+        ],
+        "tap_count": 2,
+        "max_delay_samples": 4,
+        "total_power_raw": 1.25,
+        "cp_len": 32,
+        "max_delay_vs_cp": "4/32",
+        "isi_expected": false
+      }
+    },
+    {
+      "name": "mp2tap_d8",
+      "channel": "multipath_2tap",
+      "mem_file": "golden/p3_22a/mp2tap_d8.mem",
+      "gate_required": true,
+      "expected": "CASE_PASS (delay <= CP_LEN)",
+      "meta": {
+        "taps": [
+          {
+            "delay": 0,
+            "gain": 1.0
+          },
+          {
+            "delay": 8,
+            "gain": 0.5
+          }
+        ],
+        "tap_count": 2,
+        "max_delay_samples": 8,
+        "total_power_raw": 1.25,
+        "cp_len": 32,
+        "max_delay_vs_cp": "8/32",
+        "isi_expected": false
+      }
+    },
+    {
+      "name": "mp2tap_d16",
+      "channel": "multipath_2tap",
+      "mem_file": "golden/p3_22a/mp2tap_d16.mem",
+      "gate_required": true,
+      "expected": "CASE_PASS (delay <= CP_LEN)",
+      "meta": {
+        "taps": [
+          {
+            "delay": 0,
+            "gain": 1.0
+          },
+          {
+            "delay": 16,
+            "gain": 0.5
+          }
+        ],
+        "tap_count": 2,
+        "max_delay_samples": 16,
+        "total_power_raw": 1.25,
+        "cp_len": 32,
+        "max_delay_vs_cp": "16/32",
+        "isi_expected": false
+      }
+    },
+    {
+      "name": "mp2tap_d32",
+      "channel": "multipath_2tap",
+      "mem_file": "golden/p3_22a/mp2tap_d32.mem",
+      "gate_required": true,
+      "expected": "CASE_PASS (delay <= CP_LEN)",
+      "meta": {
+        "taps": [
+          {
+            "delay": 0,
+            "gain": 1.0
+          },
+          {
+            "delay": 32,
+            "gain": 0.5
+          }
+        ],
+        "tap_count": 2,
+        "max_delay_samples": 32,
+        "total_power_raw": 1.25,
+        "cp_len": 32,
+        "max_delay_vs_cp": "32/32",
+        "isi_expected": false
+      }
+    },
+    {
+      "name": "mp3tap_d1",
+      "channel": "multipath_3tap",
+      "mem_file": "golden/p3_22a/mp3tap_d1.mem",
+      "gate_required": true,
+      "expected": "CASE_PASS",
+      "meta": {
+        "taps": [
+          {
+            "delay": 0,
+            "gain": 1.0
+          },
+          {
+            "delay": 1,
+            "gain": 0.5
+          },
+          {
+            "delay": 2,
+            "gain": 0.25
+          }
+        ],
+        "tap_count": 3,
+        "max_delay_samples": 2,
+        "total_power_raw": 1.3125,
+        "cp_len": 32,
+        "max_delay_vs_cp": "2/32",
+        "isi_expected": false
+      }
+    },
+    {
+      "name": "mp3tap_d4",
+      "channel": "multipath_3tap",
+      "mem_file": "golden/p3_22a/mp3tap_d4.mem",
+      "gate_required": true,
+      "expected": "CASE_PASS",
+      "meta": {
+        "taps": [
+          {
+            "delay": 0,
+            "gain": 1.0
+          },
+          {
+            "delay": 4,
+            "gain": 0.5
+          },
+          {
+            "delay": 8,
+            "gain": 0.25
+          }
+        ],
+        "tap_count": 3,
+        "max_delay_samples": 8,
+        "total_power_raw": 1.3125,
+        "cp_len": 32,
+        "max_delay_vs_cp": "8/32",
+        "isi_expected": false
+      }
+    },
+    {
+      "name": "mp3tap_d8",
+      "channel": "multipath_3tap",
+      "mem_file": "golden/p3_22a/mp3tap_d8.mem",
+      "gate_required": true,
+      "expected": "CASE_PASS",
+      "meta": {
+        "taps": [
+          {
+            "delay": 0,
+            "gain": 1.0
+          },
+          {
+            "delay": 8,
+            "gain": 0.5
+          },
+          {
+            "delay": 16,
+            "gain": 0.25
+          }
+        ],
+        "tap_count": 3,
+        "max_delay_samples": 16,
+        "total_power_raw": 1.3125,
+        "cp_len": 32,
+        "max_delay_vs_cp": "16/32",
+        "isi_expected": false
+      }
+    },
+    {
+      "name": "mp3tap_d16",
+      "channel": "multipath_3tap",
+      "mem_file": "golden/p3_22a/mp3tap_d16.mem",
+      "gate_required": true,
+      "expected": "CASE_PASS",
+      "meta": {
+        "taps": [
+          {
+            "delay": 0,
+            "gain": 1.0
+          },
+          {
+            "delay": 16,
+            "gain": 0.5
+          },
+          {
+            "delay": 32,
+            "gain": 0.25
+          }
+        ],
+        "tap_count": 3,
+        "max_delay_samples": 32,
+        "total_power_raw": 1.3125,
+        "cp_len": 32,
+        "max_delay_vs_cp": "32/32",
+        "isi_expected": false
+      }
+    },
+    {
+      "name": "mp3tap_d32",
+      "channel": "multipath_3tap",
+      "mem_file": "golden/p3_22a/mp3tap_d32.mem",
+      "gate_required": false,
+      "expected": "CASE_PARTIAL_PASS or CASE_FAIL (3rd tap > CP_LEN)",
+      "meta": {
+        "taps": [
+          {
+            "delay": 0,
+            "gain": 1.0
+          },
+          {
+            "delay": 32,
+            "gain": 0.5
+          },
+          {
+            "delay": 64,
+            "gain": 0.25
+          }
+        ],
+        "tap_count": 3,
+        "max_delay_samples": 64,
+        "total_power_raw": 1.3125,
+        "cp_len": 32,
+        "max_delay_vs_cp": "64/32",
+        "isi_expected": true
+      }
+    },
+    {
+      "name": "neg_mp2tap_d33",
+      "channel": "negative_test",
+      "mem_file": "golden/p3_22a/neg_mp2tap_d33.mem",
+      "gate_required": false,
+      "expected": "WARN or FAIL \u2014 delay=33 > CP_LEN=32, ISI degrades pipeline",
+      "meta": {
+        "taps": [
+          {
+            "delay": 0,
+            "gain": 1.0
+          },
+          {
+            "delay": 33,
+            "gain": 0.5
+          }
+        ],
+        "tap_count": 2,
+        "max_delay_samples": 33,
+        "total_power_raw": 1.25,
+        "cp_len": 32,
+        "max_delay_vs_cp": "33/32",
+        "isi_expected": true
+      }
+    }
+  ]
+}

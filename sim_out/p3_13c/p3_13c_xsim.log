@@ -1,0 +1,766 @@
+#-----------------------------------------------------------
+# xsim v2023.1 (64-bit)
+# SW Build 3865809 on Sun May  7 15:05:29 MDT 2023
+# IP Build 3864474 on Sun May  7 20:36:21 MDT 2023
+# SharedData Build 3865790 on Sun May 07 13:33:03 MDT 2023
+# Start of session at: Thu May 28 15:23:22 2026
+# Process ID: 14272
+# Current directory: C:/Temp/p3_13c_xsim_work
+# Command line: xsim.exe -log p3_13c_xsim.log -mode tcl -source {xsim.dir/p3_13c_real_fft_snap/xsim_script.tcl}
+# Log file: C:/Temp/p3_13c_xsim_work/p3_13c_xsim.log
+# Journal file: C:/Temp/p3_13c_xsim_work\xsim.jou
+# Running On: DESKTOP-FAIRVEG, OS: Windows, CPU Frequency: 2496 MHz, CPU Physical cores: 10, Host memory: 16793 MB
+#-----------------------------------------------------------
+source xsim.dir/p3_13c_real_fft_snap/xsim_script.tcl
+# xsim {p3_13c_real_fft_snap} -autoloadwcfg -runall
+Time resolution is 1 ps
+run -all
+
+============================================================
+ P3-13B Real FFT / Behavioral DFT Meyr Testbench
+ USE_BEHAVIORAL_STUB = 0
+ Mode: REAL XILINX FFT IP — full k_int sweep, Vivado xsim
+============================================================
+
+[TB] Real Xilinx FFT IP mode: k_int sweep from golden/p3_09_sweep/
+[TB] ROM: vectors/meyr_pss_fft_romhex.txt (frequency-domain)
+
+[TB] Case               k0  exp_peak=255  exp_cfo=0
+[DBG_PSS_IN] in_cnt=0 tdata=01a70283
+[DBG_PSS_IN] in_cnt=1 tdata=069204af
+[DBG_PSS_IN] in_cnt=2 tdata=fa6b017b
+[DBG_PSS_IN] in_cnt=3 tdata=fe080426
+[DBG_PSS_IN] in_cnt=252 tdata=fad1fdb4
+[DBG_PSS_IN] in_cnt=253 tdata=ff44020c
+[DBG_PSS_IN] in_cnt=254 tdata=00e9ffef
+[DBG_PSS_IN] in_cnt=255 tdata=fda5fc94
+[DBG_PSS_STREAM] cnt=0 data=01a70283 tready=1
+[DBG_PSS_STREAM] cnt=1 data=069204af tready=0
+[DBG_PSS_STREAM] STALL cnt=1
+[DBG_PSS_STREAM] cnt=1 data=069204af tready=1
+[DBG_PSS_STREAM] cnt=2 data=fa6b017b tready=1
+[DBG_PSS_STREAM] cnt=3 data=fe080426 tready=1
+[DBG_PSS_STREAM] cnt=4 data=fefc0376 tready=1
+[DBG_PSS_STREAM] cnt=5 data=ffbefeff tready=1
+[DBG_PSS_STREAM] cnt=6 data=026dfa14 tready=1
+[DBG_PSS_STREAM] cnt=7 data=0014ff69 tready=1
+[DBG_PSS_STREAM] cnt=248 data=fa6ffe5d tready=1
+[DBG_PSS_STREAM] cnt=249 data=fe5a0b8d tready=1
+[DBG_PSS_STREAM] cnt=250 data=ff620420 tready=1
+[DBG_PSS_STREAM] cnt=251 data=076afecd tready=1
+[DBG_PSS_STREAM] cnt=252 data=fad1fdb4 tready=1
+[DBG_PSS_STREAM] cnt=253 data=ff44020c tready=1
+[DBG_PSS_STREAM] cnt=254 data=00e9ffef tready=1
+[DBG_PSS_STREAM] cnt=255 data=fda5fc94 tready=1
+[DBG_PSS_FLUSH] bin=253 cap_cnt=253 tlast=0
+[DBG_PSS_FLUSH] bin=254 cap_cnt=254 tlast=0
+[DBG_PSS_FLUSH] bin=255 cap_cnt=255 tlast=1
+[DBG_PSS_STREAM] cnt=0 data=01a70283 tready=1
+[DBG_PSS_STREAM] cnt=1 data=069204af tready=0
+[DBG_PSS_STREAM] STALL cnt=1
+[DBG_PSS_STREAM] cnt=1 data=069204af tready=1
+[DBG_PSS_STREAM] cnt=2 data=fa6b017b tready=1
+[DBG_PSS_STREAM] cnt=3 data=fe080426 tready=1
+[DBG_PSS_STREAM] cnt=4 data=fefc0376 tready=1
+[DBG_PSS_STREAM] cnt=5 data=ffbefeff tready=1
+[DBG_PSS_STREAM] cnt=6 data=026dfa14 tready=1
+[DBG_PSS_STREAM] cnt=7 data=0014ff69 tready=1
+[DBG_PSS_STREAM] cnt=248 data=fa6ffe5d tready=1
+[DBG_PSS_STREAM] cnt=249 data=fe5a0b8d tready=1
+[DBG_PSS_STREAM] cnt=250 data=ff620420 tready=1
+[DBG_PSS_STREAM] cnt=251 data=076afecd tready=1
+[DBG_PSS_STREAM] cnt=252 data=fad1fdb4 tready=1
+[DBG_PSS_STREAM] cnt=253 data=ff44020c tready=1
+[DBG_PSS_STREAM] cnt=254 data=00e9ffef tready=1
+[DBG_PSS_STREAM] cnt=255 data=fda5fc94 tready=1
+[DBG_PSS_CAP] bin=0 cap_cnt=0 tdata=ffd00046 tlast=0
+[DBG_PSS_CAP] bin=1 cap_cnt=1 tdata=ffb8ffd9 tlast=0
+[DBG_PSS_CAP] bin=2 cap_cnt=2 tdata=ffdd004a tlast=0
+[DBG_PSS_CAP] bin=3 cap_cnt=3 tdata=00480026 tlast=0
+[DBG_PSS_CAP] bin=253 cap_cnt=253 tdata=00430029 tlast=0
+[DBG_PSS_CAP] bin=254 cap_cnt=254 tdata=ffb7ffdc tlast=0
+[DBG_PSS_CAP] bin=255 cap_cnt=255 tdata=0044002e tlast=1
+[DBG_SSS_IN] in_cnt=0 tdata=06d3018d
+[DBG_SSS_IN] in_cnt=1 tdata=04e000ff
+[DBG_SSS_IN] in_cnt=2 tdata=04660164
+[DBG_SSS_IN] in_cnt=3 tdata=0286fd72
+[DBG_SSS_IN] in_cnt=252 tdata=01740127
+[DBG_SSS_IN] in_cnt=253 tdata=04be0190
+[DBG_SSS_IN] in_cnt=254 tdata=04ddfdec
+[DBG_SSS_IN] in_cnt=255 tdata=feaffab4
+[DBG_SSS_STREAM] cnt=0 data=06d3018d tready=1
+[DBG_SSS_STREAM] cnt=1 data=04e000ff tready=0
+[DBG_SSS_STREAM] STALL cnt=1
+[DBG_SSS_STREAM] cnt=1 data=04e000ff tready=1
+[DBG_SSS_STREAM] cnt=2 data=04660164 tready=1
+[DBG_SSS_STREAM] cnt=3 data=0286fd72 tready=1
+[DBG_SSS_STREAM] cnt=252 data=01740127 tready=1
+[DBG_SSS_STREAM] cnt=253 data=04be0190 tready=1
+[DBG_SSS_STREAM] cnt=254 data=04ddfdec tready=1
+[DBG_SSS_STREAM] cnt=255 data=feaffab4 tready=1
+[DBG_SSS_CAP] bin=0 cap_cnt=0 tdata=00490005 tlast=0
+[DBG_SSS_CAP] bin=1 cap_cnt=1 tdata=0005ffa9 tlast=0
+[DBG_SSS_CAP] bin=2 cap_cnt=2 tdata=0009ffb0 tlast=0
+[DBG_SSS_CAP] bin=3 cap_cnt=3 tdata=000dffb6 tlast=0
+[DBG_SSS_CAP] bin=253 cap_cnt=253 tdata=0054000c tlast=0
+[DBG_SSS_CAP] bin=254 cap_cnt=254 tdata=0051000b tlast=0
+[DBG_SSS_CAP] bin=255 cap_cnt=255 tdata=004e0009 tlast=1
+[TB] PASS                k0  peak=255  int_cfo=0  score=551119181
+[TB] Case              kp1  exp_peak=256  exp_cfo=1
+[DBG_PSS_IN] in_cnt=0 tdata=009cfd0f
+[DBG_PSS_IN] in_cnt=1 tdata=fe79f814
+[DBG_PSS_IN] in_cnt=2 tdata=052202a7
+[DBG_PSS_IN] in_cnt=3 tdata=0434fe25
+[DBG_PSS_IN] in_cnt=252 tdata=01830577
+[DBG_PSS_IN] in_cnt=253 tdata=0207ff38
+[DBG_PSS_IN] in_cnt=254 tdata=ff57ff5f
+[DBG_PSS_IN] in_cnt=255 tdata=ff260410
+[DBG_PSS_STREAM] cnt=0 data=009cfd0f tready=1
+[DBG_PSS_STREAM] cnt=1 data=fe79f814 tready=0
+[DBG_PSS_STREAM] STALL cnt=1
+[DBG_PSS_STREAM] cnt=1 data=fe79f814 tready=1
+[DBG_PSS_STREAM] cnt=2 data=052202a7 tready=1
+[DBG_PSS_STREAM] cnt=3 data=0434fe25 tready=1
+[DBG_PSS_STREAM] cnt=4 data=02fbfdf8 tready=1
+[DBG_PSS_STREAM] cnt=5 data=ff9600f3 tready=1
+[DBG_PSS_STREAM] cnt=6 data=fa86034f tready=1
+[DBG_PSS_STREAM] cnt=7 data=ff990070 tready=1
+[DBG_PSS_STREAM] cnt=248 data=01bb058a tready=1
+[DBG_PSS_STREAM] cnt=249 data=0a64fab3 tready=1
+[DBG_PSS_STREAM] cnt=250 data=03aefe0a tready=1
+[DBG_PSS_STREAM] cnt=251 data=fa7efae4 tready=1
+[DBG_PSS_STREAM] cnt=252 data=01830577 tready=1
+[DBG_PSS_STREAM] cnt=253 data=0207ff38 tready=1
+[DBG_PSS_STREAM] cnt=254 data=ff57ff5f tready=1
+[DBG_PSS_STREAM] cnt=255 data=ff260410 tready=1
+[DBG_PSS_FLUSH] bin=253 cap_cnt=253 tlast=0
+[DBG_PSS_FLUSH] bin=254 cap_cnt=254 tlast=0
+[DBG_PSS_FLUSH] bin=255 cap_cnt=255 tlast=1
+[DBG_PSS_STREAM] cnt=0 data=009cfd0f tready=1
+[DBG_PSS_STREAM] cnt=1 data=fe79f814 tready=0
+[DBG_PSS_STREAM] STALL cnt=1
+[DBG_PSS_STREAM] cnt=1 data=fe79f814 tready=1
+[DBG_PSS_STREAM] cnt=2 data=052202a7 tready=1
+[DBG_PSS_STREAM] cnt=3 data=0434fe25 tready=1
+[DBG_PSS_STREAM] cnt=4 data=02fbfdf8 tready=1
+[DBG_PSS_STREAM] cnt=5 data=ff9600f3 tready=1
+[DBG_PSS_STREAM] cnt=6 data=fa86034f tready=1
+[DBG_PSS_STREAM] cnt=7 data=ff990070 tready=1
+[DBG_PSS_STREAM] cnt=248 data=01bb058a tready=1
+[DBG_PSS_STREAM] cnt=249 data=0a64fab3 tready=1
+[DBG_PSS_STREAM] cnt=250 data=03aefe0a tready=1
+[DBG_PSS_STREAM] cnt=251 data=fa7efae4 tready=1
+[DBG_PSS_STREAM] cnt=252 data=01830577 tready=1
+[DBG_PSS_STREAM] cnt=253 data=0207ff38 tready=1
+[DBG_PSS_STREAM] cnt=254 data=ff57ff5f tready=1
+[DBG_PSS_STREAM] cnt=255 data=ff260410 tready=1
+[DBG_PSS_CAP] bin=0 cap_cnt=0 tdata=ffefffad tlast=0
+[DBG_PSS_CAP] bin=1 cap_cnt=1 tdata=0052ffed tlast=0
+[DBG_PSS_CAP] bin=2 cap_cnt=2 tdata=0016004b tlast=0
+[DBG_PSS_CAP] bin=3 cap_cnt=3 tdata=004bffe1 tlast=0
+[DBG_PSS_CAP] bin=253 cap_cnt=253 tdata=0055ffe3 tlast=0
+[DBG_PSS_CAP] bin=254 cap_cnt=254 tdata=ffedffb2 tlast=0
+[DBG_PSS_CAP] bin=255 cap_cnt=255 tdata=001a004d tlast=1
+[DBG_SSS_IN] in_cnt=0 tdata=f92dfe73
+[DBG_SSS_IN] in_cnt=1 tdata=fb1aff20
+[DBG_SSS_IN] in_cnt=2 tdata=fb8afed3
+[DBG_SSS_IN] in_cnt=3 tdata=fdac02bc
+[DBG_SSS_IN] in_cnt=252 tdata=feabfeb6
+[DBG_SSS_IN] in_cnt=253 tdata=fb62fe18
+[DBG_SSS_IN] in_cnt=254 tdata=fb0b01d7
+[DBG_SSS_IN] in_cnt=255 tdata=01300554
+[DBG_SSS_STREAM] cnt=0 data=f92dfe73 tready=1
+[DBG_SSS_STREAM] cnt=1 data=fb1aff20 tready=0
+[DBG_SSS_STREAM] STALL cnt=1
+[DBG_SSS_STREAM] cnt=1 data=fb1aff20 tready=1
+[DBG_SSS_STREAM] cnt=2 data=fb8afed3 tready=1
+[DBG_SSS_STREAM] cnt=3 data=fdac02bc tready=1
+[DBG_SSS_STREAM] cnt=252 data=feabfeb6 tready=1
+[DBG_SSS_STREAM] cnt=253 data=fb62fe18 tready=1
+[DBG_SSS_STREAM] cnt=254 data=fb0b01d7 tready=1
+[DBG_SSS_STREAM] cnt=255 data=01300554 tready=1
+[DBG_SSS_CAP] bin=0 cap_cnt=0 tdata=ffb0fff5 tlast=0
+[DBG_SSS_CAP] bin=1 cap_cnt=1 tdata=ffb4fff9 tlast=0
+[DBG_SSS_CAP] bin=2 cap_cnt=2 tdata=fff70054 tlast=0
+[DBG_SSS_CAP] bin=3 cap_cnt=3 tdata=fff4004d tlast=0
+[DBG_SSS_CAP] bin=253 cap_cnt=253 tdata=ffa5fff2 tlast=0
+[DBG_SSS_CAP] bin=254 cap_cnt=254 tdata=ffabfff3 tlast=0
+[DBG_SSS_CAP] bin=255 cap_cnt=255 tdata=ffaffff4 tlast=1
+[TB] PASS               kp1  peak=256  int_cfo=1  score=546586445
+[TB] Case              km1  exp_peak=254  exp_cfo=-1
+[DBG_PSS_IN] in_cnt=0 tdata=fd0fff64
+[DBG_PSS_IN] in_cnt=1 tdata=f8030123
+[DBG_PSS_IN] in_cnt=2 tdata=0324fb27
+[DBG_PSS_IN] in_cnt=3 tdata=fec8fb92
+[DBG_PSS_IN] in_cnt=252 tdata=0510fd73
+[DBG_PSS_IN] in_cnt=253 tdata=feeefe1c
+[DBG_PSS_IN] in_cnt=254 tdata=ff7000b8
+[DBG_PSS_IN] in_cnt=255 tdata=041a00a7
+[DBG_PSS_STREAM] cnt=0 data=fd0fff64 tready=1
+[DBG_PSS_STREAM] cnt=1 data=f8030123 tready=0
+[DBG_PSS_STREAM] STALL cnt=1
+[DBG_PSS_STREAM] cnt=1 data=f8030123 tready=1
+[DBG_PSS_STREAM] cnt=2 data=0324fb27 tready=1
+[DBG_PSS_STREAM] cnt=3 data=fec8fb92 tready=1
+[DBG_PSS_STREAM] cnt=4 data=fe97fcae tready=1
+[DBG_PSS_STREAM] cnt=5 data=00d200a2 tready=1
+[DBG_PSS_STREAM] cnt=6 data=01940633 tready=1
+[DBG_PSS_STREAM] cnt=7 data=00470087 tready=1
+[DBG_PSS_STREAM] cnt=248 data=0475fc48 tready=1
+[DBG_PSS_STREAM] cnt=249 data=f782f800 tready=1
+[DBG_PSS_STREAM] cnt=250 data=fd0efd0c tready=1
+[DBG_PSS_STREAM] cnt=251 data=fc620695 tready=1
+[DBG_PSS_STREAM] cnt=252 data=0510fd73 tready=1
+[DBG_PSS_STREAM] cnt=253 data=feeefe1c tready=1
+[DBG_PSS_STREAM] cnt=254 data=ff7000b8 tready=1
+[DBG_PSS_STREAM] cnt=255 data=041a00a7 tready=1
+[DBG_PSS_FLUSH] bin=253 cap_cnt=253 tlast=0
+[DBG_PSS_FLUSH] bin=254 cap_cnt=254 tlast=0
+[DBG_PSS_FLUSH] bin=255 cap_cnt=255 tlast=1
+[DBG_PSS_STREAM] cnt=0 data=fd0fff64 tready=1
+[DBG_PSS_STREAM] cnt=1 data=f8030123 tready=0
+[DBG_PSS_STREAM] STALL cnt=1
+[DBG_PSS_STREAM] cnt=1 data=f8030123 tready=1
+[DBG_PSS_STREAM] cnt=2 data=0324fb27 tready=1
+[DBG_PSS_STREAM] cnt=3 data=fec8fb92 tready=1
+[DBG_PSS_STREAM] cnt=4 data=fe97fcae tready=1
+[DBG_PSS_STREAM] cnt=5 data=00d200a2 tready=1
+[DBG_PSS_STREAM] cnt=6 data=01940633 tready=1
+[DBG_PSS_STREAM] cnt=7 data=00470087 tready=1
+[DBG_PSS_STREAM] cnt=248 data=0475fc48 tready=1
+[DBG_PSS_STREAM] cnt=249 data=f782f800 tready=1
+[DBG_PSS_STREAM] cnt=250 data=fd0efd0c tready=1
+[DBG_PSS_STREAM] cnt=251 data=fc620695 tready=1
+[DBG_PSS_STREAM] cnt=252 data=0510fd73 tready=1
+[DBG_PSS_STREAM] cnt=253 data=feeefe1c tready=1
+[DBG_PSS_STREAM] cnt=254 data=ff7000b8 tready=1
+[DBG_PSS_STREAM] cnt=255 data=041a00a7 tready=1
+[DBG_PSS_CAP] bin=0 cap_cnt=0 tdata=004bffe7 tlast=0
+[DBG_PSS_CAP] bin=1 cap_cnt=1 tdata=ffe1ffb2 tlast=0
+[DBG_PSS_CAP] bin=2 cap_cnt=2 tdata=ffae0016 tlast=0
+[DBG_PSS_CAP] bin=3 cap_cnt=3 tdata=ffe9ffb3 tlast=0
+[DBG_PSS_CAP] bin=253 cap_cnt=253 tdata=004dffe5 tlast=0
+[DBG_PSS_CAP] bin=254 cap_cnt=254 tdata=ffae000f tlast=0
+[DBG_PSS_CAP] bin=255 cap_cnt=255 tdata=ffeeffac tlast=1
+[DBG_SSS_IN] in_cnt=0 tdata=f92dfe73
+[DBG_SSS_IN] in_cnt=1 tdata=fb27fee3
+[DBG_SSS_IN] in_cnt=2 tdata=fbadfe65
+[DBG_SSS_IN] in_cnt=3 tdata=fd4c025d
+[DBG_SSS_IN] in_cnt=252 tdata=fe71feff
+[DBG_SSS_IN] in_cnt=253 tdata=fb28feca
+[DBG_SSS_IN] in_cnt=254 tdata=fb3f0251
+[DBG_SSS_IN] in_cnt=255 tdata=01720543
+[DBG_SSS_STREAM] cnt=0 data=f92dfe73 tready=1
+[DBG_SSS_STREAM] cnt=1 data=fb27fee3 tready=0
+[DBG_SSS_STREAM] STALL cnt=1
+[DBG_SSS_STREAM] cnt=1 data=fb27fee3 tready=1
+[DBG_SSS_STREAM] cnt=2 data=fbadfe65 tready=1
+[DBG_SSS_STREAM] cnt=3 data=fd4c025d tready=1
+[DBG_SSS_STREAM] cnt=252 data=fe71feff tready=1
+[DBG_SSS_STREAM] cnt=253 data=fb28feca tready=1
+[DBG_SSS_STREAM] cnt=254 data=fb3f0251 tready=1
+[DBG_SSS_STREAM] cnt=255 data=01720543 tready=1
+[DBG_SSS_CAP] bin=0 cap_cnt=0 tdata=fff80053 tlast=0
+[DBG_SSS_CAP] bin=1 cap_cnt=1 tdata=fff4004d tlast=0
+[DBG_SSS_CAP] bin=2 cap_cnt=2 tdata=fff10046 tlast=0
+[DBG_SSS_CAP] bin=3 cap_cnt=3 tdata=ffadffe9 tlast=0
+[DBG_SSS_CAP] bin=253 cap_cnt=253 tdata=ffaffff4 tlast=0
+[DBG_SSS_CAP] bin=254 cap_cnt=254 tdata=ffb2fff6 tlast=0
+[DBG_SSS_CAP] bin=255 cap_cnt=255 tdata=ffb5fff9 tlast=1
+[TB] PASS               km1  peak=254  int_cfo=-1  score=455116793
+[TB] Case              kp2  exp_peak=257  exp_cfo=2
+[DBG_PSS_IN] in_cnt=0 tdata=fd7d01a7
+[DBG_PSS_IN] in_cnt=1 tdata=fba506cb
+[DBG_PSS_IN] in_cnt=2 tdata=fdfbfa97
+[DBG_PSS_IN] in_cnt=3 tdata=fb9bfea9
+[DBG_PSS_IN] in_cnt=252 tdata=0344fb5d
+[DBG_PSS_IN] in_cnt=253 tdata=fe15fef9
+[DBG_PSS_IN] in_cnt=254 tdata=fffa00e9
+[DBG_PSS_IN] in_cnt=255 tdata=0388fdd1
+[DBG_PSS_STREAM] cnt=0 data=fd7d01a7 tready=1
+[DBG_PSS_STREAM] cnt=1 data=fba506cb tready=0
+[DBG_PSS_STREAM] STALL cnt=1
+[DBG_PSS_STREAM] cnt=1 data=fba506cb tready=1
+[DBG_PSS_STREAM] cnt=2 data=fdfbfa97 tready=1
+[DBG_PSS_STREAM] cnt=3 data=fb9bfea9 tready=1
+[DBG_PSS_STREAM] cnt=4 data=fc68ffae tready=1
+[DBG_PSS_STREAM] cnt=5 data=00e9ff82 tready=1
+[DBG_PSS_STREAM] cnt=6 data=065f009a tready=1
+[DBG_PSS_STREAM] cnt=7 data=0095ffe0 tready=1
+[DBG_PSS_STREAM] cnt=248 data=03a5fb7c tready=1
+[DBG_PSS_STREAM] cnt=249 data=f5affa8e tready=1
+[DBG_PSS_STREAM] cnt=250 data=fc3bfe37 tready=1
+[DBG_PSS_STREAM] cnt=251 data=ff5c077c tready=1
+[DBG_PSS_STREAM] cnt=252 data=0344fb5d tready=1
+[DBG_PSS_STREAM] cnt=253 data=fe15fef9 tready=1
+[DBG_PSS_STREAM] cnt=254 data=fffa00e9 tready=1
+[DBG_PSS_STREAM] cnt=255 data=0388fdd1 tready=1
+[DBG_PSS_FLUSH] bin=253 cap_cnt=253 tlast=0
+[DBG_PSS_FLUSH] bin=254 cap_cnt=254 tlast=0
+[DBG_PSS_FLUSH] bin=255 cap_cnt=255 tlast=1
+[DBG_PSS_STREAM] cnt=0 data=fd7d01a7 tready=1
+[DBG_PSS_STREAM] cnt=1 data=fba506cb tready=0
+[DBG_PSS_STREAM] STALL cnt=1
+[DBG_PSS_STREAM] cnt=1 data=fba506cb tready=1
+[DBG_PSS_STREAM] cnt=2 data=fdfbfa97 tready=1
+[DBG_PSS_STREAM] cnt=3 data=fb9bfea9 tready=1
+[DBG_PSS_STREAM] cnt=4 data=fc68ffae tready=1
+[DBG_PSS_STREAM] cnt=5 data=00e9ff82 tready=1
+[DBG_PSS_STREAM] cnt=6 data=065f009a tready=1
+[DBG_PSS_STREAM] cnt=7 data=0095ffe0 tready=1
+[DBG_PSS_STREAM] cnt=248 data=03a5fb7c tready=1
+[DBG_PSS_STREAM] cnt=249 data=f5affa8e tready=1
+[DBG_PSS_STREAM] cnt=250 data=fc3bfe37 tready=1
+[DBG_PSS_STREAM] cnt=251 data=ff5c077c tready=1
+[DBG_PSS_STREAM] cnt=252 data=0344fb5d tready=1
+[DBG_PSS_STREAM] cnt=253 data=fe15fef9 tready=1
+[DBG_PSS_STREAM] cnt=254 data=fffa00e9 tready=1
+[DBG_PSS_STREAM] cnt=255 data=0388fdd1 tready=1
+[DBG_PSS_CAP] bin=0 cap_cnt=0 tdata=0022ffb5 tlast=0
+[DBG_PSS_CAP] bin=1 cap_cnt=1 tdata=ffd00043 tlast=0
+[DBG_PSS_CAP] bin=2 cap_cnt=2 tdata=ffb7ffd0 tlast=0
+[DBG_PSS_CAP] bin=3 cap_cnt=3 tdata=0024ffb8 tlast=0
+[DBG_PSS_CAP] bin=253 cap_cnt=253 tdata=003b0025 tlast=0
+[DBG_PSS_CAP] bin=254 cap_cnt=254 tdata=ffafffd7 tlast=0
+[DBG_PSS_CAP] bin=255 cap_cnt=255 tdata=ffd60043 tlast=1
+[DBG_SSS_IN] in_cnt=0 tdata=06d3018d
+[DBG_SSS_IN] in_cnt=1 tdata=04eb00c1
+[DBG_SSS_IN] in_cnt=2 tdata=048400f4
+[DBG_SSS_IN] in_cnt=3 tdata=021ffd1a
+[DBG_SSS_IN] in_cnt=252 tdata=0134016a
+[DBG_SSS_IN] in_cnt=253 tdata=0476023e
+[DBG_SSS_IN] in_cnt=254 tdata=050bfe68
+[DBG_SSS_IN] in_cnt=255 tdata=fef2faa5
+[DBG_SSS_STREAM] cnt=0 data=06d3018d tready=1
+[DBG_SSS_STREAM] cnt=1 data=04eb00c1 tready=0
+[DBG_SSS_STREAM] STALL cnt=1
+[DBG_SSS_STREAM] cnt=1 data=04eb00c1 tready=1
+[DBG_SSS_STREAM] cnt=2 data=048400f4 tready=1
+[DBG_SSS_STREAM] cnt=3 data=021ffd1a tready=1
+[DBG_SSS_STREAM] cnt=252 data=0134016a tready=1
+[DBG_SSS_STREAM] cnt=253 data=0476023e tready=1
+[DBG_SSS_STREAM] cnt=254 data=050bfe68 tready=1
+[DBG_SSS_STREAM] cnt=255 data=fef2faa5 tready=1
+[DBG_SSS_CAP] bin=0 cap_cnt=0 tdata=004f000a tlast=0
+[DBG_SSS_CAP] bin=1 cap_cnt=1 tdata=004d0008 tlast=0
+[DBG_SSS_CAP] bin=2 cap_cnt=2 tdata=00480004 tlast=0
+[DBG_SSS_CAP] bin=3 cap_cnt=3 tdata=0006ffa9 tlast=0
+[DBG_SSS_CAP] bin=253 cap_cnt=253 tdata=ffb4fff3 tlast=0
+[DBG_SSS_CAP] bin=254 cap_cnt=254 tdata=005a000d tlast=0
+[DBG_SSS_CAP] bin=255 cap_cnt=255 tdata=0054000c tlast=1
+[TB] PASS               kp2  peak=257  int_cfo=2  score=609114013
+[TB] Case              km2  exp_peak=253  exp_cfo=-2
+[DBG_PSS_IN] in_cnt=0 tdata=0283fe59
+[DBG_PSS_IN] in_cnt=1 tdata=0500f9ab
+[DBG_PSS_IN] in_cnt=2 tdata=00ed05b3
+[DBG_PSS_IN] in_cnt=3 tdata=03d1028e
+[DBG_PSS_IN] in_cnt=252 tdata=fec20588
+[DBG_PSS_IN] in_cnt=253 tdata=0222006d
+[DBG_PSS_IN] in_cnt=254 tdata=ffd8ff1a
+[DBG_PSS_IN] in_cnt=255 tdata=fcb30285
+[DBG_PSS_STREAM] cnt=0 data=0283fe59 tready=1
+[DBG_PSS_STREAM] cnt=1 data=0500f9ab tready=0
+[DBG_PSS_STREAM] STALL cnt=1
+[DBG_PSS_STREAM] cnt=1 data=0500f9ab tready=1
+[DBG_PSS_STREAM] cnt=2 data=00ed05b3 tready=1
+[DBG_PSS_STREAM] cnt=3 data=03d1028e tready=1
+[DBG_PSS_STREAM] cnt=4 data=033201ac tready=1
+[DBG_PSS_STREAM] cnt=5 data=fef70002 tready=1
+[DBG_PSS_STREAM] cnt=6 data=fb0afbf6 tready=1
+[DBG_PSS_STREAM] cnt=7 data=ff79ffba tready=1
+[DBG_PSS_STREAM] cnt=248 data=009e05c5 tready=1
+[DBG_PSS_STREAM] cnt=249 data=0b6efda9 tready=1
+[DBG_PSS_STREAM] cnt=250 data=0420ff64 tready=1
+[DBG_PSS_STREAM] cnt=251 data=fd09f919 tready=1
+[DBG_PSS_STREAM] cnt=252 data=fec20588 tready=1
+[DBG_PSS_STREAM] cnt=253 data=0222006d tready=1
+[DBG_PSS_STREAM] cnt=254 data=ffd8ff1a tready=1
+[DBG_PSS_STREAM] cnt=255 data=fcb30285 tready=1
+[DBG_PSS_FLUSH] bin=253 cap_cnt=253 tlast=0
+[DBG_PSS_FLUSH] bin=254 cap_cnt=254 tlast=0
+[DBG_PSS_FLUSH] bin=255 cap_cnt=255 tlast=1
+[DBG_PSS_STREAM] cnt=0 data=0283fe59 tready=1
+[DBG_PSS_STREAM] cnt=1 data=0500f9ab tready=0
+[DBG_PSS_STREAM] STALL cnt=1
+[DBG_PSS_STREAM] cnt=1 data=0500f9ab tready=1
+[DBG_PSS_STREAM] cnt=2 data=00ed05b3 tready=1
+[DBG_PSS_STREAM] cnt=3 data=03d1028e tready=1
+[DBG_PSS_STREAM] cnt=4 data=033201ac tready=1
+[DBG_PSS_STREAM] cnt=5 data=fef70002 tready=1
+[DBG_PSS_STREAM] cnt=6 data=fb0afbf6 tready=1
+[DBG_PSS_STREAM] cnt=7 data=ff79ffba tready=1
+[DBG_PSS_STREAM] cnt=248 data=009e05c5 tready=1
+[DBG_PSS_STREAM] cnt=249 data=0b6efda9 tready=1
+[DBG_PSS_STREAM] cnt=250 data=0420ff64 tready=1
+[DBG_PSS_STREAM] cnt=251 data=fd09f919 tready=1
+[DBG_PSS_STREAM] cnt=252 data=fec20588 tready=1
+[DBG_PSS_STREAM] cnt=253 data=0222006d tready=1
+[DBG_PSS_STREAM] cnt=254 data=ffd8ff1a tready=1
+[DBG_PSS_STREAM] cnt=255 data=fcb30285 tready=1
+[DBG_PSS_CAP] bin=0 cap_cnt=0 tdata=004a0020 tlast=0
+[DBG_PSS_CAP] bin=1 cap_cnt=1 tdata=0026ffb5 tlast=0
+[DBG_PSS_CAP] bin=2 cap_cnt=2 tdata=00430025 tlast=0
+[DBG_PSS_CAP] bin=3 cap_cnt=3 tdata=001effb6 tlast=0
+[DBG_PSS_CAP] bin=253 cap_cnt=253 tdata=002effbb tlast=0
+[DBG_PSS_CAP] bin=254 cap_cnt=254 tdata=0047002e tlast=0
+[DBG_PSS_CAP] bin=255 cap_cnt=255 tdata=ffdb0046 tlast=1
+[DBG_SSS_IN] in_cnt=0 tdata=06d3018d
+[DBG_SSS_IN] in_cnt=1 tdata=04d2013b
+[DBG_SSS_IN] in_cnt=2 tdata=043e01d1
+[DBG_SSS_IN] in_cnt=3 tdata=02dffdd7
+[DBG_SSS_IN] in_cnt=252 tdata=01a600d8
+[DBG_SSS_IN] in_cnt=253 tdata=04ec00da
+[DBG_SSS_IN] in_cnt=254 tdata=04a3fd74
+[DBG_SSS_IN] in_cnt=255 tdata=fe6dfac6
+[DBG_SSS_STREAM] cnt=0 data=06d3018d tready=1
+[DBG_SSS_STREAM] cnt=1 data=04d2013b tready=0
+[DBG_SSS_STREAM] STALL cnt=1
+[DBG_SSS_STREAM] cnt=1 data=04d2013b tready=1
+[DBG_SSS_STREAM] cnt=2 data=043e01d1 tready=1
+[DBG_SSS_STREAM] cnt=3 data=02dffdd7 tready=1
+[DBG_SSS_STREAM] cnt=252 data=01a600d8 tready=1
+[DBG_SSS_STREAM] cnt=253 data=04ec00da tready=1
+[DBG_SSS_STREAM] cnt=254 data=04a3fd74 tready=1
+[DBG_SSS_STREAM] cnt=255 data=fe6dfac6 tready=1
+[DBG_SSS_CAP] bin=0 cap_cnt=0 tdata=0009ffb0 tlast=0
+[DBG_SSS_CAP] bin=1 cap_cnt=1 tdata=000dffb6 tlast=0
+[DBG_SSS_CAP] bin=2 cap_cnt=2 tdata=004f0014 tlast=0
+[DBG_SSS_CAP] bin=3 cap_cnt=3 tdata=0049000e tlast=0
+[DBG_SSS_CAP] bin=253 cap_cnt=253 tdata=004e0009 tlast=0
+[DBG_SSS_CAP] bin=254 cap_cnt=254 tdata=004a0006 tlast=0
+[DBG_SSS_CAP] bin=255 cap_cnt=255 tdata=0007ffab tlast=1
+[TB] PASS               km2  peak=253  int_cfo=-2  score=451304185
+[TB] Case              kp4  exp_peak=259  exp_cfo=4
+[DBG_PSS_IN] in_cnt=0 tdata=fe59fd7d
+[DBG_PSS_IN] in_cnt=1 tdata=f901fbfb
+[DBG_PSS_IN] in_cnt=2 tdata=0530fd75
+[DBG_PSS_IN] in_cnt=3 tdata=00aefb75
+[DBG_PSS_IN] in_cnt=252 tdata=03e9041b
+[DBG_PSS_IN] in_cnt=253 tdata=014cfe41
+[DBG_PSS_IN] in_cnt=254 tdata=ff18ffe3
+[DBG_PSS_IN] in_cnt=255 tdata=020203a3
+[DBG_PSS_STREAM] cnt=0 data=fe59fd7d tready=1
+[DBG_PSS_STREAM] cnt=1 data=f901fbfb tready=0
+[DBG_PSS_STREAM] STALL cnt=1
+[DBG_PSS_STREAM] cnt=1 data=f901fbfb tready=1
+[DBG_PSS_STREAM] cnt=2 data=0530fd75 tready=1
+[DBG_PSS_STREAM] cnt=3 data=00aefb75 tready=1
+[DBG_PSS_STREAM] cnt=4 data=ff9dfc6a tready=1
+[DBG_PSS_STREAM] cnt=5 data=00b300c3 tready=1
+[DBG_PSS_STREAM] cnt=6 data=01460645 tready=1
+[DBG_PSS_STREAM] cnt=7 data=00500082 tready=1
+[DBG_PSS_STREAM] cnt=248 data=02c70518 tready=1
+[DBG_PSS_STREAM] cnt=249 data=089af81e tready=1
+[DBG_PSS_STREAM] cnt=250 data=02cefcea tready=1
+[DBG_PSS_STREAM] cnt=251 data=f8e5fd90 tready=1
+[DBG_PSS_STREAM] cnt=252 data=03e9041b tready=1
+[DBG_PSS_STREAM] cnt=253 data=014cfe41 tready=1
+[DBG_PSS_STREAM] cnt=254 data=ff18ffe3 tready=1
+[DBG_PSS_STREAM] cnt=255 data=020203a3 tready=1
+[DBG_PSS_FLUSH] bin=253 cap_cnt=253 tlast=0
+[DBG_PSS_FLUSH] bin=254 cap_cnt=254 tlast=0
+[DBG_PSS_FLUSH] bin=255 cap_cnt=255 tlast=1
+[DBG_PSS_STREAM] cnt=0 data=fe59fd7d tready=1
+[DBG_PSS_STREAM] cnt=1 data=f901fbfb tready=0
+[DBG_PSS_STREAM] STALL cnt=1
+[DBG_PSS_STREAM] cnt=1 data=f901fbfb tready=1
+[DBG_PSS_STREAM] cnt=2 data=0530fd75 tready=1
+[DBG_PSS_STREAM] cnt=3 data=00aefb75 tready=1
+[DBG_PSS_STREAM] cnt=4 data=ff9dfc6a tready=1
+[DBG_PSS_STREAM] cnt=5 data=00b300c3 tready=1
+[DBG_PSS_STREAM] cnt=6 data=01460645 tready=1
+[DBG_PSS_STREAM] cnt=7 data=00500082 tready=1
+[DBG_PSS_STREAM] cnt=248 data=02c70518 tready=1
+[DBG_PSS_STREAM] cnt=249 data=089af81e tready=1
+[DBG_PSS_STREAM] cnt=250 data=02cefcea tready=1
+[DBG_PSS_STREAM] cnt=251 data=f8e5fd90 tready=1
+[DBG_PSS_STREAM] cnt=252 data=03e9041b tready=1
+[DBG_PSS_STREAM] cnt=253 data=014cfe41 tready=1
+[DBG_PSS_STREAM] cnt=254 data=ff18ffe3 tready=1
+[DBG_PSS_STREAM] cnt=255 data=020203a3 tready=1
+[DBG_PSS_CAP] bin=0 cap_cnt=0 tdata=0027ffae tlast=0
+[DBG_PSS_CAP] bin=1 cap_cnt=1 tdata=ffbbffd5 tlast=0
+[DBG_PSS_CAP] bin=2 cap_cnt=2 tdata=00480022 tlast=0
+[DBG_PSS_CAP] bin=3 cap_cnt=3 tdata=ffbaffd0 tlast=0
+[DBG_PSS_CAP] bin=253 cap_cnt=253 tdata=00420028 tlast=0
+[DBG_PSS_CAP] bin=254 cap_cnt=254 tdata=ffd30043 tlast=0
+[DBG_PSS_CAP] bin=255 cap_cnt=255 tdata=ffdb003b tlast=1
+[DBG_SSS_IN] in_cnt=0 tdata=06d3018d
+[DBG_SSS_IN] in_cnt=1 tdata=04f30083
+[DBG_SSS_IN] in_cnt=2 tdata=04960082
+[DBG_SSS_IN] in_cnt=3 tdata=01acfcd2
+[DBG_SSS_IN] in_cnt=252 tdata=00e7019f
+[DBG_SSS_IN] in_cnt=253 tdata=041602df
+[DBG_SSS_IN] in_cnt=254 tdata=052dfee9
+[DBG_SSS_IN] in_cnt=255 tdata=ff36fa9a
+[DBG_SSS_STREAM] cnt=0 data=06d3018d tready=1
+[DBG_SSS_STREAM] cnt=1 data=04f30083 tready=0
+[DBG_SSS_STREAM] STALL cnt=1
+[DBG_SSS_STREAM] cnt=1 data=04f30083 tready=1
+[DBG_SSS_STREAM] cnt=2 data=04960082 tready=1
+[DBG_SSS_STREAM] cnt=3 data=01acfcd2 tready=1
+[DBG_SSS_STREAM] cnt=252 data=00e7019f tready=1
+[DBG_SSS_STREAM] cnt=253 data=041602df tready=1
+[DBG_SSS_STREAM] cnt=254 data=052dfee9 tready=1
+[DBG_SSS_STREAM] cnt=255 data=ff36fa9a tready=1
+[DBG_SSS_CAP] bin=0 cap_cnt=0 tdata=0059000c tlast=0
+[DBG_SSS_CAP] bin=1 cap_cnt=1 tdata=0053000b tlast=0
+[DBG_SSS_CAP] bin=2 cap_cnt=2 tdata=004f000a tlast=0
+[DBG_SSS_CAP] bin=3 cap_cnt=3 tdata=004d0008 tlast=0
+[DBG_SSS_CAP] bin=253 cap_cnt=253 tdata=0058000b tlast=0
+[DBG_SSS_CAP] bin=254 cap_cnt=254 tdata=004f000b tlast=0
+[DBG_SSS_CAP] bin=255 cap_cnt=255 tdata=ffb4fff3 tlast=1
+[TB] PASS               kp4  peak=259  int_cfo=4  score=513340745
+[TB] Case              km4  exp_peak=251  exp_cfo=-4
+[DBG_PSS_IN] in_cnt=0 tdata=fe59fd7d
+[DBG_PSS_IN] in_cnt=1 tdata=f9ecfab2
+[DBG_PSS_IN] in_cnt=2 tdata=05c4ffa3
+[DBG_PSS_IN] in_cnt=3 tdata=0317fc9a
+[DBG_PSS_IN] in_cnt=252 tdata=05ab0023
+[DBG_PSS_IN] in_cnt=253 tdata=001cfdd4
+[DBG_PSS_IN] in_cnt=254 tdata=ff1f003e
+[DBG_PSS_IN] in_cnt=255 tdata=02ae032c
+[DBG_PSS_STREAM] cnt=0 data=fe59fd7d tready=1
+[DBG_PSS_STREAM] cnt=1 data=f9ecfab2 tready=0
+[DBG_PSS_STREAM] STALL cnt=1
+[DBG_PSS_STREAM] cnt=1 data=f9ecfab2 tready=1
+[DBG_PSS_STREAM] cnt=2 data=05c4ffa3 tready=1
+[DBG_PSS_STREAM] cnt=3 data=0317fc9a tready=1
+[DBG_PSS_STREAM] cnt=4 data=0244fd31 tready=1
+[DBG_PSS_STREAM] cnt=5 data=ffc10101 tready=1
+[DBG_PSS_STREAM] cnt=6 data=fab10393 tready=1
+[DBG_PSS_STREAM] cnt=7 data=ff910068 tready=1
+[DBG_PSS_STREAM] cnt=248 data=0518fd39 tready=1
+[DBG_PSS_STREAM] cnt=249 data=f9f3f607 tready=1
+[DBG_PSS_STREAM] cnt=250 data=fe38fc3a tready=1
+[DBG_PSS_STREAM] cnt=251 data=fa07048d tready=1
+[DBG_PSS_STREAM] cnt=252 data=05ab0023 tready=1
+[DBG_PSS_STREAM] cnt=253 data=001cfdd4 tready=1
+[DBG_PSS_STREAM] cnt=254 data=ff1f003e tready=1
+[DBG_PSS_STREAM] cnt=255 data=02ae032c tready=1
+[DBG_PSS_FLUSH] bin=253 cap_cnt=253 tlast=0
+[DBG_PSS_FLUSH] bin=254 cap_cnt=254 tlast=0
+[DBG_PSS_FLUSH] bin=255 cap_cnt=255 tlast=1
+[DBG_PSS_STREAM] cnt=0 data=fe59fd7d tready=1
+[DBG_PSS_STREAM] cnt=1 data=f9ecfab2 tready=0
+[DBG_PSS_STREAM] STALL cnt=1
+[DBG_PSS_STREAM] cnt=1 data=f9ecfab2 tready=1
+[DBG_PSS_STREAM] cnt=2 data=05c4ffa3 tready=1
+[DBG_PSS_STREAM] cnt=3 data=0317fc9a tready=1
+[DBG_PSS_STREAM] cnt=4 data=0244fd31 tready=1
+[DBG_PSS_STREAM] cnt=5 data=ffc10101 tready=1
+[DBG_PSS_STREAM] cnt=6 data=fab10393 tready=1
+[DBG_PSS_STREAM] cnt=7 data=ff910068 tready=1
+[DBG_PSS_STREAM] cnt=248 data=0518fd39 tready=1
+[DBG_PSS_STREAM] cnt=249 data=f9f3f607 tready=1
+[DBG_PSS_STREAM] cnt=250 data=fe38fc3a tready=1
+[DBG_PSS_STREAM] cnt=251 data=fa07048d tready=1
+[DBG_PSS_STREAM] cnt=252 data=05ab0023 tready=1
+[DBG_PSS_STREAM] cnt=253 data=001cfdd4 tready=1
+[DBG_PSS_STREAM] cnt=254 data=ff1f003e tready=1
+[DBG_PSS_STREAM] cnt=255 data=02ae032c tready=1
+[DBG_PSS_CAP] bin=0 cap_cnt=0 tdata=0025ffbb tlast=0
+[DBG_PSS_CAP] bin=1 cap_cnt=1 tdata=ffb6ffdf tlast=0
+[DBG_PSS_CAP] bin=2 cap_cnt=2 tdata=ffdc0049 tlast=0
+[DBG_PSS_CAP] bin=3 cap_cnt=3 tdata=00450021 tlast=0
+[DBG_PSS_CAP] bin=253 cap_cnt=253 tdata=00470025 tlast=0
+[DBG_PSS_CAP] bin=254 cap_cnt=254 tdata=0021ffb4 tlast=0
+[DBG_PSS_CAP] bin=255 cap_cnt=255 tdata=ffb7ffd8 tlast=1
+[DBG_SSS_IN] in_cnt=0 tdata=06d3018d
+[DBG_SSS_IN] in_cnt=1 tdata=04c10178
+[DBG_SSS_IN] in_cnt=2 tdata=040b0239
+[DBG_SSS_IN] in_cnt=3 tdata=0328fe49
+[DBG_SSS_IN] in_cnt=252 tdata=01c90082
+[DBG_SSS_IN] in_cnt=253 tdata=04fe001e
+[DBG_SSS_IN] in_cnt=254 tdata=045dfd03
+[DBG_SSS_IN] in_cnt=255 tdata=fe2cfadc
+[DBG_SSS_STREAM] cnt=0 data=06d3018d tready=1
+[DBG_SSS_STREAM] cnt=1 data=04c10178 tready=0
+[DBG_SSS_STREAM] STALL cnt=1
+[DBG_SSS_STREAM] cnt=1 data=04c10178 tready=1
+[DBG_SSS_STREAM] cnt=2 data=040b0239 tready=1
+[DBG_SSS_STREAM] cnt=3 data=0328fe49 tready=1
+[DBG_SSS_STREAM] cnt=252 data=01c90082 tready=1
+[DBG_SSS_STREAM] cnt=253 data=04fe001e tready=1
+[DBG_SSS_STREAM] cnt=254 data=045dfd03 tready=1
+[DBG_SSS_STREAM] cnt=255 data=fe2cfadc tready=1
+[DBG_SSS_CAP] bin=0 cap_cnt=0 tdata=004f0014 tlast=0
+[DBG_SSS_CAP] bin=1 cap_cnt=1 tdata=0049000e tlast=0
+[DBG_SSS_CAP] bin=2 cap_cnt=2 tdata=0007ffb5 tlast=0
+[DBG_SSS_CAP] bin=3 cap_cnt=3 tdata=004b0016 tlast=0
+[DBG_SSS_CAP] bin=253 cap_cnt=253 tdata=0007ffab tlast=0
+[DBG_SSS_CAP] bin=254 cap_cnt=254 tdata=000bffb1 tlast=0
+[DBG_SSS_CAP] bin=255 cap_cnt=255 tdata=000effb8 tlast=1
+[TB] PASS               km4  peak=251  int_cfo=-4  score=513963081
+[TB] Case              kp8  exp_peak=263  exp_cfo=8
+[DBG_PSS_IN] in_cnt=0 tdata=01a70283
+[DBG_PSS_IN] in_cnt=1 tdata=075c0350
+[DBG_PSS_IN] in_cnt=2 tdata=fb690381
+[DBG_PSS_IN] in_cnt=3 tdata=00ab048b
+[DBG_PSS_IN] in_cnt=252 tdata=fdf5fab6
+[DBG_PSS_IN] in_cnt=253 tdata=fe41014b
+[DBG_PSS_IN] in_cnt=254 tdata=00de0049
+[DBG_PSS_IN] in_cnt=255 tdata=fe5cfc30
+[DBG_PSS_STREAM] cnt=0 data=01a70283 tready=1
+[DBG_PSS_STREAM] cnt=1 data=075c0350 tready=0
+[DBG_PSS_STREAM] STALL cnt=1
+[DBG_PSS_STREAM] cnt=1 data=075c0350 tready=1
+[DBG_PSS_STREAM] cnt=2 data=fb690381 tready=1
+[DBG_PSS_STREAM] cnt=3 data=00ab048b tready=1
+[DBG_PSS_STREAM] cnt=4 data=01ba032b tready=1
+[DBG_PSS_STREAM] cnt=5 data=ff06ffa8 tready=1
+[DBG_PSS_STREAM] cnt=6 data=fb75fb7e tready=1
+[DBG_PSS_STREAM] cnt=7 data=ff70ffcf tready=1
+[DBG_PSS_STREAM] cnt=248 data=01a3fa6f tready=1
+[DBG_PSS_STREAM] cnt=249 data=f45a00a3 tready=1
+[DBG_PSS_STREAM] cnt=250 data=fbf40102 tready=1
+[DBG_PSS_STREAM] cnt=251 data=051e0580 tready=1
+[DBG_PSS_STREAM] cnt=252 data=fdf5fab6 tready=1
+[DBG_PSS_STREAM] cnt=253 data=fe41014b tready=1
+[DBG_PSS_STREAM] cnt=254 data=00de0049 tready=1
+[DBG_PSS_STREAM] cnt=255 data=fe5cfc30 tready=1
+[DBG_PSS_FLUSH] bin=253 cap_cnt=253 tlast=0
+[DBG_PSS_FLUSH] bin=254 cap_cnt=254 tlast=0
+[DBG_PSS_FLUSH] bin=255 cap_cnt=255 tlast=1
+[DBG_PSS_STREAM] cnt=0 data=01a70283 tready=1
+[DBG_PSS_STREAM] cnt=1 data=075c0350 tready=0
+[DBG_PSS_STREAM] STALL cnt=1
+[DBG_PSS_STREAM] cnt=1 data=075c0350 tready=1
+[DBG_PSS_STREAM] cnt=2 data=fb690381 tready=1
+[DBG_PSS_STREAM] cnt=3 data=00ab048b tready=1
+[DBG_PSS_STREAM] cnt=4 data=01ba032b tready=1
+[DBG_PSS_STREAM] cnt=5 data=ff06ffa8 tready=1
+[DBG_PSS_STREAM] cnt=6 data=fb75fb7e tready=1
+[DBG_PSS_STREAM] cnt=7 data=ff70ffcf tready=1
+[DBG_PSS_STREAM] cnt=248 data=01a3fa6f tready=1
+[DBG_PSS_STREAM] cnt=249 data=f45a00a3 tready=1
+[DBG_PSS_STREAM] cnt=250 data=fbf40102 tready=1
+[DBG_PSS_STREAM] cnt=251 data=051e0580 tready=1
+[DBG_PSS_STREAM] cnt=252 data=fdf5fab6 tready=1
+[DBG_PSS_STREAM] cnt=253 data=fe41014b tready=1
+[DBG_PSS_STREAM] cnt=254 data=00de0049 tready=1
+[DBG_PSS_STREAM] cnt=255 data=fe5cfc30 tready=1
+[DBG_PSS_CAP] bin=0 cap_cnt=0 tdata=ffb4ffd2 tlast=0
+[DBG_PSS_CAP] bin=1 cap_cnt=1 tdata=ffbcffd5 tlast=0
+[DBG_PSS_CAP] bin=2 cap_cnt=2 tdata=002affbb tlast=0
+[DBG_PSS_CAP] bin=3 cap_cnt=3 tdata=0023ffc3 tlast=0
+[DBG_PSS_CAP] bin=253 cap_cnt=253 tdata=00450022 tlast=0
+[DBG_PSS_CAP] bin=254 cap_cnt=254 tdata=001effb8 tlast=0
+[DBG_PSS_CAP] bin=255 cap_cnt=255 tdata=ffcf0046 tlast=1
+[DBG_SSS_IN] in_cnt=0 tdata=06d3018d
+[DBG_SSS_IN] in_cnt=1 tdata=04f90006
+[DBG_SSS_IN] in_cnt=2 tdata=0499ff9a
+[DBG_SSS_IN] in_cnt=3 tdata=00adfc79
+[DBG_SSS_IN] in_cnt=252 tdata=003701d7
+[DBG_SSS_IN] in_cnt=253 tdata=031303ef
+[DBG_SSS_IN] in_cnt=254 tdata=054afff1
+[DBG_SSS_IN] in_cnt=255 tdata=ffbefa8d
+[DBG_SSS_STREAM] cnt=0 data=06d3018d tready=1
+[DBG_SSS_STREAM] cnt=1 data=04f90006 tready=0
+[DBG_SSS_STREAM] STALL cnt=1
+[DBG_SSS_STREAM] cnt=1 data=04f90006 tready=1
+[DBG_SSS_STREAM] cnt=2 data=0499ff9a tready=1
+[DBG_SSS_STREAM] cnt=3 data=00adfc79 tready=1
+[DBG_SSS_STREAM] cnt=252 data=003701d7 tready=1
+[DBG_SSS_STREAM] cnt=253 data=031303ef tready=1
+[DBG_SSS_STREAM] cnt=254 data=054afff1 tready=1
+[DBG_SSS_STREAM] cnt=255 data=ffbefa8d tready=1
+[DBG_SSS_CAP] bin=0 cap_cnt=0 tdata=fffd0053 tlast=0
+[DBG_SSS_CAP] bin=1 cap_cnt=1 tdata=0057000a tlast=0
+[DBG_SSS_CAP] bin=2 cap_cnt=2 tdata=004d000a tlast=0
+[DBG_SSS_CAP] bin=3 cap_cnt=3 tdata=ffb3fff2 tlast=0
+[DBG_SSS_CAP] bin=253 cap_cnt=253 tdata=fff00051 tlast=0
+[DBG_SSS_CAP] bin=254 cap_cnt=254 tdata=000bffb0 tlast=0
+[DBG_SSS_CAP] bin=255 cap_cnt=255 tdata=ffb3fffc tlast=1
+[TB] PASS               kp8  peak=263  int_cfo=8  score=509590562
+[TB] Case              km8  exp_peak=247  exp_cfo=-8
+[DBG_PSS_IN] in_cnt=0 tdata=01a70283
+[DBG_PSS_IN] in_cnt=1 tdata=058805e0
+[DBG_PSS_IN] in_cnt=2 tdata=fa47ff3b
+[DBG_PSS_IN] in_cnt=3 tdata=fc0f025b
+[DBG_PSS_IN] in_cnt=252 tdata=fab6020b
+[DBG_PSS_IN] in_cnt=253 tdata=0087021c
+[DBG_PSS_IN] in_cnt=254 tdata=00d1ff97
+[DBG_PSS_IN] in_cnt=255 tdata=fd06fd1b
+[DBG_PSS_STREAM] cnt=0 data=01a70283 tready=1
+[DBG_PSS_STREAM] cnt=1 data=058805e0 tready=0
+[DBG_PSS_STREAM] STALL cnt=1
+[DBG_PSS_STREAM] cnt=1 data=058805e0 tready=1
+[DBG_PSS_STREAM] cnt=2 data=fa47ff3b tready=1
+[DBG_PSS_STREAM] cnt=3 data=fc0f025b tready=1
+[DBG_PSS_STREAM] cnt=4 data=fcd501ba tready=1
+[DBG_PSS_STREAM] cnt=5 data=00b1ff3b tready=1
+[DBG_PSS_STREAM] cnt=6 data=0666fffa tready=1
+[DBG_PSS_STREAM] cnt=7 data=0098fff6 tready=1
+[DBG_PSS_STREAM] cnt=248 data=fe5d0591 tready=1
+[DBG_PSS_STREAM] cnt=249 data=0b0103df tready=1
+[DBG_PSS_STREAM] cnt=250 data=03930226 tready=1
+[DBG_PSS_STREAM] cnt=251 data=031ff92b tready=1
+[DBG_PSS_STREAM] cnt=252 data=fab6020b tready=1
+[DBG_PSS_STREAM] cnt=253 data=0087021c tready=1
+[DBG_PSS_STREAM] cnt=254 data=00d1ff97 tready=1
+[DBG_PSS_STREAM] cnt=255 data=fd06fd1b tready=1
+[DBG_PSS_FLUSH] bin=253 cap_cnt=253 tlast=0
+[DBG_PSS_FLUSH] bin=254 cap_cnt=254 tlast=0
+[DBG_PSS_FLUSH] bin=255 cap_cnt=255 tlast=1
+[DBG_PSS_STREAM] cnt=0 data=01a70283 tready=1
+[DBG_PSS_STREAM] cnt=1 data=058805e0 tready=0
+[DBG_PSS_STREAM] STALL cnt=1
+[DBG_PSS_STREAM] cnt=1 data=058805e0 tready=1
+[DBG_PSS_STREAM] cnt=2 data=fa47ff3b tready=1
+[DBG_PSS_STREAM] cnt=3 data=fc0f025b tready=1
+[DBG_PSS_STREAM] cnt=4 data=fcd501ba tready=1
+[DBG_PSS_STREAM] cnt=5 data=00b1ff3b tready=1
+[DBG_PSS_STREAM] cnt=6 data=0666fffa tready=1
+[DBG_PSS_STREAM] cnt=7 data=0098fff6 tready=1
+[DBG_PSS_STREAM] cnt=248 data=fe5d0591 tready=1
+[DBG_PSS_STREAM] cnt=249 data=0b0103df tready=1
+[DBG_PSS_STREAM] cnt=250 data=03930226 tready=1
+[DBG_PSS_STREAM] cnt=251 data=031ff92b tready=1
+[DBG_PSS_STREAM] cnt=252 data=fab6020b tready=1
+[DBG_PSS_STREAM] cnt=253 data=0087021c tready=1
+[DBG_PSS_STREAM] cnt=254 data=00d1ff97 tready=1
+[DBG_PSS_STREAM] cnt=255 data=fd06fd1b tready=1
+[DBG_PSS_CAP] bin=0 cap_cnt=0 tdata=0048002b tlast=0
+[DBG_PSS_CAP] bin=1 cap_cnt=1 tdata=003e0028 tlast=0
+[DBG_PSS_CAP] bin=2 cap_cnt=2 tdata=ffcf0042 tlast=0
+[DBG_PSS_CAP] bin=3 cap_cnt=3 tdata=ffb9ffd5 tlast=0
+[DBG_PSS_CAP] bin=253 cap_cnt=253 tdata=0048001f tlast=0
+[DBG_PSS_CAP] bin=254 cap_cnt=254 tdata=0022ffb5 tlast=0
+[DBG_PSS_CAP] bin=255 cap_cnt=255 tdata=ffb9ffdd tlast=1
+[DBG_SSS_IN] in_cnt=0 tdata=06d3018d
+[DBG_SSS_IN] in_cnt=1 tdata=049601ed
+[DBG_SSS_IN] in_cnt=2 tdata=038802f8
+[DBG_SSS_IN] in_cnt=3 tdata=0384ff47
+[DBG_SSS_IN] in_cnt=252 tdata=01d7ffc9
+[DBG_SSS_IN] in_cnt=253 tdata=04d0feaa
+[DBG_SSS_IN] in_cnt=254 tdata=03b2fc38
+[DBG_SSS_IN] in_cnt=255 tdata=fdadfb10
+[DBG_SSS_STREAM] cnt=0 data=06d3018d tready=1
+[DBG_SSS_STREAM] cnt=1 data=049601ed tready=0
+[DBG_SSS_STREAM] STALL cnt=1
+[DBG_SSS_STREAM] cnt=1 data=049601ed tready=1
+[DBG_SSS_STREAM] cnt=2 data=038802f8 tready=1
+[DBG_SSS_STREAM] cnt=3 data=0384ff47 tready=1
+[DBG_SSS_STREAM] cnt=252 data=01d7ffc9 tready=1
+[DBG_SSS_STREAM] cnt=253 data=04d0feaa tready=1
+[DBG_SSS_STREAM] cnt=254 data=03b2fc38 tready=1
+[DBG_SSS_STREAM] cnt=255 data=fdadfb10 tready=1
+[DBG_SSS_CAP] bin=0 cap_cnt=0 tdata=00440014 tlast=0
+[DBG_SSS_CAP] bin=1 cap_cnt=1 tdata=ffe70054 tlast=0
+[DBG_SSS_CAP] bin=2 cap_cnt=2 tdata=ffed004c tlast=0
+[DBG_SSS_CAP] bin=3 cap_cnt=3 tdata=00460005 tlast=0
+[DBG_SSS_CAP] bin=253 cap_cnt=253 tdata=004b000f tlast=0
+[DBG_SSS_CAP] bin=254 cap_cnt=254 tdata=0008ffb6 tlast=0
+[DBG_SSS_CAP] bin=255 cap_cnt=255 tdata=004c0017 tlast=1
+[TB] PASS               km8  peak=247  int_cfo=-8  score=509590562
+
+------------------------------------------------------------
+OFFICIAL_GATE: PASS — all 9 k_int sweep cases passed
+------------------------------------------------------------
+
+$finish called at time : 6273035 ns : File "C:/Temp/p3_13c_xsim_work/p3_13a_real_fft_meyr_tb.sv" Line 446
+run: Time (s): cpu = 00:00:01 ; elapsed = 00:33:22 . Memory (MB): peak = 191.902 ; gain = 0.000
+exit
+INFO: xsimkernel Simulation Memory Usage: 28804 KB (Peak: 28804 KB), Simulation CPU Usage: 1738390 ms
+INFO: [Common 17-206] Exiting xsim at Thu May 28 15:45:02 2026...

@@ -1,0 +1,43 @@
+=== [P3-16A] Phase 1: Reset (20 cycles) ===
+=== [P3-16A] Phase 2: Enable DUT ===
+=== [P3-16A] Phase 3: Feeding 704 IQ samples ===
+  Stimulus done. Waiting for M_AXIS completion (FRAME_LEN=576)...
+  M_AXIS: 576 beats received at cycle 103127
+=== [P3-16A] Phase 5: Read status registers ===
+
+=== [P3-16A] Integrated Regression Results ===
+  Stimulus:  golden/phase3_iq_stimulus.mem (704 samples, k_int=0)
+  Threshold: 40000  (amplitude=3000 stimulus)
+  Cycle:     103168
+
+  --- Frame Detection ---
+  C1  frame_found       : 1               PASS
+  C2  frame_index       : 40  PASS  (golden=41 ±1)
+      peak_lag          : 23
+      slot_start_index  : 63  (golden=64 ±1)
+
+  --- CFO Pipeline ---
+  C3  frac_cfo_valid    : 1  PASS
+      frac_cfo_word     : 3278
+  C4  int_cfo_valid     : 1  PASS
+      int_cfo_word      : -16777216  (step for NCO)
+      meyr_peak_index   : 256  (golden=255 ±1, bypass-FFT ±1 expected)
+      int_cfo_valid_cyc : 101956
+
+  --- Replay + M_AXIS ---
+  C5  int_cfo_applied   : 1               PASS  (AXI reg 0x44)
+  C6  output_count      : 576  PASS  (expected 576)
+  C7  tlast_at_575      : idx=575  PASS  (expected 575)
+  C8  m_axis_continuity : max_gap=1  PASS  (limit=4)
+
+  --- AXI-Lite Registers ---
+  STATUS      : 0x00000003  (bit0=busy, bit1=done_seen, bit2=err_seen)
+  TLAST_COUNT : 1  (expected 1)
+  INT_CFO_IDX : 256  (AXI reg 0x40, bypass-FFT ±1 expected)
+  ERROR_FLAGS : 0x00000000  (expected 0)
+
+  Checks passed: 8 / 8
+
+INTEGRATION_GATE: PASS
+  All 8 end-to-end regression checks passed.
+  Pipeline: frame_detect → frac_cfo → Meyr_FFT → replay → M_AXIS  OK

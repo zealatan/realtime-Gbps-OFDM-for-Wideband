@@ -1,0 +1,20 @@
+
+=== Session B3 / P3-13E: FFT Protocol + Meyr Invariant Verification ===
+    DUT1: fft256_dual_symbol_frontend
+    DUT2: meyr_integer_cfo_fft_frontend_top
+
+--- [B3-1/B3-2] FFT Run 1 (d=0xA5A5 r=0xDEAD) ---
+PASS [B3-1/pss1]: PSS 256/256 accepted
+PASS [B3-1/sss1]: SSS 256/256 accepted
+PASS [B3-1/io1]: out 513/512 (input_count==output_count)
+PASS [B3-1/done1]: fft_done fired
+
+--- [B3-1/B3-2] FFT Run 2 (d=0x3C3C r=0x5678) ---
+PASS [B3-1/pss2]: PSS 256/256 accepted
+PASS [B3-1/sss2]: SSS 256/256 accepted
+PASS [B3-1/io2]: out 512/512 (input_count==output_count)
+PASS [B3-1/done2]: fft_done fired
+
+--- [B3-3/B3-4] Meyr Run 1 (zeros) ---
+FAIL [watchdog]: simulation timeout at 700k cycles
+FFT_PROTOCOL_GATE: FAIL (watchdog timeout)

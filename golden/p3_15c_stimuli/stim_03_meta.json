@@ -1,0 +1,21 @@
+{
+  "stim_id": "stim_03",
+  "nsamples_total": 704,
+  "pre_zeros": 64,
+  "post_zeros": 64,
+  "nsc": 256,
+  "cp_len": 32,
+  "frame_len": 576,
+  "eps_frac": -0.1,
+  "integer_cfo": 0,
+  "amplitude_peak_per_component": 3000,
+  "seed": 12648430,
+  "noise_snr": "off",
+  "expected_frame_start": 41,
+  "expected_peak_index_auto": 23,
+  "expected_slot_start": 64,
+  "expected_frac_cfo": -0.10000000108007177,
+  "expected_meyr_peak_index": 255,
+  "expected_integer_cfo_word": 0,
+  "detection_ok": true
+}

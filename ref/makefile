@@ -1,0 +1,2 @@
+pluto: main.c buffer.c signal_processing_common.c transmitter.c receiver.c auxiliary.c multi_threading.c iio_functions.c
+	gcc -o pluto main.c buffer.c signal_processing_common.c transmitter.c receiver.c auxiliary.c multi_threading.c iio_functions.c -lm  -lfftw3 -lfftw3f -liio -lad9361 -lpthread -Wall

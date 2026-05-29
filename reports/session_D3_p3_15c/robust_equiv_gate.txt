@@ -1,0 +1,10 @@
+SANITY_ROBUST_EQUIV_GATE: PASS
+Simulator: iverilog
+Date: 2026-05-29 09:26:12 UTC
+
+Stimuli:
+  stim_01: STIM_EQUIV_GATE: PASS  (stim_01)
+  stim_02: STIM_EQUIV_GATE: PASS  (stim_02)
+  stim_03: STIM_EQUIV_GATE: PASS  (stim_03)
+  stim_04: STIM_EQUIV_GATE: PASS  (stim_04)
+  stim_05: STIM_EQUIV_GATE: PASS  (stim_05)

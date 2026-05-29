@@ -1,0 +1,30 @@
+SANITY_STRESS_GATE: PASS
+Simulator: iverilog
+Date: 2026-05-29 08:34:51 UTC
+
+  [PASS] L1_beat_count
+  [PASS] L1_tlast_count
+  [PASS] L1_last_tlast_position
+  [PASS] L1_reg_out_count
+  [PASS] L1_reg_tlast_count
+  [PASS] L1_no_error
+  [PASS] L2_recovery_beat_count
+  [PASS] L2_recovery_tlast_count
+  [PASS] L2_recovery_tlast_position
+  [PASS] L2_reg_out_count_post_reset
+  [PASS] L2_int_cfo_applied
+  [PASS] L2_no_error
+  [PASS] L3_recovery_beat_count
+  [PASS] L3_recovery_tlast_count
+  [PASS] L3_recovery_tlast_position
+  [PASS] L3_reg_out_count_post_reset
+  [PASS] L3_int_cfo_applied
+  [PASS] L3_no_error
+  [PASS] L4_beat_count
+  [PASS] L4_tlast_count
+  [PASS] L4_tlast_position
+  [PASS] L4_int_cfo_applied
+  [PASS] L4_no_error
+=== [P3-23A] STRESS SUMMARY ===
+  Total checks: 23   PASS: 23   FAIL: 0
+STRESS_GATE: PASS

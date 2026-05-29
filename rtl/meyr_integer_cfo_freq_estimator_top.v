@@ -124,25 +124,6 @@ module meyr_integer_cfo_freq_estimator_top #(
     );
 
     // -------------------------------------------------------------------------
-    // term2 reference ROM — architecture placeholder for Step 33+
-    // The core uses its own identical PRNG ROM internally (Step 31 unchanged).
-    // Tie address to stream_cnt so it can be read in parallel with streaming (unused in core).
-    // -------------------------------------------------------------------------
-    wire signed [PROD_WIDTH-1:0] term2_rom_i_unused;
-    wire signed [PROD_WIDTH-1:0] term2_rom_q_unused;
-
-    meyr_term2_ref_rom #(
-        .NSC                    (NSC),
-        .PROD_WIDTH             (PROD_WIDTH),
-        .USE_SYNTHETIC_FALLBACK (1)
-    ) u_term2_rom (
-        .aclk   (aclk),
-        .addr   (stream_cnt[7:0]),
-        .term2_i(term2_rom_i_unused),
-        .term2_q(term2_rom_q_unused)
-    );
-
-    // -------------------------------------------------------------------------
     // Meyr correlation core interface — combinatorial term1 connections
     // (registered in core's S_LOAD state)
     // -------------------------------------------------------------------------

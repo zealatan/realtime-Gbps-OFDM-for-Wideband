@@ -1,0 +1,44 @@
+{
+  "generator": "gen_meyr_fft_reference_roms.py",
+  "strategy": "frequency-domain cross-spectrum (real FFT path only)",
+  "warning": "NOT compatible with bypass fft256_dual_symbol_frontend stub",
+  "parameters": {
+    "NSC": 256,
+    "CP_LEN": 32,
+    "SLOT_START": 64,
+    "pss_td_start_in_frame": 96,
+    "sss_td_start_in_frame": 384,
+    "TARGET_PEAK": 3000.0,
+    "EPS_FRAC": 0.05,
+    "SEED": 12648430,
+    "q15_scale": 7.591930961278267e-05,
+    "max_abs_cross": 431602976.46440876
+  },
+  "rom_packing": "{Q[31:16], I[15:0]} as 8-hex-digit lines, signed Q1.15",
+  "pss_fft_rom_first": {
+    "I": -2,
+    "Q": -32737,
+    "packed_hex": "801ffffe"
+  },
+  "pss_fft_rom_last": {
+    "I": 32744,
+    "Q": -3,
+    "packed_hex": "fffd7fe8"
+  },
+  "sss_fft_rom_convention": "all I=+32767 Q=0, sign(I)=+1 \u2192 term2[j] = PSS_fft_rom[j]",
+  "nonzero_pss_bins": 256,
+  "formula": {
+    "peak_index": "255 + k_int  (valid only with real FFT backend)",
+    "int_cfo": "k_int"
+  },
+  "predicted_score_k0": 274185359533.0,
+  "validation_gate": "Requires fft256_xilinx_wrapper with USE_BEHAVIORAL_STUB=0 + Xilinx xsim. Do NOT use with fft256_dual_symbol_frontend bypass stub.",
+  "output_files": [
+    "/home/zealatan/RTL_SYNC_PHASE3/vectors/meyr_pss_fft_romhex.txt",
+    "/home/zealatan/RTL_SYNC_PHASE3/vectors/meyr_sss_fft_romhex.txt"
+  ],
+  "bypass_roms_untouched": [
+    "/home/zealatan/RTL_SYNC_PHASE3/vectors/meyr_pss_reference_romhex.txt",
+    "/home/zealatan/RTL_SYNC_PHASE3/vectors/meyr_sss_reference_romhex.txt"
+  ]
+}
