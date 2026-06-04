@@ -1,0 +1,25 @@
+VCD info: dumpfile p3_02_reference_style_frame_detector_tb.vcd opened for output.
+=== T01: Case A basic ===
+PASS  T01_not_found
+PASS  T01_index_ne_25
+=== T02: Case B basic ===
+PASS  T02_not_found
+PASS  T02_index_ne_50
+=== T03: Not found (9 hits) ===
+PASS  T03_found_incorrectly
+=== T04: Minimal 1-sample low prefix ===
+PASS  T04_not_found
+PASS  T04_index_ne_1
+=== T05: Run interrupted ===
+PASS  T05_not_found
+PASS  T05_index_ne_83
+=== T06: Case B long high prefix ===
+PASS  T06_not_found
+PASS  T06_index_ne_65
+=== T07: All-zero input ===
+PASS  T07_found_incorrectly
+=== T08: At-boundary samples (I=99) ===
+PASS  T08_found_incorrectly
+
+=== P3-02 test complete: 0 FAIL ===
+RESULT: PASS 8 FAIL 0

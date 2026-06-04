@@ -1,24 +1,24 @@
 
 ============================================================
  case_066
-  golden: /home/zealatan/RTL_SYNC_PHASE3/golden/p3_15d_stimuli/case_066_golden.txt
-  meta:   /home/zealatan/RTL_SYNC_PHASE3/golden/p3_15d_stimuli/case_066_meta.json
+  golden: /home/zealatan/RTL_SYNC_PHASE4/golden/p3_15d_stimuli/case_066_golden.txt
+  meta:   /home/zealatan/RTL_SYNC_PHASE4/golden/p3_15d_stimuli/case_066_meta.json
   frame_len=576
   k_int=-4  eps_frac=0.2813  amp=2616  snr=28.8dB
 ============================================================
 
 --- Stage D4-2: Metadata (case_066) ---
-  PASS [frame_start]: RTL=52  ref=53  diff=1  tol=±2  [INFO]
-  PASS [peak_lag]: RTL=24  ref=24  diff=0  tol=±3  [INFO]
-  PASS [slot_start]: RTL=76  ref=77  diff=1  tol=±2
-  PASS [frac_cfo]: RTL=0.282952361  ref=0.281314313  rel_err=0.5823%  tol=2.0%+floor=0.002
-  FAIL [meyr_peak]: RTL=271  ref=255  diff=16  tol=±5  [INFO]
-  [int_cfo] RTL step_word=0xF0000000 → k_int_rtl=16  expected=0  stimulus_k_int=-4  [INFO]
-  FAIL [int_cfo_bins]: RTL=16  ref=0  diff=16  tol=±5  [INFO]
+  PASS [frame_start]: RTL=53  ref=53  diff=0  tol=±5  [INFO]
+  PASS [peak_lag]: RTL=23  ref=24  diff=1  tol=±10  [INFO]
+  PASS [slot_start]: RTL=76  ref=77  diff=1  tol=±40
+  PASS [frac_cfo]: RTL=0.28173162  ref=0.281314313  rel_err=0.1483%  tol=5.0%+floor=0.008
+  FAIL [meyr_peak]: RTL=203  ref=255  diff=52  tol=±5  [INFO]
+  [int_cfo] RTL step_word=0x34000000 → k_int_rtl=-52  expected=0  stimulus_k_int=-4  [INFO]
+  FAIL [int_cfo_bins]: RTL=-52  ref=0  diff=52  tol=±5  [INFO]
   D4-2: PASS  (0 gate failure(s), 2 info-only warning(s))
 
 --- Stage D4-3: IQ equivalence (case_066) ---
-  step_word=0xF0000000  tolerance=1 LSB
+  step_word=0x34000000  tolerance=1 LSB
   Max I error: 0 at n=-1
   Max Q error: 0
   Mismatches:  0/576

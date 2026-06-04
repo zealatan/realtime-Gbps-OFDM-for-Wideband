@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html><head>
+<meta charset="UTF-8">
+<title>FFT IP xsim Gate Report</title>
+<style>
+  body{font-family:monospace;background:#1a1a1a;color:#ddd;margin:20px;}
+  h1{color:#aaf;} h2{color:#88f;}
+  table{border-collapse:collapse;width:100%;max-width:900px;}
+  th{background:#333;padding:6px 10px;text-align:left;color:#bdf;}
+  td{border-bottom:1px solid #333;}
+</style>
+</head><body>
+<h1>FFT IP Value + Protocol Gate Report</h1>
+<p>Generated: 2026-06-03 20:54:28</p>
+<p>Tolerance: ±4 LSB per component</p>
+<p>Gate result: <span style="background:#2d6a2d;color:#fff;padding:2px 8px;border-radius:4px;font-weight:bold;">PASS_VIVADO_XSIM_REAL_IP (all 6 cases, tol ±4 LSB)</span></p>
+
+<h2>Per-Case Summary</h2>
+<table>
+<tr>
+  <th>#</th><th>Case</th><th>Status</th>
+  <th>Max err Re</th><th>Max err Im</th><th>Fail bins</th>
+</tr>
+
+        <tr style="background:#1e4d1e;">
+          <td style="padding:4px 8px;">0</td>
+          <td style="padding:4px 8px;">Impulse n=0</td>
+          <td style="padding:4px 8px;"><span style="background:#2d6a2d;color:#fff;padding:2px 8px;border-radius:4px;font-weight:bold;">PASS</span></td>
+          <td style="padding:4px 8px;">1</td>
+          <td style="padding:4px 8px;">0</td>
+          <td style="padding:4px 8px;">0</td>
+        </tr>
+        <tr style="background:#1e4d1e;">
+          <td style="padding:4px 8px;">1</td>
+          <td style="padding:4px 8px;">Complex tone k=1</td>
+          <td style="padding:4px 8px;"><span style="background:#2d6a2d;color:#fff;padding:2px 8px;border-radius:4px;font-weight:bold;">PASS</span></td>
+          <td style="padding:4px 8px;">2</td>
+          <td style="padding:4px 8px;">1</td>
+          <td style="padding:4px 8px;">0</td>
+        </tr>
+        <tr style="background:#1e4d1e;">
+          <td style="padding:4px 8px;">2</td>
+          <td style="padding:4px 8px;">Real cosine k=17</td>
+          <td style="padding:4px 8px;"><span style="background:#2d6a2d;color:#fff;padding:2px 8px;border-radius:4px;font-weight:bold;">PASS</span></td>
+          <td style="padding:4px 8px;">1</td>
+          <td style="padding:4px 8px;">1</td>
+          <td style="padding:4px 8px;">0</td>
+        </tr>
+        <tr style="background:#1e4d1e;">
+          <td style="padding:4px 8px;">3</td>
+          <td style="padding:4px 8px;">DC constant</td>
+          <td style="padding:4px 8px;"><span style="background:#2d6a2d;color:#fff;padding:2px 8px;border-radius:4px;font-weight:bold;">PASS</span></td>
+          <td style="padding:4px 8px;">0</td>
+          <td style="padding:4px 8px;">0</td>
+          <td style="padding:4px 8px;">0</td>
+        </tr>
+        <tr style="background:#1e4d1e;">
+          <td style="padding:4px 8px;">4</td>
+          <td style="padding:4px 8px;">32-sample comb</td>
+          <td style="padding:4px 8px;"><span style="background:#2d6a2d;color:#fff;padding:2px 8px;border-radius:4px;font-weight:bold;">PASS</span></td>
+          <td style="padding:4px 8px;">1</td>
+          <td style="padding:4px 8px;">2</td>
+          <td style="padding:4px 8px;">0</td>
+        </tr>
+        <tr style="background:#1e4d1e;">
+          <td style="padding:4px 8px;">5</td>
+          <td style="padding:4px 8px;">Zero input</td>
+          <td style="padding:4px 8px;"><span style="background:#2d6a2d;color:#fff;padding:2px 8px;border-radius:4px;font-weight:bold;">PASS</span></td>
+          <td style="padding:4px 8px;">0</td>
+          <td style="padding:4px 8px;">0</td>
+          <td style="padding:4px 8px;">0</td>
+        </tr>
+</table>
+
+<h2>Notes</h2>
+<ul>
+<li>RTL CSV: written by <code>xsim_fft_ip_value_protocol_tb.sv</code> via <code>$fwrite</code></li>
+<li>Ref CSV: written by <code>gen_fft_reference.py</code> with SCALE=1/16</li>
+<li><code>MISS_RTL</code> = xsim was not run or TB did not write CSV</li>
+<li><code>MISS_REF</code> = run <code>gen_fft_reference.py</code> first</li>
+<li>Gate label <code>PASS_VIVADO_XSIM_REAL_IP</code> requires all 6 cases PASS</li>
+</ul>
+</body></html>

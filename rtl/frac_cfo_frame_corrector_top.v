@@ -282,9 +282,9 @@ module frac_cfo_frame_corrector_top #(
     assign frame_found = fd_frame_found;
 
     // =========================================================================
-    // timing_frac_cfo_top
+    // frame_frac_cfo_top
     // =========================================================================
-    timing_frac_cfo_top #(
+    frame_frac_cfo_top #(
         .NSC         (NSC),
         .CP_LEN      (CP_LEN),
         .ADDR_WIDTH  (BUF_AW),
@@ -500,5 +500,22 @@ module frac_cfo_frame_corrector_top #(
             endcase
         end
     end
+
+`ifdef TIMING_PROBE
+    integer fcfc_probe_cnt;
+    always @(posedge aclk) begin
+        if (!aresetn) begin
+            fcfc_probe_cnt <= 0;
+        end else if (fcfc_probe_cnt < 12 && tfc_start_r) begin
+            // start of timing scan
+            $display("[FCFC] t=%0t tfc_start fired: state=%0d", $time, state);
+            fcfc_probe_cnt <= fcfc_probe_cnt + 1;
+        end else if (fcfc_probe_cnt >= 1 && fcfc_probe_cnt < 30) begin
+            $display("[FCFC] t=%0t state=%0d buf_rd_en=%0b buf_rd_addr=%0d tfc_buf_rd_en=%0b",
+                     $time, state, buf_rd_en, buf_rd_addr, tfc_buf_rd_en);
+            fcfc_probe_cnt <= fcfc_probe_cnt + 1;
+        end
+    end
+`endif
 
 endmodule

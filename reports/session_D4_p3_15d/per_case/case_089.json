@@ -1,27 +1,20 @@
 {
   "case_id": "case_089",
-  "passed": false,
+  "passed": true,
   "failure_clusters": [
-    "d2_slot_start",
-    "info_d2_frame_start",
-    "info_d2_peak_lag",
     "info_d2_meyr_peak",
     "info_d2_int_cfo_bins"
   ],
   "d2": {
-    "passed": false,
-    "frame_start_err": 4,
-    "peak_lag_err": 10,
-    "slot_start_err": 14,
-    "frac_cfo_rel_err": 0.0006997384021454939,
-    "meyr_peak_err": 213,
-    "int_cfo_bins_err": 41,
-    "failures": [
-      "slot_start"
-    ],
+    "passed": true,
+    "frame_start_err": 0,
+    "peak_lag_err": 1,
+    "slot_start_err": 1,
+    "frac_cfo_rel_err": 0.0011368031250333008,
+    "meyr_peak_err": 21,
+    "int_cfo_bins_err": 21,
+    "failures": [],
     "info_warnings": [
-      "frame_start",
-      "peak_lag",
       "meyr_peak",
       "int_cfo_bins"
     ]
@@ -31,15 +24,15 @@
     "max_err_i": 0,
     "max_err_q": 0,
     "mismatch_count": 0,
-    "step_word": 704643072,
+    "step_word": 352321536,
     "tolerance": 1,
     "worst_idx": -1
   },
   "params": {
     "pre_zeros": 93,
-    "eps_frac": -0.25465015182020556,
+    "eps_frac": -0.20103959354226758,
     "k_int": -1,
-    "amplitude": 805.1382419228408,
+    "amplitude": 1503.8061051280304,
     "snr_db": 42.921920626256764
   }
 }

@@ -1,31 +1,30 @@
 
 ============================================================
  case_080
-  golden: /home/zealatan/RTL_SYNC_PHASE3/golden/p3_15d_stimuli/case_080_golden.txt
-  meta:   /home/zealatan/RTL_SYNC_PHASE3/golden/p3_15d_stimuli/case_080_meta.json
+  golden: /home/zealatan/RTL_SYNC_PHASE4/golden/p3_15d_stimuli/case_080_golden.txt
+  meta:   /home/zealatan/RTL_SYNC_PHASE4/golden/p3_15d_stimuli/case_080_meta.json
   frame_len=576
-  k_int=0  eps_frac=-0.0756  amp=1231  snr=26.4dB
+  k_int=0  eps_frac=-0.0597  amp=1819  snr=26.4dB
 ============================================================
 
 --- Stage D4-2: Metadata (case_080) ---
-  PASS [frame_start]: RTL=10  ref=11  diff=1  tol=±2  [INFO]
-  PASS [peak_lag]: RTL=20  ref=21  diff=1  tol=±3  [INFO]
-  PASS [slot_start]: RTL=30  ref=32  diff=2  tol=±2
-  FAIL [frac_cfo]: RTL=-0.0772423475  ref=-0.075652793  rel_err=2.1011%  tol=2.0%
-  FAIL [meyr_peak]: RTL=184  ref=255  diff=71  tol=±5  [INFO]
-  [int_cfo] RTL step_word=0x47000000 → k_int_rtl=-71  expected=0  stimulus_k_int=0  [INFO]
-  FAIL [int_cfo_bins]: RTL=-71  ref=0  diff=71  tol=±5  [INFO]
-  D4-2: FAIL  (1 gate failure(s), 2 info-only warning(s))
+  PASS [frame_start]: RTL=10  ref=10  diff=0  tol=±5  [INFO]
+  PASS [peak_lag]: RTL=23  ref=22  diff=1  tol=±10  [INFO]
+  PASS [slot_start]: RTL=33  ref=32  diff=1  tol=±40
+  PASS [frac_cfo]: RTL=-0.0594042787  ref=-0.0580191016  rel_err=2.3875%  tol=5.0%+floor=0.008
+  PASS [meyr_peak]: RTL=251  ref=255  diff=4  tol=±5  [INFO]
+  [int_cfo] RTL step_word=0x04000000 → k_int_rtl=-4  expected=0  stimulus_k_int=0  [INFO]
+  PASS [int_cfo_bins]: RTL=-4  ref=0  diff=4  tol=±5  [INFO]
+  D4-2: PASS  (0 gate failure(s), 0 info-only warning(s))
 
 --- Stage D4-3: IQ equivalence (case_080) ---
-  step_word=0x47000000  tolerance=1 LSB
+  step_word=0x04000000  tolerance=1 LSB
   Max I error: 0 at n=-1
   Max Q error: 0
   Mismatches:  0/576
   PASS: all 576 IQ samples within 1 LSB
 
 --- Stage D4-4: Failure clustering (case_080) ---
-  Gate failures: d2_frac_cfo
-  Info warnings: info_d2_meyr_peak, info_d2_int_cfo_bins
+  All clear
 
-CASE_EQUIV_GATE: FAIL  (case_080: d2_frac_cfo, info_d2_meyr_peak, info_d2_int_cfo_bins)
+CASE_EQUIV_GATE: PASS  (case_080)

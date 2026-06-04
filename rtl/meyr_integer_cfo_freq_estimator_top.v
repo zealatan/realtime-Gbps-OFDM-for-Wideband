@@ -26,7 +26,9 @@ module meyr_integer_cfo_freq_estimator_top #(
     parameter integer PROD_WIDTH  = 32,
     parameter integer ACC_WIDTH   = 56,
     parameter integer SCORE_WIDTH = 64,
-    parameter integer INDEX_WIDTH = 9
+    parameter integer INDEX_WIDTH = 9,
+    parameter PSS_ROM_FILE = "vectors/meyr_pss_fft_romhex.txt",
+    parameter SSS_ROM_FILE = "vectors/meyr_sss_fft_romhex.txt"
 )(
     input  wire                          aclk,
     input  wire                          aresetn,
@@ -140,11 +142,13 @@ module meyr_integer_cfo_freq_estimator_top #(
     assign core_term1_valid = (state == S_STREAM);
 
     meyr_integer_cfo_core #(
-        .NSC        (NSC),
-        .PROD_WIDTH (PROD_WIDTH),
-        .ACC_WIDTH  (ACC_WIDTH),
-        .SCORE_WIDTH(SCORE_WIDTH),
-        .INDEX_WIDTH(INDEX_WIDTH)
+        .NSC         (NSC),
+        .PROD_WIDTH  (PROD_WIDTH),
+        .ACC_WIDTH   (ACC_WIDTH),
+        .SCORE_WIDTH (SCORE_WIDTH),
+        .INDEX_WIDTH (INDEX_WIDTH),
+        .PSS_ROM_FILE(PSS_ROM_FILE),
+        .SSS_ROM_FILE(SSS_ROM_FILE)
     ) u_core (
         .aclk        (aclk),
         .aresetn     (aresetn),
@@ -195,12 +199,20 @@ module meyr_integer_cfo_freq_estimator_top #(
             core_start_r <= 1'b0;
 
             // start-while-busy guard
-            if (start && busy_r)
+            if (start && busy_r) begin
                 error_r <= 1'b1;
+                // synthesis translate_off
+                $display("[EST_ERR] start_while_busy t=%0t state=%0d", $time, state);
+                // synthesis translate_on
+            end
 
             // Propagate core error
-            if (core_error)
+            if (core_error && !error_r) begin
                 error_r <= 1'b1;
+                // synthesis translate_off
+                $display("[EST_ERR] core_error propagated t=%0t state=%0d", $time, state);
+                // synthesis translate_on
+            end
 
             case (state)
 

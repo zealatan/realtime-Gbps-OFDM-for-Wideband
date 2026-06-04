@@ -1,148 +1,87 @@
 `timescale 1ns/1ps
 
-// complex_mult_iq: AXI-Stream complex multiplier using the project's I/Q packing.
+// complex_mult_iq: 1-cycle pipelined AXI-Stream complex multiplier.
 //
-// Project convention (both input and output):
-//   tdata[15:0]  = I (in-phase  / real part)
-//   tdata[31:16] = Q (quadrature / imaginary part)
+// Computes A × B (or A × conj(B) with CONJ_B=1, etc.)
+// IQ packing: tdata[COMPONENT_WIDTH-1:0] = I, tdata[DATA_WIDTH-1:COMPONENT_WIDTH] = Q
 //
-// axis_complex_mult.v convention:
-//   tdata[31:16] = real
-//   tdata[15:0]  = imaginary
+// Result arithmetic (for CONJ_A=0, CONJ_B=0):
+//   I_out = (Ia*Ib - Qa*Qb) >> SHIFT
+//   Q_out = (Ia*Qb + Qa*Ib) >> SHIFT
 //
-// This wrapper swaps the upper and lower halves on both inputs before passing to
-// axis_complex_mult, and swaps the output back.  The swap is pure wire rewiring
-// (zero LUTs).
+// For CONJ_B=1 (used by complex_rotator for A × conj(B)):
+//   I_out = (Ia*Ib + Qa*Qb) >> SHIFT
+//   Q_out = (Qa*Ib - Ia*Qb) >> SHIFT
 //
-// Standard complex product: (I_a + j*Q_a) × (I_b + j*Q_b)
-//   I_out = I_a*I_b − Q_a*Q_b
-//   Q_out = I_a*Q_b + Q_a*I_b
-//
-// If CONJ_A=1: computes conj(A) × B  (negates Q_a before multiplying)
-//   I_out = I_a*I_b + Q_a*Q_b
-//   Q_out = I_a*Q_b − Q_a*I_b
-//
-// If CONJ_B=1: computes A × conj(B)  (negates Q_b before multiplying)
-//   I_out = I_a*I_b + Q_a*Q_b
-//   Q_out = Q_a*I_b − I_a*Q_b
-//
-// Note: CONJ_A is used by cp_autocorr_core (conj(rx[m+k]) × rx[m+k+NSC]).
-//       CONJ_B is provided symmetrically for completeness.
-//
-// All AXI-Stream handshake signals (tvalid, tready, tlast) pass through unchanged.
-//
-// Parameters:
-//   DATA_WIDTH        Full TDATA width (must equal 2*COMPONENT_WIDTH, default 32)
-//   COMPONENT_WIDTH   Width of each I or Q word (default 16)
-//   SHIFT             Right-shift for Q1.15 output (default 15)
-//   CONJ_A            0 = normal, 1 = conjugate A input (negates Q_a)
-//   CONJ_B            0 = normal, 1 = conjugate B input (negates Q_b)
+// One-cycle latency: outputs valid one cycle after inputs.
 
 module complex_mult_iq #(
     parameter integer DATA_WIDTH      = 32,
     parameter integer COMPONENT_WIDTH = 16,
     parameter integer SHIFT           = 15,
-    parameter integer CONJ_A          = 0,
-    parameter integer CONJ_B          = 0
+    parameter         CONJ_A          = 0,
+    parameter         CONJ_B          = 0
 ) (
-    input  wire                     aclk,
-    input  wire                     aresetn,
+    input  wire aclk,
+    input  wire aresetn,
 
-    // Input A: {Q_a[31:16], I_a[15:0]}
-    input  wire [DATA_WIDTH-1:0]    s_axis_a_tdata,
-    input  wire                     s_axis_a_tvalid,
-    output wire                     s_axis_a_tready,
-    input  wire                     s_axis_a_tlast,
+    input  wire [DATA_WIDTH-1:0] s_axis_a_tdata,
+    input  wire                  s_axis_a_tvalid,
+    output wire                  s_axis_a_tready,
+    input  wire                  s_axis_a_tlast,
 
-    // Input B: {Q_b[31:16], I_b[15:0]}
-    input  wire [DATA_WIDTH-1:0]    s_axis_b_tdata,
-    input  wire                     s_axis_b_tvalid,
-    output wire                     s_axis_b_tready,
-    input  wire                     s_axis_b_tlast,
+    input  wire [DATA_WIDTH-1:0] s_axis_b_tdata,
+    input  wire                  s_axis_b_tvalid,
+    output wire                  s_axis_b_tready,
+    input  wire                  s_axis_b_tlast,
 
-    // Output: {Q_out[31:16], I_out[15:0]}
-    output wire [DATA_WIDTH-1:0]    m_axis_tdata,
-    output wire                     m_axis_tvalid,
-    input  wire                     m_axis_tready,
-    output wire                     m_axis_tlast
+    output reg  [DATA_WIDTH-1:0] m_axis_tdata,
+    output reg                   m_axis_tvalid,
+    input  wire                  m_axis_tready,
+    output reg                   m_axis_tlast
 );
-    localparam CW = COMPONENT_WIDTH;
 
-    // -----------------------------------------------------------------------
-    // Input A reordering: {Q_a, I_a} → {I_a, Q_a_eff} for axis_complex_mult
-    //   axis_complex_mult treats upper half as real, lower as imaginary.
-    //   We put I in the upper (real) slot and Q in the lower (imaginary) slot.
-    //   If CONJ_A=1, negate Q_a (= a_tdata[31:16]) to form conj(A).
-    // -----------------------------------------------------------------------
-    wire [CW-1:0] a_q_in = s_axis_a_tdata[DATA_WIDTH-1 : CW];  // Q_a (upper in ours)
-    wire [CW-1:0] a_i_in = s_axis_a_tdata[CW-1         : 0];   // I_a (lower in ours)
+    wire can_accept = !m_axis_tvalid || m_axis_tready;
+    assign s_axis_a_tready = can_accept;
+    assign s_axis_b_tready = 1'b1;   // NCO source has no backpressure port
 
-    wire [CW-1:0] a_q_eff;
-    generate
-        if (CONJ_A == 1) begin : gen_conj_a
-            assign a_q_eff = ~a_q_in + 1'b1;   // two's-complement negate Q_a
-        end else begin : gen_no_conj_a
-            assign a_q_eff = a_q_in;
+    // Split components
+    wire signed [COMPONENT_WIDTH-1:0] Ia = $signed(s_axis_a_tdata[COMPONENT_WIDTH-1:0]);
+    wire signed [COMPONENT_WIDTH-1:0] Qa = $signed(s_axis_a_tdata[DATA_WIDTH-1:COMPONENT_WIDTH]);
+    wire signed [COMPONENT_WIDTH-1:0] Ib = $signed(s_axis_b_tdata[COMPONENT_WIDTH-1:0]);
+    wire signed [COMPONENT_WIDTH-1:0] Qb = $signed(s_axis_b_tdata[DATA_WIDTH-1:COMPONENT_WIDTH]);
+
+    // Apply conjugates (negate the imaginary part)
+    wire signed [COMPONENT_WIDTH-1:0] Qa_eff = CONJ_A ? -Qa : Qa;
+    wire signed [COMPONENT_WIDTH-1:0] Qb_eff = CONJ_B ? -Qb : Qb;
+
+    // Products (sign-extended to avoid overflow)
+    localparam integer PROD_W = 2 * COMPONENT_WIDTH;
+    localparam integer SUM_W  = PROD_W + 1;
+
+    wire signed [PROD_W-1:0] p_II = Ia * Ib;
+    wire signed [PROD_W-1:0] p_QQ = Qa_eff * Qb_eff;
+    wire signed [PROD_W-1:0] p_IQ = Ia * Qb_eff;
+    wire signed [PROD_W-1:0] p_QI = Qa_eff * Ib;
+
+    wire signed [SUM_W-1:0] sum_I = {p_II[PROD_W-1], p_II} - {p_QQ[PROD_W-1], p_QQ};
+    wire signed [SUM_W-1:0] sum_Q = {p_IQ[PROD_W-1], p_IQ} + {p_QI[PROD_W-1], p_QI};
+
+    // Arithmetic right shift
+    wire signed [SUM_W-1:0] out_I_shifted = sum_I >>> SHIFT;
+    wire signed [SUM_W-1:0] out_Q_shifted = sum_Q >>> SHIFT;
+
+    always @(posedge aclk) begin
+        if (!aresetn) begin
+            m_axis_tdata  <= {DATA_WIDTH{1'b0}};
+            m_axis_tvalid <= 1'b0;
+            m_axis_tlast  <= 1'b0;
+        end else if (can_accept) begin
+            m_axis_tvalid <= s_axis_a_tvalid && s_axis_b_tvalid;
+            m_axis_tlast  <= s_axis_a_tlast  && s_axis_b_tvalid;
+            m_axis_tdata  <= {out_Q_shifted[COMPONENT_WIDTH-1:0],
+                              out_I_shifted[COMPONENT_WIDTH-1:0]};
         end
-    endgenerate
-
-    // Feed axis_complex_mult: upper=I_a (real), lower=Q_a_eff (imag)
-    wire [DATA_WIDTH-1:0] a_reordered = {a_i_in, a_q_eff};
-
-    // -----------------------------------------------------------------------
-    // Input B reordering: {Q_b, I_b} → {I_b, Q_b_eff}
-    // -----------------------------------------------------------------------
-    wire [CW-1:0] b_q_in = s_axis_b_tdata[DATA_WIDTH-1 : CW];
-    wire [CW-1:0] b_i_in = s_axis_b_tdata[CW-1         : 0];
-
-    wire [CW-1:0] b_q_eff;
-    generate
-        if (CONJ_B == 1) begin : gen_conj_b
-            assign b_q_eff = ~b_q_in + 1'b1;
-        end else begin : gen_no_conj_b
-            assign b_q_eff = b_q_in;
-        end
-    endgenerate
-
-    wire [DATA_WIDTH-1:0] b_reordered = {b_i_in, b_q_eff};
-
-    // -----------------------------------------------------------------------
-    // axis_complex_mult core
-    //   Produces: m_axis_tdata = {I_out[31:16], Q_out[15:0]}  (its convention)
-    // -----------------------------------------------------------------------
-    wire [DATA_WIDTH-1:0] mult_out;
-    wire                  mult_valid;
-    wire                  mult_tlast;
-
-    axis_complex_mult #(
-        .DATA_WIDTH      (DATA_WIDTH),
-        .COMPONENT_WIDTH (CW),
-        .SHIFT           (SHIFT)
-    ) core (
-        .aclk            (aclk),
-        .aresetn         (aresetn),
-        .s_axis_a_tdata  (a_reordered),
-        .s_axis_a_tvalid (s_axis_a_tvalid),
-        .s_axis_a_tready (s_axis_a_tready),
-        .s_axis_a_tlast  (s_axis_a_tlast),
-        .s_axis_b_tdata  (b_reordered),
-        .s_axis_b_tvalid (s_axis_b_tvalid),
-        .s_axis_b_tready (s_axis_b_tready),
-        .s_axis_b_tlast  (s_axis_b_tlast),
-        .m_axis_tdata    (mult_out),
-        .m_axis_tvalid   (mult_valid),
-        .m_axis_tready   (m_axis_tready),
-        .m_axis_tlast    (mult_tlast)
-    );
-
-    // -----------------------------------------------------------------------
-    // Output: swap back to {Q_out[31:16], I_out[15:0]}
-    //   mult_out[31:16] = I_out (real, axis convention)
-    //   mult_out[15:0]  = Q_out (imag, axis convention)
-    //   → our convention: {Q_out, I_out}
-    // -----------------------------------------------------------------------
-    assign m_axis_tdata  = {mult_out[CW-1:0], mult_out[DATA_WIDTH-1:CW]};
-    assign m_axis_tvalid = mult_valid;
-    assign m_axis_tlast  = mult_tlast;
+    end
 
 endmodule

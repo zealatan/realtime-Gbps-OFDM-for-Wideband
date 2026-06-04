@@ -260,8 +260,12 @@ module meyr_integer_cfo_core #(
             pd_data_last_r  <= 1'b0;
 
             // Global start-while-busy guard (any state)
-            if (start && busy)
+            if (start && busy) begin
                 error <= 1'b1;
+                // synthesis translate_off
+                $display("[CORE_ERR] start_while_busy t=%0t state=%0d", $time, state);
+                // synthesis translate_on
+            end
 
             case (state)
 

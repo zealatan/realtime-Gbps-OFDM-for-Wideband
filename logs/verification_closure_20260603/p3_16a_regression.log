@@ -1,0 +1,100 @@
+========================================================================
+P3-16A Full End-to-End Phase3 Integrated Regression
+  Date       : 2026-06-03 12:42:29
+  Simulator  : iverilog
+  Log dir    : /home/zealatan/RTL_SYNC_PHASE4/sim_out/session_E_p3_16a
+  Root       : /home/zealatan/RTL_SYNC_PHASE4
+========================================================================
+
+--- ROM stubs ---
+  [OK]   meyr_pss_reference_romhex.txt
+  [OK]   meyr_sss_reference_romhex.txt
+
+--- Required files ---
+  [OK]   golden/phase3_iq_stimulus.mem
+  All source files present.
+
+=== [1] iverilog: compile ===
+/home/zealatan/RTL_SYNC_PHASE4/rtl/DUT/delay_sample.v:27: warning: Port 2 (ena) of ram_2port expects 1 bits, got 32.
+/home/zealatan/RTL_SYNC_PHASE4/rtl/DUT/delay_sample.v:27:        : Pruning (signed) 31 high bits of the expression.
+/home/zealatan/RTL_SYNC_PHASE4/rtl/DUT/delay_sample.v:27: warning: Port 2 (ena) of ram_2port expects 1 bits, got 32.
+/home/zealatan/RTL_SYNC_PHASE4/rtl/DUT/delay_sample.v:27:        : Pruning (signed) 31 high bits of the expression.
+  Compile OK: /home/zealatan/RTL_SYNC_PHASE4/sim_out/session_E_p3_16a/p3_16a.vvp
+
+=== [2] vvp: simulate ===
+[INFO] fft256_xilinx_wrapper: USE_BEHAVIORAL_STUB=3 (behavioral DFT)
+[INFO]   Exact 256-pt DFT, real arithmetic, simulation-only.
+[INFO]   Enables k_int sweep validation without Xilinx IP.
+=== [P3-16A] Phase 1: Reset (20 cycles) ===
+=== [P3-16A] Phase 2: Enable DUT ===
+[DFS] t=305000 START → S_PSS_FILL flush_rem=1
+=== [P3-16A] Phase 3: Feeding 704 IQ samples ===
+  Stimulus done. Waiting for M_AXIS completion (FRAME_LEN=576)...
+[DFS] t=20815000 PSS_FILL done → S_PSS_STREAM
+[DFS] t=25955000 PSS_FLUSH done → S_PSS_STREAM flush_rem=0
+[DFS] t=31095000 PSS_CAP done → S_SSS_FILL
+[DFS] t=31105000 SSS_FILL got sample in_cnt=0
+[DFS] t=31115000 SSS_FILL STALL@1 s_valid=0 s_ready=1 s_sym=1
+[DFS] t=31125000 SSS_FILL got sample in_cnt=1
+[DFS] t=31145000 SSS_FILL got sample in_cnt=2
+[DFS] t=31165000 SSS_FILL got sample in_cnt=3
+[DFS] t=36205000 SSS_FILL done → S_SSS_STREAM
+[DFS] t=41345000 SSS_CAP done → S_STREAM_PSS
+[DFS] t=43915000 STREAM_PSS done → S_STREAM_SSS
+[DFS] t=46515000 S_DONE error=0
+  M_AXIS: 576 beats received at cycle 72139
+[DFS] t=721415000 START → S_PSS_FILL flush_rem=1
+=== [P3-16A] Phase 5: Read status registers ===
+
+=== [P3-16A] Integrated Regression Results ===
+  Stimulus:  golden/phase3_iq_stimulus.mem (704 samples, k_int=0)
+  Threshold: 40000  (amplitude=3000 stimulus)
+  Cycle:     72180
+
+  --- Frame Detection ---
+  C1  frame_found       : 1               PASS
+  C2  frame_index       : 40  PASS  (golden=41 ±1)
+      peak_lag          : 23
+      slot_start_index  : 63  (golden=64 ±1)
+
+  --- CFO Pipeline ---
+  C3  frac_cfo_valid    : 1  PASS
+      frac_cfo_word     : 3275
+  C4  int_cfo_valid     : 1  PASS
+      int_cfo_word      : 0  (step for NCO)
+      meyr_peak_index   : 255  (golden=255 ±1, bypass-FFT ±1 expected)
+      int_cfo_valid_cyc : 70968
+
+  --- Replay + M_AXIS ---
+  C5  int_cfo_applied   : 1               PASS  (AXI reg 0x44)
+  C6  output_count      : 576  PASS  (expected 576)
+  C7  tlast_at_575      : idx=575  PASS  (expected 575)
+  C8  m_axis_continuity : max_gap=1  PASS  (limit=4)
+
+  --- AXI-Lite Registers ---
+  STATUS      : 0x00000003  (bit0=busy, bit1=done_seen, bit2=err_seen)
+  TLAST_COUNT : 1  (expected 1)
+  INT_CFO_IDX : 255  (AXI reg 0x40, bypass-FFT ±1 expected)
+  ERROR_FLAGS : 0x00000000  (expected 0)
+
+  Checks passed: 8 / 8
+
+INTEGRATION_GATE: PASS
+  All 8 end-to-end regression checks passed.
+  Pipeline: frame_detect → frac_cfo → Meyr_FFT → replay → M_AXIS  OK
+
+--- Gate evaluation ---
+
+========================================================================
+INTEGRATION_GATE: PASS
+========================================================================
+  All 8 regression checks passed.
+
+  C1  frame_found       : 1               PASS
+  C2  frame_index       : 40  PASS  (golden=41 ±1)
+  C3  frac_cfo_valid    : 1  PASS
+  C4  int_cfo_valid     : 1  PASS
+  C5  int_cfo_applied   : 1               PASS  (AXI reg 0x44)
+  C6  output_count      : 576  PASS  (expected 576)
+  C7  tlast_at_575      : idx=575  PASS  (expected 575)
+  C8  m_axis_continuity : max_gap=1  PASS  (limit=4)

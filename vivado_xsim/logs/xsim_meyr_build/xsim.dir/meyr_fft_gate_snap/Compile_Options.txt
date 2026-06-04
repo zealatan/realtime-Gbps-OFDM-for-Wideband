@@ -1,0 +1,1 @@
+--nolog --initfile "/home/zealatan/RTL_SYNC_PHASE4/vivado_xsim/logs/xsim_meyr_build/xsim.ini" -L "work" -L "xil_defaultlib" -L "xfft_v9_1_8" --snapshot "meyr_fft_gate_snap" "work.xsim_meyr_real_fft_ip_tb" 

@@ -19,10 +19,10 @@ Session D / P3-15A — RTL Output Normalization
   OK       peak_lag = 23
   OK       slot_start_index = 63
   OK       frac_cfo_valid = True
-  OK       frac_cfo_word = 3278
+  OK       frac_cfo_word = 3275
   OK       int_cfo_valid = True
-  OK       int_cfo_index = 256
-  OK       int_cfo_est_bins = 1
+  OK       int_cfo_index = 255
+  OK       int_cfo_est_bins = 0
   OK       int_cfo_applied = 1
   OK       m_axis.available = True
   OK       m_axis.length = 576

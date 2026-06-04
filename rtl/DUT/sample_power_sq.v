@@ -1,0 +1,1 @@
+../sample_power_sq.v

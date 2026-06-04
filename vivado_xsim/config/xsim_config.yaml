@@ -1,0 +1,53 @@
+# vivado_xsim/config/xsim_config.yaml
+# Authoritative configuration for Vivado xsim real Xilinx FFT IP verification flow.
+# All paths are WSL absolute.  The Windows bat wrapper translates via wsl.exe.
+
+project_root_wsl: /home/zealatan/RTL_SYNC_PHASE4
+vivado_dir:       /home/zealatan/Downloads/Vivado/2022.2
+vivado_bin:       /home/zealatan/Downloads/Vivado/2022.2/bin/xvhcomp   # set via source settings64.sh
+
+# ── FFT IP ──────────────────────────────────────────────────────────────────
+fft_ip_xci:       ip/fft256_xilinx/fft256_xilinx.xci
+fft_ip_vhd_top:   ip/fft256_xilinx/sim/fft256_xilinx.vhd
+fft_ip_vhd_r8:    ip/fft256_xilinx/sim/fft256_xilinx_r8.vhd
+fft_ip_version:   xfft 9.1 (Xilinx)
+fft_ip_params:
+  transform_length:        256
+  input_width:             16
+  data_format:             fixed_point
+  output_ordering:         natural_order
+  scaling_options:         scaled
+  scale_schedule_hex:      "0xAA"   # 4 of 8 stages set in config
+  scale_factor:            0.00390625   # 1/256 = 1/N (behavioral model scales all 8 stages by 1/2)
+  implementation_options:  pipelined_streaming_io
+  ovflo:                   false    # NO event_fft_overflow port
+  aresetn:                 false    # NO reset port on the IP
+  aclken:                  false
+  xk_index:                true     # bin index in m_axis_data_tuser
+  throttle_scheme:         realtime # m_axis_data_tready NOT wired to IP
+
+# ── Wrapper ──────────────────────────────────────────────────────────────────
+fft_wrapper_v:    rtl/fft256_xilinx_wrapper.v
+cfg_tdata_hex:    "0x0155"         # FWD_INV=1 + SCALE_SCH=0xAA<<1
+
+# ── Simulation policy ────────────────────────────────────────────────────────
+use_real_xilinx_fft_ip:         true
+allow_behavioral_stub_final_pass: false  # behavioral stub CANNOT be used for final gate
+
+# ── Gate labels ──────────────────────────────────────────────────────────────
+gate_labels:
+  pass_real_ip:          PASS_VIVADO_XSIM_REAL_IP
+  pass_behavioral_only:  PASS_BEHAVIORAL_ONLY
+  fail_value_mismatch:   FAIL_VALUE_MISMATCH
+  fail_protocol:         FAIL_PROTOCOL
+  blocked_xci_not_found: BLOCKED_XCI_NOT_FOUND
+  blocked_windows:       BLOCKED_WINDOWS_VIVADO_REQUIRED
+
+# ── Test vectors ─────────────────────────────────────────────────────────────
+vectors_dir: vivado_xsim/vectors
+# gen_fft_reference.py writes: fft_ref_case_<N>.csv  (time-domain + freq-domain)
+# check_fft_ip_outputs.py reads: rtl_out_case_<N>.csv (from TB $fwrite)
+
+# ── Reports ──────────────────────────────────────────────────────────────────
+reports_dir: vivado_xsim/reports
+logs_dir:    vivado_xsim/logs

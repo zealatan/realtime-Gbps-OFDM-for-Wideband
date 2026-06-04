@@ -359,6 +359,13 @@ module session_B3_p3_13e_fft_protocol_tb;
                 while (!meyr_srdy) @(posedge aclk);
             end
 
+            // Advance to negedge before switching meyr_ssel 0→1.  Without this
+            // gap the for-loop sets ssel=1 at zero simulation delay after the last
+            // PSS while exits, racing with the DUT active region at the same
+            // posedge — the DUT would see ssel=1 and fire an SSS handshake instead
+            // of the final PSS handshake, leaving pss_cnt stuck at 255.
+            @(negedge aclk);
+
             // --- Send SSS [0..255] ---
             for (k = 0; k < 256; k = k + 1) begin
                 meyr_ssel = 1'b1;

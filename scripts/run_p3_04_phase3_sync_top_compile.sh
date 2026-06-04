@@ -68,64 +68,16 @@ for ROM in vectors/meyr_pss_reference_romhex.txt vectors/meyr_sss_reference_romh
 done
 
 # ---------------------------------------------------------------------------
-# RTL compile list — bottom-up dependency order
-# (see docs/p3_04_phase3_sync_top_compile_status.md for hierarchy)
+# Production DUT source list — single source of truth.
 # ---------------------------------------------------------------------------
-RTL_FILES=(
-    # Leaves: DO NOT MODIFY modules
-    rtl/cordic_atan2.v
-    rtl/nco_phase_gen.v
-    rtl/complex_rotator.v
-
-    # Leaf utilities
-    rtl/peak_detector.v
-    rtl/meyr_pss_sss_product_gen.v
-    rtl/unit_test/and2.v
-    rtl/unit_test/cp_autocorr_core.v
-
-    # Level-2: modules in rtl/ (not unit_test/)
-    rtl/iq_frame_buffer.v
-    rtl/fft256_dual_symbol_frontend.v
-    rtl/frac_cfo_corrector_top.v
-
-    # P3-12A modular frame_detector submodules
-    rtl/sample_power_sq.v
-    rtl/sliding_window_sum.v
-    rtl/frame_detect_fsm.v
-    rtl/frame_detector.v
-
-    # Level-3
-    rtl/unit_test/timing_metric_core.v
-    rtl/meyr_integer_cfo_core.v
-
-    # Level-4
-    rtl/timing_sync_top.v
-    rtl/meyr_integer_cfo_freq_estimator_top.v
-
-    # Level-5
-    rtl/frac_cfo_estimator.v
-
-    # Level-6
-    rtl/timing_frac_cfo_top.v
-    rtl/meyr_integer_cfo_fft_frontend_top.v
-    rtl/meyr_term2_ref_rom.v
-
-    # Level-7
-    rtl/frac_cfo_frame_corrector_top.v
-
-    # DUT components
-    rtl/slot_start_controller.v
-    rtl/pss_sss_symbol_extractor.v
-
-    # DUT top
-    rtl/phase3_sync_top.v
-)
+FILELIST="$PROJECT_DIR/scripts/phase3_dut_filelist.f"
+mapfile -t DUT_SRCS < <(grep -v '^#' "${FILELIST}" | grep -v '^[[:space:]]*$' | sed "s|^|${PROJECT_DIR}/|")
 
 # ---------------------------------------------------------------------------
 # Verify all source files exist
 # ---------------------------------------------------------------------------
 MISSING=0
-for f in "${RTL_FILES[@]}"; do
+for f in "${DUT_SRCS[@]}"; do
     if [[ ! -f "$f" ]]; then
         echo "MISSING: $f" | tee -a "$LOG_FILE"
         MISSING=1
@@ -147,7 +99,7 @@ echo "" | tee -a "$LOG_FILE"
 echo "--- Step 1: xvlog (RTL) ---" | tee -a "$LOG_FILE"
 
 XVLOG_RC=0
-for f in "${RTL_FILES[@]}"; do
+for f in "${DUT_SRCS[@]}"; do
     echo "  compiling $f" | tee -a "$LOG_FILE"
     xvlog --sv --work work --log /dev/null "$f" >> "$LOG_FILE" 2>&1 || XVLOG_RC=1
 done

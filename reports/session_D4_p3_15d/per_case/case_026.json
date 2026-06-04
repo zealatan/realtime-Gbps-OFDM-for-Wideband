@@ -8,11 +8,11 @@
   "d2": {
     "passed": true,
     "frame_start_err": 0,
-    "peak_lag_err": 1,
-    "slot_start_err": 1,
-    "frac_cfo_rel_err": 0.005149774898596513,
-    "meyr_peak_err": 36,
-    "int_cfo_bins_err": 36,
+    "peak_lag_err": 2,
+    "slot_start_err": 2,
+    "frac_cfo_rel_err": 0.034553694410641725,
+    "meyr_peak_err": 12,
+    "int_cfo_bins_err": 12,
     "failures": [],
     "info_warnings": [
       "meyr_peak",
@@ -24,7 +24,7 @@
     "max_err_i": 0,
     "max_err_q": 0,
     "mismatch_count": 0,
-    "step_word": 3690987520,
+    "step_word": 201326592,
     "tolerance": 1,
     "worst_idx": -1
   },

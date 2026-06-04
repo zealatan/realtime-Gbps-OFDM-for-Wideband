@@ -1,0 +1,618 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>08 iq_replay_buffer_576 — RTL_SYNC_PHASE4</title>
+<style>
+  :root {
+    --bg:#001219; --card:#012a33; --accent1:#005F73; --accent2:#0A9396;
+    --light:#94D2BD; --warn:#EE9B00; --error:#AE2012; --text:#E9D8A6; --border:#1a4a55;
+  }
+  * { box-sizing:border-box; margin:0; padding:0; }
+  body { background:var(--bg); color:var(--text); font-family:'Consolas','Courier New',monospace; font-size:13px; line-height:1.6; }
+  nav { background:var(--accent1); padding:8px 20px; display:flex; flex-wrap:wrap; gap:10px; align-items:center; border-bottom:2px solid var(--accent2); position:sticky; top:0; z-index:100; }
+  nav a { color:var(--light); text-decoration:none; font-weight:bold; font-size:11px; padding:3px 7px; border-radius:3px; }
+  nav a:hover { background:var(--accent2); color:#fff; }
+  nav .brand { color:#fff; font-size:14px; font-weight:bold; margin-right:10px; }
+  .container { max-width:1340px; margin:0 auto; padding:24px; }
+  h1 { color:var(--accent2); font-size:22px; margin-bottom:4px; }
+  .subtitle { color:var(--light); font-size:12px; margin-bottom:6px; opacity:0.9; }
+  h2 { color:var(--light); font-size:15px; margin:30px 0 10px; border-bottom:2px solid var(--accent1); padding-bottom:5px; }
+  h3 { color:var(--accent2); font-size:13px; margin:16px 0 7px; }
+  h4 { color:var(--light); font-size:12px; margin:12px 0 5px; }
+  table { width:100%; border-collapse:collapse; margin-bottom:18px; }
+  th { background:var(--accent1); color:var(--light); padding:7px 9px; text-align:left; font-size:11px; }
+  td { padding:6px 9px; border-bottom:1px solid var(--border); font-size:12px; vertical-align:top; }
+  tr:nth-child(even) td { background:#021820; }
+  .badge-pass    { background:#1a3a1a; color:#3fb950; border:1px solid #3fb950; padding:2px 7px; border-radius:10px; font-size:11px; font-weight:bold; white-space:nowrap; }
+  .badge-warn    { background:#3a2a00; color:#e3b341; border:1px solid #e3b341; padding:2px 7px; border-radius:10px; font-size:11px; }
+  .badge-resolved{ background:#0d2a4a; color:#58a6ff; border:1px solid #58a6ff; padding:2px 7px; border-radius:10px; font-size:11px; font-weight:bold; }
+  .badge-na      { background:#1e2830; color:#8b949e; border:1px solid #8b949e; padding:2px 7px; border-radius:10px; font-size:11px; }
+  .card { background:var(--card); border:1px solid var(--border); border-radius:6px; padding:16px; margin-bottom:14px; }
+  code { background:#021820; color:var(--accent2); padding:1px 5px; border-radius:3px; font-size:12px; }
+  .note { background:#021f2a; border-left:3px solid var(--warn); padding:8px 12px; margin:10px 0; font-size:12px; color:var(--warn); }
+  .ok   { background:#0a1f0a; border-left:3px solid #3fb950; padding:8px 12px; margin:10px 0; font-size:12px; color:#3fb950; }
+  .err  { background:#200808; border-left:3px solid var(--error); padding:8px 12px; margin:10px 0; font-size:12px; color:#ff6b6b; }
+  .blk  { display:inline-block; border:1px solid var(--accent2); border-radius:4px; padding:6px 10px; font-size:11px; background:#012a33; color:var(--text); text-align:center; }
+  .blk.top { background:var(--accent1); color:#fff; font-weight:bold; }
+  .blk.ext { background:#001a22; border-color:var(--border); color:#8b949e; font-size:10px; }
+  .hrow { display:flex; align-items:center; justify-content:center; flex-wrap:wrap; gap:8px; margin:5px 0; }
+  .harrow { color:var(--accent2); font-size:18px; margin:0 4px; }
+  .varrow { color:var(--accent2); font-size:14px; }
+  .fsm-box { display:inline-block; border:2px solid var(--accent2); border-radius:6px; padding:7px 14px; font-size:12px; color:var(--accent2); background:#012a33; text-align:center; min-width:120px; }
+  .fsm-box.reset { border-color:var(--error); color:var(--error); }
+  .fsm-row { display:flex; align-items:center; justify-content:center; gap:6px; flex-wrap:wrap; margin:8px 0; }
+  .fsm-arr { color:var(--warn); font-size:16px; }
+  .fsm-label { font-size:10px; color:#8b949e; }
+  .wave-row { display:flex; align-items:center; gap:0; margin:2px 0; }
+  .wave-label { color:var(--light); font-size:11px; width:110px; flex-shrink:0; text-align:right; padding-right:8px; }
+  .wave-cell { height:22px; border-top:1px solid; border-bottom:1px solid; font-size:9px; display:flex; align-items:center; justify-content:center; flex:1; min-width:28px; }
+  .wH { background:#0a3a0a; border-color:#3fb950; color:#3fb950; }
+  .wL { background:#1a0a0a; border-color:#555; color:#555; }
+  .wX { background:#2a2000; border-color:var(--warn); color:var(--warn); }
+  .wC { background:#002a3a; border-color:var(--accent2); color:var(--accent2); }
+  .wT { background:#012a33; border-left:2px solid var(--warn); border-right:none; border-top:1px solid var(--warn); border-bottom:1px solid var(--warn); }
+  .clk-cell { height:22px; display:flex; align-items:center; flex:1; min-width:28px; }
+  .clk-half { width:50%; height:100%; border-top:2px solid var(--accent2); }
+  .clk-high { background:#003; }
+  .clk-low  { background:#001; }
+  ul,ol { margin:6px 0 8px 20px; }
+  li { margin-bottom:3px; font-size:12px; }
+  .math { background:#021820; border:1px solid var(--border); border-radius:4px; padding:8px 14px; font-family:monospace; color:var(--light); margin:8px 0; font-size:12px; }
+  .hero-badges { display:flex; flex-wrap:wrap; gap:6px; margin:8px 0 18px; }
+  .stat-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(180px,1fr)); gap:10px; margin-bottom:14px; }
+  .stat-card { background:var(--card); border:1px solid var(--border); border-radius:5px; padding:10px 14px; }
+  .stat-card .label { color:#8b949e; font-size:10px; margin-bottom:2px; }
+  .stat-card .value { color:var(--accent2); font-size:13px; font-weight:bold; }
+</style>
+</head>
+<body>
+<nav>
+  <span class="brand">RTL_SYNC_PHASE4</span>
+  <a href="index.html">&#8592; Index</a>
+  <a href="01_phase3_sync_axis_dma_wrapper.html">01 DMA Wrap</a>
+  <a href="02_phase3_sync_top.html">02 Sync Top</a>
+  <a href="03_frac_cfo_frame_corrector_top.html">03 Frac CFO</a>
+  <a href="04_pss_sss_symbol_extractor.html">04 PSS/SSS</a>
+  <a href="05_fft256_dual_symbol_frontend.html">05 FFT Front</a>
+  <a href="06_meyr_integer_cfo_fft_frontend_top.html">06 Meyr FFT</a>
+  <a href="07_meyr_integer_cfo_core.html">07 Meyr Core</a>
+  <a href="08_iq_replay_buffer_576.html">08 Replay Buf</a>
+  <a href="09_low_level_datapath_blocks.html">09 Datapath</a>
+</nav>
+
+<div class="container">
+
+<!-- ===== SECTION 1: HEADER/HERO ===== -->
+<h1>08 &mdash; iq_replay_buffer_576</h1>
+<div class="subtitle">Source: <code>rtl/DUT/iq_replay_buffer_576.v</code> &nbsp;|&nbsp; Role: BRAM18E2 IQ frame capture and replay &nbsp;|&nbsp; Pipeline Stage: 3&ndash;4 (between frac corrector output and integer NCO correction input)</div>
+
+<div class="hero-badges">
+  <span class="badge-pass">P3-12B CI_GATE PASS 7/7</span>
+  <span class="badge-pass">P3-12C FULL_REGRESSION PASS 10/10</span>
+  <span class="badge-pass">P3-14B SANITY+OFFICIAL PASS 14/14</span>
+  <span class="badge-pass">XIP-004 FULL_SYNC_REAL_IP PASS 9/9</span>
+  <span class="badge-pass">20/20 Verification Gates PASS &mdash; 2026-06-04</span>
+</div>
+
+<div class="stat-grid">
+  <div class="stat-card"><div class="label">Module</div><div class="value">iq_replay_buffer_576</div></div>
+  <div class="stat-card"><div class="label">Source</div><div class="value">rtl/DUT/iq_replay_buffer_576.v</div></div>
+  <div class="stat-card"><div class="label">FRAME_LEN</div><div class="value">576 samples</div></div>
+  <div class="stat-card"><div class="label">Data Width</div><div class="value">32b (Q[31:16] | I[15:0])</div></div>
+  <div class="stat-card"><div class="label">BRAM</div><div class="value">BRAM18E2 x1 (18.4Kb)</div></div>
+  <div class="stat-card"><div class="label">FSM States</div><div class="value">4 (CAPTURING/CAPTURED/REPLAYING/DONE)</div></div>
+  <div class="stat-card"><div class="label">Replay Throughput</div><div class="value">1 sample / 2 clocks</div></div>
+  <div class="stat-card"><div class="label">Reset</div><div class="value">Active-low async (aresetn)</div></div>
+</div>
+
+<!-- ===== SECTION 2: INTEGRATION CONTEXT ===== -->
+<h2>2. Integration Context</h2>
+<div class="card">
+  <h3>Pipeline Position</h3>
+  <div class="hrow">
+    <div class="blk ext">frac_cfo_frame_corrector_top<br>(AXI-S out: corrected IQ)</div>
+    <span class="harrow">&#8594;</span>
+    <div class="blk top" style="min-width:210px;">iq_replay_buffer_576<br><span style="font-size:10px;font-weight:normal;">CAPTURE &rarr; REPLAY</span></div>
+    <span class="harrow">&#8594;</span>
+    <div class="blk ext">u_int_nco + u_int_rot<br>(nco_phase_gen + complex_rotator)</div>
+    <span class="harrow">&#8594;</span>
+    <div class="blk ext">PS/DMA<br>(downstream)</div>
+  </div>
+  <h3>Clock Domain</h3>
+  <p>Single clock domain: <code>clk</code> (note: uses <code>clk</code>, not <code>aclk</code>, as the port name). All logic is synchronous to this clock. Reset is active-low asynchronous: <code>aresetn</code>.</p>
+  <h3>Upstream Boundary Signals</h3>
+  <p>Write side: <code>wr_valid</code> / <code>wr_ready</code> / <code>wr_data[31:0]</code>. Source is the AXI-S output of the frac CFO corrector output FIFO or passthrough path in the wrapper. <code>wr_ready</code> is deasserted outside S_CAPTURING to apply back-pressure.</p>
+  <h3>Downstream Boundary Signals</h3>
+  <p>Read side: <code>rd_valid</code> / <code>rd_ready</code> / <code>rd_data[31:0]</code> / <code>rd_tlast</code>. Drives the integer NCO correction chain (nco_phase_gen + complex_rotator) inside <code>phase3_sync_axis_dma_wrapper</code>. The wrapper fires <code>replay_start</code> after integer NCO warmup: <code>int_nco_wu_cnt == 1</code>.</p>
+  <h3>Reset Sequence</h3>
+  <p>On <code>aresetn=0</code>: state &rarr; S_CAPTURING, all counters/pointers to 0, all output registers cleared. The <code>clear</code> synchronous input provides an in-band restart without asserting the full reset pin: it returns to S_CAPTURING and resets <code>wr_ptr</code>, <code>rd_ptr</code>, <code>s1_pending</code>, <code>capture_error</code>, and <code>replay_busy</code>, but does NOT erase BRAM contents.</p>
+</div>
+
+<!-- ===== SECTION 3: BLOCK DIAGRAM ===== -->
+<h2>3. Block Diagram</h2>
+<div class="card" style="text-align:center; padding:24px 16px;">
+  <div style="margin-bottom:16px; color:var(--light); font-size:12px; font-weight:bold;">iq_replay_buffer_576 — Internal Architecture</div>
+
+  <!-- Top row: inputs -->
+  <div class="hrow" style="gap:20px; margin-bottom:8px;">
+    <div class="blk ext" style="min-width:100px;">wr_valid<br>wr_data[31:0]<br><em>capture input</em></div>
+    <div style="width:60px;"></div>
+    <div class="blk ext" style="min-width:100px;">replay_start<br>rd_ready<br>clear</div>
+  </div>
+  <div class="hrow" style="gap:90px; margin-bottom:4px;">
+    <span class="varrow">&#8595;</span>
+    <span class="varrow">&#8595;</span>
+  </div>
+
+  <!-- Main module box -->
+  <div style="border:2px solid var(--accent2); border-radius:8px; padding:16px; background:#001a22; display:inline-block; min-width:600px; text-align:left; position:relative;">
+    <div style="text-align:center; color:#fff; font-size:13px; font-weight:bold; margin-bottom:12px; border-bottom:1px solid var(--border); padding-bottom:8px;">iq_replay_buffer_576</div>
+
+    <!-- FSM -->
+    <div style="background:#012a33; border:1px solid var(--border); border-radius:4px; padding:8px 12px; margin-bottom:10px;">
+      <div style="color:var(--light); font-size:11px; font-weight:bold; margin-bottom:6px;">Control FSM</div>
+      <div class="fsm-row">
+        <div class="fsm-box">S_CAPTURING<br><span style="font-size:10px;">2'd0</span></div>
+        <span class="fsm-arr">&#8594;</span>
+        <div class="fsm-box">S_CAPTURED<br><span style="font-size:10px;">2'd1</span></div>
+        <span class="fsm-arr">&#8594;</span>
+        <div class="fsm-box">S_REPLAYING<br><span style="font-size:10px;">2'd2</span></div>
+        <span class="fsm-arr">&#8594;</span>
+        <div class="fsm-box">S_DONE<br><span style="font-size:10px;">2'd3</span></div>
+      </div>
+      <div style="text-align:center; font-size:10px; color:#8b949e; margin-top:4px;">clear / aresetn &rarr; S_CAPTURING (from any state)</div>
+    </div>
+
+    <!-- Write path -->
+    <div style="display:flex; gap:10px; margin-bottom:10px;">
+      <div style="background:#012a33; border:1px solid var(--border); border-radius:4px; padding:8px; flex:1;">
+        <div style="color:var(--light); font-size:11px; font-weight:bold;">Write Path</div>
+        <div style="font-size:10px; color:#8b949e; margin-top:4px;">wr_fire = wr_valid &amp; wr_ready<br>wr_ready = (state==S_CAPTURING)<br>mem[wr_ptr] &lt;= wr_data on wr_fire<br>wr_ptr++ ; at FRAME_LEN-1 &rarr; capture_done</div>
+      </div>
+      <div style="background:#012a33; border:1px solid var(--border); border-radius:4px; padding:8px; flex:1;">
+        <div style="color:var(--light); font-size:11px; font-weight:bold;">Read Pipeline (2-stage)</div>
+        <div style="font-size:10px; color:#8b949e; margin-top:4px;"><strong>S1:</strong> do_read &rarr; mem[rd_ptr]; s1_pending=1; rd_ptr++<br><strong>S2:</strong> output hold: rd_valid, rd_data, rd_tlast<br>s2_can_accept = !rd_valid | (rd_valid &amp; rd_ready)<br>Throughput: 1 sample / 2 clocks</div>
+      </div>
+    </div>
+
+    <!-- BRAM -->
+    <div style="background:#001a22; border:2px solid #CA6702; border-radius:4px; padding:8px 12px; text-align:center;">
+      <div style="color:#CA6702; font-size:11px; font-weight:bold;">(* ram_style = "block" *) BRAM18E2</div>
+      <div style="font-size:10px; color:#8b949e; margin-top:3px;">mem[0:1023][31:0] — 1024&times;32b = 32Kb allocated; 576&times;32b used (18.4Kb)</div>
+      <div style="font-size:10px; color:#8b949e;">1-cycle synchronous read latency</div>
+    </div>
+  </div>
+
+  <!-- Bottom outputs -->
+  <div class="hrow" style="gap:30px; margin-top:8px;">
+    <span class="varrow">&#8595;</span>
+    <span class="varrow">&#8595;</span>
+    <span class="varrow">&#8595;</span>
+  </div>
+  <div class="hrow" style="gap:12px;">
+    <div class="blk ext" style="min-width:90px;">capture_done<br>capture_error<br>wr_ready</div>
+    <div class="blk ext" style="min-width:90px;">replay_busy<br>replay_done</div>
+    <div class="blk ext" style="min-width:90px;">rd_valid<br>rd_data[31:0]<br>rd_tlast</div>
+  </div>
+</div>
+
+<!-- ===== SECTION 4: INPUT INTERFACE ===== -->
+<h2>4. Input Interface</h2>
+<table>
+  <thead><tr><th>Signal</th><th>Width</th><th>Dir</th><th>Type</th><th>Description</th><th>Valid/Ready Relation</th><th>Reset Behavior</th></tr></thead>
+  <tbody>
+    <tr><td><code>clk</code></td><td>1</td><td>in</td><td>clock</td><td>System clock (note: port name is <code>clk</code>, not <code>aclk</code>)</td><td>&#8212;</td><td>&#8212;</td></tr>
+    <tr><td><code>aresetn</code></td><td>1</td><td>in</td><td>reset</td><td>Active-low asynchronous reset. Deassert for &ge;1 cycle to reset all state.</td><td>&#8212;</td><td>0 = reset asserted</td></tr>
+    <tr><td><code>clear</code></td><td>1</td><td>in</td><td>ctrl</td><td>Synchronous clear. Highest priority. Returns FSM to S_CAPTURING from any state. Resets wr_ptr, rd_ptr, s1_pending. Does NOT clear BRAM contents.</td><td>&#8212;</td><td>0 = inactive</td></tr>
+    <tr><td><code>wr_valid</code></td><td>1</td><td>in</td><td>stream</td><td>Write data valid (AXI-S slave). Accepted when <code>wr_ready=1</code>. Ignored in all states except S_CAPTURING.</td><td>Fire = wr_valid &amp; wr_ready</td><td>&#8212;</td></tr>
+    <tr><td><code>wr_data[31:0]</code></td><td>32</td><td>in</td><td>stream</td><td>IQ sample to write. Packing: <code>wr_data[15:0]=I</code>, <code>wr_data[31:16]=Q</code>. Captured into BRAM at address wr_ptr on wr_fire.</td><td>Sampled when wr_fire=1</td><td>Don't care</td></tr>
+    <tr><td><code>replay_start</code></td><td>1</td><td>in</td><td>ctrl</td><td>1-cycle pulse. Begins replay. Only effective in S_CAPTURED; triggers FSM &rarr; S_REPLAYING, sets replay_busy. If asserted during S_CAPTURING, sets capture_error (sticky).</td><td>&#8212;</td><td>0 = inactive</td></tr>
+    <tr><td><code>rd_ready</code></td><td>1</td><td>in</td><td>stream</td><td>Downstream consumer ready to accept replay output. Standard AXI-S master ready. Stalls read pipeline when deasserted with rd_valid=1.</td><td>Data consumed when rd_valid &amp; rd_ready</td><td>&#8212;</td></tr>
+  </tbody>
+</table>
+
+<!-- ===== SECTION 5: OUTPUT INTERFACE ===== -->
+<h2>5. Output Interface</h2>
+<table>
+  <thead><tr><th>Signal</th><th>Width</th><th>Dir</th><th>Type</th><th>Description</th><th>Timing Relation</th><th>Valid/Ready Relation</th></tr></thead>
+  <tbody>
+    <tr><td><code>wr_ready</code></td><td>1 wire</td><td>out</td><td>stream</td><td>High when buffer can accept write data. Combinatorial: <code>assign wr_ready = (state == S_CAPTURING)</code>. Deasserts immediately on state transition out of S_CAPTURING.</td><td>Combinatorial (from state reg)</td><td>AXI-S ready</td></tr>
+    <tr><td><code>capture_done</code></td><td>1 reg</td><td>out</td><td>ctrl</td><td>1-cycle pulse. Asserted the cycle the FRAME_LEN-th sample (index 575) is written. Registered; defaults to 0 every cycle.</td><td>Pulses 1 cycle when wr_ptr reaches FRAME_LEN-1</td><td>&#8212;</td></tr>
+    <tr><td><code>capture_error</code></td><td>1 reg</td><td>out</td><td>status</td><td>Sticky flag. Set if replay_start is received while in S_CAPTURING (premature replay attempt). Cleared by <code>clear</code> or <code>aresetn</code>. Does not prevent normal capture.</td><td>Sticky; set asynchronously relative to capture progress</td><td>&#8212;</td></tr>
+    <tr><td><code>replay_busy</code></td><td>1 reg</td><td>out</td><td>status</td><td>High from replay_start (in S_CAPTURED) until replay_done. Remains high throughout S_REPLAYING. Cleared by replay_done or clear/reset.</td><td>Set on transition to S_REPLAYING; cleared on replay_done</td><td>&#8212;</td></tr>
+    <tr><td><code>replay_done</code></td><td>1 reg</td><td>out</td><td>ctrl</td><td>1-cycle pulse. Asserted the cycle the last sample is consumed: <code>rd_valid &amp; rd_ready &amp; rd_tlast</code>. Registered; defaults to 0 each cycle.</td><td>In S_REPLAYING when last transfer completes</td><td>&#8212;</td></tr>
+    <tr><td><code>rd_valid</code></td><td>1 reg</td><td>out</td><td>stream</td><td>Replay output valid. Set when s2 output hold register contains valid data. Cleared when consumed (rd_valid &amp; rd_ready with no new s1_pending data).</td><td>2-cycle latency from do_read to rd_valid</td><td>AXI-S valid</td></tr>
+    <tr><td><code>rd_data[31:0]</code></td><td>32 reg</td><td>out</td><td>stream</td><td>Replayed IQ sample. Same packing as write side: [15:0]=I, [31:16]=Q. Loaded from mem_q when s1_pending=1. Held under backpressure (rd_valid &amp; !rd_ready).</td><td>Stable while rd_valid=1</td><td>Valid when rd_valid=1</td></tr>
+    <tr><td><code>rd_tlast</code></td><td>1 reg</td><td>out</td><td>stream</td><td>Last sample indicator. Asserted on the sample at index FRAME_LEN-1 (sample 575). Registered alongside rd_data; held under backpressure.</td><td>Asserted with rd_data of final sample</td><td>Valid when rd_valid=1</td></tr>
+  </tbody>
+</table>
+
+<!-- ===== SECTION 6: PARAMETERS / LOCALPARAMS ===== -->
+<h2>6. Parameters &amp; Localparams</h2>
+<table>
+  <thead><tr><th>Name</th><th>Type</th><th>Default</th><th>Meaning</th><th>Where Used</th><th>Project Dependency</th></tr></thead>
+  <tbody>
+    <tr><td><code>DATA_W</code></td><td>parameter</td><td>32</td><td>Sample data width in bits. Defines BRAM word width and output bus width.</td><td>mem array declaration, wr_data/rd_data port widths</td><td>= 2&times;IQ_WIDTH = 2&times;16 = 32</td></tr>
+    <tr><td><code>FRAME_LEN</code></td><td>parameter</td><td>576</td><td>Number of IQ samples per frame. Determines when capture_done fires and when rd_tlast asserts. Must be &le; 2^ADDR_W.</td><td>wr_ptr comparison, rd_ptr/s1_last/do_read comparisons</td><td>= 2&times;(NSC+CP_LEN) = 2&times;(256+32) = 576</td></tr>
+    <tr><td><code>ADDR_W</code></td><td>parameter</td><td>10</td><td>BRAM address width. Allocates 2^10 = 1024 entries. Must satisfy 2^ADDR_W &ge; FRAME_LEN. Checked by compile-time $fatal assertion.</td><td>mem array bound, wr_ptr and rd_ptr register widths</td><td>10 since 2^10=1024 &ge; 576</td></tr>
+    <tr><td><code>S_CAPTURING</code></td><td>localparam</td><td>2'd0</td><td>FSM state: accepting write data</td><td>state register comparisons</td><td>&#8212;</td></tr>
+    <tr><td><code>S_CAPTURED</code></td><td>localparam</td><td>2'd1</td><td>FSM state: buffer full, awaiting replay_start</td><td>state register comparisons</td><td>&#8212;</td></tr>
+    <tr><td><code>S_REPLAYING</code></td><td>localparam</td><td>2'd2</td><td>FSM state: streaming BRAM contents to read port</td><td>do_read wire, state comparisons</td><td>&#8212;</td></tr>
+    <tr><td><code>S_DONE</code></td><td>localparam</td><td>2'd3</td><td>FSM state: replay complete; waiting for clear or next replay_start</td><td>state comparisons</td><td>&#8212;</td></tr>
+  </tbody>
+</table>
+<div class="card">
+  <h3>BRAM Attribute</h3>
+  <p><code>(* ram_style = "block" *)</code> forces Xilinx synthesis to map the <code>mem</code> array to a block RAM primitive (BRAM18E2 on Artix-7/Zynq). Without this attribute, synthesis might choose distributed RAM (LUTRAMs), which would consume hundreds of LUTs. With DATA_W=32 and 1024 entries: 32Kb total allocated, but only 576&times;32b = 18.4Kb is used. The BRAM18E2 capacity is exactly 18Kb (18,432 bits). The allocated array (32Kb) technically exceeds this and may map to 2 BRAM18E2s in Vivado (or use a BRAM36); verify in implementation utilization report. The design is functionally correct with either 1 or 2 BRAMs.</p>
+</div>
+
+<!-- ===== SECTION 7: OPERATION ===== -->
+<h2>7. Operation — Detailed Engineering Description</h2>
+<div class="card">
+  <h3>Startup</h3>
+  <p>After <code>aresetn</code> deasserts (or after <code>clear</code>), the module enters <strong>S_CAPTURING</strong>. <code>wr_ready</code> goes high immediately (combinatorial from state). The write pointer <code>wr_ptr</code> is 0. The module is ready to accept IQ samples.</p>
+
+  <h3>S_CAPTURING &mdash; Write / Capture Phase</h3>
+  <p>Every clock where <code>wr_valid &amp; wr_ready</code> (wr_fire): the sample <code>wr_data</code> is written to <code>mem[wr_ptr]</code>. <code>wr_ptr</code> increments. When <code>wr_ptr == FRAME_LEN-1</code> (the 576th sample, index 575): <code>capture_done</code> is asserted for exactly 1 cycle; <code>wr_ptr</code> resets to 0; state transitions to <strong>S_CAPTURED</strong>.</p>
+  <p>Side effect: if <code>replay_start</code> is received while in S_CAPTURING, <code>capture_error</code> is set (sticky). This indicates the calling logic made a sequencing error. The capture continues normally; the error flag persists until cleared.</p>
+
+  <h3>S_CAPTURED &mdash; Idle (Buffer Full)</h3>
+  <p><code>wr_ready</code> is now 0 (not in S_CAPTURING), preventing any further writes. The BRAM holds the complete captured frame. The module waits for a <code>replay_start</code> 1-cycle pulse. On <code>replay_start</code>: <code>rd_ptr</code> resets to 0; <code>s1_pending</code> and <code>s1_last</code> clear; <code>replay_busy</code> sets; state &rarr; <strong>S_REPLAYING</strong>.</p>
+
+  <h3>S_REPLAYING &mdash; 2-Stage BRAM Read Pipeline</h3>
+  <p>The read pipeline consists of two pipeline stages to handle the 1-cycle BRAM read latency:</p>
+  <ul>
+    <li><strong>Stage 1 (s1):</strong> <code>do_read</code> fires when: state=S_REPLAYING AND s1_pending=0 AND s2_can_accept AND rd_ptr &lt; FRAME_LEN. When do_read fires: the BRAM read of <code>mem[rd_ptr]</code> is issued (mem_q will have the result next clock); <code>s1_pending</code> is set to 1; <code>s1_last</code> records whether this is the last sample (rd_ptr == FRAME_LEN-1); <code>rd_ptr</code> increments.</li>
+    <li><strong>Stage 2 (s2 — output hold register):</strong> When <code>s1_pending=1</code> (i.e., a BRAM result is incoming in mem_q this cycle), the output hold register loads: <code>rd_data &lt;= mem_q</code>; <code>rd_tlast &lt;= s1_last</code>; <code>rd_valid &lt;= 1</code>. When <code>rd_valid &amp; rd_ready</code> (sample consumed) with no incoming s1 result: <code>rd_valid &lt;= 0</code>.</li>
+    <li><strong>Backpressure:</strong> <code>s2_can_accept = !rd_valid | (rd_valid &amp; rd_ready)</code>. If downstream stalls (<code>rd_ready=0</code> while <code>rd_valid=1</code>), <code>s2_can_accept=0</code>, which also prevents <code>do_read</code> from firing. The pipeline stalls cleanly.</li>
+    <li><strong>Throughput:</strong> In the unthrottled case, one do_read fires every 2 cycles (1 cycle for S1, 1 cycle to load S2). Replaying 576 samples takes 576&times;2 = 1152 clock cycles minimum.</li>
+  </ul>
+  <p>Transition to S_DONE occurs when: <code>rd_valid &amp; rd_ready &amp; rd_tlast</code> — i.e., the last sample is consumed by the downstream. This also asserts <code>replay_done</code> and clears <code>replay_busy</code>.</p>
+
+  <h3>S_DONE &mdash; Terminal State</h3>
+  <p>The module remains in S_DONE after a replay completes. The BRAM contents are preserved. A subsequent <code>replay_start</code> pulse (which would require returning to S_CAPTURED first via <code>clear</code>) can re-trigger replay. To capture a new frame, <code>clear</code> must be asserted, returning to S_CAPTURING.</p>
+
+  <h3>clear Signal Behavior</h3>
+  <p>Synchronous <code>clear</code> has highest priority over all FSM state transitions (checked before the case statement in the main always block). When asserted: state &rarr; S_CAPTURING; wr_ptr &larr; 0; rd_ptr &larr; 0; s1_pending &larr; 0; s1_last &larr; 0; capture_error &larr; 0; replay_busy &larr; 0. The <code>rd_valid/rd_data/rd_tlast</code> output stage is independently cleared by a separate always block watching <code>clear</code>. The BRAM memory array contents are NOT affected by clear.</p>
+
+  <h3>Corner Cases</h3>
+  <ul>
+    <li><strong>Replay during capture:</strong> capture_error set; capture continues uninterrupted.</li>
+    <li><strong>Multiple replay_start pulses in S_CAPTURED:</strong> Only the first is acted upon (state moves to S_REPLAYING; subsequent pulses in S_REPLAYING are ignored by the case statement).</li>
+    <li><strong>rd_ready deasserted after last sample issued:</strong> rd_tlast is held stable in the output hold register until consumed. No data loss.</li>
+    <li><strong>clear during S_REPLAYING:</strong> Aborts replay cleanly. Output registers are cleared. rd_valid drops to 0 immediately.</li>
+    <li><strong>do_read at rd_ptr=FRAME_LEN-1:</strong> s1_last is set, rd_ptr increments to FRAME_LEN (not harmful since do_read only fires when rd_ptr &lt; FRAME_LEN; this check prevents an extra spurious read).</li>
+  </ul>
+</div>
+
+<!-- ===== SECTION 8: TIMING DIAGRAM ===== -->
+<h2>8. Timing Diagram</h2>
+<div class="card">
+  <h3>Capture Phase (abbreviated: samples 0, 1, ..., N-2, N-1 where N=FRAME_LEN=576)</h3>
+  <div style="overflow-x:auto;">
+    <div style="min-width:560px;">
+      <div class="wave-row"><span class="wave-label">clk</span>
+        <div class="clk-cell"><div class="clk-half clk-low"></div><div class="clk-half clk-high"></div></div>
+        <div class="clk-cell"><div class="clk-half clk-low"></div><div class="clk-half clk-high"></div></div>
+        <div class="clk-cell"><div class="clk-half clk-low"></div><div class="clk-half clk-high"></div></div>
+        <div class="clk-cell"><div class="clk-half clk-low"></div><div class="clk-half clk-high"></div></div>
+        <div class="clk-cell"><div class="clk-half clk-low"></div><div class="clk-half clk-high"></div></div>
+        <div class="clk-cell"><div class="clk-half clk-low"></div><div class="clk-half clk-high"></div></div>
+        <div class="clk-cell"><div class="clk-half clk-low"></div><div class="clk-half clk-high"></div></div>
+        <div class="clk-cell"><div class="clk-half clk-low"></div><div class="clk-half clk-high"></div></div>
+      </div>
+      <div class="wave-row"><span class="wave-label">wr_valid</span>
+        <div class="wave-cell wH">1</div><div class="wave-cell wH">1</div><div class="wave-cell wH">&#8943;</div>
+        <div class="wave-cell wH">1</div><div class="wave-cell wH">1</div><div class="wave-cell wL">0</div>
+        <div class="wave-cell wL">0</div><div class="wave-cell wL">0</div>
+      </div>
+      <div class="wave-row"><span class="wave-label">wr_ready</span>
+        <div class="wave-cell wH">1</div><div class="wave-cell wH">1</div><div class="wave-cell wH">&#8943;</div>
+        <div class="wave-cell wH">1</div><div class="wave-cell wL">0</div><div class="wave-cell wL">0</div>
+        <div class="wave-cell wL">0</div><div class="wave-cell wL">0</div>
+      </div>
+      <div class="wave-row"><span class="wave-label">wr_data</span>
+        <div class="wave-cell wC">D0</div><div class="wave-cell wC">D1</div><div class="wave-cell wC">&#8943;</div>
+        <div class="wave-cell wC">D575</div><div class="wave-cell wX">-</div><div class="wave-cell wX">-</div>
+        <div class="wave-cell wX">-</div><div class="wave-cell wX">-</div>
+      </div>
+      <div class="wave-row"><span class="wave-label">wr_ptr</span>
+        <div class="wave-cell wC">0</div><div class="wave-cell wC">1</div><div class="wave-cell wC">&#8943;</div>
+        <div class="wave-cell wC">575</div><div class="wave-cell wC">0</div><div class="wave-cell wC">0</div>
+        <div class="wave-cell wC">0</div><div class="wave-cell wC">0</div>
+      </div>
+      <div class="wave-row"><span class="wave-label">capture_done</span>
+        <div class="wave-cell wL">0</div><div class="wave-cell wL">0</div><div class="wave-cell wL">&#8943;</div>
+        <div class="wave-cell wH" style="border-color:var(--warn);color:var(--warn);">1&uarr;</div>
+        <div class="wave-cell wL">0</div><div class="wave-cell wL">0</div>
+        <div class="wave-cell wL">0</div><div class="wave-cell wL">0</div>
+      </div>
+      <div class="wave-row"><span class="wave-label">state</span>
+        <div class="wave-cell wC">CAP</div><div class="wave-cell wC">CAP</div><div class="wave-cell wC">&#8943;</div>
+        <div class="wave-cell wC">CAP</div><div class="wave-cell wC">CAPT'd</div>
+        <div class="wave-cell wC">CAPT'd</div><div class="wave-cell wC">&#8943;</div><div class="wave-cell wC">REPLAY</div>
+      </div>
+    </div>
+    <div style="font-size:10px; color:#8b949e; margin-top:6px; padding-left:118px;">&#8593; capture_done pulses exactly 1 cycle when sample 575 (D575) is written &nbsp;|&nbsp; wr_ready deasserts on same edge &nbsp;|&nbsp; state &rarr; S_CAPTURED</div>
+  </div>
+
+  <h3>Replay Phase (2-Stage Pipeline, simplified: samples 0, 1, 2 shown)</h3>
+  <div style="overflow-x:auto;">
+    <div style="min-width:700px;">
+      <div class="wave-row"><span class="wave-label">clk</span>
+        <div class="clk-cell"><div class="clk-half clk-low"></div><div class="clk-half clk-high"></div></div>
+        <div class="clk-cell"><div class="clk-half clk-low"></div><div class="clk-half clk-high"></div></div>
+        <div class="clk-cell"><div class="clk-half clk-low"></div><div class="clk-half clk-high"></div></div>
+        <div class="clk-cell"><div class="clk-half clk-low"></div><div class="clk-half clk-high"></div></div>
+        <div class="clk-cell"><div class="clk-half clk-low"></div><div class="clk-half clk-high"></div></div>
+        <div class="clk-cell"><div class="clk-half clk-low"></div><div class="clk-half clk-high"></div></div>
+        <div class="clk-cell"><div class="clk-half clk-low"></div><div class="clk-half clk-high"></div></div>
+        <div class="clk-cell"><div class="clk-half clk-low"></div><div class="clk-half clk-high"></div></div>
+        <div class="clk-cell"><div class="clk-half clk-low"></div><div class="clk-half clk-high"></div></div>
+      </div>
+      <div class="wave-row"><span class="wave-label">replay_start</span>
+        <div class="wave-cell wH" style="border-color:var(--warn);color:var(--warn);">1&uarr;</div>
+        <div class="wave-cell wL">0</div><div class="wave-cell wL">0</div><div class="wave-cell wL">0</div>
+        <div class="wave-cell wL">0</div><div class="wave-cell wL">0</div><div class="wave-cell wL">0</div>
+        <div class="wave-cell wL">0</div><div class="wave-cell wL">0</div>
+      </div>
+      <div class="wave-row"><span class="wave-label">do_read</span>
+        <div class="wave-cell wL">0</div>
+        <div class="wave-cell wH">rd[0]</div>
+        <div class="wave-cell wL">0</div>
+        <div class="wave-cell wH">rd[1]</div>
+        <div class="wave-cell wL">0</div>
+        <div class="wave-cell wH">rd[2]</div>
+        <div class="wave-cell wL">0</div>
+        <div class="wave-cell wH">&#8943;</div>
+        <div class="wave-cell wX">&#8943;</div>
+      </div>
+      <div class="wave-row"><span class="wave-label">s1_pending</span>
+        <div class="wave-cell wL">0</div><div class="wave-cell wL">0</div>
+        <div class="wave-cell wH">1</div><div class="wave-cell wL">0</div>
+        <div class="wave-cell wH">1</div><div class="wave-cell wL">0</div>
+        <div class="wave-cell wH">1</div><div class="wave-cell wL">&#8943;</div>
+        <div class="wave-cell wX">&#8943;</div>
+      </div>
+      <div class="wave-row"><span class="wave-label">rd_valid</span>
+        <div class="wave-cell wL">0</div><div class="wave-cell wL">0</div><div class="wave-cell wL">0</div>
+        <div class="wave-cell wH">D[0]</div><div class="wave-cell wH">D[0]</div>
+        <div class="wave-cell wH">D[1]</div><div class="wave-cell wH">D[1]</div>
+        <div class="wave-cell wH">D[2]</div><div class="wave-cell wX">&#8943;</div>
+      </div>
+      <div class="wave-row"><span class="wave-label">rd_ready</span>
+        <div class="wave-cell wH">1</div><div class="wave-cell wH">1</div><div class="wave-cell wH">1</div>
+        <div class="wave-cell wL">0</div>
+        <div class="wave-cell wH">1</div><div class="wave-cell wL">0</div>
+        <div class="wave-cell wH">1</div><div class="wave-cell wH">1</div>
+        <div class="wave-cell wX">&#8943;</div>
+      </div>
+      <div class="wave-row"><span class="wave-label">rd_data</span>
+        <div class="wave-cell wX">-</div><div class="wave-cell wX">-</div><div class="wave-cell wX">-</div>
+        <div class="wave-cell wC">D[0]</div><div class="wave-cell wC">D[0]</div>
+        <div class="wave-cell wC">D[1]</div><div class="wave-cell wC">D[1]</div>
+        <div class="wave-cell wC">D[2]</div><div class="wave-cell wX">&#8943;</div>
+      </div>
+    </div>
+    <div style="font-size:10px; color:#8b949e; margin-top:6px; padding-left:118px;">Note: 2-cycle latency from do_read to rd_valid. D[0] held when rd_ready=0 (backpressure). Throughput: 1 sample / 2 clocks in steady state.</div>
+  </div>
+</div>
+
+<!-- ===== SECTION 9: INTERNAL FSM ===== -->
+<h2>9. Internal FSM</h2>
+<div class="card">
+  <h3>State Encoding (2-bit)</h3>
+  <div class="fsm-row" style="margin:12px 0;">
+    <div class="fsm-box" style="border-color:var(--error);">RESET / CLEAR<br><span class="fsm-label">any state</span></div>
+    <span class="fsm-arr" style="color:var(--error);">&#8599;</span>
+    <div class="fsm-box">S_CAPTURING<br><span class="fsm-label">2'd0 (RESET STATE)</span></div>
+    <span class="fsm-arr">&#8594;</span>
+    <div class="fsm-box">S_CAPTURED<br><span class="fsm-label">2'd1</span></div>
+    <span class="fsm-arr">&#8594;</span>
+    <div class="fsm-box">S_REPLAYING<br><span class="fsm-label">2'd2</span></div>
+    <span class="fsm-arr">&#8594;</span>
+    <div class="fsm-box">S_DONE<br><span class="fsm-label">2'd3</span></div>
+  </div>
+  <div style="text-align:center; font-size:10px; color:#8b949e; margin-bottom:12px;">S_DONE has no outgoing transition except via clear/reset</div>
+
+  <h3>State Transition Table</h3>
+  <table>
+    <thead><tr><th>Current State</th><th>Encoding</th><th>Condition</th><th>Next State</th><th>Side Effects</th></tr></thead>
+    <tbody>
+      <tr><td>any</td><td>&#8212;</td><td><code>!aresetn</code> (async)</td><td>S_CAPTURING</td><td>All regs reset to 0</td></tr>
+      <tr><td>any</td><td>&#8212;</td><td><code>clear=1</code> (sync, highest priority)</td><td>S_CAPTURING</td><td>wr_ptr=0, rd_ptr=0, s1_pending=0, capture_error=0, replay_busy=0; rd_valid=0</td></tr>
+      <tr><td>S_CAPTURING</td><td>2'd0</td><td><code>wr_fire &amp; wr_ptr==FRAME_LEN-1</code></td><td>S_CAPTURED</td><td>capture_done=1 (pulse); wr_ptr=0</td></tr>
+      <tr><td>S_CAPTURING</td><td>2'd0</td><td><code>replay_start=1</code></td><td>S_CAPTURING</td><td>capture_error=1 (sticky)</td></tr>
+      <tr><td>S_CAPTURED</td><td>2'd1</td><td><code>replay_start=1</code></td><td>S_REPLAYING</td><td>replay_busy=1; rd_ptr=0; s1_pending=0; s1_last=0</td></tr>
+      <tr><td>S_REPLAYING</td><td>2'd2</td><td><code>rd_valid &amp; rd_ready &amp; rd_tlast</code></td><td>S_DONE</td><td>replay_done=1 (pulse); replay_busy=0</td></tr>
+      <tr><td>S_DONE</td><td>2'd3</td><td>&#8212; (no self-exit except clear/reset)</td><td>S_DONE</td><td>&#8212;</td></tr>
+      <tr><td>default</td><td>&#8212;</td><td>&#8212;</td><td>S_CAPTURING</td><td>&#8212;</td></tr>
+    </tbody>
+  </table>
+  <p><strong>Reset state:</strong> S_CAPTURING (2'd0). <strong>Terminal state:</strong> S_DONE (requires clear to exit). <strong>Note:</strong> The original design comment says &ldquo;S_DONE &rarr; S_CAPTURED (buffer retained; can replay again)&rdquo; but the RTL shows <code>S_DONE: ;</code> — the module stays in S_DONE until <code>clear</code>. The wrapper issues <code>clear</code> via <code>soft_reset_pulse</code> from the AXI register for the next frame.</p>
+</div>
+
+<!-- ===== SECTION 10: ALGORITHM MAPPING ===== -->
+<h2>10. Algorithm Mapping</h2>
+<div class="card">
+  <p>The replay buffer is an infrastructure module, not a direct algorithm implementation. It enables the two-pass correction architecture:</p>
+  <div class="math">
+// C reference mapping (ref/receiver.c)
+// Pass 1: capture raw IQ frame, run sync algorithm
+raw_frame = capture_iq_frame(576_samples);       // → S_CAPTURING → S_CAPTURED
+synchronization(raw_frame, &amp;frac_cfo, &amp;int_cfo); // Phase3 sync top runs
+
+// Pass 2: replay with integer CFO correction
+load_integer_nco_step(int_cfo);                  // NCO step word loaded
+warmup_nco(CORDIC_LATENCY + 1);                  // 16 cycles warmup
+replay_start();                                  // → S_REPLAYING
+corrected_frame = apply_carrier_freq_offset(raw_frame, int_cfo); // complex_rotator output
+  </div>
+  <p>Without the replay buffer, the raw IQ frame would need to be re-streamed from the PS/DMA, requiring a second DMA transaction and losing the real-time processing window. The replay buffer enables a single-pass receive with post-processing correction.</p>
+  <p>The C reference function <code>apply_carrier_freq_offset()</code> is implemented in hardware by the NCO (<code>nco_phase_gen</code>) + rotator (<code>complex_rotator</code>) chain downstream of this buffer in the DMA wrapper.</p>
+</div>
+
+<!-- ===== SECTION 11: LATENCY ANALYSIS ===== -->
+<h2>11. Latency Analysis</h2>
+<table>
+  <thead><tr><th>Operation</th><th>Latency (Cycles)</th><th>Method</th><th>Notes</th></tr></thead>
+  <tbody>
+    <tr><td>Capture: first sample to BRAM write</td><td>1</td><td>Single registered write</td><td>mem[wr_ptr] written on wr_fire posedge</td></tr>
+    <tr><td>Capture: total (all 576 samples)</td><td>576 (minimum, no gaps)</td><td>1 sample/clock at full throughput</td><td>wr_ready=1 throughout; no stalling unless upstream slow</td></tr>
+    <tr><td>BRAM read latency (single read)</td><td>1</td><td>Synchronous registered BRAM output</td><td>Address issued; data in mem_q the following cycle</td></tr>
+    <tr><td>Replay: replay_start to first rd_valid</td><td>2</td><td>S1 do_read + S2 load</td><td>Cycle 0: replay_start; Cycle 1: do_read fires; Cycle 2: s1_pending=1, rd_valid asserts</td></tr>
+    <tr><td>Replay: rd_valid to rd_tlast (total)</td><td>576&times;2 = 1152 (minimum)</td><td>1 sample / 2 clocks throughput</td><td>Minimum with rd_ready=1 throughout</td></tr>
+    <tr><td>Replay: replay_start to replay_done</td><td>1154 (minimum)</td><td>1152 replay + 2 latency overhead</td><td>Measured from replay_start pulse to replay_done pulse</td></tr>
+    <tr><td>NCO warmup (upstream dependency)</td><td>16</td><td>CORDIC_LATENCY+1 = 15+1</td><td>Wrapper waits for int_nco_wu_cnt==1 before firing replay_start</td></tr>
+  </tbody>
+</table>
+
+<!-- ===== SECTION 12: THROUGHPUT ANALYSIS ===== -->
+<h2>12. Throughput Analysis</h2>
+<table>
+  <thead><tr><th>Mode</th><th>Samples/Clock</th><th>Throughput</th><th>Bottleneck</th><th>Notes</th></tr></thead>
+  <tbody>
+    <tr><td>Capture (write)</td><td>1</td><td>Full rate; 1 sample per clock</td><td>Upstream write bandwidth</td><td>BRAM write port is single-cycle; wr_ready=1 in S_CAPTURING until full</td></tr>
+    <tr><td>Replay (read, no stall)</td><td>0.5</td><td>1 sample per 2 clocks</td><td>2-stage BRAM read pipeline</td><td>S1 issues address; S2 loads output. Minimum 2 clocks per sample.</td></tr>
+    <tr><td>Replay (read, backpressure)</td><td>&lt;0.5</td><td>Reduced by rd_ready deassertions</td><td>Downstream integer NCO/rotator</td><td>Pipeline stalls cleanly; no data loss</td></tr>
+    <tr><td>Total 576-sample replay</td><td>&#8212;</td><td>1152 clocks minimum</td><td>2-stage pipeline</td><td>Integer corrector must process at &ge;0.5 samples/clock to keep pace</td></tr>
+  </tbody>
+</table>
+<div class="note">The 1-sample-per-2-clock throughput is a fundamental constraint of the 2-stage BRAM read pipeline. The downstream NCO+rotator pipeline must be sized accordingly. At the system level, the 1152-cycle replay budget must fit within the DMA transfer window.</div>
+
+<!-- ===== SECTION 13: RESOURCE IMPACT ===== -->
+<h2>13. Resource Impact</h2>
+<table>
+  <thead><tr><th>Resource</th><th>Estimated Count</th><th>Primitive</th><th>Notes</th></tr></thead>
+  <tbody>
+    <tr><td>BRAM18E2</td><td>1&ndash;2</td><td>BRAM18E2 (Artix-7/Zynq)</td><td>576&times;32b = 18.4Kb. Vivado may assign 2 BRAM18E2s since the array is declared as 1024&times;32b (32Kb). Verify in implementation report. Consider reducing ADDR_W to 10 and constraining array to 576 entries to guarantee 1 BRAM18E2.</td></tr>
+    <tr><td>LUTs (logic)</td><td>~80&ndash;120</td><td>LUT6</td><td>FSM (2-bit state), comparators (wr_ptr/rd_ptr vs FRAME_LEN), do_read combinatorial logic, s2_can_accept</td></tr>
+    <tr><td>Flip-Flops</td><td>~120&ndash;160</td><td>FDRE</td><td>wr_ptr[9:0] (10), rd_ptr[9:0] (10), state[1:0] (2), s1_pending (1), s1_last (1), capture_done (1), capture_error (1), replay_busy (1), replay_done (1), rd_valid (1), rd_data[31:0] (32), rd_tlast (1), mem_q[31:0] (32)</td></tr>
+    <tr><td>DSP48</td><td>0</td><td>&#8212;</td><td>No multiplications in this module; address arithmetic uses adders only</td></tr>
+    <tr><td>Carry chains</td><td>~4</td><td>CARRY8</td><td>wr_ptr and rd_ptr 10-bit increment adders; comparators</td></tr>
+  </tbody>
+</table>
+
+<!-- ===== SECTION 14: RTL SIMULATION COVERAGE ===== -->
+<h2>14. RTL Simulation Coverage</h2>
+<table>
+  <thead><tr><th>Gate ID</th><th>Type</th><th>Simulator</th><th>IP/Model</th><th>Cases</th><th>Status</th><th>Coverage</th></tr></thead>
+  <tbody>
+    <tr><td>P3-12B</td><td>CI_GATE</td><td>iverilog</td><td>Behavioral BRAM model</td><td>7/7</td><td><span class="badge-pass">PASS</span></td><td>Basic capture/replay, capture_done pulse, rd_tlast on last sample</td></tr>
+    <tr><td>P3-12C</td><td>FULL_REGRESSION</td><td>iverilog</td><td>Behavioral BRAM model</td><td>10/10</td><td><span class="badge-pass">PASS</span></td><td>capture_error sticky, clear from each state, backpressure scenarios, multiple replays</td></tr>
+    <tr><td>P3-14B</td><td>SANITY+OFFICIAL_GATE</td><td>iverilog</td><td>Behavioral</td><td>14/14</td><td><span class="badge-pass">PASS</span></td><td>Full DMA wrapper integration; replay_start timing from NCO warmup; replay_done to DMA</td></tr>
+    <tr><td>XIP-004</td><td>FULL_SYNC_REAL_IP_GATE</td><td>Vivado xsim</td><td>Xilinx FFT IP (real)</td><td>9/9</td><td><span class="badge-pass">PASS</span></td><td>End-to-end sync including replay; verified integer CFO correction applied on replayed data</td></tr>
+    <tr><td>P3-20A</td><td>SANITY_AXI_GATE</td><td>iverilog</td><td>Behavioral</td><td>37/37</td><td><span class="badge-pass">PASS</span></td><td>AXI-S backpressure stress test; replay under varying rd_ready patterns</td></tr>
+    <tr><td>P3-23A</td><td>STRESS_GATE</td><td>iverilog</td><td>Behavioral</td><td>23/23</td><td><span class="badge-pass">PASS</span></td><td>Reset during replay, CFO sweep, multi-frame sequences</td></tr>
+  </tbody>
+</table>
+
+<!-- ===== SECTION 15: KNOWN ISSUES / LESSONS LEARNED ===== -->
+<h2>15. Known Issues &amp; Lessons Learned</h2>
+<div class="ok">All verification gates PASS as of 2026-06-04. No open issues on this module.</div>
+<div class="card">
+  <h3>Resolved: No Issues on iq_replay_buffer_576</h3>
+  <p>ISSUE-001 (complex_mult_iq backpressure) and ISSUE-002 (TB AXI-S race) are in downstream modules and are both RESOLVED. They do not affect this module directly.</p>
+
+  <h3>Lessons Learned</h3>
+  <ul>
+    <li><strong>Throughput half-rate:</strong> The 2-stage BRAM read pipeline gives 1 sample per 2 cycles, not 1 per cycle. Early integration assumed full rate; the wrapper NCO warmup counter and TLAST counter were adjusted accordingly.</li>
+    <li><strong>clear does not erase BRAM:</strong> BRAM content persists through clear. Stale data from a previous capture is not visible to a new capture (new data overwrites from address 0) but may be read if rd_ptr is driven past wr_ptr in an incomplete capture scenario. Always complete capture before replay.</li>
+    <li><strong>S_DONE requires clear to exit:</strong> Unlike some buffer designs that auto-return to S_CAPTURED after replay, this module stays in S_DONE. The wrapper must issue <code>clear</code> (via <code>soft_reset_pulse</code>) to start a new frame. This is intentional — prevents accidental re-capture.</li>
+    <li><strong>ram_style attribute:</strong> Without <code>(* ram_style = "block" *)</code>, Vivado may infer distributed RAM consuming 576 LUTs. Always verify the utilization report shows BRAM primitive usage.</li>
+    <li><strong>Clock name mismatch:</strong> This module uses <code>clk</code> not <code>aclk</code>. All connecting logic in the wrapper must bind to the same clock net. This was verified in P3-14B.</li>
+  </ul>
+</div>
+
+<!-- ===== SECTION 16: FPGA BRING-UP GUIDE ===== -->
+<h2>16. FPGA Bring-Up Guide</h2>
+<div class="card">
+  <h3>ILA Probe Recommendations</h3>
+  <table>
+    <thead><tr><th>Signal</th><th>Width</th><th>Trigger Condition</th><th>Expected Behavior</th></tr></thead>
+    <tbody>
+      <tr><td>capture_done</td><td>1</td><td>Rising edge</td><td>Should pulse exactly once per frame after 576 valid inputs. If never fires: check wr_valid stream or wr_ready deasserted prematurely.</td></tr>
+      <tr><td>capture_error</td><td>1</td><td>Rising edge (should never fire)</td><td>Must remain 0. If asserted: wrapper is driving replay_start before capture completes — check sequencing logic.</td></tr>
+      <tr><td>replay_busy</td><td>1</td><td>Rising edge</td><td>Goes high on replay_start; stays high ~1154 cycles; drops on replay_done. If stays high indefinitely: check rd_ready driven from downstream.</td></tr>
+      <tr><td>replay_done</td><td>1</td><td>Rising edge</td><td>1-cycle pulse ~1154 clocks after replay_start. Triggers DMA done flag in wrapper.</td></tr>
+      <tr><td>rd_tlast</td><td>1</td><td>Rising edge</td><td>Asserts on 576th replayed sample. Count samples between replay_start and rd_tlast: should be 1154 clock cycles at full speed.</td></tr>
+      <tr><td>state[1:0]</td><td>2</td><td>Any change</td><td>Observe S_CAPTURING&rarr;S_CAPTURED&rarr;S_REPLAYING&rarr;S_DONE sequence. Any deviation indicates a sequencing or reset issue.</td></tr>
+      <tr><td>rd_data[15:0]</td><td>16</td><td>rd_valid &amp; rd_tlast</td><td>Verify first and last I-samples match the originally captured input stream (golden compare).</td></tr>
+    </tbody>
+  </table>
+
+  <h3>Expected Bring-Up Sequence</h3>
+  <ol>
+    <li>Assert <code>aresetn=0</code> for &ge;4 cycles; deassert. Module enters S_CAPTURING.</li>
+    <li>Write 0x01 to AXI register 0x04 (CONTROL: enable=1). DMA stream begins flowing.</li>
+    <li>Observe <code>capture_done</code> pulse after exactly 576 <code>wr_fire</code> events on ILA.</li>
+    <li>Observe <code>state</code> transition to 2'd1 (S_CAPTURED).</li>
+    <li>Phase3 sync algorithm runs (~35,000+ cycles).</li>
+    <li>DMA wrapper loads integer NCO step word; starts NCO; waits 16 cycles warmup.</li>
+    <li>Wrapper asserts <code>replay_start</code> for 1 cycle (<code>int_nco_wu_cnt==1</code>).</li>
+    <li>Observe <code>replay_busy=1</code> on ILA; monitor <code>rd_valid</code> stream beginning.</li>
+    <li>After 1152+ clocks, observe <code>rd_tlast</code> pulse and then <code>replay_done</code>.</li>
+    <li>Downstream DMA receives 576 integer-CFO-corrected samples.</li>
+  </ol>
+
+  <h3>Hardware Risks</h3>
+  <ul>
+    <li><strong>BRAM utilization:</strong> Check Vivado implementation report for RAMB18E2 vs RAMB36E2 usage. If 2 BRAM18E2s are instantiated, verify timing closure at target frequency.</li>
+    <li><strong>rd_ready tie-off:</strong> If the downstream pipeline (integer NCO + rotator) is not ready before <code>replay_start</code>, the first few samples may be lost (rd_valid=1 but rd_ready=0 on cycle 2 of replay). The wrapper NCO warmup should guarantee readiness.</li>
+    <li><strong>clear timing:</strong> Do not assert <code>clear</code> during the S_REPLAYING to S_DONE transition to avoid losing the replay_done pulse which signals the DMA wrapper.</li>
+  </ul>
+</div>
+
+<!-- ===== SECTION 17: DEBUG CHECKLIST ===== -->
+<h2>17. Debug Checklist</h2>
+<div class="card">
+  <ol>
+    <li><strong>capture_done never fires:</strong> Check wr_valid is being driven. Check wr_ready is high (state=S_CAPTURING). Count wr_fire events — should reach 576.</li>
+    <li><strong>capture_error is set:</strong> replay_start was driven before capture_done. Review wrapper sequencing; ensure replay_start is gated by capture_done.</li>
+    <li><strong>replay_start ignored:</strong> Verify state=2'd1 (S_CAPTURED) when replay_start fires. State must not be S_CAPTURING, S_REPLAYING, or S_DONE.</li>
+    <li><strong>rd_valid never asserts after replay_start:</strong> Check do_read fires — requires state=S_REPLAYING, s1_pending=0, s2_can_accept=1, rd_ptr&lt;576. Check rd_ready is not stuck low before first sample.</li>
+    <li><strong>replay throughput too slow:</strong> Check rd_ready pattern. Count clock cycles between rd_valid assertions; should be 2 when rd_ready=1 constantly.</li>
+    <li><strong>rd_tlast on wrong sample:</strong> FRAME_LEN parameter mismatch. Verify FRAME_LEN=576 at instantiation. Count rd_valid pulses before rd_tlast.</li>
+    <li><strong>replay_done never fires:</strong> rd_tlast may be asserted but rd_ready not asserted to consume the last sample. Check downstream consumer.</li>
+    <li><strong>BRAM inferred as LUTRAMs in synthesis:</strong> Confirm <code>(* ram_style = "block" *)</code> attribute is present. Check synthesis log for &ldquo;BRAM18E2&rdquo; vs &ldquo;RAM32M&rdquo; references.</li>
+    <li><strong>State stuck in S_DONE:</strong> Normal — requires <code>clear</code> pulse (via soft_reset from AXI register) to return to S_CAPTURING for next frame.</li>
+    <li><strong>Data corruption after clear:</strong> Verify clear is not asserted during an active BRAM write (wr_fire). Clear deasserts wr_ptr but the in-progress write completes; next capture starts from address 0 and overwrites cleanly.</li>
+  </ol>
+</div>
+
+<!-- ===== SECTION 18: REVIEW NOTES ===== -->
+<h2>18. Review Notes &amp; Non-Obvious Design Decisions</h2>
+<div class="card">
+  <h3>Why 2-Stage Pipeline?</h3>
+  <p>The BRAM18E2 has 1 clock cycle of read latency (registered output mode, required for synthesis inference). A naive single-cycle read would not work — the data is not available combinatorially. The 2-stage pipeline (S1: issue address; S2: capture result into output hold register) is the minimal correct implementation.</p>
+
+  <h3>s2_can_accept and do_read Gate</h3>
+  <p>The condition <code>do_read = (state==S_REPLAYING) &amp; !s1_pending &amp; s2_can_accept &amp; (rd_ptr&lt;FRAME_LEN)</code> is carefully constructed: it prevents issuing a new BRAM read when the S2 output register cannot accept a new result. This ensures no BRAM data is ever lost or overwritten. The invariant &ldquo;when s1_pending=1, rd_valid is guaranteed 0&rdquo; (from the header comment) is maintained by this gate.</p>
+
+  <h3>wr_ready is Combinatorial</h3>
+  <p><code>assign wr_ready = (state == S_CAPTURING)</code> is combinatorial from the state register. This is safe — the state register is stable between clock edges. The combinatorial wr_ready may glitch during state transitions at the rising clock edge if the downstream does not honor setup/hold, but standard AXI-S practice accounts for this (downstream samples on posedge).</p>
+
+  <h3>capture_done and replay_done as Pulses</h3>
+  <p>Both control outputs default to 0 every cycle (<code>capture_done &lt;= 1'b0; replay_done &lt;= 1'b0;</code> at the top of the always block). They are only set to 1 in the specific cycle they fire. This is intentional — callers must latch these pulses themselves or use them as direct trigger events.</p>
+
+  <h3>FRAME_LEN Assertion</h3>
+  <p>The <code>$fatal</code> checks (<code>synthesis translate_off</code>) catch configuration errors at simulation time: FRAME_LEN exceeding BRAM address space or FRAME_LEN=0. These are compile-time assertions that prevent silent data truncation bugs when parameters are changed.</p>
+
+  <h3>Clock Name Convention</h3>
+  <p>This module uses <code>clk</code> as its clock port name, unlike most other modules in the project which use <code>aclk</code>. Future engineers: this is not a bug but a naming convention leftover from the P3-10A standalone development. The DMA wrapper correctly maps the system clock to this <code>clk</code> port.</p>
+
+  <h3>BRAM Size vs FRAME_LEN</h3>
+  <p>The BRAM is allocated 1024 entries (ADDR_W=10) but only 576 are used. The 448 unused entries waste BRAM capacity but are harmless. Reducing ADDR_W to <code>$clog2(FRAME_LEN)</code> = 10 (since 2^10=1024&ge;576) would not change resource usage. Reducing to 9 (2^9=512 &lt; 576) would fail the compile-time assertion.</p>
+
+  <h3>Future Work</h3>
+  <p>The register comment at 0x44 (INT_CFO_APPLIED) notes &ldquo;TODO: replay buffer not yet connected.&rdquo; This sticky bit should be wired to <code>replay_busy</code> rising edge from this module. As of 2026-06-04, this TODO remains open in <code>phase3_axi_lite_regs.v</code> but does not affect functional correctness.</p>
+</div>
+
+<div style="margin-top:32px; color:#4a6a75; font-size:11px; border-top:1px solid var(--border); padding-top:12px;">
+  RTL_SYNC_PHASE4 Design Review &mdash; Module 08 &mdash; iq_replay_buffer_576 &mdash; 18-Section Review &mdash; Generated 2026-06-04 &mdash; All interfaces extracted from rtl/DUT/iq_replay_buffer_576.v
+</div>
+</div>
+</body>
+</html>

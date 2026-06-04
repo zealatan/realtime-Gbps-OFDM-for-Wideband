@@ -1,0 +1,982 @@
+[INFO] fft256_xilinx_wrapper: USE_BEHAVIORAL_STUB=3 (behavioral DFT)
+[INFO]   Exact 256-pt DFT, real arithmetic, simulation-only.
+[INFO]   Enables k_int sweep validation without Xilinx IP.
+[D3] === case_087 ===
+[D3] STIM_FILE  = /home/zealatan/RTL_SYNC_PHASE4/golden/p3_15d_stimuli/case_087.mem
+[D3] OUT_PREFIX = /home/zealatan/RTL_SYNC_PHASE4/sim_out/session_probe_087/case_087
+[DFS] t=305000 START → S_PSS_FILL flush_rem=1
+[D3] Feeding 704 stimulus samples...
+[BUF_WR] t=335000 wr[0]: wr_ptr=0 tdata=00000000 tvalid=1 tready=1
+[BUF_WR] t=345000 wr[1]: wr_ptr=1 tdata=00000000 tvalid=1 tready=1
+[BUF_WR] t=355000 wr[2]: wr_ptr=2 tdata=00000000 tvalid=1 tready=1
+[BUF_WR] t=365000 wr[3]: wr_ptr=3 tdata=00000000 tvalid=1 tready=1
+[BUF_WR] t=375000 wr[4]: wr_ptr=4 tdata=00000000 tvalid=1 tready=1
+[BUF_WR] t=385000 wr[5]: wr_ptr=5 tdata=00000000 tvalid=1 tready=1
+[BUF_WR] t=395000 wr[6]: wr_ptr=6 tdata=00000000 tvalid=1 tready=1
+[BUF_WR] t=405000 wr[7]: wr_ptr=7 tdata=00000000 tvalid=1 tready=1
+[BUF_WR] t=415000 wr[8]: wr_ptr=8 tdata=00000000 tvalid=1 tready=1
+[BUF_WR] t=425000 wr[9]: wr_ptr=9 tdata=00000000 tvalid=1 tready=1
+[BUF_WR] t=435000 wr[10]: wr_ptr=10 tdata=00000000 tvalid=1 tready=1
+[BUF_WR] t=445000 wr[11]: wr_ptr=11 tdata=00000000 tvalid=1 tready=1
+[BUF_WR] t=455000 wr[12]: wr_ptr=12 tdata=00000000 tvalid=1 tready=1
+[BUF_WR] t=465000 wr[13]: wr_ptr=13 tdata=00000000 tvalid=1 tready=1
+[BUF_WR] t=475000 wr[14]: wr_ptr=14 tdata=00000000 tvalid=1 tready=1
+[BUF_WR] t=485000 wr[15]: wr_ptr=15 tdata=00000000 tvalid=1 tready=1
+[BUF_WR] t=495000 wr[16]: wr_ptr=16 tdata=00000000 tvalid=1 tready=1
+[BUF_WR] t=505000 wr[17]: wr_ptr=17 tdata=00000000 tvalid=1 tready=1
+[BUF_WR] t=515000 wr[18]: wr_ptr=18 tdata=00000000 tvalid=1 tready=1
+[BUF_WR] t=525000 wr[19]: wr_ptr=19 tdata=00000000 tvalid=1 tready=1
+[BUF_WR] t=535000 wr[20]: wr_ptr=20 tdata=00000000 tvalid=1 tready=1
+[BUF_WR] t=545000 wr[21]: wr_ptr=21 tdata=00000000 tvalid=1 tready=1
+[BUF_WR] t=555000 wr[22]: wr_ptr=22 tdata=00000000 tvalid=1 tready=1
+[BUF_WR] t=565000 wr[23]: wr_ptr=23 tdata=00000000 tvalid=1 tready=1
+[BUF_WR] t=575000 wr[24]: wr_ptr=24 tdata=00000000 tvalid=1 tready=1
+[BUF_WR] t=585000 wr[25]: wr_ptr=25 tdata=00000000 tvalid=1 tready=1
+[BUF_WR] t=595000 wr[26]: wr_ptr=26 tdata=00000000 tvalid=1 tready=1
+[BUF_WR] t=605000 wr[27]: wr_ptr=27 tdata=00000000 tvalid=1 tready=1
+[BUF_WR] t=615000 wr[28]: wr_ptr=28 tdata=00000000 tvalid=1 tready=1
+[BUF_WR] t=625000 wr[29]: wr_ptr=29 tdata=00000000 tvalid=1 tready=1
+[BUF_WR] t=635000 wr[30]: wr_ptr=30 tdata=00000000 tvalid=1 tready=1
+[BUF_WR] t=645000 wr[31]: wr_ptr=31 tdata=00000000 tvalid=1 tready=1
+[BUF_WR] t=655000 wr[32]: wr_ptr=32 tdata=00000000 tvalid=1 tready=1
+[BUF_WR] t=665000 wr[33]: wr_ptr=33 tdata=00000000 tvalid=1 tready=1
+[BUF_WR] t=675000 wr[34]: wr_ptr=34 tdata=00000000 tvalid=1 tready=1
+[BUF_WR] t=685000 wr[35]: wr_ptr=35 tdata=00000000 tvalid=1 tready=1
+[BUF_WR] t=695000 wr[36]: wr_ptr=36 tdata=00000000 tvalid=1 tready=1
+[BUF_WR] t=705000 wr[37]: wr_ptr=37 tdata=00000000 tvalid=1 tready=1
+[BUF_WR] t=715000 wr[38]: wr_ptr=38 tdata=00000000 tvalid=1 tready=1
+[BUF_WR] t=725000 wr[39]: wr_ptr=39 tdata=00000000 tvalid=1 tready=1
+[BUF_WR] t=735000 wr[40]: wr_ptr=40 tdata=0418ff1d tvalid=1 tready=1
+[BUF_WR] t=745000 wr[41]: wr_ptr=41 tdata=ff600142 tvalid=1 tready=1
+[BUF_WR] t=755000 wr[42]: wr_ptr=42 tdata=ff2801d5 tvalid=1 tready=1
+[BUF_WR] t=765000 wr[43]: wr_ptr=43 tdata=ff1cfe5a tvalid=1 tready=1
+[BUF_WR] t=775000 wr[44]: wr_ptr=44 tdata=ff42fe96 tvalid=1 tready=1
+[BUF_WR] t=785000 wr[45]: wr_ptr=45 tdata=019bfeac tvalid=1 tready=1
+[BUF_WR] t=795000 wr[46]: wr_ptr=46 tdata=ff770282 tvalid=1 tready=1
+[BUF_WR] t=805000 wr[47]: wr_ptr=47 tdata=fe36ff7b tvalid=1 tready=1
+[BUF_WR] t=815000 wr[48]: wr_ptr=48 tdata=ff36ff6a tvalid=1 tready=1
+[BUF_WR] t=825000 wr[49]: wr_ptr=49 tdata=016cff80 tvalid=1 tready=1
+[BUF_WR] t=835000 wr[50]: wr_ptr=50 tdata=0090ffa2 tvalid=1 tready=1
+[BUF_WR] t=845000 wr[51]: wr_ptr=51 tdata=011d006f tvalid=1 tready=1
+[BUF_WR] t=855000 wr[52]: wr_ptr=52 tdata=01d4000c tvalid=1 tready=1
+[BUF_WR] t=865000 wr[53]: wr_ptr=53 tdata=fe5f00a5 tvalid=1 tready=1
+[BUF_WR] t=875000 wr[54]: wr_ptr=54 tdata=0133ff23 tvalid=1 tready=1
+[BUF_WR] t=885000 wr[55]: wr_ptr=55 tdata=fdd1006e tvalid=1 tready=1
+[BUF_WR] t=895000 wr[56]: wr_ptr=56 tdata=0303ffc1 tvalid=1 tready=1
+[BUF_WR] t=905000 wr[57]: wr_ptr=57 tdata=003e01dd tvalid=1 tready=1
+[BUF_WR] t=915000 wr[58]: wr_ptr=58 tdata=01a001a8 tvalid=1 tready=1
+[BUF_WR] t=925000 wr[59]: wr_ptr=59 tdata=fd8101e5 tvalid=1 tready=1
+[D3] Waiting for 576 M_AXIS beats...
+[FCFC] t=8465000 tfc_start fired: state=3
+[FCFC] t=8475000 state=3 buf_rd_en=0 buf_rd_addr=0 tfc_buf_rd_en=0
+[FCFC] t=8485000 state=3 buf_rd_en=1 buf_rd_addr=16 tfc_buf_rd_en=1
+[TST] pd_start base_addr_r=16 @8485000
+[TST] RD[0]: t=8485000 addr=16 rdI=111 rdQ=285 sca_sv=0 si=0
+[TST] RD[1]: t=8495000 addr=17 rdI=0 rdQ=0 sca_sv=1 si=0
+[FCFC] t=8495000 state=3 buf_rd_en=1 buf_rd_addr=17 tfc_buf_rd_en=1
+[FCFC] t=8505000 state=3 buf_rd_en=1 buf_rd_addr=18 tfc_buf_rd_en=1
+[TST] RD[2]: t=8505000 addr=18 rdI=0 rdQ=0 sca_sv=1 si=1
+[TST] RD[3]: t=8515000 addr=19 rdI=0 rdQ=0 sca_sv=1 si=2
+[FCFC] t=8515000 state=3 buf_rd_en=1 buf_rd_addr=19 tfc_buf_rd_en=1
+[FCFC] t=8525000 state=3 buf_rd_en=1 buf_rd_addr=20 tfc_buf_rd_en=1
+[TST] RD[4]: t=8525000 addr=20 rdI=0 rdQ=0 sca_sv=1 si=3
+[TST] RD[5]: t=8535000 addr=21 rdI=0 rdQ=0 sca_sv=1 si=4
+[FCFC] t=8535000 state=3 buf_rd_en=1 buf_rd_addr=21 tfc_buf_rd_en=1
+[FCFC] t=8545000 state=3 buf_rd_en=1 buf_rd_addr=22 tfc_buf_rd_en=1
+[TST] RD[6]: t=8545000 addr=22 rdI=0 rdQ=0 sca_sv=1 si=5
+[BUF_TW] t=8545000 rd_en=1 rd_addr=22 rd_data=00000000
+[BUF_HI] t=8545000 hi[0]: rd_addr=22 mem=00000000 rd_data=00000000
+[BUF_TW] t=8555000 rd_en=1 rd_addr=23 rd_data=00000000
+[BUF_HI] t=8555000 hi[1]: rd_addr=23 mem=00000000 rd_data=00000000
+[TST] RD[7]: t=8555000 addr=23 rdI=0 rdQ=0 sca_sv=1 si=6
+[FCFC] t=8555000 state=3 buf_rd_en=1 buf_rd_addr=23 tfc_buf_rd_en=1
+[FCFC] t=8565000 state=3 buf_rd_en=1 buf_rd_addr=24 tfc_buf_rd_en=1
+[TST] RD[8]: t=8565000 addr=24 rdI=0 rdQ=0 sca_sv=1 si=7
+[BUF_TW] t=8565000 rd_en=1 rd_addr=24 rd_data=00000000
+[BUF_HI] t=8565000 hi[2]: rd_addr=24 mem=00000000 rd_data=00000000
+[BUF_TW] t=8575000 rd_en=1 rd_addr=25 rd_data=00000000
+[BUF_HI] t=8575000 hi[3]: rd_addr=25 mem=00000000 rd_data=00000000
+[TST] RD[9]: t=8575000 addr=25 rdI=0 rdQ=0 sca_sv=1 si=8
+[FCFC] t=8575000 state=3 buf_rd_en=1 buf_rd_addr=25 tfc_buf_rd_en=1
+[FCFC] t=8585000 state=3 buf_rd_en=1 buf_rd_addr=26 tfc_buf_rd_en=1
+[TST] RD[10]: t=8585000 addr=26 rdI=0 rdQ=0 sca_sv=1 si=9
+[BUF_HI] t=8585000 hi[4]: rd_addr=26 mem=00000000 rd_data=00000000
+[BUF_HI] t=8595000 hi[5]: rd_addr=27 mem=00000000 rd_data=00000000
+[TST] RD[11]: t=8595000 addr=27 rdI=0 rdQ=0 sca_sv=1 si=10
+[FCFC] t=8595000 state=3 buf_rd_en=1 buf_rd_addr=27 tfc_buf_rd_en=1
+[FCFC] t=8605000 state=3 buf_rd_en=1 buf_rd_addr=28 tfc_buf_rd_en=1
+[TST] RD[12]: t=8605000 addr=28 rdI=0 rdQ=0 sca_sv=1 si=11
+[BUF_HI] t=8605000 hi[6]: rd_addr=28 mem=00000000 rd_data=00000000
+[BUF_HI] t=8615000 hi[7]: rd_addr=29 mem=00000000 rd_data=00000000
+[TST] RD[13]: t=8615000 addr=29 rdI=0 rdQ=0 sca_sv=1 si=12
+[FCFC] t=8615000 state=3 buf_rd_en=1 buf_rd_addr=29 tfc_buf_rd_en=1
+[FCFC] t=8625000 state=3 buf_rd_en=1 buf_rd_addr=30 tfc_buf_rd_en=1
+[TST] RD[14]: t=8625000 addr=30 rdI=0 rdQ=0 sca_sv=1 si=13
+[BUF_HI] t=8625000 hi[8]: rd_addr=30 mem=00000000 rd_data=00000000
+[BUF_HI] t=8635000 hi[9]: rd_addr=31 mem=00000000 rd_data=00000000
+[TST] RD[15]: t=8635000 addr=31 rdI=0 rdQ=0 sca_sv=1 si=14
+[FCFC] t=8635000 state=3 buf_rd_en=1 buf_rd_addr=31 tfc_buf_rd_en=1
+[FCFC] t=8645000 state=3 buf_rd_en=1 buf_rd_addr=32 tfc_buf_rd_en=1
+[TST] RD[16]: t=8645000 addr=32 rdI=0 rdQ=0 sca_sv=1 si=15
+[BUF_HI] t=8645000 hi[10]: rd_addr=32 mem=00000000 rd_data=00000000
+[BUF_HI] t=8655000 hi[11]: rd_addr=33 mem=00000000 rd_data=00000000
+[TST] RD[17]: t=8655000 addr=33 rdI=0 rdQ=0 sca_sv=1 si=16
+[FCFC] t=8655000 state=3 buf_rd_en=1 buf_rd_addr=33 tfc_buf_rd_en=1
+[FCFC] t=8665000 state=3 buf_rd_en=1 buf_rd_addr=34 tfc_buf_rd_en=1
+[TST] RD[18]: t=8665000 addr=34 rdI=0 rdQ=0 sca_sv=1 si=17
+[BUF_HI] t=8665000 hi[12]: rd_addr=34 mem=00000000 rd_data=00000000
+[BUF_HI] t=8675000 hi[13]: rd_addr=35 mem=00000000 rd_data=00000000
+[TST] RD[19]: t=8675000 addr=35 rdI=0 rdQ=0 sca_sv=1 si=18
+[FCFC] t=8675000 state=3 buf_rd_en=1 buf_rd_addr=35 tfc_buf_rd_en=1
+[FCFC] t=8685000 state=3 buf_rd_en=1 buf_rd_addr=36 tfc_buf_rd_en=1
+[TST] RD[20]: t=8685000 addr=36 rdI=0 rdQ=0 sca_sv=1 si=19
+[BUF_HI] t=8685000 hi[14]: rd_addr=36 mem=00000000 rd_data=00000000
+[BUF_HI] t=8695000 hi[15]: rd_addr=37 mem=00000000 rd_data=00000000
+[TST] RD[21]: t=8695000 addr=37 rdI=0 rdQ=0 sca_sv=1 si=20
+[FCFC] t=8695000 state=3 buf_rd_en=1 buf_rd_addr=37 tfc_buf_rd_en=1
+[FCFC] t=8705000 state=3 buf_rd_en=1 buf_rd_addr=38 tfc_buf_rd_en=1
+[TST] RD[22]: t=8705000 addr=38 rdI=0 rdQ=0 sca_sv=1 si=21
+[BUF_HI] t=8705000 hi[16]: rd_addr=38 mem=00000000 rd_data=00000000
+[BUF_HI] t=8715000 hi[17]: rd_addr=39 mem=00000000 rd_data=00000000
+[TST] RD[23]: t=8715000 addr=39 rdI=0 rdQ=0 sca_sv=1 si=22
+[FCFC] t=8715000 state=3 buf_rd_en=1 buf_rd_addr=39 tfc_buf_rd_en=1
+[FCFC] t=8725000 state=3 buf_rd_en=1 buf_rd_addr=40 tfc_buf_rd_en=1
+[TST] RD[24]: t=8725000 addr=40 rdI=0 rdQ=0 sca_sv=1 si=23
+[BUF_HI] t=8725000 hi[18]: rd_addr=40 mem=0418ff1d rd_data=00000000
+[BUF_HI] t=8735000 hi[19]: rd_addr=41 mem=ff600142 rd_data=0418ff1d
+[TST] RD[25]: t=8735000 addr=41 rdI=-227 rdQ=1048 sca_sv=1 si=24
+[FCFC] t=8735000 state=3 buf_rd_en=1 buf_rd_addr=41 tfc_buf_rd_en=1
+[FCFC] t=8745000 state=3 buf_rd_en=1 buf_rd_addr=42 tfc_buf_rd_en=1
+[TST] RD[26]: t=8745000 addr=42 rdI=322 rdQ=-160 sca_sv=1 si=25
+[BUF_HI] t=8745000 hi[20]: rd_addr=42 mem=ff2801d5 rd_data=ff600142
+[BUF_HI] t=8755000 hi[21]: rd_addr=43 mem=ff1cfe5a rd_data=ff2801d5
+[TST] RD[27]: t=8755000 addr=43 rdI=469 rdQ=-216 sca_sv=1 si=26
+[FCFC] t=8755000 state=3 buf_rd_en=1 buf_rd_addr=43 tfc_buf_rd_en=1
+[TST] RD[28]: t=8765000 addr=44 rdI=-422 rdQ=-228 sca_sv=1 si=27
+[BUF_HI] t=8765000 hi[22]: rd_addr=44 mem=ff42fe96 rd_data=ff1cfe5a
+[BUF_HI] t=8775000 hi[23]: rd_addr=45 mem=019bfeac rd_data=ff42fe96
+[TST] RD[29]: t=8775000 addr=45 rdI=-362 rdQ=-190 sca_sv=1 si=28
+[TST] RD[30]: t=8785000 addr=46 rdI=-340 rdQ=411 sca_sv=1 si=29
+[BUF_HI] t=8785000 hi[24]: rd_addr=46 mem=ff770282 rd_data=019bfeac
+[BUF_HI] t=8795000 hi[25]: rd_addr=47 mem=fe36ff7b rd_data=ff770282
+[TST] RD[31]: t=8795000 addr=47 rdI=642 rdQ=-137 sca_sv=1 si=30
+[TST] RD[32]: t=8805000 addr=48 rdI=-133 rdQ=-458 sca_sv=1 si=31
+[BUF_HI] t=8805000 hi[26]: rd_addr=48 mem=ff36ff6a rd_data=fe36ff7b
+[BUF_HI] t=8815000 hi[27]: rd_addr=49 mem=016cff80 rd_data=ff36ff6a
+[TST] RD[33]: t=8815000 addr=49 rdI=-150 rdQ=-202 sca_sv=1 si=32
+[TST] RD[34]: t=8825000 addr=50 rdI=-128 rdQ=364 sca_sv=1 si=33
+[BUF_HI] t=8825000 hi[28]: rd_addr=50 mem=0090ffa2 rd_data=016cff80
+[BUF_HI] t=8835000 hi[29]: rd_addr=51 mem=011d006f rd_data=0090ffa2
+[TST] RD[35]: t=8835000 addr=51 rdI=-94 rdQ=144 sca_sv=1 si=34
+[TST] RD[36]: t=8845000 addr=52 rdI=111 rdQ=285 sca_sv=1 si=35
+[TST] RD[37]: t=8855000 addr=53 rdI=12 rdQ=468 sca_sv=1 si=36
+[TST] RD[38]: t=8865000 addr=54 rdI=165 rdQ=-417 sca_sv=1 si=37
+[TST] RD[39]: t=8875000 addr=55 rdI=-221 rdQ=307 sca_sv=1 si=38
+[TST] RD[40]: t=8885000 addr=56 rdI=110 rdQ=-559 sca_sv=1 si=39
+[TST] RD[41]: t=8895000 addr=57 rdI=-63 rdQ=771 sca_sv=1 si=40
+[TST] RD[42]: t=8905000 addr=58 rdI=477 rdQ=62 sca_sv=1 si=41
+[TST] RD[43]: t=8915000 addr=59 rdI=424 rdQ=416 sca_sv=1 si=42
+[TST] RD[44]: t=8925000 addr=60 rdI=485 rdQ=-639 sca_sv=1 si=43
+[TST] RD[45]: t=8935000 addr=61 rdI=142 rdQ=-958 sca_sv=1 si=44
+[TST] RD[46]: t=8945000 addr=62 rdI=694 rdQ=77 sca_sv=1 si=45
+[TST] RD[47]: t=8955000 addr=63 rdI=35 rdQ=529 sca_sv=1 si=46
+[TST] RD[48]: t=8965000 addr=64 rdI=-383 rdQ=107 sca_sv=1 si=47
+[TST] RD[49]: t=8975000 addr=65 rdI=-432 rdQ=421 sca_sv=1 si=48
+[TST] RD[50]: t=8985000 addr=66 rdI=73 rdQ=339 sca_sv=1 si=49
+[TST] RD[51]: t=8995000 addr=67 rdI=183 rdQ=48 sca_sv=1 si=50
+[TST] RD[52]: t=9005000 addr=68 rdI=249 rdQ=-139 sca_sv=1 si=51
+[TST] RD[53]: t=9015000 addr=69 rdI=169 rdQ=-107 sca_sv=1 si=52
+[TST] RD[54]: t=9025000 addr=70 rdI=300 rdQ=-171 sca_sv=1 si=53
+[TST] RD[55]: t=9035000 addr=71 rdI=627 rdQ=-761 sca_sv=1 si=54
+[TST] RD[56]: t=9045000 addr=72 rdI=-196 rdQ=73 sca_sv=1 si=55
+[TST] RD[57]: t=9055000 addr=73 rdI=613 rdQ=-184 sca_sv=1 si=56
+[TST] RD[58]: t=9065000 addr=74 rdI=174 rdQ=94 sca_sv=1 si=57
+[TST] RD[59]: t=9075000 addr=75 rdI=6 rdQ=-295 sca_sv=1 si=58
+[TST] RD[60]: t=9085000 addr=76 rdI=535 rdQ=439 sca_sv=1 si=59
+[TST] RD[61]: t=9095000 addr=77 rdI=181 rdQ=495 sca_sv=1 si=60
+[TST] RD[62]: t=9105000 addr=78 rdI=-214 rdQ=328 sca_sv=1 si=61
+[TST] RD[63]: t=9115000 addr=79 rdI=82 rdQ=387 sca_sv=1 si=62
+[TST] RD[64]: t=9125000 addr=80 rdI=-110 rdQ=569 sca_sv=1 si=63
+[TST] RD[65]: t=9135000 addr=81 rdI=213 rdQ=-227 sca_sv=1 si=64
+[TST] RD[66]: t=9145000 addr=82 rdI=-112 rdQ=-279 sca_sv=1 si=65
+[TST] RD[67]: t=9155000 addr=83 rdI=820 rdQ=-11 sca_sv=1 si=66
+[TST] RD[68]: t=9165000 addr=84 rdI=857 rdQ=208 sca_sv=1 si=67
+[TST] RD[69]: t=9175000 addr=85 rdI=-462 rdQ=-222 sca_sv=1 si=68
+[TST] RD[70]: t=9185000 addr=86 rdI=146 rdQ=-281 sca_sv=1 si=69
+[TST] RD[71]: t=9195000 addr=87 rdI=-99 rdQ=131 sca_sv=1 si=70
+[TST] RD[72]: t=9205000 addr=88 rdI=-308 rdQ=-541 sca_sv=1 si=71
+[TST] RD[73]: t=9215000 addr=89 rdI=463 rdQ=299 sca_sv=1 si=72
+[TST] RD[74]: t=9225000 addr=90 rdI=-534 rdQ=165 sca_sv=1 si=73
+[TST] RD[75]: t=9235000 addr=91 rdI=-496 rdQ=-365 sca_sv=1 si=74
+[TST] RD[76]: t=9245000 addr=92 rdI=-171 rdQ=-13 sca_sv=1 si=75
+[TST] RD[77]: t=9255000 addr=93 rdI=-423 rdQ=176 sca_sv=1 si=76
+[TST] RD[78]: t=9265000 addr=94 rdI=196 rdQ=607 sca_sv=1 si=77
+[TST] RD[79]: t=9275000 addr=95 rdI=-75 rdQ=1 sca_sv=1 si=78
+[TST] RD[80]: t=9285000 addr=96 rdI=-107 rdQ=576 sca_sv=1 si=79
+[TST] RD[81]: t=9295000 addr=97 rdI=-782 rdQ=223 sca_sv=1 si=80
+[TST] RD[82]: t=9305000 addr=98 rdI=352 rdQ=248 sca_sv=1 si=81
+[TST] RD[83]: t=9315000 addr=99 rdI=-533 rdQ=40 sca_sv=1 si=82
+[TST] RD[84]: t=9325000 addr=100 rdI=669 rdQ=-573 sca_sv=1 si=83
+[TST] RD[85]: t=9335000 addr=101 rdI=-179 rdQ=-647 sca_sv=1 si=84
+[TST] RD[86]: t=9345000 addr=102 rdI=-15 rdQ=-66 sca_sv=1 si=85
+[TST] RD[87]: t=9355000 addr=103 rdI=-582 rdQ=-416 sca_sv=1 si=86
+[TST] RD[88]: t=9365000 addr=104 rdI=905 rdQ=-783 sca_sv=1 si=87
+[TST] RD[89]: t=9375000 addr=105 rdI=-88 rdQ=-621 sca_sv=1 si=88
+[TST] RD[90]: t=9385000 addr=106 rdI=523 rdQ=709 sca_sv=1 si=89
+[TST] RD[91]: t=9395000 addr=107 rdI=-499 rdQ=382 sca_sv=1 si=90
+[TST] RD[92]: t=9405000 addr=108 rdI=295 rdQ=250 sca_sv=1 si=91
+[TST] RD[93]: t=9415000 addr=109 rdI=139 rdQ=-336 sca_sv=1 si=92
+[TST] RD[94]: t=9425000 addr=110 rdI=-479 rdQ=825 sca_sv=1 si=93
+[TST] RD[95]: t=9435000 addr=111 rdI=-663 rdQ=192 sca_sv=1 si=94
+[TST] RD[96]: t=9445000 addr=112 rdI=271 rdQ=899 sca_sv=1 si=95
+[TST] RD[97]: t=9455000 addr=113 rdI=-70 rdQ=211 sca_sv=1 si=96
+[TST] RD[98]: t=9465000 addr=114 rdI=-267 rdQ=-135 sca_sv=1 si=97
+[TST] RD[99]: t=9475000 addr=115 rdI=349 rdQ=-158 sca_sv=1 si=98
+[TST] RD[100]: t=9485000 addr=116 rdI=-52 rdQ=48 sca_sv=1 si=99
+[TST] RD[101]: t=9495000 addr=117 rdI=-31 rdQ=250 sca_sv=1 si=100
+[TST] RD[102]: t=9505000 addr=118 rdI=76 rdQ=15 sca_sv=1 si=101
+[TST] RD[103]: t=9515000 addr=119 rdI=-186 rdQ=377 sca_sv=1 si=102
+[TST] RD[104]: t=9525000 addr=120 rdI=362 rdQ=518 sca_sv=1 si=103
+[TST] RD[105]: t=9535000 addr=121 rdI=282 rdQ=-770 sca_sv=1 si=104
+[TST] RD[106]: t=9545000 addr=122 rdI=126 rdQ=-248 sca_sv=1 si=105
+[TST] RD[107]: t=9555000 addr=123 rdI=833 rdQ=-317 sca_sv=1 si=106
+[TST] RD[108]: t=9565000 addr=124 rdI=8 rdQ=54 sca_sv=1 si=107
+[TST] RD[109]: t=9575000 addr=125 rdI=-622 rdQ=-207 sca_sv=1 si=108
+[TST] RD[110]: t=9585000 addr=126 rdI=-229 rdQ=278 sca_sv=1 si=109
+[TST] RD[111]: t=9595000 addr=127 rdI=-873 rdQ=165 sca_sv=1 si=110
+[TST] RD[112]: t=9605000 addr=128 rdI=133 rdQ=-138 sca_sv=1 si=111
+[TST] RD[113]: t=9615000 addr=129 rdI=-628 rdQ=-629 sca_sv=1 si=112
+[TST] RD[114]: t=9625000 addr=130 rdI=232 rdQ=-466 sca_sv=1 si=113
+[TST] RD[115]: t=9635000 addr=131 rdI=307 rdQ=-432 sca_sv=1 si=114
+[TST] RD[116]: t=9645000 addr=132 rdI=730 rdQ=114 sca_sv=1 si=115
+[TST] RD[117]: t=9655000 addr=133 rdI=-86 rdQ=-669 sca_sv=1 si=116
+[TST] RD[118]: t=9665000 addr=134 rdI=-273 rdQ=-647 sca_sv=1 si=117
+[TST] RD[119]: t=9675000 addr=135 rdI=434 rdQ=394 sca_sv=1 si=118
+[TST] RD[120]: t=9685000 addr=136 rdI=-813 rdQ=-321 sca_sv=1 si=119
+[TST] RD[121]: t=9695000 addr=137 rdI=-467 rdQ=-62 sca_sv=1 si=120
+[TST] RD[122]: t=9705000 addr=138 rdI=168 rdQ=21 sca_sv=1 si=121
+[TST] RD[123]: t=9715000 addr=139 rdI=-191 rdQ=455 sca_sv=1 si=122
+[TST] RD[124]: t=9725000 addr=140 rdI=-142 rdQ=-338 sca_sv=1 si=123
+[TST] RD[125]: t=9735000 addr=141 rdI=-764 rdQ=181 sca_sv=1 si=124
+[TST] RD[126]: t=9745000 addr=142 rdI=276 rdQ=158 sca_sv=1 si=125
+[TST] RD[127]: t=9755000 addr=143 rdI=864 rdQ=425 sca_sv=1 si=126
+[TST] RD[128]: t=9765000 addr=144 rdI=606 rdQ=-82 sca_sv=1 si=127
+[TST] RD[129]: t=9775000 addr=145 rdI=-187 rdQ=161 sca_sv=1 si=128
+[TST] RD[130]: t=9785000 addr=146 rdI=-278 rdQ=-216 sca_sv=1 si=129
+[TST] RD[131]: t=9795000 addr=147 rdI=210 rdQ=324 sca_sv=1 si=130
+[TST] RD[132]: t=9805000 addr=148 rdI=-515 rdQ=-161 sca_sv=1 si=131
+[TST] RD[133]: t=9815000 addr=149 rdI=169 rdQ=175 sca_sv=1 si=132
+[TST] RD[134]: t=9825000 addr=150 rdI=91 rdQ=-495 sca_sv=1 si=133
+[TST] RD[135]: t=9835000 addr=151 rdI=97 rdQ=253 sca_sv=1 si=134
+[TST] RD[136]: t=9845000 addr=152 rdI=111 rdQ=-21 sca_sv=1 si=135
+[TST] RD[137]: t=9855000 addr=153 rdI=-12 rdQ=2 sca_sv=1 si=136
+[TST] RD[138]: t=9865000 addr=154 rdI=577 rdQ=7 sca_sv=1 si=137
+[TST] RD[139]: t=9875000 addr=155 rdI=-46 rdQ=-959 sca_sv=1 si=138
+[TST] RD[140]: t=9885000 addr=156 rdI=511 rdQ=279 sca_sv=1 si=139
+[TST] RD[141]: t=9895000 addr=157 rdI=-702 rdQ=41 sca_sv=1 si=140
+[TST] RD[142]: t=9905000 addr=158 rdI=238 rdQ=-997 sca_sv=1 si=141
+[TST] RD[143]: t=9915000 addr=159 rdI=-663 rdQ=318 sca_sv=1 si=142
+[TST] RD[144]: t=9925000 addr=160 rdI=-326 rdQ=824 sca_sv=1 si=143
+[TST] RD[145]: t=9935000 addr=161 rdI=-277 rdQ=85 sca_sv=1 si=144
+[TST] RD[146]: t=9945000 addr=162 rdI=-3 rdQ=-193 sca_sv=1 si=145
+[TST] RD[147]: t=9955000 addr=163 rdI=-281 rdQ=-226 sca_sv=1 si=146
+[TST] RD[148]: t=9965000 addr=164 rdI=-358 rdQ=-43 sca_sv=1 si=147
+[TST] RD[149]: t=9975000 addr=165 rdI=-38 rdQ=503 sca_sv=1 si=148
+[TST] RD[150]: t=9985000 addr=166 rdI=14 rdQ=-177 sca_sv=1 si=149
+[TST] RD[151]: t=9995000 addr=167 rdI=-229 rdQ=44 sca_sv=1 si=150
+[TST] RD[152]: t=10005000 addr=168 rdI=-97 rdQ=34 sca_sv=1 si=151
+[TST] RD[153]: t=10015000 addr=169 rdI=-29 rdQ=-213 sca_sv=1 si=152
+[TST] RD[154]: t=10025000 addr=170 rdI=-238 rdQ=-443 sca_sv=1 si=153
+[TST] RD[155]: t=10035000 addr=171 rdI=14 rdQ=94 sca_sv=1 si=154
+[TST] RD[156]: t=10045000 addr=172 rdI=172 rdQ=-99 sca_sv=1 si=155
+[TST] RD[157]: t=10055000 addr=173 rdI=-72 rdQ=285 sca_sv=1 si=156
+[TST] RD[158]: t=10065000 addr=174 rdI=-121 rdQ=-587 sca_sv=1 si=157
+[TST] RD[159]: t=10075000 addr=175 rdI=127 rdQ=-635 sca_sv=1 si=158
+[TST] RD[160]: t=10085000 addr=176 rdI=221 rdQ=616 sca_sv=1 si=159
+[TST] RD[161]: t=10095000 addr=177 rdI=-147 rdQ=-190 sca_sv=1 si=160
+[TST] RD[162]: t=10105000 addr=178 rdI=-464 rdQ=503 sca_sv=1 si=161
+[TST] RD[163]: t=10115000 addr=179 rdI=128 rdQ=78 sca_sv=1 si=162
+[TST] RD[164]: t=10125000 addr=180 rdI=-414 rdQ=-137 sca_sv=1 si=163
+[TST] RD[165]: t=10135000 addr=181 rdI=69 rdQ=-1130 sca_sv=1 si=164
+[TST] RD[166]: t=10145000 addr=182 rdI=951 rdQ=539 sca_sv=1 si=165
+[TST] RD[167]: t=10155000 addr=183 rdI=123 rdQ=361 sca_sv=1 si=166
+[TST] RD[168]: t=10165000 addr=184 rdI=287 rdQ=864 sca_sv=1 si=167
+[TST] RD[169]: t=10175000 addr=185 rdI=487 rdQ=126 sca_sv=1 si=168
+[TST] RD[170]: t=10185000 addr=186 rdI=79 rdQ=44 sca_sv=1 si=169
+[TST] RD[171]: t=10195000 addr=187 rdI=-299 rdQ=-204 sca_sv=1 si=170
+[TST] RD[172]: t=10205000 addr=188 rdI=44 rdQ=-102 sca_sv=1 si=171
+[TST] RD[173]: t=10215000 addr=189 rdI=-127 rdQ=-492 sca_sv=1 si=172
+[TST] RD[174]: t=10225000 addr=190 rdI=667 rdQ=595 sca_sv=1 si=173
+[TST] RD[175]: t=10235000 addr=191 rdI=80 rdQ=-106 sca_sv=1 si=174
+[TST] RD[176]: t=10245000 addr=192 rdI=-461 rdQ=118 sca_sv=1 si=175
+[TST] RD[177]: t=10255000 addr=193 rdI=-212 rdQ=-191 sca_sv=1 si=176
+[TST] RD[178]: t=10265000 addr=194 rdI=-63 rdQ=-492 sca_sv=1 si=177
+[TST] RD[179]: t=10275000 addr=195 rdI=-49 rdQ=-464 sca_sv=1 si=178
+[TST] RD[180]: t=10285000 addr=196 rdI=-409 rdQ=272 sca_sv=1 si=179
+[TST] RD[181]: t=10295000 addr=197 rdI=382 rdQ=441 sca_sv=1 si=180
+[TST] RD[182]: t=10305000 addr=198 rdI=191 rdQ=185 sca_sv=1 si=181
+[TST] RD[183]: t=10315000 addr=199 rdI=-312 rdQ=-376 sca_sv=1 si=182
+[TST] RD[184]: t=10325000 addr=200 rdI=83 rdQ=569 sca_sv=1 si=183
+[TST] RD[185]: t=10335000 addr=201 rdI=338 rdQ=402 sca_sv=1 si=184
+[TST] RD[186]: t=10345000 addr=202 rdI=293 rdQ=-1613 sca_sv=1 si=185
+[TST] RD[187]: t=10355000 addr=203 rdI=-670 rdQ=-256 sca_sv=1 si=186
+[TST] RD[188]: t=10365000 addr=204 rdI=58 rdQ=-280 sca_sv=1 si=187
+[TST] RD[189]: t=10375000 addr=205 rdI=-1030 rdQ=-455 sca_sv=1 si=188
+[TST] RD[190]: t=10385000 addr=206 rdI=675 rdQ=186 sca_sv=1 si=189
+[TST] RD[191]: t=10395000 addr=207 rdI=871 rdQ=-176 sca_sv=1 si=190
+[TST] RD[192]: t=10405000 addr=208 rdI=241 rdQ=770 sca_sv=1 si=191
+[TST] RD[193]: t=10415000 addr=209 rdI=674 rdQ=-676 sca_sv=1 si=192
+[TST] RD[194]: t=10425000 addr=210 rdI=-309 rdQ=131 sca_sv=1 si=193
+[TST] RD[195]: t=10435000 addr=211 rdI=-3 rdQ=-140 sca_sv=1 si=194
+[TST] RD[196]: t=10445000 addr=212 rdI=309 rdQ=-164 sca_sv=1 si=195
+[TST] RD[197]: t=10455000 addr=213 rdI=-418 rdQ=476 sca_sv=1 si=196
+[TST] RD[198]: t=10465000 addr=214 rdI=-107 rdQ=-133 sca_sv=1 si=197
+[TST] RD[199]: t=10475000 addr=215 rdI=342 rdQ=423 sca_sv=1 si=198
+[TST] RD[200]: t=10485000 addr=216 rdI=-662 rdQ=-128 sca_sv=1 si=199
+[TST] RD[201]: t=10495000 addr=217 rdI=632 rdQ=331 sca_sv=1 si=200
+[TST] RD[202]: t=10505000 addr=218 rdI=-274 rdQ=561 sca_sv=1 si=201
+[TST] RD[203]: t=10515000 addr=219 rdI=-517 rdQ=90 sca_sv=1 si=202
+[TST] RD[204]: t=10525000 addr=220 rdI=121 rdQ=603 sca_sv=1 si=203
+[TST] RD[205]: t=10535000 addr=221 rdI=2 rdQ=947 sca_sv=1 si=204
+[TST] RD[206]: t=10545000 addr=222 rdI=64 rdQ=-56 sca_sv=1 si=205
+[TST] RD[207]: t=10555000 addr=223 rdI=-438 rdQ=-986 sca_sv=1 si=206
+[TST] RD[208]: t=10565000 addr=224 rdI=640 rdQ=605 sca_sv=1 si=207
+[TST] RD[209]: t=10575000 addr=225 rdI=73 rdQ=572 sca_sv=1 si=208
+[TST] RD[210]: t=10585000 addr=226 rdI=-70 rdQ=179 sca_sv=1 si=209
+[TST] RD[211]: t=10595000 addr=227 rdI=103 rdQ=400 sca_sv=1 si=210
+[TST] RD[212]: t=10605000 addr=228 rdI=55 rdQ=791 sca_sv=1 si=211
+[TST] RD[213]: t=10615000 addr=229 rdI=170 rdQ=421 sca_sv=1 si=212
+[TST] RD[214]: t=10625000 addr=230 rdI=-213 rdQ=-651 sca_sv=1 si=213
+[TST] RD[215]: t=10635000 addr=231 rdI=-200 rdQ=219 sca_sv=1 si=214
+[TST] RD[216]: t=10645000 addr=232 rdI=36 rdQ=517 sca_sv=1 si=215
+[TST] RD[217]: t=10655000 addr=233 rdI=-709 rdQ=-269 sca_sv=1 si=216
+[TST] RD[218]: t=10665000 addr=234 rdI=166 rdQ=1399 sca_sv=1 si=217
+[TST] RD[219]: t=10675000 addr=235 rdI=552 rdQ=620 sca_sv=1 si=218
+[TST] RD[220]: t=10685000 addr=236 rdI=-736 rdQ=34 sca_sv=1 si=219
+[TST] RD[221]: t=10695000 addr=237 rdI=-6 rdQ=309 sca_sv=1 si=220
+[TST] RD[222]: t=10705000 addr=238 rdI=105 rdQ=-292 sca_sv=1 si=221
+[TST] RD[223]: t=10715000 addr=239 rdI=56 rdQ=837 sca_sv=1 si=222
+[TST] RD[224]: t=10725000 addr=240 rdI=-187 rdQ=458 sca_sv=1 si=223
+[TST] RD[225]: t=10735000 addr=241 rdI=326 rdQ=-27 sca_sv=1 si=224
+[TST] RD[226]: t=10745000 addr=242 rdI=-86 rdQ=-477 sca_sv=1 si=225
+[TST] RD[227]: t=10755000 addr=243 rdI=198 rdQ=547 sca_sv=1 si=226
+[TST] RD[228]: t=10765000 addr=244 rdI=927 rdQ=303 sca_sv=1 si=227
+[TST] RD[229]: t=10775000 addr=245 rdI=-861 rdQ=-80 sca_sv=1 si=228
+[TST] RD[230]: t=10785000 addr=246 rdI=-120 rdQ=191 sca_sv=1 si=229
+[TST] RD[231]: t=10795000 addr=247 rdI=1484 rdQ=440 sca_sv=1 si=230
+[TST] RD[232]: t=10805000 addr=248 rdI=-111 rdQ=268 sca_sv=1 si=231
+[TST] RD[233]: t=10815000 addr=249 rdI=210 rdQ=63 sca_sv=1 si=232
+[TST] RD[234]: t=10825000 addr=250 rdI=-283 rdQ=508 sca_sv=1 si=233
+[TST] RD[235]: t=10835000 addr=251 rdI=-656 rdQ=-485 sca_sv=1 si=234
+[TST] RD[236]: t=10845000 addr=252 rdI=62 rdQ=-739 sca_sv=1 si=235
+[TST] RD[237]: t=10855000 addr=253 rdI=587 rdQ=71 sca_sv=1 si=236
+[TST] RD[238]: t=10865000 addr=254 rdI=-428 rdQ=-48 sca_sv=1 si=237
+[TST] RD[239]: t=10875000 addr=255 rdI=-574 rdQ=354 sca_sv=1 si=238
+[TST] RD[240]: t=10885000 addr=256 rdI=-649 rdQ=-68 sca_sv=1 si=239
+[TST] RD[241]: t=10895000 addr=257 rdI=419 rdQ=-993 sca_sv=1 si=240
+[TST] RD[242]: t=10905000 addr=258 rdI=21 rdQ=-171 sca_sv=1 si=241
+[TST] RD[243]: t=10915000 addr=259 rdI=-410 rdQ=-401 sca_sv=1 si=242
+[TST] RD[244]: t=10925000 addr=260 rdI=523 rdQ=-452 sca_sv=1 si=243
+[TST] RD[245]: t=10935000 addr=261 rdI=-465 rdQ=-189 sca_sv=1 si=244
+[TST] RD[246]: t=10945000 addr=262 rdI=728 rdQ=-600 sca_sv=1 si=245
+[TST] RD[247]: t=10955000 addr=263 rdI=-344 rdQ=948 sca_sv=1 si=246
+[TST] RD[248]: t=10965000 addr=264 rdI=28 rdQ=798 sca_sv=1 si=247
+[TST] RD[249]: t=10975000 addr=265 rdI=466 rdQ=240 sca_sv=1 si=248
+[TST] RD[250]: t=10985000 addr=266 rdI=113 rdQ=488 sca_sv=1 si=249
+[TST] RD[251]: t=10995000 addr=267 rdI=451 rdQ=-323 sca_sv=1 si=250
+[TST] RD[252]: t=11005000 addr=268 rdI=470 rdQ=-512 sca_sv=1 si=251
+[TST] RD[253]: t=11015000 addr=269 rdI=811 rdQ=138 sca_sv=1 si=252
+[TST] RD[254]: t=11025000 addr=270 rdI=160 rdQ=225 sca_sv=1 si=253
+[TST] RD[255]: t=11035000 addr=271 rdI=39 rdQ=202 sca_sv=1 si=254
+[TST] RD[256]: t=11045000 addr=272 rdI=186 rdQ=760 sca_sv=1 si=255
+[TST] RD[257]: t=11055000 addr=273 rdI=348 rdQ=526 sca_sv=1 si=256
+[TST] RD[258]: t=11065000 addr=274 rdI=375 rdQ=-104 sca_sv=1 si=257
+[TST] RD[259]: t=11075000 addr=275 rdI=-571 rdQ=318 sca_sv=1 si=258
+[TST] RD[260]: t=11085000 addr=276 rdI=287 rdQ=-18 sca_sv=1 si=259
+[TST] RD[261]: t=11095000 addr=277 rdI=-49 rdQ=94 sca_sv=1 si=260
+[TST] RD[262]: t=11105000 addr=278 rdI=435 rdQ=103 sca_sv=1 si=261
+[TST] RD[263]: t=11115000 addr=279 rdI=-251 rdQ=180 sca_sv=1 si=262
+[TST] RD[264]: t=11125000 addr=280 rdI=440 rdQ=-856 sca_sv=1 si=263
+[TST] RD[265]: t=11135000 addr=281 rdI=446 rdQ=443 sca_sv=1 si=264
+[TST] RD[266]: t=11145000 addr=282 rdI=-173 rdQ=-412 sca_sv=1 si=265
+[TST] RD[267]: t=11155000 addr=283 rdI=7 rdQ=211 sca_sv=1 si=266
+[TST] RD[268]: t=11165000 addr=284 rdI=-15 rdQ=-548 sca_sv=1 si=267
+[TST] RD[269]: t=11175000 addr=285 rdI=629 rdQ=-190 sca_sv=1 si=268
+[TST] RD[270]: t=11185000 addr=286 rdI=277 rdQ=-563 sca_sv=1 si=269
+[TST] RD[271]: t=11195000 addr=287 rdI=-440 rdQ=-531 sca_sv=1 si=270
+[TST] RD[272]: t=11205000 addr=288 rdI=-534 rdQ=637 sca_sv=1 si=271
+[TST] RD[273]: t=11215000 addr=289 rdI=652 rdQ=493 sca_sv=1 si=272
+[TST] RD[274]: t=11225000 addr=290 rdI=48 rdQ=229 sca_sv=1 si=273
+[TST] RD[275]: t=11235000 addr=291 rdI=295 rdQ=-200 sca_sv=1 si=274
+[TST] RD[276]: t=11245000 addr=292 rdI=-271 rdQ=5 sca_sv=1 si=275
+[TST] RD[277]: t=11255000 addr=293 rdI=219 rdQ=85 sca_sv=1 si=276
+[TST] RD[278]: t=11265000 addr=294 rdI=-147 rdQ=435 sca_sv=1 si=277
+[TST] RD[279]: t=11275000 addr=295 rdI=100 rdQ=323 sca_sv=1 si=278
+[TST] RD[280]: t=11285000 addr=296 rdI=-667 rdQ=-125 sca_sv=1 si=279
+[TST] RD[281]: t=11295000 addr=297 rdI=-1035 rdQ=-265 sca_sv=1 si=280
+[TST] RD[282]: t=11305000 addr=298 rdI=166 rdQ=321 sca_sv=1 si=281
+[TST] RD[283]: t=11315000 addr=299 rdI=201 rdQ=451 sca_sv=1 si=282
+[TST] RD[284]: t=11325000 addr=300 rdI=245 rdQ=-391 sca_sv=1 si=283
+[TST] RD[285]: t=11335000 addr=301 rdI=175 rdQ=-345 sca_sv=1 si=284
+[TST] RD[286]: t=11345000 addr=302 rdI=-400 rdQ=-363 sca_sv=1 si=285
+[TST] RD[287]: t=11355000 addr=303 rdI=128 rdQ=654 sca_sv=1 si=286
+[TST] RD[288]: t=11365000 addr=304 rdI=451 rdQ=-121 sca_sv=1 si=287
+[TST] RD[289]: t=11375000 addr=305 rdI=192 rdQ=-136 sca_sv=1 si=288
+[TST] RD[290]: t=11385000 addr=306 rdI=-360 rdQ=-140 sca_sv=1 si=289
+[TST] RD[291]: t=11395000 addr=307 rdI=-147 rdQ=-143 sca_sv=1 si=290
+[TST] RD[292]: t=11405000 addr=308 rdI=-286 rdQ=70 sca_sv=1 si=291
+[TST] RD[293]: t=11415000 addr=309 rdI=-448 rdQ=-37 sca_sv=1 si=292
+[TST] RD[294]: t=11425000 addr=310 rdI=378 rdQ=163 sca_sv=1 si=293
+[TST] RD[295]: t=11435000 addr=311 rdI=-280 rdQ=-233 sca_sv=1 si=294
+[TST] RD[296]: t=11445000 addr=312 rdI=560 rdQ=137 sca_sv=1 si=295
+[TST] RD[297]: t=11455000 addr=313 rdI=-731 rdQ=-100 sca_sv=1 si=296
+[TST] RD[298]: t=11465000 addr=314 rdI=-100 rdQ=503 sca_sv=1 si=297
+[TST] FWV: fwc=0 si=297 metric=45
+[TST] RD[299]: t=11475000 addr=315 rdI=-406 rdQ=419 sca_sv=1 si=298
+[TST] FWV: fwc=1 si=298 metric=46
+[TST] RD[300]: t=11485000 addr=316 rdI=622 rdQ=518 sca_sv=1 si=299
+[TST] FWV: fwc=2 si=299 metric=48
+[TST] RD[301]: t=11495000 addr=317 rdI=948 rdQ=155 sca_sv=1 si=300
+[TST] FWV: fwc=3 si=300 metric=49
+[TST] RD[302]: t=11505000 addr=318 rdI=-99 rdQ=701 sca_sv=1 si=301
+[TST] FWV: fwc=4 si=301 metric=50
+[TST] RD[303]: t=11515000 addr=319 rdI=-533 rdQ=-2 sca_sv=1 si=302
+[TST] FWV: fwc=5 si=302 metric=53
+[TST] RD[304]: t=11525000 addr=320 rdI=-86 rdQ=-398 sca_sv=1 si=303
+[TST] FWV: fwc=6 si=303 metric=57
+[TST] RD[305]: t=11535000 addr=321 rdI=-443 rdQ=-457 sca_sv=1 si=304
+[TST] FWV: fwc=7 si=304 metric=59
+[TST] RD[306]: t=11545000 addr=322 rdI=-347 rdQ=51 sca_sv=1 si=305
+[TST] FWV: fwc=8 si=305 metric=64
+[TST] RD[307]: t=11555000 addr=323 rdI=-52 rdQ=182 sca_sv=1 si=306
+[TST] FWV: fwc=9 si=306 metric=73
+[TST] RD[308]: t=11565000 addr=324 rdI=148 rdQ=273 sca_sv=1 si=307
+[TST] FWV: fwc=10 si=307 metric=78
+[TST] RD[309]: t=11575000 addr=325 rdI=93 rdQ=191 sca_sv=1 si=308
+[TST] FWV: fwc=11 si=308 metric=83
+[TST] RD[310]: t=11585000 addr=326 rdI=164 rdQ=339 sca_sv=1 si=309
+[TST] FWV: fwc=12 si=309 metric=93
+[TST] RD[311]: t=11595000 addr=327 rdI=737 rdQ=660 sca_sv=1 si=310
+[TST] FWV: fwc=13 si=310 metric=107
+[TST] RD[312]: t=11605000 addr=328 rdI=-66 rdQ=-188 sca_sv=1 si=311
+[TST] FWV: fwc=14 si=311 metric=115
+[TST] RD[313]: t=11615000 addr=329 rdI=-553 rdQ=-364 sca_sv=1 si=312
+[TST] FWV: fwc=15 si=312 metric=120
+[TST] RD[314]: t=11625000 addr=330 rdI=-217 rdQ=213 sca_sv=1 si=313
+[TST] FWV: fwc=16 si=313 metric=122
+[TST] RD[315]: t=11635000 addr=331 rdI=-233 rdQ=111 sca_sv=1 si=314
+[TST] FWV: fwc=17 si=314 metric=128
+[TST] RD[316]: t=11645000 addr=332 rdI=100 rdQ=272 sca_sv=1 si=315
+[TST] FWV: fwc=18 si=315 metric=130
+[TST] RD[317]: t=11655000 addr=333 rdI=436 rdQ=-306 sca_sv=1 si=316
+[TST] FWV: fwc=19 si=316 metric=131
+[TST] RD[318]: t=11665000 addr=334 rdI=116 rdQ=391 sca_sv=1 si=317
+[TST] FWV: fwc=20 si=317 metric=132
+[TST] RD[319]: t=11675000 addr=335 rdI=242 rdQ=538 sca_sv=1 si=318
+[TST] FWV: fwc=21 si=318 metric=133
+[TST] RD[320]: t=11685000 addr=336 rdI=-513 rdQ=-282 sca_sv=1 si=319
+[TST] FWV: fwc=22 si=319 metric=135
+[TST] RD[321]: t=11695000 addr=337 rdI=89 rdQ=1039 sca_sv=1 si=320
+[TST] FWV: fwc=23 si=320 metric=151
+[TST] RD[322]: t=11705000 addr=338 rdI=-411 rdQ=-516 sca_sv=1 si=321
+[TST] FWV: fwc=24 si=321 metric=133
+[TST] RD[323]: t=11715000 addr=339 rdI=-863 rdQ=-98 sca_sv=1 si=322
+[TST] FWV: fwc=25 si=322 metric=130
+[TST] RD[324]: t=11725000 addr=340 rdI=103 rdQ=216 sca_sv=1 si=323
+[TST] FWV: fwc=26 si=323 metric=128
+[TST] RD[325]: t=11735000 addr=341 rdI=202 rdQ=-100 sca_sv=1 si=324
+[TST] FWV: fwc=27 si=324 metric=123
+[TST] RD[326]: t=11745000 addr=342 rdI=179 rdQ=-655 sca_sv=1 si=325
+[TST] FWV: fwc=28 si=325 metric=119
+[TST] RD[327]: t=11755000 addr=343 rdI=-615 rdQ=-22 sca_sv=1 si=326
+[TST] FWV: fwc=29 si=326 metric=112
+[TST] RD[328]: t=11765000 addr=344 rdI=-218 rdQ=-125 sca_sv=1 si=327
+[TST] FWV: fwc=30 si=327 metric=102
+[TST] RD[329]: t=11775000 addr=345 rdI=-455 rdQ=233 sca_sv=1 si=328
+[TST] FWV: fwc=31 si=328 metric=94
+[TST] RD[330]: t=11785000 addr=346 rdI=148 rdQ=-217 sca_sv=1 si=329
+[TST] FWV: fwc=32 si=329 metric=100
+[TST] RD[331]: t=11795000 addr=347 rdI=415 rdQ=324 sca_sv=1 si=330
+[TST] FWV: fwc=33 si=330 metric=105
+[TST] RD[332]: t=11805000 addr=348 rdI=-93 rdQ=338 sca_sv=1 si=331
+[TST] FWV: fwc=34 si=331 metric=100
+[TST] RD[333]: t=11815000 addr=349 rdI=524 rdQ=342 sca_sv=1 si=332
+[TST] FWV: fwc=35 si=332 metric=108
+[TST] RD[334]: t=11825000 addr=350 rdI=-65 rdQ=-416 sca_sv=1 si=333
+[TST] FWV: fwc=36 si=333 metric=105
+[TST] RD[335]: t=11835000 addr=351 rdI=-958 rdQ=-649 sca_sv=1 si=334
+[TST] FWV: fwc=37 si=334 metric=104
+[TST] RD[336]: t=11845000 addr=352 rdI=410 rdQ=572 sca_sv=1 si=335
+[TST] FWV: fwc=38 si=335 metric=99
+[TST] RD[337]: t=11855000 addr=353 rdI=-132 rdQ=587 sca_sv=1 si=336
+[TST] FWV: fwc=39 si=336 metric=94
+[TST] RD[338]: t=11865000 addr=354 rdI=-226 rdQ=467 sca_sv=1 si=337
+[TST] FWV: fwc=40 si=337 metric=81
+[TST] RD[339]: t=11875000 addr=355 rdI=190 rdQ=-482 sca_sv=1 si=338
+[TST] FWV: fwc=41 si=338 metric=83
+[TST] RD[340]: t=11885000 addr=356 rdI=-137 rdQ=-607 sca_sv=1 si=339
+[TST] FWV: fwc=42 si=339 metric=81
+[TST] RD[341]: t=11895000 addr=357 rdI=244 rdQ=120 sca_sv=1 si=340
+[TST] FWV: fwc=43 si=340 metric=75
+[TST] RD[342]: t=11905000 addr=358 rdI=463 rdQ=152 sca_sv=1 si=341
+[TST] FWV: fwc=44 si=341 metric=60
+[TST] RD[343]: t=11915000 addr=359 rdI=-550 rdQ=-133 sca_sv=1 si=342
+[TST] FWV: fwc=45 si=342 metric=51
+[TST] RD[344]: t=11925000 addr=360 rdI=215 rdQ=-433 sca_sv=1 si=343
+[TST] FWV: fwc=46 si=343 metric=50
+[TST] RD[345]: t=11935000 addr=361 rdI=-720 rdQ=-356 sca_sv=1 si=344
+[TST] FWV: fwc=47 si=344 metric=47
+[TST] RD[346]: t=11945000 addr=362 rdI=-43 rdQ=-72 sca_sv=1 si=345
+[TST] FWV: fwc=48 si=345 metric=32
+[TST] RD[347]: t=11955000 addr=363 rdI=347 rdQ=-472 sca_sv=1 si=346
+[TST] FWV: fwc=49 si=346 metric=20
+[TST] RD[348]: t=11965000 addr=364 rdI=416 rdQ=1 sca_sv=1 si=347
+[TST] FWV: fwc=50 si=347 metric=22
+[TST] RD[349]: t=11975000 addr=365 rdI=425 rdQ=-125 sca_sv=1 si=348
+[TST] FWV: fwc=51 si=348 metric=27
+[TST] RD[350]: t=11985000 addr=366 rdI=263 rdQ=-360 sca_sv=1 si=349
+[TST] FWV: fwc=52 si=349 metric=15
+[TST] RD[351]: t=11995000 addr=367 rdI=-694 rdQ=-409 sca_sv=1 si=350
+[TST] FWV: fwc=53 si=350 metric=17
+[TST] RD[352]: t=12005000 addr=368 rdI=-104 rdQ=71 sca_sv=1 si=351
+[TST] FWV: fwc=54 si=351 metric=19
+[TST] RD[353]: t=12015000 addr=369 rdI=-556 rdQ=-647 sca_sv=1 si=352
+[TST] FWV: fwc=55 si=352 metric=16
+[TST] RD[354]: t=12025000 addr=370 rdI=212 rdQ=442 sca_sv=1 si=353
+[TST] FWV: fwc=56 si=353 metric=18
+[TST] RD[355]: t=12035000 addr=371 rdI=-292 rdQ=-538 sca_sv=1 si=354
+[TST] FWV: fwc=57 si=354 metric=29
+[TST] RD[356]: t=12045000 addr=372 rdI=68 rdQ=-691 sca_sv=1 si=355
+[TST] FWV: fwc=58 si=355 metric=28
+[TST] RD[357]: t=12055000 addr=373 rdI=-172 rdQ=163 sca_sv=1 si=356
+[TST] FWV: fwc=59 si=356 metric=20
+[TST] RD[358]: t=12065000 addr=374 rdI=247 rdQ=-467 sca_sv=1 si=357
+[TST] FWV: fwc=60 si=357 metric=21
+[TST] RD[359]: t=12075000 addr=375 rdI=528 rdQ=-211 sca_sv=1 si=358
+[TST] FWV: fwc=61 si=358 metric=17
+[TST] RD[360]: t=12085000 addr=376 rdI=-28 rdQ=150 sca_sv=1 si=359
+[TST] FWV: fwc=62 si=359 metric=13
+[TST] RD[361]: t=12095000 addr=377 rdI=-93 rdQ=511 sca_sv=1 si=360
+[TST] FWV: fwc=63 si=360 metric=13
+[TST] RD[362]: t=12105000 addr=378 rdI=285 rdQ=179 sca_sv=1 si=361
+[TST] FWV: fwc=64 si=361 metric=19
+[TST] RD[363]: t=12115000 addr=379 rdI=-1177 rdQ=-280 sca_sv=1 si=362
+[TST] FWV: fwc=65 si=362 metric=11
+[TST] RD[364]: t=12125000 addr=380 rdI=-122 rdQ=188 sca_sv=1 si=363
+[TST] FWV: fwc=66 si=363 metric=20
+[TST] RD[365]: t=12135000 addr=381 rdI=667 rdQ=933 sca_sv=1 si=364
+[TST] FWV: fwc=67 si=364 metric=23
+[TST] RD[366]: t=12145000 addr=382 rdI=88 rdQ=-707 sca_sv=1 si=365
+[TST] FWV: fwc=68 si=365 metric=25
+[TST] RD[367]: t=12155000 addr=383 rdI=72 rdQ=-45 sca_sv=1 si=366
+[TST] FWV: fwc=69 si=366 metric=21
+[TST] RD[368]: t=12165000 addr=384 rdI=-565 rdQ=127 sca_sv=1 si=367
+[TST] FWV: fwc=70 si=367 metric=23
+[TST] RD[369]: t=12175000 addr=385 rdI=-173 rdQ=497 sca_sv=1 si=368
+[TST] FWV: fwc=71 si=368 metric=19
+[TST] RD[370]: t=12185000 addr=386 rdI=-4 rdQ=17 sca_sv=1 si=369
+[TST] FWV: fwc=72 si=369 metric=25
+[TST] RD[371]: t=12195000 addr=387 rdI=-101 rdQ=-524 sca_sv=1 si=370
+[TST] FWV: fwc=73 si=370 metric=20
+[TST] RD[372]: t=12205000 addr=388 rdI=-75 rdQ=-183 sca_sv=1 si=371
+[TST] FWV: fwc=74 si=371 metric=24
+[TST] RD[373]: t=12215000 addr=389 rdI=311 rdQ=-615 sca_sv=1 si=372
+[TST] FWV: fwc=75 si=372 metric=33
+[TST] RD[374]: t=12225000 addr=390 rdI=67 rdQ=235 sca_sv=1 si=373
+[TST] FWV: fwc=76 si=373 metric=27
+[TST] RD[375]: t=12235000 addr=391 rdI=63 rdQ=-102 sca_sv=1 si=374
+[TST] FWV: fwc=77 si=374 metric=38
+[TST] RD[376]: t=12245000 addr=392 rdI=-369 rdQ=6 sca_sv=1 si=375
+[TST] FWV: fwc=78 si=375 metric=41
+[TST] RD[377]: t=12255000 addr=393 rdI=-985 rdQ=-19 sca_sv=1 si=376
+[TST] FWV: fwc=79 si=376 metric=42
+[TST] RD[378]: t=12265000 addr=394 rdI=555 rdQ=-706 sca_sv=1 si=377
+[TST] FWV: fwc=80 si=377 metric=41
+[TST] RD[379]: t=12275000 addr=395 rdI=-1 rdQ=-434 sca_sv=1 si=378
+[TST] FWV: fwc=81 si=378 metric=55
+[TST] RD[380]: t=12285000 addr=396 rdI=-490 rdQ=169 sca_sv=1 si=379
+[TST] FWV: fwc=82 si=379 metric=57
+[TST] RD[381]: t=12295000 addr=397 rdI=-174 rdQ=-438 sca_sv=1 si=380
+[TST] FWV: fwc=83 si=380 metric=54
+[TST] RD[382]: t=12305000 addr=398 rdI=524 rdQ=-678 sca_sv=1 si=381
+[TST] FWV: fwc=84 si=381 metric=57
+[TST] RD[383]: t=12315000 addr=399 rdI=-27 rdQ=23 sca_sv=1 si=382
+[TST] FWV: fwc=85 si=382 metric=47
+[TST] RD[384]: t=12325000 addr=400 rdI=247 rdQ=501 sca_sv=1 si=383
+[TST] FWV: fwc=86 si=383 metric=53
+[TST] RD[385]: t=12335000 addr=401 rdI=-301 rdQ=-119 sca_sv=1 si=384
+[TST] FWV: fwc=87 si=384 metric=60
+[TST] RD[386]: t=12345000 addr=402 rdI=-279 rdQ=147 sca_sv=1 si=385
+[TST] FWV: fwc=88 si=385 metric=54
+[TST] RD[387]: t=12355000 addr=403 rdI=279 rdQ=203 sca_sv=1 si=386
+[TST] FWV: fwc=89 si=386 metric=47
+[TST] RD[388]: t=12365000 addr=404 rdI=644 rdQ=773 sca_sv=1 si=387
+[TST] FWV: fwc=90 si=387 metric=45
+[TST] RD[389]: t=12375000 addr=405 rdI=754 rdQ=380 sca_sv=1 si=388
+[TST] FWV: fwc=91 si=388 metric=47
+[TST] RD[390]: t=12385000 addr=406 rdI=-338 rdQ=-351 sca_sv=1 si=389
+[TST] FWV: fwc=92 si=389 metric=53
+[TST] RD[391]: t=12395000 addr=407 rdI=62 rdQ=254 sca_sv=1 si=390
+[TST] FWV: fwc=93 si=390 metric=39
+[TST] RD[392]: t=12405000 addr=408 rdI=608 rdQ=238 sca_sv=1 si=391
+[TST] FWV: fwc=94 si=391 metric=55
+[TST] RD[393]: t=12415000 addr=409 rdI=-484 rdQ=511 sca_sv=1 si=392
+[TST] FWV: fwc=95 si=392 metric=57
+[TST] RD[394]: t=12425000 addr=410 rdI=-28 rdQ=327 sca_sv=1 si=393
+[TST] FWV: fwc=96 si=393 metric=51
+[TST] RD[395]: t=12435000 addr=411 rdI=-689 rdQ=-340 sca_sv=1 si=394
+[TST] FWV: fwc=97 si=394 metric=46
+[TST] RD[396]: t=12445000 addr=412 rdI=-139 rdQ=-393 sca_sv=1 si=395
+[TST] FWV: fwc=98 si=395 metric=43
+[TST] RD[397]: t=12455000 addr=413 rdI=268 rdQ=2 sca_sv=1 si=396
+[TST] FWV: fwc=99 si=396 metric=42
+[TST] RD[398]: t=12465000 addr=414 rdI=-365 rdQ=650 sca_sv=1 si=397
+[TST] FWV: fwc=100 si=397 metric=54
+[TST] RD[399]: t=12475000 addr=415 rdI=-322 rdQ=-196 sca_sv=1 si=398
+[TST] FWV: fwc=101 si=398 metric=53
+[TST] RD[400]: t=12485000 addr=416 rdI=-364 rdQ=434 sca_sv=1 si=399
+[TST] FWV: fwc=102 si=399 metric=48
+[TST] RD[401]: t=12495000 addr=417 rdI=548 rdQ=-688 sca_sv=1 si=400
+[TST] FWV: fwc=103 si=400 metric=49
+[TST] RD[402]: t=12505000 addr=418 rdI=308 rdQ=24 sca_sv=1 si=401
+[TST] FWV: fwc=104 si=401 metric=42
+[TST] RD[403]: t=12515000 addr=419 rdI=-447 rdQ=-273 sca_sv=1 si=402
+[TST] FWV: fwc=105 si=402 metric=43
+[TST] RD[404]: t=12525000 addr=420 rdI=-376 rdQ=34 sca_sv=1 si=403
+[TST] FWV: fwc=106 si=403 metric=22
+[TST] RD[405]: t=12535000 addr=421 rdI=348 rdQ=1026 sca_sv=1 si=404
+[TST] FWV: fwc=107 si=404 metric=38
+[TST] RD[406]: t=12545000 addr=422 rdI=-484 rdQ=38 sca_sv=1 si=405
+[TST] FWV: fwc=108 si=405 metric=40
+[TST] RD[407]: t=12555000 addr=423 rdI=-630 rdQ=-366 sca_sv=1 si=406
+[TST] FWV: fwc=109 si=406 metric=43
+[TST] RD[408]: t=12565000 addr=424 rdI=-388 rdQ=-93 sca_sv=1 si=407
+[TST] FWV: fwc=110 si=407 metric=36
+[TST] RD[409]: t=12575000 addr=425 rdI=484 rdQ=78 sca_sv=1 si=408
+[TST] FWV: fwc=111 si=408 metric=35
+[TST] RD[410]: t=12585000 addr=426 rdI=-27 rdQ=555 sca_sv=1 si=409
+[TST] FWV: fwc=112 si=409 metric=37
+[TST] RD[411]: t=12595000 addr=427 rdI=393 rdQ=-134 sca_sv=1 si=410
+[TST] FWV: fwc=113 si=410 metric=31
+[TST] RD[412]: t=12605000 addr=428 rdI=-492 rdQ=305 sca_sv=1 si=411
+[TST] FWV: fwc=114 si=411 metric=24
+[TST] RD[413]: t=12615000 addr=429 rdI=278 rdQ=-150 sca_sv=1 si=412
+[TST] FWV: fwc=115 si=412 metric=27
+[TST] RD[414]: t=12625000 addr=430 rdI=-465 rdQ=1140 sca_sv=1 si=413
+[TST] FWV: fwc=116 si=413 metric=28
+[TST] RD[415]: t=12635000 addr=431 rdI=238 rdQ=318 sca_sv=1 si=414
+[TST] FWV: fwc=117 si=414 metric=41
+[TST] RD[416]: t=12645000 addr=432 rdI=333 rdQ=144 sca_sv=1 si=415
+[TST] FWV: fwc=118 si=415 metric=41
+[TST] RD[417]: t=12655000 addr=433 rdI=-67 rdQ=182 sca_sv=1 si=416
+[TST] FWV: fwc=119 si=416 metric=35
+[TST] RD[418]: t=12665000 addr=434 rdI=616 rdQ=347 sca_sv=1 si=417
+[TST] FWV: fwc=120 si=417 metric=27
+[TST] RD[419]: t=12675000 addr=435 rdI=166 rdQ=-413 sca_sv=1 si=418
+[TST] FWV: fwc=121 si=418 metric=22
+[TST] RD[420]: t=12685000 addr=436 rdI=672 rdQ=445 sca_sv=1 si=419
+[TST] FWV: fwc=122 si=419 metric=24
+[TST] RD[421]: t=12695000 addr=437 rdI=-1 rdQ=-202 sca_sv=1 si=420
+[TST] FWV: fwc=123 si=420 metric=22
+[TST] RD[422]: t=12705000 addr=438 rdI=-224 rdQ=-221 sca_sv=1 si=421
+[TST] FWV: fwc=124 si=421 metric=26
+[TST] RD[423]: t=12715000 addr=439 rdI=-541 rdQ=336 sca_sv=1 si=422
+[TST] FWV: fwc=125 si=422 metric=20
+[TST] RD[424]: t=12725000 addr=440 rdI=49 rdQ=-770 sca_sv=1 si=423
+[TST] FWV: fwc=126 si=423 metric=22
+[TST] RD[425]: t=12735000 addr=441 rdI=120 rdQ=-157 sca_sv=1 si=424
+[TST] FWV: fwc=127 si=424 metric=28
+[TST] RD[426]: t=12745000 addr=442 rdI=422 rdQ=-383 sca_sv=1 si=425
+[TST] FWV: fwc=128 si=425 metric=31
+[TST] RD[427]: t=12755000 addr=443 rdI=46 rdQ=-316 sca_sv=1 si=426
+[TST] FWV: fwc=129 si=426 metric=31
+[TST] RD[428]: t=12765000 addr=444 rdI=563 rdQ=-286 sca_sv=1 si=427
+[TST] FWV: fwc=130 si=427 metric=41
+[TST] RD[429]: t=12775000 addr=445 rdI=153 rdQ=680 sca_sv=1 si=428
+[TST] FWV: fwc=131 si=428 metric=30
+[TST] RD[430]: t=12785000 addr=446 rdI=349 rdQ=552 sca_sv=1 si=429
+[TST] FWV: fwc=132 si=429 metric=39
+[TST] RD[431]: t=12795000 addr=447 rdI=814 rdQ=-618 sca_sv=1 si=430
+[TST] FWV: fwc=133 si=430 metric=35
+[TST] RD[432]: t=12805000 addr=448 rdI=-136 rdQ=-8 sca_sv=1 si=431
+[TST] FWV: fwc=134 si=431 metric=42
+[TST] RD[433]: t=12815000 addr=449 rdI=-421 rdQ=-274 sca_sv=1 si=432
+[TST] FWV: fwc=135 si=432 metric=39
+[TST] RD[434]: t=12825000 addr=450 rdI=-140 rdQ=251 sca_sv=1 si=433
+[TST] FWV: fwc=136 si=433 metric=54
+[TST] RD[435]: t=12835000 addr=451 rdI=-357 rdQ=-188 sca_sv=1 si=434
+[TST] FWV: fwc=137 si=434 metric=57
+[TST] RD[436]: t=12845000 addr=452 rdI=812 rdQ=315 sca_sv=1 si=435
+[TST] FWV: fwc=138 si=435 metric=53
+[TST] RD[437]: t=12855000 addr=453 rdI=-83 rdQ=463 sca_sv=1 si=436
+[TST] FWV: fwc=139 si=436 metric=45
+[TST] RD[438]: t=12865000 addr=454 rdI=546 rdQ=525 sca_sv=1 si=437
+[TST] FWV: fwc=140 si=437 metric=41
+[TST] RD[439]: t=12875000 addr=455 rdI=-654 rdQ=440 sca_sv=1 si=438
+[TST] FWV: fwc=141 si=438 metric=32
+[TST] RD[440]: t=12885000 addr=456 rdI=138 rdQ=319 sca_sv=1 si=439
+[TST] FWV: fwc=142 si=439 metric=27
+[TST] RD[441]: t=12895000 addr=457 rdI=159 rdQ=-634 sca_sv=1 si=440
+[TST] FWV: fwc=143 si=440 metric=34
+[TST] RD[442]: t=12905000 addr=458 rdI=-34 rdQ=526 sca_sv=1 si=441
+[TST] FWV: fwc=144 si=441 metric=32
+[TST] RD[443]: t=12915000 addr=459 rdI=-288 rdQ=381 sca_sv=1 si=442
+[TST] FWV: fwc=145 si=442 metric=31
+[TST] RD[444]: t=12925000 addr=460 rdI=794 rdQ=187 sca_sv=1 si=443
+[TST] FWV: fwc=146 si=443 metric=36
+[TST] RD[445]: t=12935000 addr=461 rdI=209 rdQ=-946 sca_sv=1 si=444
+[TST] FWV: fwc=147 si=444 metric=39
+[TST] RD[446]: t=12945000 addr=462 rdI=831 rdQ=-465 sca_sv=1 si=445
+[TST] FWV: fwc=148 si=445 metric=52
+[TST] RD[447]: t=12955000 addr=463 rdI=-157 rdQ=389 sca_sv=1 si=446
+[TST] FWV: fwc=149 si=446 metric=45
+[TST] RD[448]: t=12965000 addr=464 rdI=391 rdQ=125 sca_sv=1 si=447
+[TST] FWV: fwc=150 si=447 metric=45
+[TST] RD[449]: t=12975000 addr=465 rdI=165 rdQ=670 sca_sv=1 si=448
+[TST] FWV: fwc=151 si=448 metric=52
+[TST] RD[450]: t=12985000 addr=466 rdI=455 rdQ=819 sca_sv=1 si=449
+[TST] FWV: fwc=152 si=449 metric=51
+[TST] RD[451]: t=12995000 addr=467 rdI=-878 rdQ=304 sca_sv=1 si=450
+[TST] FWV: fwc=153 si=450 metric=52
+[TST] RD[452]: t=13005000 addr=468 rdI=358 rdQ=-76 sca_sv=1 si=451
+[TST] FWV: fwc=154 si=451 metric=63
+[TST] RD[453]: t=13015000 addr=469 rdI=-124 rdQ=398 sca_sv=1 si=452
+[TST] FWV: fwc=155 si=452 metric=65
+[TST] RD[454]: t=13025000 addr=470 rdI=287 rdQ=394 sca_sv=1 si=453
+[TST] FWV: fwc=156 si=453 metric=59
+[TST] RD[455]: t=13035000 addr=471 rdI=-143 rdQ=181 sca_sv=1 si=454
+[TST] FWV: fwc=157 si=454 metric=24
+[TST] RD[456]: t=13045000 addr=472 rdI=286 rdQ=-107 sca_sv=1 si=455
+[TST] FWV: fwc=158 si=455 metric=24
+[TST] RD[457]: t=13055000 addr=473 rdI=462 rdQ=-12 sca_sv=1 si=456
+[TST] FWV: fwc=159 si=456 metric=22
+[TST] RD[458]: t=13065000 addr=474 rdI=679 rdQ=697 sca_sv=1 si=457
+[TST] FWV: fwc=160 si=457 metric=23
+[TST] RD[459]: t=13075000 addr=475 rdI=-195 rdQ=-87 sca_sv=1 si=458
+[TST] FWV: fwc=161 si=458 metric=10
+[TST] RD[460]: t=13085000 addr=476 rdI=-798 rdQ=-286 sca_sv=1 si=459
+[TST] FWV: fwc=162 si=459 metric=15
+[TST] RD[461]: t=13095000 addr=477 rdI=-185 rdQ=13 sca_sv=1 si=460
+[TST] FWV: fwc=163 si=460 metric=10
+[TST] RD[462]: t=13105000 addr=478 rdI=301 rdQ=176 sca_sv=1 si=461
+[TST] FWV: fwc=164 si=461 metric=12
+[TST] RD[463]: t=13115000 addr=479 rdI=-343 rdQ=71 sca_sv=1 si=462
+[TST] FWV: fwc=165 si=462 metric=5
+[TST] RD[464]: t=13125000 addr=480 rdI=-942 rdQ=506 sca_sv=1 si=463
+[TST] FWV: fwc=166 si=463 metric=9
+[TST] RD[465]: t=13135000 addr=481 rdI=-347 rdQ=327 sca_sv=1 si=464
+[TST] FWV: fwc=167 si=464 metric=11
+[TST] RD[466]: t=13145000 addr=482 rdI=-70 rdQ=402 sca_sv=1 si=465
+[TST] FWV: fwc=168 si=465 metric=7
+[TST] RD[467]: t=13155000 addr=483 rdI=-121 rdQ=-744 sca_sv=1 si=466
+[TST] FWV: fwc=169 si=466 metric=10
+[TST] RD[468]: t=13165000 addr=484 rdI=698 rdQ=-447 sca_sv=1 si=467
+[TST] FWV: fwc=170 si=467 metric=24
+[TST] RD[469]: t=13175000 addr=485 rdI=1034 rdQ=61 sca_sv=1 si=468
+[TST] FWV: fwc=171 si=468 metric=23
+[TST] RD[470]: t=13185000 addr=486 rdI=-804 rdQ=-650 sca_sv=1 si=469
+[TST] FWV: fwc=172 si=469 metric=18
+[TST] RD[471]: t=13195000 addr=487 rdI=-878 rdQ=-642 sca_sv=1 si=470
+[TST] FWV: fwc=173 si=470 metric=9
+[TST] RD[472]: t=13205000 addr=488 rdI=-186 rdQ=656 sca_sv=1 si=471
+[TST] FWV: fwc=174 si=471 metric=7
+[TST] RD[473]: t=13215000 addr=489 rdI=-51 rdQ=-24 sca_sv=1 si=472
+[TST] FWV: fwc=175 si=472 metric=14
+[TST] RD[474]: t=13225000 addr=490 rdI=-281 rdQ=-249 sca_sv=1 si=473
+[TST] FWV: fwc=176 si=473 metric=7
+[TST] RD[475]: t=13235000 addr=491 rdI=428 rdQ=506 sca_sv=1 si=474
+[TST] FWV: fwc=177 si=474 metric=11
+[TST] RD[476]: t=13245000 addr=492 rdI=33 rdQ=-381 sca_sv=1 si=475
+[TST] FWV: fwc=178 si=475 metric=13
+[TST] RD[477]: t=13255000 addr=493 rdI=76 rdQ=187 sca_sv=1 si=476
+[TST] FWV: fwc=179 si=476 metric=17
+[TST] RD[478]: t=13265000 addr=494 rdI=-413 rdQ=-264 sca_sv=1 si=477
+[TST] FWV: fwc=180 si=477 metric=11
+[TST] RD[479]: t=13275000 addr=495 rdI=-220 rdQ=203 sca_sv=1 si=478
+[TST] FWV: fwc=181 si=478 metric=9
+[TST] RD[480]: t=13285000 addr=496 rdI=-64 rdQ=126 sca_sv=1 si=479
+[TST] FWV: fwc=182 si=479 metric=4
+[TST] RD[481]: t=13295000 addr=497 rdI=453 rdQ=121 sca_sv=1 si=480
+[TST] FWV: fwc=183 si=480 metric=5
+[TST] RD[482]: t=13305000 addr=498 rdI=232 rdQ=412 sca_sv=1 si=481
+[TST] FWV: fwc=184 si=481 metric=17
+[TST] RD[483]: t=13315000 addr=499 rdI=325 rdQ=-103 sca_sv=1 si=482
+[TST] FWV: fwc=185 si=482 metric=29
+[TST] RD[484]: t=13325000 addr=500 rdI=107 rdQ=666 sca_sv=1 si=483
+[TST] FWV: fwc=186 si=483 metric=33
+[TST] RD[485]: t=13335000 addr=501 rdI=-325 rdQ=-527 sca_sv=1 si=484
+[TST] FWV: fwc=187 si=484 metric=37
+[TST] RD[486]: t=13345000 addr=502 rdI=-39 rdQ=766 sca_sv=1 si=485
+[TST] FWV: fwc=188 si=485 metric=21
+[TST] RD[487]: t=13355000 addr=503 rdI=130 rdQ=-22 sca_sv=1 si=486
+[TST] FWV: fwc=189 si=486 metric=22
+[TST] RD[488]: t=13365000 addr=504 rdI=434 rdQ=376 sca_sv=1 si=487
+[TST] FWV: fwc=190 si=487 metric=19
+[TST] RD[489]: t=13375000 addr=505 rdI=278 rdQ=193 sca_sv=1 si=488
+[TST] FWV: fwc=191 si=488 metric=25
+[TST] RD[490]: t=13385000 addr=506 rdI=81 rdQ=-17 sca_sv=1 si=489
+[TST] FWV: fwc=192 si=489 metric=22
+[TST] RD[491]: t=13395000 addr=507 rdI=196 rdQ=-181 sca_sv=1 si=490
+[TST] FWV: fwc=193 si=490 metric=31
+[TST] RD[492]: t=13405000 addr=508 rdI=359 rdQ=-157 sca_sv=1 si=491
+[TST] FWV: fwc=194 si=491 metric=31
+[TST] RD[493]: t=13415000 addr=509 rdI=667 rdQ=-434 sca_sv=1 si=492
+[TST] FWV: fwc=195 si=492 metric=27
+[TST] RD[494]: t=13425000 addr=510 rdI=-7 rdQ=-254 sca_sv=1 si=493
+[TST] FWV: fwc=196 si=493 metric=38
+[TST] RD[495]: t=13435000 addr=511 rdI=253 rdQ=-33 sca_sv=1 si=494
+[TST] FWV: fwc=197 si=494 metric=51
+[TST] RD[496]: t=13445000 addr=512 rdI=442 rdQ=354 sca_sv=1 si=495
+[TST] FWV: fwc=198 si=495 metric=50
+[TST] RD[497]: t=13455000 addr=513 rdI=-413 rdQ=331 sca_sv=1 si=496
+[TST] FWV: fwc=199 si=496 metric=52
+[TST] RD[498]: t=13465000 addr=514 rdI=-269 rdQ=344 sca_sv=1 si=497
+[TST] FWV: fwc=200 si=497 metric=49
+[TST] RD[499]: t=13475000 addr=515 rdI=-71 rdQ=1364 sca_sv=1 si=498
+[TST] FWV: fwc=201 si=498 metric=55
+[TST] RD[500]: t=13485000 addr=516 rdI=-217 rdQ=-194 sca_sv=1 si=499
+[TST] FWV: fwc=202 si=499 metric=52
+[TST] RD[501]: t=13495000 addr=517 rdI=-258 rdQ=937 sca_sv=1 si=500
+[TST] FWV: fwc=203 si=500 metric=52
+[TST] RD[502]: t=13505000 addr=518 rdI=257 rdQ=-382 sca_sv=1 si=501
+[TST] FWV: fwc=204 si=501 metric=55
+[TST] RD[503]: t=13515000 addr=519 rdI=-311 rdQ=-642 sca_sv=1 si=502
+[TST] FWV: fwc=205 si=502 metric=55
+[TST] RD[504]: t=13525000 addr=520 rdI=21 rdQ=-402 sca_sv=1 si=503
+[TST] FWV: fwc=206 si=503 metric=61
+[TST] RD[505]: t=13535000 addr=521 rdI=-180 rdQ=261 sca_sv=1 si=504
+[TST] FWV: fwc=207 si=504 metric=49
+[TST] RD[506]: t=13545000 addr=522 rdI=-202 rdQ=-165 sca_sv=1 si=505
+[TST] FWV: fwc=208 si=505 metric=35
+[TST] RD[507]: t=13555000 addr=523 rdI=400 rdQ=-284 sca_sv=1 si=506
+[TST] FWV: fwc=209 si=506 metric=22
+[TST] RD[508]: t=13565000 addr=524 rdI=779 rdQ=278 sca_sv=1 si=507
+[TST] FWV: fwc=210 si=507 metric=26
+[TST] RD[509]: t=13575000 addr=525 rdI=14 rdQ=514 sca_sv=1 si=508
+[TST] FWV: fwc=211 si=508 metric=23
+[TST] RD[510]: t=13585000 addr=526 rdI=731 rdQ=65 sca_sv=1 si=509
+[TST] FWV: fwc=212 si=509 metric=23
+[TST] RD[511]: t=13595000 addr=527 rdI=444 rdQ=342 sca_sv=1 si=510
+[TST] FWV: fwc=213 si=510 metric=12
+[TST] RD[512]: t=13605000 addr=528 rdI=-414 rdQ=-307 sca_sv=1 si=511
+[TST] FWV: fwc=214 si=511 metric=21
+[TST] RD[513]: t=13615000 addr=529 rdI=568 rdQ=447 sca_sv=1 si=512
+[TST] FWV: fwc=215 si=512 metric=4
+[TST] RD[514]: t=13625000 addr=530 rdI=-50 rdQ=-666 sca_sv=1 si=513
+[TST] FWV: fwc=216 si=513 metric=3
+[TST] RD[515]: t=13635000 addr=531 rdI=340 rdQ=189 sca_sv=1 si=514
+[TST] FWV: fwc=217 si=514 metric=5
+[TST] RD[516]: t=13645000 addr=532 rdI=209 rdQ=233 sca_sv=1 si=515
+[TST] FWV: fwc=218 si=515 metric=8
+[TST] RD[517]: t=13655000 addr=533 rdI=-522 rdQ=106 sca_sv=1 si=516
+[TST] FWV: fwc=219 si=516 metric=8
+[TST] RD[518]: t=13665000 addr=534 rdI=21 rdQ=568 sca_sv=1 si=517
+[TST] FWV: fwc=220 si=517 metric=3
+[TST] RD[519]: t=13675000 addr=535 rdI=-5 rdQ=-826 sca_sv=1 si=518
+[TST] FWV: fwc=221 si=518 metric=12
+[TST] RD[520]: t=13685000 addr=536 rdI=72 rdQ=741 sca_sv=1 si=519
+[TST] FWV: fwc=222 si=519 metric=7
+[TST] RD[521]: t=13695000 addr=537 rdI=675 rdQ=-607 sca_sv=1 si=520
+[TST] FWV: fwc=223 si=520 metric=6
+[TST] RD[522]: t=13705000 addr=538 rdI=418 rdQ=227 sca_sv=1 si=521
+[TST] FWV: fwc=224 si=521 metric=14
+[TST] RD[523]: t=13715000 addr=539 rdI=688 rdQ=-239 sca_sv=1 si=522
+[TST] FWV: fwc=225 si=522 metric=9
+[TST] RD[524]: t=13725000 addr=540 rdI=-322 rdQ=-153 sca_sv=1 si=523
+[TST] FWV: fwc=226 si=523 metric=8
+[TST] RD[525]: t=13735000 addr=541 rdI=-342 rdQ=-131 sca_sv=1 si=524
+[TST] FWV: fwc=227 si=524 metric=11
+[TST] RD[526]: t=13745000 addr=542 rdI=-506 rdQ=-420 sca_sv=1 si=525
+[TST] FWV: fwc=228 si=525 metric=20
+[TST] RD[527]: t=13755000 addr=543 rdI=600 rdQ=166 sca_sv=1 si=526
+[TST] FWV: fwc=229 si=526 metric=20
+[TST] RD[528]: t=13765000 addr=544 rdI=556 rdQ=-399 sca_sv=1 si=527
+[TST] FWV: fwc=230 si=527 metric=17
+[TST] RD[529]: t=13775000 addr=545 rdI=172 rdQ=877 sca_sv=1 si=528
+[TST] FWV: fwc=231 si=528 metric=14
+[TST] RD[530]: t=13785000 addr=546 rdI=-231 rdQ=-379 sca_sv=1 si=529
+[TST] FWV: fwc=232 si=529 metric=27
+[TST] RD[531]: t=13795000 addr=547 rdI=423 rdQ=65 sca_sv=1 si=530
+[TST] FWV: fwc=233 si=530 metric=26
+[TST] RD[532]: t=13805000 addr=548 rdI=-371 rdQ=416 sca_sv=1 si=531
+[TST] FWV: fwc=234 si=531 metric=29
+[TST] RD[533]: t=13815000 addr=549 rdI=-422 rdQ=198 sca_sv=1 si=532
+[TST] FWV: fwc=235 si=532 metric=38
+[TST] RD[534]: t=13825000 addr=550 rdI=47 rdQ=-773 sca_sv=1 si=533
+[TST] FWV: fwc=236 si=533 metric=40
+[TST] RD[535]: t=13835000 addr=551 rdI=-760 rdQ=241 sca_sv=1 si=534
+[TST] FWV: fwc=237 si=534 metric=47
+[TST] RD[536]: t=13845000 addr=552 rdI=-534 rdQ=173 sca_sv=1 si=535
+[TST] FWV: fwc=238 si=535 metric=48
+[TST] RD[537]: t=13855000 addr=553 rdI=46 rdQ=-944 sca_sv=1 si=536
+[TST] FWV: fwc=239 si=536 metric=42
+[TST] RD[538]: t=13865000 addr=554 rdI=-485 rdQ=285 sca_sv=1 si=537
+[TST] FWV: fwc=240 si=537 metric=42
+[TST] RD[539]: t=13875000 addr=555 rdI=-947 rdQ=371 sca_sv=1 si=538
+[TST] FWV: fwc=241 si=538 metric=23
+[TST] RD[540]: t=13885000 addr=556 rdI=-279 rdQ=17 sca_sv=1 si=539
+[TST] FWV: fwc=242 si=539 metric=24
+[TST] RD[541]: t=13895000 addr=557 rdI=-210 rdQ=64 sca_sv=1 si=540
+[TST] FWV: fwc=243 si=540 metric=27
+[TST] RD[542]: t=13905000 addr=558 rdI=-94 rdQ=354 sca_sv=1 si=541
+[TST] FWV: fwc=244 si=541 metric=29
+[TST] RD[543]: t=13915000 addr=559 rdI=-424 rdQ=-86 sca_sv=1 si=542
+[TST] FWV: fwc=245 si=542 metric=40
+[TST] RD[544]: t=13925000 addr=560 rdI=-110 rdQ=-503 sca_sv=1 si=543
+[TST] FWV: fwc=246 si=543 metric=31
+[TST] RD[545]: t=13935000 addr=561 rdI=294 rdQ=1033 sca_sv=1 si=544
+[TST] FWV: fwc=247 si=544 metric=32
+[TST] RD[546]: t=13945000 addr=562 rdI=-77 rdQ=347 sca_sv=1 si=545
+[TST] FWV: fwc=248 si=545 metric=20
+[TST] RD[547]: t=13955000 addr=563 rdI=119 rdQ=226 sca_sv=1 si=546
+[TST] FWV: fwc=249 si=546 metric=29
+[TST] RD[548]: t=13965000 addr=564 rdI=526 rdQ=569 sca_sv=1 si=547
+[TST] FWV: fwc=250 si=547 metric=36
+[TST] RD[549]: t=13975000 addr=565 rdI=501 rdQ=-819 sca_sv=1 si=548
+[TST] FWV: fwc=251 si=548 metric=40
+[TST] RD[550]: t=13985000 addr=566 rdI=-159 rdQ=-188 sca_sv=1 si=549
+[TST] FWV: fwc=252 si=549 metric=35
+[TST] RD[551]: t=13995000 addr=567 rdI=9 rdQ=483 sca_sv=1 si=550
+[TST] FWV: fwc=253 si=550 metric=39
+[TST] RD[552]: t=14005000 addr=568 rdI=681 rdQ=13 sca_sv=1 si=551
+[TST] FWV: fwc=254 si=551 metric=40
+[TST] FWV: fwc=255 si=552 metric=37
+[TST] FWV: fwc=255 si=553 metric=42
+[TST] FWV: fwc=255 si=553 metric=52
+[TST] FWV: fwc=255 si=553 metric=51
+[TST] FWV: fwc=255 si=553 metric=52
+[TST] FWV: fwc=255 si=553 metric=50
+[TST] FWV: fwc=255 si=553 metric=56
+[TST] FWV: fwc=255 si=553 metric=51
+[TST] FWV: fwc=255 si=553 metric=35
+[TST] FWV: fwc=255 si=553 metric=38
+[TST] FWV: fwc=255 si=553 metric=38
+[TST] FWV: fwc=255 si=553 metric=38
+[TST] FWV: fwc=255 si=553 metric=38
+[TST] FWV: fwc=255 si=553 metric=38
+[TST] FWV: fwc=255 si=553 metric=38
+[TST] RESULT peak_lag=23 peak_metric=151
+[DFS] t=20345000 PSS_FILL done → S_PSS_STREAM
+[DFS] t=25485000 PSS_FLUSH done → S_PSS_STREAM flush_rem=0
+[DFS] t=30625000 PSS_CAP done → S_SSS_FILL
+[DFS] t=30635000 SSS_FILL got sample in_cnt=0
+[DFS] t=30645000 SSS_FILL STALL@1 s_valid=0 s_ready=1 s_sym=1
+[DFS] t=30655000 SSS_FILL got sample in_cnt=1
+[DFS] t=30675000 SSS_FILL got sample in_cnt=2
+[DFS] t=30695000 SSS_FILL got sample in_cnt=3
+[DFS] t=35735000 SSS_FILL done → S_SSS_STREAM
+[DFS] t=40875000 SSS_CAP done → S_STREAM_PSS
+[DFS] t=43445000 STREAM_PSS done → S_STREAM_SSS
+[DFS] t=46045000 S_DONE error=0
+[DFS] t=720945000 START → S_PSS_FILL flush_rem=1
+[D3] Files written:
+  /home/zealatan/RTL_SYNC_PHASE4/sim_out/session_probe_087/case_087_status.txt
+  /home/zealatan/RTL_SYNC_PHASE4/sim_out/session_probe_087/case_087_m_axis_iq.txt  (576 samples)
+  /home/zealatan/RTL_SYNC_PHASE4/sim_out/session_probe_087/case_087_frac_iq.txt    (576 samples)
+[D3] Structural checks:
+PASS [S1]: INT_CFO_APPLIED=1
+PASS [S2]: M_AXIS=576 == FRAME_LEN
+PASS [S3]: TLAST at 575 (FRAME_LEN-1)
+PASS [S4]: frac captured=576 == FRAME_LEN
+[D3] frame_start=16  slot=39  frac_cfo_word=16815  peak=320  step=0xbf000000
+STIM_GATE: PASS

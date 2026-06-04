@@ -21,11 +21,11 @@ STAGE1_SCALARS: PASS
 STAGE2_TIMING: PASS
 
 --- Stage 3: CFO word / sign convention ---
-  [PASS] frac_cfo_word: C_expected_q15=3277.0 RTL_word=3278 delta=1.00
+  [PASS] frac_cfo_word: C_expected_q15=3277.0 RTL_word=3275 delta=2.00
            tol=max(3277.0×1%, 2.0LSB)=32.77
-           C_offset=0.050003  RTL_offset=0.050018  rel_err=0.031%
-  [PASS] int_cfo_index (Meyr peak): C=255 RTL=256 delta=1 tol=±1 bins
-  [PASS] int_cfo_est_bins: C=0 RTL=1 delta=1 tol=±1
+           C_offset=0.050003  RTL_offset=0.049973  rel_err=0.061%
+  [PASS] int_cfo_index (Meyr peak): C=255 RTL=255 delta=0 tol=±1 bins
+  [PASS] int_cfo_est_bins: C=0 RTL=0 delta=0 tol=±1
   [PASS] int_cfo_applied: RTL=1 (correction applied)
 STAGE3_CFO: PASS
 

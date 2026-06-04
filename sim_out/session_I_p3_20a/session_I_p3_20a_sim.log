@@ -1,57 +1,228 @@
+[INFO] fft256_xilinx_wrapper: USE_BEHAVIORAL_STUB=3 (behavioral DFT)
+[INFO]   Exact 256-pt DFT, real arithmetic, simulation-only.
+[INFO]   Enables k_int sweep validation without Xilinx IP.
 ======================================================
 Session I / P3-20A — AXI Backpressure Stress
 ======================================================
 
 --- I1: S_AXIS Backpressure ---
   TC1: s_stall=0 (baseline)
+[DFS] t=305000 START → S_PSS_FILL flush_rem=1
+[DFS] t=20805000 PSS_FILL done → S_PSS_STREAM
+[DFS] t=25945000 PSS_FLUSH done → S_PSS_STREAM flush_rem=0
+[DFS] t=31085000 PSS_CAP done → S_SSS_FILL
+[DFS] t=31095000 SSS_FILL got sample in_cnt=0
+[DFS] t=31105000 SSS_FILL STALL@1 s_valid=0 s_ready=1 s_sym=1
+[DFS] t=31115000 SSS_FILL got sample in_cnt=1
+[DFS] t=31135000 SSS_FILL got sample in_cnt=2
+[DFS] t=31155000 SSS_FILL got sample in_cnt=3
+[DFS] t=36195000 SSS_FILL done → S_SSS_STREAM
+[DFS] t=41335000 SSS_CAP done → S_STREAM_PSS
+[DFS] t=43905000 STREAM_PSS done → S_STREAM_SSS
+[DFS] t=46505000 S_DONE error=0
+[DFS] t=721405000 START → S_PSS_FILL flush_rem=1
   [PASS] TC1-C1: output_count=576
   [PASS] TC1-C2: TLAST at beat 575
   [PASS] TC1-C3: INT_CFO_APPLIED=1
   TC2: s_stall=1/10 (every 10th)
+[DFS] t=722015000 START → S_PSS_FILL flush_rem=1
+[DFS] t=743215000 PSS_FILL done → S_PSS_STREAM
+[DFS] t=748355000 PSS_FLUSH done → S_PSS_STREAM flush_rem=0
+[DFS] t=753495000 PSS_CAP done → S_SSS_FILL
+[DFS] t=753505000 SSS_FILL got sample in_cnt=0
+[DFS] t=753515000 SSS_FILL STALL@1 s_valid=0 s_ready=1 s_sym=1
+[DFS] t=753525000 SSS_FILL got sample in_cnt=1
+[DFS] t=753545000 SSS_FILL got sample in_cnt=2
+[DFS] t=753565000 SSS_FILL got sample in_cnt=3
+[DFS] t=758605000 SSS_FILL done → S_SSS_STREAM
+[DFS] t=763745000 SSS_CAP done → S_STREAM_PSS
+[DFS] t=766315000 STREAM_PSS done → S_STREAM_SSS
+[DFS] t=768915000 S_DONE error=0
+[DFS] t=1443815000 START → S_PSS_FILL flush_rem=1
   [PASS] TC2-C1: output_count=576
   [PASS] TC2-C2: TLAST at beat 575
   [PASS] TC2-C3: INT_CFO_APPLIED=1
   TC3: s_stall=1/4  (every 4th)
+[DFS] t=1444425000 START → S_PSS_FILL flush_rem=1
+[DFS] t=1466695000 PSS_FILL done → S_PSS_STREAM
+[DFS] t=1471835000 PSS_FLUSH done → S_PSS_STREAM flush_rem=0
+[DFS] t=1476975000 PSS_CAP done → S_SSS_FILL
+[DFS] t=1476985000 SSS_FILL got sample in_cnt=0
+[DFS] t=1476995000 SSS_FILL STALL@1 s_valid=0 s_ready=1 s_sym=1
+[DFS] t=1477005000 SSS_FILL got sample in_cnt=1
+[DFS] t=1477025000 SSS_FILL got sample in_cnt=2
+[DFS] t=1477045000 SSS_FILL got sample in_cnt=3
+[DFS] t=1482085000 SSS_FILL done → S_SSS_STREAM
+[DFS] t=1487225000 SSS_CAP done → S_STREAM_PSS
+[DFS] t=1489795000 STREAM_PSS done → S_STREAM_SSS
+[DFS] t=1492395000 S_DONE error=0
+[DFS] t=2167295000 START → S_PSS_FILL flush_rem=1
   [PASS] TC3-C1: output_count=576
   [PASS] TC3-C2: TLAST at beat 575
   [PASS] TC3-C3: INT_CFO_APPLIED=1
   TC4: s_stall=1/2  (every 2nd)
+[DFS] t=2167905000 START → S_PSS_FILL flush_rem=1
+[DFS] t=2191935000 PSS_FILL done → S_PSS_STREAM
+[DFS] t=2197075000 PSS_FLUSH done → S_PSS_STREAM flush_rem=0
+[DFS] t=2202215000 PSS_CAP done → S_SSS_FILL
+[DFS] t=2202225000 SSS_FILL got sample in_cnt=0
+[DFS] t=2202235000 SSS_FILL STALL@1 s_valid=0 s_ready=1 s_sym=1
+[DFS] t=2202245000 SSS_FILL got sample in_cnt=1
+[DFS] t=2202265000 SSS_FILL got sample in_cnt=2
+[DFS] t=2202285000 SSS_FILL got sample in_cnt=3
+[DFS] t=2207325000 SSS_FILL done → S_SSS_STREAM
+[DFS] t=2212465000 SSS_CAP done → S_STREAM_PSS
+[DFS] t=2215035000 STREAM_PSS done → S_STREAM_SSS
+[DFS] t=2217635000 S_DONE error=0
+[DFS] t=2892535000 START → S_PSS_FILL flush_rem=1
   [PASS] TC4-C1: output_count=576
   [PASS] TC4-C2: TLAST at beat 575
   [PASS] TC4-C3: INT_CFO_APPLIED=1
 
 --- I2: M_AXIS Backpressure ---
   TC5: m_stall=1/10 (every 10th)
+[DFS] t=2893145000 START → S_PSS_FILL flush_rem=1
+[DFS] t=2913645000 PSS_FILL done → S_PSS_STREAM
+[DFS] t=2918785000 PSS_FLUSH done → S_PSS_STREAM flush_rem=0
+[DFS] t=2923925000 PSS_CAP done → S_SSS_FILL
+[DFS] t=2923935000 SSS_FILL got sample in_cnt=0
+[DFS] t=2923945000 SSS_FILL STALL@1 s_valid=0 s_ready=1 s_sym=1
+[DFS] t=2923955000 SSS_FILL got sample in_cnt=1
+[DFS] t=2923975000 SSS_FILL got sample in_cnt=2
+[DFS] t=2923995000 SSS_FILL got sample in_cnt=3
+[DFS] t=2929035000 SSS_FILL done → S_SSS_STREAM
+[DFS] t=2934175000 SSS_CAP done → S_STREAM_PSS
+[DFS] t=2936745000 STREAM_PSS done → S_STREAM_SSS
+[DFS] t=2939345000 S_DONE error=0
+[DFS] t=3614245000 START → S_PSS_FILL flush_rem=1
   [PASS] TC5-C1: output_count=576
   [PASS] TC5-C2: TLAST at beat 575
   [PASS] TC5-C3: INT_CFO_APPLIED=1
   TC6: m_stall=1/4  (every 4th)
+[DFS] t=3614855000 START → S_PSS_FILL flush_rem=1
+[DFS] t=3635355000 PSS_FILL done → S_PSS_STREAM
+[DFS] t=3640495000 PSS_FLUSH done → S_PSS_STREAM flush_rem=0
+[DFS] t=3645635000 PSS_CAP done → S_SSS_FILL
+[DFS] t=3645645000 SSS_FILL got sample in_cnt=0
+[DFS] t=3645655000 SSS_FILL STALL@1 s_valid=0 s_ready=1 s_sym=1
+[DFS] t=3645665000 SSS_FILL got sample in_cnt=1
+[DFS] t=3645685000 SSS_FILL got sample in_cnt=2
+[DFS] t=3645705000 SSS_FILL got sample in_cnt=3
+[DFS] t=3650745000 SSS_FILL done → S_SSS_STREAM
+[DFS] t=3655885000 SSS_CAP done → S_STREAM_PSS
+[DFS] t=3658455000 STREAM_PSS done → S_STREAM_SSS
+[DFS] t=3661055000 S_DONE error=0
+[DFS] t=4335955000 START → S_PSS_FILL flush_rem=1
   [PASS] TC6-C1: output_count=576
   [PASS] TC6-C2: TLAST at beat 575
   [PASS] TC6-C3: INT_CFO_APPLIED=1
   TC7: m_stall=1/2  (every 2nd)
+[DFS] t=4336565000 START → S_PSS_FILL flush_rem=1
+[DFS] t=4357065000 PSS_FILL done → S_PSS_STREAM
+[DFS] t=4362205000 PSS_FLUSH done → S_PSS_STREAM flush_rem=0
+[DFS] t=4367345000 PSS_CAP done → S_SSS_FILL
+[DFS] t=4367355000 SSS_FILL got sample in_cnt=0
+[DFS] t=4367365000 SSS_FILL STALL@1 s_valid=0 s_ready=1 s_sym=1
+[DFS] t=4367375000 SSS_FILL got sample in_cnt=1
+[DFS] t=4367395000 SSS_FILL got sample in_cnt=2
+[DFS] t=4367415000 SSS_FILL got sample in_cnt=3
+[DFS] t=4372455000 SSS_FILL done → S_SSS_STREAM
+[DFS] t=4377595000 SSS_CAP done → S_STREAM_PSS
+[DFS] t=4380165000 STREAM_PSS done → S_STREAM_SSS
+[DFS] t=4382765000 S_DONE error=0
+[DFS] t=5057665000 START → S_PSS_FILL flush_rem=1
   [PASS] TC7-C1: output_count=576
   [PASS] TC7-C2: TLAST at beat 575
   [PASS] TC7-C3: INT_CFO_APPLIED=1
 
 --- I3: Replay Burst Stall ---
   TC8: burst=1
+[DFS] t=5058275000 START → S_PSS_FILL flush_rem=1
+[DFS] t=5078775000 PSS_FILL done → S_PSS_STREAM
+[DFS] t=5083915000 PSS_FLUSH done → S_PSS_STREAM flush_rem=0
+[DFS] t=5089055000 PSS_CAP done → S_SSS_FILL
+[DFS] t=5089065000 SSS_FILL got sample in_cnt=0
+[DFS] t=5089075000 SSS_FILL STALL@1 s_valid=0 s_ready=1 s_sym=1
+[DFS] t=5089085000 SSS_FILL got sample in_cnt=1
+[DFS] t=5089105000 SSS_FILL got sample in_cnt=2
+[DFS] t=5089125000 SSS_FILL got sample in_cnt=3
+[DFS] t=5094165000 SSS_FILL done → S_SSS_STREAM
+[DFS] t=5099305000 SSS_CAP done → S_STREAM_PSS
+[DFS] t=5101875000 STREAM_PSS done → S_STREAM_SSS
+[DFS] t=5104475000 S_DONE error=0
+[DFS] t=5779375000 START → S_PSS_FILL flush_rem=1
   [PASS] TC8-C1: output_count=576
   [PASS] TC8-C2: TLAST at beat 575
   [PASS] TC8-C3: INT_CFO_APPLIED=1
   TC9: burst=4
+[DFS] t=5779985000 START → S_PSS_FILL flush_rem=1
+[DFS] t=5800485000 PSS_FILL done → S_PSS_STREAM
+[DFS] t=5805625000 PSS_FLUSH done → S_PSS_STREAM flush_rem=0
+[DFS] t=5810765000 PSS_CAP done → S_SSS_FILL
+[DFS] t=5810775000 SSS_FILL got sample in_cnt=0
+[DFS] t=5810785000 SSS_FILL STALL@1 s_valid=0 s_ready=1 s_sym=1
+[DFS] t=5810795000 SSS_FILL got sample in_cnt=1
+[DFS] t=5810815000 SSS_FILL got sample in_cnt=2
+[DFS] t=5810835000 SSS_FILL got sample in_cnt=3
+[DFS] t=5815875000 SSS_FILL done → S_SSS_STREAM
+[DFS] t=5821015000 SSS_CAP done → S_STREAM_PSS
+[DFS] t=5823585000 STREAM_PSS done → S_STREAM_SSS
+[DFS] t=5826185000 S_DONE error=0
+[DFS] t=6501105000 START → S_PSS_FILL flush_rem=1
   [PASS] TC9-C1: output_count=576
   [PASS] TC9-C2: TLAST at beat 575
   [PASS] TC9-C3: INT_CFO_APPLIED=1
   TC10: burst=8
+[DFS] t=6501715000 START → S_PSS_FILL flush_rem=1
+[DFS] t=6522215000 PSS_FILL done → S_PSS_STREAM
+[DFS] t=6527355000 PSS_FLUSH done → S_PSS_STREAM flush_rem=0
+[DFS] t=6532495000 PSS_CAP done → S_SSS_FILL
+[DFS] t=6532505000 SSS_FILL got sample in_cnt=0
+[DFS] t=6532515000 SSS_FILL STALL@1 s_valid=0 s_ready=1 s_sym=1
+[DFS] t=6532525000 SSS_FILL got sample in_cnt=1
+[DFS] t=6532545000 SSS_FILL got sample in_cnt=2
+[DFS] t=6532565000 SSS_FILL got sample in_cnt=3
+[DFS] t=6537605000 SSS_FILL done → S_SSS_STREAM
+[DFS] t=6542745000 SSS_CAP done → S_STREAM_PSS
+[DFS] t=6545315000 STREAM_PSS done → S_STREAM_SSS
+[DFS] t=6547915000 S_DONE error=0
+[DFS] t=7222875000 START → S_PSS_FILL flush_rem=1
   [PASS] TC10-C1: output_count=576
   [PASS] TC10-C2: TLAST at beat 575
   [PASS] TC10-C3: INT_CFO_APPLIED=1
   TC11: burst=16
+[DFS] t=7223485000 START → S_PSS_FILL flush_rem=1
+[DFS] t=7243985000 PSS_FILL done → S_PSS_STREAM
+[DFS] t=7249125000 PSS_FLUSH done → S_PSS_STREAM flush_rem=0
+[DFS] t=7254265000 PSS_CAP done → S_SSS_FILL
+[DFS] t=7254275000 SSS_FILL got sample in_cnt=0
+[DFS] t=7254285000 SSS_FILL STALL@1 s_valid=0 s_ready=1 s_sym=1
+[DFS] t=7254295000 SSS_FILL got sample in_cnt=1
+[DFS] t=7254315000 SSS_FILL got sample in_cnt=2
+[DFS] t=7254335000 SSS_FILL got sample in_cnt=3
+[DFS] t=7259375000 SSS_FILL done → S_SSS_STREAM
+[DFS] t=7264515000 SSS_CAP done → S_STREAM_PSS
+[DFS] t=7267085000 STREAM_PSS done → S_STREAM_SSS
+[DFS] t=7269685000 S_DONE error=0
+[DFS] t=7944725000 START → S_PSS_FILL flush_rem=1
   [PASS] TC11-C1: output_count=576
   [PASS] TC11-C2: TLAST at beat 575
   [PASS] TC11-C3: INT_CFO_APPLIED=1
   TC12: burst=32
+[DFS] t=7945335000 START → S_PSS_FILL flush_rem=1
+[DFS] t=7965835000 PSS_FILL done → S_PSS_STREAM
+[DFS] t=7970975000 PSS_FLUSH done → S_PSS_STREAM flush_rem=0
+[DFS] t=7976115000 PSS_CAP done → S_SSS_FILL
+[DFS] t=7976125000 SSS_FILL got sample in_cnt=0
+[DFS] t=7976135000 SSS_FILL STALL@1 s_valid=0 s_ready=1 s_sym=1
+[DFS] t=7976145000 SSS_FILL got sample in_cnt=1
+[DFS] t=7976165000 SSS_FILL got sample in_cnt=2
+[DFS] t=7976185000 SSS_FILL got sample in_cnt=3
+[DFS] t=7981225000 SSS_FILL done → S_SSS_STREAM
+[DFS] t=7986365000 SSS_CAP done → S_STREAM_PSS
+[DFS] t=7988935000 STREAM_PSS done → S_STREAM_SSS
+[DFS] t=7991535000 S_DONE error=0
+[DFS] t=8666735000 START → S_PSS_FILL flush_rem=1
   [PASS] TC12-C1: output_count=576
   [PASS] TC12-C2: TLAST at beat 575
   [PASS] TC12-C3: INT_CFO_APPLIED=1

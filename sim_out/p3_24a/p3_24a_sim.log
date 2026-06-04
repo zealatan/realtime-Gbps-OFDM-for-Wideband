@@ -1,0 +1,31 @@
+[WARNING] fft256_xilinx_wrapper: USE_BEHAVIORAL_STUB=1
+[WARNING] Passthrough stub only — NOT an FFT.
+=== [P3-24A] Phase 1: Reset (20 cycles) ===
+=== [P3-24A] Phase 2: Enable DUT ===
+=== [P3-24A] Phase 3: Feeding 704 IQ samples ===
+  Stimulus done. Waiting for M_AXIS (576 beats)...
+  M_AXIS: 576 beats at cycle 4619
+=== [P3-24A] Phase 5: Read status registers ===
+
+=== [P3-24A] CP Autocorr Restore Regression Results ===
+  Stimulus:  golden/phase3_iq_stimulus.mem (704 samples)
+  Threshold: 40000  Cycle: 4649
+
+  --- Frame Detection + CP Timing ---
+  C1  frame_found    : 1               PASS
+  C2  frame_index    : 40  PASS  (golden=41 ±1)
+  C3  peak_lag       : 23  PASS  (golden=23 ±1)
+  C4  slot_start     : 63  PASS  (golden=64 ±1)
+
+  --- CFO Pipeline ---
+  C5  frac_cfo_valid : 1  PASS
+  C6  int_cfo_valid  : 1  PASS
+
+  --- M_AXIS Output ---
+  C7  output_count   : 576  PASS  (expected 576)
+  C8  tlast_at_575   : idx=575  PASS  (expected 575)
+
+  Checks passed: 8 / 8
+  Error flags:   0x00000000
+
+SANITY_CP_AUTOCORR_RESTORE_GATE: PASS

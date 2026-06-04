@@ -1,0 +1,23 @@
+============================================================
+ DOC-001 PSS/SSS Extraction Boundary Gate
+   NSC=256  CP_LEN=32  FRAME_LEN=576
+   PSS window: [32..287]  SSS window: [320..575]
+============================================================
+
+[T1] Full frame, tready=1 (no backpressure)
+  PASS PSS sample values (256 samples correct)
+  PASS SSS sample values (256 samples correct)
+
+[T2] Full frame, random tready (backpressure stress)
+  PASS PSS sample values (256 samples correct)
+  PASS SSS sample values (256 samples correct)
+
+[T3] Overlapping PSS/SSS windows — expect error_code=1
+  PASS T3: error_code=1 on overlapping windows
+
+============================================================
+  PASS count : 17
+  FAIL count : 0
+============================================================
+DOC_001_PSS_SSS_BOUNDARY_GATE: PASS
+============================================================

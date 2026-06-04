@@ -1,30 +1,30 @@
 
 ============================================================
  case_073
-  golden: /home/zealatan/RTL_SYNC_PHASE3/golden/p3_15d_stimuli/case_073_golden.txt
-  meta:   /home/zealatan/RTL_SYNC_PHASE3/golden/p3_15d_stimuli/case_073_meta.json
+  golden: /home/zealatan/RTL_SYNC_PHASE4/golden/p3_15d_stimuli/case_073_golden.txt
+  meta:   /home/zealatan/RTL_SYNC_PHASE4/golden/p3_15d_stimuli/case_073_meta.json
   frame_len=576
-  k_int=0  eps_frac=-0.1338  amp=1430  snr=31.3dB
+  k_int=0  eps_frac=-0.1057  amp=1967  snr=31.3dB
 ============================================================
 
 --- Stage D4-2: Metadata (case_073) ---
-  FAIL [frame_start]: RTL=75  ref=72  diff=3  tol=±2  [INFO]
-  PASS [peak_lag]: RTL=19  ref=22  diff=3  tol=±3  [INFO]
-  PASS [slot_start]: RTL=94  ref=94  diff=0  tol=±2
-  PASS [frac_cfo]: RTL=-0.134006775  ref=-0.133626506  rel_err=0.2846%  tol=2.0%
-  FAIL [meyr_peak]: RTL=301  ref=255  diff=46  tol=±5  [INFO]
-  [int_cfo] RTL step_word=0xD2000000 → k_int_rtl=46  expected=0  stimulus_k_int=0  [INFO]
-  FAIL [int_cfo_bins]: RTL=46  ref=0  diff=46  tol=±5  [INFO]
-  D4-2: PASS  (0 gate failure(s), 3 info-only warning(s))
+  PASS [frame_start]: RTL=72  ref=72  diff=0  tol=±5  [INFO]
+  PASS [peak_lag]: RTL=21  ref=22  diff=1  tol=±10  [INFO]
+  PASS [slot_start]: RTL=93  ref=94  diff=1  tol=±40
+  PASS [frac_cfo]: RTL=-0.107272561  ref=-0.106720582  rel_err=0.5172%  tol=5.0%+floor=0.008
+  FAIL [meyr_peak]: RTL=225  ref=255  diff=30  tol=±5  [INFO]
+  [int_cfo] RTL step_word=0x1E000000 → k_int_rtl=-30  expected=0  stimulus_k_int=0  [INFO]
+  FAIL [int_cfo_bins]: RTL=-30  ref=0  diff=30  tol=±5  [INFO]
+  D4-2: PASS  (0 gate failure(s), 2 info-only warning(s))
 
 --- Stage D4-3: IQ equivalence (case_073) ---
-  step_word=0xD2000000  tolerance=1 LSB
+  step_word=0x1E000000  tolerance=1 LSB
   Max I error: 0 at n=-1
   Max Q error: 0
   Mismatches:  0/576
   PASS: all 576 IQ samples within 1 LSB
 
 --- Stage D4-4: Failure clustering (case_073) ---
-  Info warnings: info_d2_frame_start, info_d2_meyr_peak, info_d2_int_cfo_bins
+  Info warnings: info_d2_meyr_peak, info_d2_int_cfo_bins
 
 CASE_EQUIV_GATE: PASS  (case_073)

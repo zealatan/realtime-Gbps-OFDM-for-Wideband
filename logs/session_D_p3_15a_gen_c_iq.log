@@ -6,9 +6,9 @@ Session D / P3-15B — Generate C M_AXIS IQ Golden
   Loaded 576 frac IQ pairs
 
 [2] Loading step_word from meta/observables
-  INT_CFO_STEP_WORD from meta: 0xff000000 = 4278190080 (u32)
-  step_word: 0xFF000000  (-16777216 signed)
-  NCO ROM idx[0]: 255
+  INT_CFO_STEP_WORD from meta: 0x00000000 = 0 (u32)
+  step_word: 0x00000000  (0 signed)
+  NCO ROM idx[0]: 0
 
 [3] Applying software NCO model to 576 samples...
   Generated 576 output IQ pairs
@@ -24,11 +24,11 @@ Session D / P3-15B — Generate C M_AXIS IQ Golden
 
 [6] Preview (first 4 / last 2 samples):
   [   0] frac=(     0,     0) → nco=(     0,     0)
-  [   1] frac=( -1422,   722) → nco=( -1440,   686)
-  [   2] frac=( -1422,   722) → nco=( -1456,   651)
-  [   3] frac=( -1485,   854) → nco=( -1544,   742)
-  [ 574] frac=(  1264,  -187) → nco=(   248,  1253)
-  [ 575] frac=(  -564,  1278) → nco=( -1292,  -533)
+  [   1] frac=( -1422,   722) → nco=( -1422,   721)
+  [   2] frac=( -1422,   722) → nco=( -1422,   721)
+  [   3] frac=( -1485,   854) → nco=( -1485,   853)
+  [ 574] frac=(  1264,  -187) → nco=(  1263,  -187)
+  [ 575] frac=(  -564,  1278) → nco=(  -564,  1277)
 
 C_GOLDEN_GEN: PASS
   Output: /home/zealatan/RTL_SYNC_PHASE3/golden/session_D_p3_15a/c_m_axis_iq_golden.txt

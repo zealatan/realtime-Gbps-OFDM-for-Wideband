@@ -91,10 +91,10 @@ echo "=== [2] Source-List Audit ==="
 # 2a: required modular files
 MODULAR_PASS=1
 for f in \
-    "${ROOT}/rtl/sample_power_sq.v" \
-    "${ROOT}/rtl/sliding_window_sum.v" \
-    "${ROOT}/rtl/frame_detect_fsm.v" \
-    "${ROOT}/rtl/frame_detector.v"; do
+    "${ROOT}/rtl/DUT/sample_power_sq.v" \
+    "${ROOT}/rtl/DUT/sliding_window_sum.v" \
+    "${ROOT}/rtl/DUT/frame_detect_fsm.v" \
+    "${ROOT}/rtl/DUT/frame_detector.v"; do
     if [[ -f "$f" ]]; then
         echo "  OK:      $(basename $f)"
     else
@@ -125,52 +125,14 @@ echo "  Legacy sample_power_sq: excluded from compile (module name conflict)"
 echo ""
 echo "=== [3] Building source list ==="
 
-LEGACY_SRCS=(
-    "${ROOT}/rtl/phase2_legacy/complex_mult.v"
-    "${ROOT}/rtl/phase2_legacy/complex_to_mag.v"
-    "${ROOT}/rtl/phase2_legacy/delay_sample.v"
-    "${ROOT}/rtl/phase2_legacy/delayT.v"
-    "${ROOT}/rtl/phase2_legacy/moving_avg_optimized.v"
-    "${ROOT}/rtl/phase2_legacy/ram_2port.v"
-)
-
-UNIT_TEST_SRCS=(
-    "${ROOT}/rtl/unit_test/and2.v"
-    "${ROOT}/rtl/unit_test/cp_autocorr_core.v"
-    "${ROOT}/rtl/unit_test/timing_metric_core.v"
-    "${ROOT}/rtl/timing_sync_top.v"
-    "${ROOT}/rtl/frac_cfo_estimator.v"
-    "${ROOT}/rtl/timing_frac_cfo_top.v"
-    "${ROOT}/rtl/iq_frame_buffer.v"
-    "${ROOT}/rtl/frac_cfo_corrector_top.v"
-    "${ROOT}/rtl/fft256_dual_symbol_frontend.v"
-    "${ROOT}/rtl/meyr_term2_ref_rom.v"
-    "${ROOT}/rtl/meyr_integer_cfo_fft_frontend_top.v"
-)
-
-RTL_SRCS=(
-    "${ROOT}/rtl/axis_complex_mult.v"
-    "${ROOT}/rtl/complex_mult_iq.v"
-    "${ROOT}/rtl/complex_rotator.v"
-    "${ROOT}/rtl/cordic_atan2.v"
-    "${ROOT}/rtl/nco_phase_gen.v"
-    "${ROOT}/rtl/peak_detector.v"
-    "${ROOT}/rtl/meyr_integer_cfo_core.v"
-    "${ROOT}/rtl/meyr_pss_sss_product_gen.v"
-    "${ROOT}/rtl/meyr_integer_cfo_freq_estimator_top.v"
-    "${ROOT}/rtl/pss_sss_symbol_extractor.v"
-    "${ROOT}/rtl/slot_start_controller.v"
-    "${ROOT}/rtl/sample_power_sq.v"
-    "${ROOT}/rtl/sliding_window_sum.v"
-    "${ROOT}/rtl/frame_detect_fsm.v"
-    "${ROOT}/rtl/frame_detector.v"
-    "${ROOT}/rtl/frac_cfo_frame_corrector_top.v"
-    "${ROOT}/rtl/phase3_sync_top.v"
-)
+# --------------------------------------------------------------------------
+# Production DUT source list — single source of truth.
+# --------------------------------------------------------------------------
+FILELIST="${ROOT}/scripts/phase3_dut_filelist.f"
+mapfile -t DUT_SRCS < <(grep -v '^#' "${FILELIST}" | grep -v '^[[:space:]]*$' | sed "s|^|${ROOT}/|")
 
 TB_SRC="${ROOT}/tb/session_A_p3_12c_full_phase3_regression_tb.sv"
-ALL_SRCS=( "${LEGACY_SRCS[@]}" "${UNIT_TEST_SRCS[@]}" "${RTL_SRCS[@]}" )
-echo "  Total RTL sources: ${#ALL_SRCS[@]}"
+echo "  Total RTL sources: ${#DUT_SRCS[@]}"
 echo "  TB: $(basename ${TB_SRC})"
 
 # ============================================================================
@@ -184,7 +146,7 @@ if [[ "${SIM}" == "iverilog" ]]; then
     iverilog -g2012 \
         -I "${ROOT}/rtl" \
         -o "${SIM_OUT}/p3_12c.vvp" \
-        "${ALL_SRCS[@]}" \
+        "${DUT_SRCS[@]}" \
         "${TB_SRC}" \
         2>&1 | tee "${LOG_COMPILE}"
     COMPILE_EXIT=${PIPESTATUS[0]}
@@ -205,7 +167,7 @@ elif [[ "${SIM}" == "xsim" ]]; then
 
     xvlog -d SIMULATION \
         -i "${ROOT}/rtl" \
-        "${ALL_SRCS[@]}" \
+        "${DUT_SRCS[@]}" \
         2>&1 | tee "${LOG_COMPILE}"
     xvlog --sv -d SIMULATION \
         -i "${ROOT}/rtl" \

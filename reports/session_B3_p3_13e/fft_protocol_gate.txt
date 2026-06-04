@@ -1,8 +1,8 @@
-SANITY_FFT_PROTOCOL_GATE: FAIL
+SANITY_FFT_PROTOCOL_GATE: PASS
 Simulator: iverilog
-Date: 2026-05-29 10:55:51 UTC
+Date: 2026-05-29 12:02:11 UTC
 
-Raw gate: FFT_PROTOCOL_GATE: FAIL (watchdog timeout)
+Raw gate: FFT_PROTOCOL_GATE: PASS
 
 Pass/Fail summary:
 PASS [B3-1/pss1]: PSS 256/256 accepted
@@ -13,4 +13,12 @@ PASS [B3-1/pss2]: PSS 256/256 accepted
 PASS [B3-1/sss2]: SSS 256/256 accepted
 PASS [B3-1/io2]: out 512/512 (input_count==output_count)
 PASS [B3-1/done2]: fft_done fired
-FAIL [watchdog]: simulation timeout at 700k cycles
+PASS [B3-3/peak1]: peak_index=0 in [0,510]
+PASS [B3-3/cfo1]: int_cfo=-255 in [-255,255]
+PASS [B3-4/done1]: meyr_done fired (wd=66834)
+PASS [B3-3/peak2]: peak_index=510 in [0,510]
+PASS [B3-3/cfo2]: int_cfo=255 in [-255,255]
+PASS [B3-4/done2]: meyr_done fired (wd=66834)
+PASS [B3-3/peak3]: peak_index=510 in [0,510]
+PASS [B3-3/cfo3]: int_cfo=255 in [-255,255]
+PASS [B3-4/done3]: meyr_done fired (wd=66834)

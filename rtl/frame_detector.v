@@ -102,18 +102,12 @@ module frame_detector #(
     wire [ADDR_WIDTH-1:0] cur_addr = sbase_r + sample_idx[ADDR_WIDTH-1:0];
 
     // -----------------------------------------------------------------------
-    // sample_power_sq instantiation (combinatorial)
+    // Combinatorial power: I^2 + Q^2
     // -----------------------------------------------------------------------
     wire [POWER_WIDTH-1:0] sample_power_w;
-
-    sample_power_sq #(
-        .DATA_WIDTH (16),
-        .POWER_WIDTH(POWER_WIDTH)
-    ) u_pow (
-        .i_in     ($signed(buf_rd_data_I)),
-        .q_in     ($signed(buf_rd_data_Q)),
-        .power_out(sample_power_w)
-    );
+    wire signed [15:0] fd_I = $signed(buf_rd_data_I);
+    wire signed [15:0] fd_Q = $signed(buf_rd_data_Q);
+    assign sample_power_w = (fd_I * fd_I) + (fd_Q * fd_Q);
 
     // -----------------------------------------------------------------------
     // sliding_window_sum instantiation

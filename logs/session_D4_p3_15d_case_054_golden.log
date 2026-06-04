@@ -1,4 +1,4 @@
-[golden_dump] Loaded 704 IQ samples from /home/zealatan/RTL_SYNC_PHASE3/golden/p3_15d_stimuli/case_054.f32
+[golden_dump] Loaded 704 IQ samples from /home/zealatan/RTL_SYNC_PHASE4/golden/p3_15d_stimuli/case_054.f32
 [golden_dump] frameStart = 42
 [golden_dump] peakIndexAuto  = 22
 [golden_dump] slotStartIndex = 64
@@ -6,5 +6,5 @@
 [golden_dump] autoCorrQ[peak]= -1.17299e+07
 [golden_dump] metric[peak]   = -32736
 [golden_dump] fracfreqOffset = 0.0572718978
-[golden_dump] Written: /home/zealatan/RTL_SYNC_PHASE3/golden/p3_15d_stimuli/case_054_golden.txt
-[golden_dump] Written: /home/zealatan/RTL_SYNC_PHASE3/golden/p3_15d_stimuli/case_054_autocorr.txt
+[golden_dump] Written: /home/zealatan/RTL_SYNC_PHASE4/golden/p3_15d_stimuli/case_054_golden.txt
+[golden_dump] Written: /home/zealatan/RTL_SYNC_PHASE4/golden/p3_15d_stimuli/case_054_autocorr.txt

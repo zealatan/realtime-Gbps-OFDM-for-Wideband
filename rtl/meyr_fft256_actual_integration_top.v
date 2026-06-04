@@ -31,9 +31,6 @@ module meyr_fft256_actual_integration_top #(
     parameter integer FLUSH_COUNT       = 1,
     // Step 42-B: watchdog timeout in aclk cycles (fires when no fft_m_valid for this many cycles)
     parameter integer WATCHDOG_CYCLES   = 2047,
-    // P3-13B: ROM paths for the nested meyr_integer_cfo_core.
-    // Use FFT-domain ROMs (meyr_pss_fft_romhex.txt) when USE_BEHAVIORAL_STUB=0 or 3.
-    // Use bypass ROMs (meyr_pss_reference_romhex.txt) for the bypass path.
     parameter PSS_ROM_FILE = "vectors/meyr_pss_fft_romhex.txt",
     parameter SSS_ROM_FILE = "vectors/meyr_sss_fft_romhex.txt"
 )(
@@ -182,12 +179,14 @@ module meyr_fft256_actual_integration_top #(
     wire [SCORE_WIDTH-1:0]    est_peak_score;
 
     meyr_integer_cfo_freq_estimator_top #(
-        .NSC        (NSC),
-        .IQ_WIDTH   (IQ_WIDTH),
-        .PROD_WIDTH (PROD_WIDTH),
-        .ACC_WIDTH  (ACC_WIDTH),
-        .SCORE_WIDTH(SCORE_WIDTH),
-        .INDEX_WIDTH(INDEX_WIDTH)
+        .NSC         (NSC),
+        .IQ_WIDTH    (IQ_WIDTH),
+        .PROD_WIDTH  (PROD_WIDTH),
+        .ACC_WIDTH   (ACC_WIDTH),
+        .SCORE_WIDTH (SCORE_WIDTH),
+        .INDEX_WIDTH (INDEX_WIDTH),
+        .PSS_ROM_FILE(PSS_ROM_FILE),
+        .SSS_ROM_FILE(SSS_ROM_FILE)
     ) u_est (
         .aclk      (aclk),
         .aresetn   (aresetn),
@@ -206,12 +205,6 @@ module meyr_fft256_actual_integration_top #(
         .peak_index(est_peak_index),
         .peak_score(est_peak_score)
     );
-
-    // P3-13B: Override ROM file paths in the nested core to use FFT-domain ROMs.
-    // meyr_integer_cfo_core defaults use bypass-compatible paths; this defparam
-    // redirects $readmemh to the frequency-domain cross-spectrum files.
-    defparam u_est.u_core.PSS_ROM_FILE = PSS_ROM_FILE;
-    defparam u_est.u_core.SSS_ROM_FILE = SSS_ROM_FILE;
 
     // -------------------------------------------------------------------------
     // Output capture registers

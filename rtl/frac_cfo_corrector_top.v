@@ -59,7 +59,7 @@ module frac_cfo_corrector_top #(
         .load_step   (load_step),
         .step_word   (step_word),
         .phase_reset (phase_reset),
-        .enable      (enable),
+        .enable      (enable && s_axis_iq_tready),
         .sin_out     (sin_out),
         .cos_out     (cos_out),
         .sincos_valid(sincos_valid),

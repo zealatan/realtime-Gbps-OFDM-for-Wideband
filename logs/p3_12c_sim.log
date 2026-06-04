@@ -1,10 +1,12 @@
+[WARNING] fft256_xilinx_wrapper: USE_BEHAVIORAL_STUB=1
+[WARNING] Passthrough stub only — NOT an FFT.
 WARNING: /home/zealatan/RTL_SYNC_PHASE3/tb/session_A_p3_12c_full_phase3_regression_tb.sv:234: $readmemh(golden/phase3_iq_stimulus_q15.hex): Not enough words in the file for the requested range [0:65535].
 [TB] @4258 modular_fsm_frame_found asserted
-[TB] @37314 frame_start_valid: index=41
-[TB] @37314 peak_valid: peak_lag=23
-[TB] @38490 slot_start_valid: slot=64
-[TB] @105324 integer_cfo_valid: word=0x00000000
-[TB] @105325 DONE: error=0 error_code=0
+[TB] @4851 frame_start_valid: index=41
+[TB] @4851 peak_valid: peak_lag=23
+[TB] @6027 slot_start_valid: slot=64
+[TB] @6820 integer_cfo_valid: word=0x00000000
+[TB] @6821 DONE: error=0 error_code=0
 
 === Session A / P3-12C Full Phase3 Regression Checks ===
     DUT: phase3_sync_top + modular frame_detector (P3-12A)
@@ -23,7 +25,7 @@ WARNING: /home/zealatan/RTL_SYNC_PHASE3/tb/session_A_p3_12c_full_phase3_regressi
   frame_index  = 41  (golden=41)
   peak_lag     = 23  (golden=23)
   slot_start   = 64  (golden=64)
-  cycles       = 105326
+  cycles       = 6822
 
 --- P3-12C: 10 PASS  0 FAIL ---
 CI GATE: PASSED

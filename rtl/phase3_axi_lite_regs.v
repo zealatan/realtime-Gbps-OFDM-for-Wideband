@@ -536,8 +536,7 @@ module phase3_axi_lite_regs #(
                             s_axi_rdata <= {{(DATA_WIDTH-2){1'b0}},
                                             pipeline_idle_live, reset_done_latch};
                         ADDR_DEBUG_CTRL:
-                            s_axi_rdata <= {{(DATA_WIDTH-4){1'b0}},
-                                            debug_mode_o, 1'b0, 1'b0, bypass_enable_o};
+                            s_axi_rdata <= {{(DATA_WIDTH-4){1'b0}},debug_mode_o, 1'b0, 1'b0, bypass_enable_o};
                         ADDR_TLAST_COUNT:
                             s_axi_rdata <= tlast_count_i;
                         ADDR_ERROR_FLAGS:

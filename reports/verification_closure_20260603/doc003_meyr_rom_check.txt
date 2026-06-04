@@ -1,0 +1,18 @@
+DOC-003 Meyr ROM Check
+============================================================
+  NSC=256  CP_LEN=32  SLOT_START=64  SEED=0xC0FFEE
+  TARGET_PEAK=3000.0  q15_scale=5.802072e-03
+
+  PSS ROM: 256/256 entries match  — PASS
+  SSS ROM: 256/256 entries match  — PASS
+
+ROM derivation:
+  PSS_rom = term1_ref = PSS_td × conj(SSS_td), normalized to Q1.15
+  SSS_rom = all {I=+32767, Q=0}  →  sign(SSS_I) = +1 for all bins
+  (bypass/time-domain mode; NOT 5G-standard m_seq/gold_seq directly)
+  5G-standard sequence cross-product is encoded in term1 numerically.
+
+  PSS ROM non-zero bins: 256/256  (all-zero ROM would indicate bug)
+============================================================
+DOC_003_MEYR_ROM_GATE: PASS — ROM matches generator output
+============================================================

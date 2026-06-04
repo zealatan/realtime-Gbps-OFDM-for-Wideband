@@ -7,12 +7,12 @@
   ],
   "d2": {
     "passed": true,
-    "frame_start_err": 1,
-    "peak_lag_err": 0,
+    "frame_start_err": 0,
+    "peak_lag_err": 1,
     "slot_start_err": 1,
-    "frac_cfo_rel_err": 0.001734302452225157,
-    "meyr_peak_err": 34,
-    "int_cfo_bins_err": 34,
+    "frac_cfo_rel_err": 0.00019765633896848684,
+    "meyr_peak_err": 47,
+    "int_cfo_bins_err": 47,
     "failures": [],
     "info_warnings": [
       "meyr_peak",
@@ -24,7 +24,7 @@
     "max_err_i": 0,
     "max_err_q": 0,
     "mismatch_count": 0,
-    "step_word": 570425344,
+    "step_word": 3506438144,
     "tolerance": 1,
     "worst_idx": -1
   },

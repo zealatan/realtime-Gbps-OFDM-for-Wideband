@@ -1,16 +1,33 @@
+[INFO] fft256_xilinx_wrapper: USE_BEHAVIORAL_STUB=3 (behavioral DFT)
+[INFO]   Exact 256-pt DFT, real arithmetic, simulation-only.
+[INFO]   Enables k_int sweep validation without Xilinx IP.
 [D3] === case_071 ===
-[D3] STIM_FILE  = /home/zealatan/RTL_SYNC_PHASE3/golden/p3_15d_stimuli/case_071.mem
-[D3] OUT_PREFIX = /home/zealatan/RTL_SYNC_PHASE3/sim_out/session_D4_p3_15d/case_071
+[D3] STIM_FILE  = /home/zealatan/RTL_SYNC_PHASE4/golden/p3_15d_stimuli/case_071.mem
+[D3] OUT_PREFIX = /home/zealatan/RTL_SYNC_PHASE4/sim_out/session_D4_p3_15d/case_071
+[DFS] t=305000 START → S_PSS_FILL flush_rem=1
 [D3] Feeding 704 stimulus samples...
 [D3] Waiting for 576 M_AXIS beats...
+[DFS] t=20425000 PSS_FILL done → S_PSS_STREAM
+[DFS] t=25565000 PSS_FLUSH done → S_PSS_STREAM flush_rem=0
+[DFS] t=30705000 PSS_CAP done → S_SSS_FILL
+[DFS] t=30715000 SSS_FILL got sample in_cnt=0
+[DFS] t=30725000 SSS_FILL STALL@1 s_valid=0 s_ready=1 s_sym=1
+[DFS] t=30735000 SSS_FILL got sample in_cnt=1
+[DFS] t=30755000 SSS_FILL got sample in_cnt=2
+[DFS] t=30775000 SSS_FILL got sample in_cnt=3
+[DFS] t=35815000 SSS_FILL done → S_SSS_STREAM
+[DFS] t=40955000 SSS_CAP done → S_STREAM_PSS
+[DFS] t=43525000 STREAM_PSS done → S_STREAM_SSS
+[DFS] t=46125000 S_DONE error=0
+[DFS] t=721025000 START → S_PSS_FILL flush_rem=1
 [D3] Files written:
-  /home/zealatan/RTL_SYNC_PHASE3/sim_out/session_D4_p3_15d/case_071_status.txt
-  /home/zealatan/RTL_SYNC_PHASE3/sim_out/session_D4_p3_15d/case_071_m_axis_iq.txt  (576 samples)
-  /home/zealatan/RTL_SYNC_PHASE3/sim_out/session_D4_p3_15d/case_071_frac_iq.txt    (576 samples)
+  /home/zealatan/RTL_SYNC_PHASE4/sim_out/session_D4_p3_15d/case_071_status.txt
+  /home/zealatan/RTL_SYNC_PHASE4/sim_out/session_D4_p3_15d/case_071_m_axis_iq.txt  (576 samples)
+  /home/zealatan/RTL_SYNC_PHASE4/sim_out/session_D4_p3_15d/case_071_frac_iq.txt    (576 samples)
 [D3] Structural checks:
 PASS [S1]: INT_CFO_APPLIED=1
 PASS [S2]: M_AXIS=576 == FRAME_LEN
 PASS [S3]: TLAST at 575 (FRAME_LEN-1)
 PASS [S4]: frac captured=576 == FRAME_LEN
-[D3] frame_start=21  slot=44  frac_cfo_word=-22891  peak=279  step=0xe8000000
+[D3] frame_start=20  slot=43  frac_cfo_word=-18093  peak=194  step=0x3d000000
 STIM_GATE: PASS

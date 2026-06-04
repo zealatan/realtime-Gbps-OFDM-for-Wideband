@@ -1,18 +1,31 @@
 `timescale 1ns/1ps
 
-// Meyr integer CFO FFT frontend top — Step 34
+// meyr_integer_cfo_fft_frontend_top — P3-25A production restore
 //
 // Connects the FFT256 dual-symbol frontend to the Meyr frequency-domain
 // integer CFO estimator.  Accepts time-domain PSS/SSS samples, routes them
-// through the FFT frontend, buffers PSS FFT bins, pairs each SSS bin with
-// the buffered PSS bin at the same index, then feeds all NSC pairs to the
-// estimator.
+// through fft256_dual_symbol_frontend (which computes the real 256-pt FFT
+// via fft256_xilinx_wrapper), buffers PSS FFT bins, pairs each SSS bin
+// with the buffered PSS bin at the same index, then feeds all NSC pairs
+// to the Meyr estimator.
 //
-// Step 34 NOTE: The FFT frontend (fft256_dual_symbol_frontend) uses a
-// placeholder compute stage (input bypass).  For simulation, the testbench
-// injects frequency-domain test vectors as the "time-domain" input so that
-// the bypass produces the expected estimator inputs.  See
-// docs/step34_fft256_frontend_behavioral_integration.md for details.
+// USE_BEHAVIORAL_STUB controls fft256_xilinx_wrapper mode:
+//   0 — production: real Xilinx xfft_v9_1 IP (synthesis / xsim)
+//   3 — behavioral exact 256-pt DFT (iverilog simulation)
+// Default is 3 for iverilog compatibility; Vivado synthesis must override to 0.
+//
+// FLUSH_COUNT=1: discard one FFT output frame before capture to drain the
+// Xilinx IP pipeline residue.  For behavioral DFT (mode 3), this adds extra
+// simulation cycles with no functional impact.
+//
+// Hierarchy (frozen):
+//   meyr_integer_cfo_fft_frontend_top
+//   ├─ fft256_dual_symbol_frontend
+//   │   └─ fft256_xilinx_wrapper
+//   └─ meyr_integer_cfo_freq_estimator_top
+//       ├─ meyr_pss_sss_product_gen
+//       └─ meyr_integer_cfo_core
+//           └─ peak_detector
 //
 // Protocol:
 //   1. Pulse start=1.
@@ -20,18 +33,21 @@
 //   3. Stream FFT_LEN SSS samples (s_symbol_sel=1, s_index=0..FFT_LEN-1).
 //   4. Wait for done pulse; read int_cfo/peak_index/peak_score.
 //
-// Limitations (Step 34):
-//   - FFT computation is a placeholder (no Xilinx FFT IP).
-//   - term2 ROM inside the estimator is synthetic PRNG (real mU/goldU pending).
-//   - Board integration not included.
+// Verified (via meyr_fft256_actual_integration_top, same FFT/estimator path):
+//   SANITY_GATE: PASS (behavioral DFT, iverilog) — P3-13B
+//   OFFICIAL_GATE: PASS (real Xilinx IP, xsim)   — P3-13C
 
 module meyr_integer_cfo_fft_frontend_top #(
-    parameter integer FFT_LEN    = 256,
-    parameter integer IQ_WIDTH   = 16,
-    parameter integer PROD_WIDTH = 32,
-    parameter integer ACC_WIDTH  = 56,
-    parameter integer SCORE_WIDTH = 64,
-    parameter integer INDEX_WIDTH = 9
+    parameter integer FFT_LEN             = 256,
+    parameter integer IQ_WIDTH            = 16,
+    parameter integer PROD_WIDTH          = 32,
+    parameter integer ACC_WIDTH           = 56,
+    parameter integer SCORE_WIDTH         = 64,
+    parameter integer INDEX_WIDTH         = 9,
+    // FFT wrapper mode: 0=production Xilinx IP, 3=behavioral DFT (iverilog)
+    parameter integer USE_BEHAVIORAL_STUB = 3,
+    parameter integer FLUSH_COUNT         = 1,
+    parameter integer WATCHDOG_CYCLES     = 2047
 )(
     input  wire                         aclk,
     input  wire                         aresetn,
@@ -68,7 +84,7 @@ module meyr_integer_cfo_fft_frontend_top #(
     reg [8:0] pss_fill_cnt;
     reg [8:0] sss_cnt;
 
-    // PSS FFT output buffer: filled as frontend streams PSS bins
+    // PSS FFT bin buffer — filled as frontend streams PSS FFT output
     reg signed [IQ_WIDTH-1:0] pss_fft_buf_i [0:FFT_LEN-1];
     reg signed [IQ_WIDTH-1:0] pss_fft_buf_q [0:FFT_LEN-1];
 
@@ -87,8 +103,11 @@ module meyr_integer_cfo_fft_frontend_top #(
     reg  fft_m_ready_r;
 
     fft256_dual_symbol_frontend #(
-        .FFT_LEN (FFT_LEN),
-        .IQ_WIDTH(IQ_WIDTH)
+        .FFT_LEN             (FFT_LEN),
+        .IQ_WIDTH            (IQ_WIDTH),
+        .USE_BEHAVIORAL_STUB (USE_BEHAVIORAL_STUB),
+        .FLUSH_COUNT         (FLUSH_COUNT),
+        .WATCHDOG_CYCLES     (WATCHDOG_CYCLES)
     ) u_fft (
         .aclk        (aclk),
         .aresetn     (aresetn),
@@ -120,7 +139,7 @@ module meyr_integer_cfo_fft_frontend_top #(
     wire [INDEX_WIDTH-1:0]      est_peak_index;
     wire [SCORE_WIDTH-1:0]      est_peak_score;
 
-    // Pair PSS buffer bin with current SSS bin; valid only in S_STREAM_SSS
+    // Pair buffered PSS bin with current SSS bin; valid only in S_STREAM_SSS
     wire est_s_valid = (state == S_STREAM_SSS) &&
                        fft_m_valid && (fft_m_symbol_sel == 1'b1);
 
@@ -160,9 +179,9 @@ module meyr_integer_cfo_fft_frontend_top #(
 
     // -------------------------------------------------------------------------
     // fft_m_ready combinatorial:
-    //   S_FILL_PSS:   accept PSS bins; stall SSS bins (preserve them for pairing)
+    //   S_FILL_PSS:   accept PSS bins; stall SSS bins
     //   S_STREAM_SSS: gate by estimator s_ready (backpressure)
-    //   others:       0 (not consuming)
+    //   others:       0
     // -------------------------------------------------------------------------
     always @(*) begin
         case (state)
@@ -193,9 +212,24 @@ module meyr_integer_cfo_fft_frontend_top #(
             fft_start_r <= 1'b0;
             est_start_r <= 1'b0;
 
-            if (start && busy_r)  error_r <= 1'b1;
-            if (fft_error)        error_r <= 1'b1;
-            if (est_error)        error_r <= 1'b1;
+            if (start && busy_r) begin
+                error_r <= 1'b1;
+                // synthesis translate_off
+                $display("[TOP_ERR] start_while_busy t=%0t state=%0d", $time, state);
+                // synthesis translate_on
+            end
+            if (fft_error && !error_r) begin
+                error_r <= 1'b1;
+                // synthesis translate_off
+                $display("[TOP_ERR] fft_error first set t=%0t state=%0d", $time, state);
+                // synthesis translate_on
+            end
+            if (est_error && !error_r) begin
+                error_r <= 1'b1;
+                // synthesis translate_off
+                $display("[TOP_ERR] est_error first set t=%0t state=%0d", $time, state);
+                // synthesis translate_on
+            end
 
             case (state)
 
@@ -212,7 +246,7 @@ module meyr_integer_cfo_fft_frontend_top #(
 
                 // ---------------------------------------------------------------
                 // Receive PSS FFT bins from frontend output.
-                // fft_m_ready stalls SSS bins; only PSS bins are buffered here.
+                // fft_m_ready stalls SSS bins until all PSS bins are buffered.
                 // Transition when FFT_LEN PSS bins have been received.
                 // ---------------------------------------------------------------
                 S_FILL_PSS: begin
@@ -235,9 +269,8 @@ module meyr_integer_cfo_fft_frontend_top #(
                 end
 
                 // ---------------------------------------------------------------
-                // Pair each incoming SSS bin with the buffered PSS bin at the
-                // same index and feed to the estimator.
-                // fft_m_ready = est_s_ready provides natural backpressure.
+                // Pair each SSS bin with the buffered PSS bin at the same index
+                // and feed to the estimator.
                 // ---------------------------------------------------------------
                 S_STREAM_SSS: begin
                     if (est_s_valid && est_s_ready) begin

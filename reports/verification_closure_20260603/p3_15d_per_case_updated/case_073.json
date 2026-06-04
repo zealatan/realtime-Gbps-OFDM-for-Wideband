@@ -1,0 +1,32 @@
+{
+  "case_id": "case_073",
+  "passed": true,
+  "failure_clusters": [],
+  "d2": {
+    "passed": true,
+    "frame_start_err": 1,
+    "peak_lag_err": 1,
+    "slot_start_err": 0,
+    "frac_cfo_rel_err": 0.00617306970173877,
+    "meyr_peak_err": 0,
+    "int_cfo_bins_err": 0,
+    "failures": [],
+    "info_warnings": []
+  },
+  "d3": {
+    "passed": true,
+    "max_err_i": 0,
+    "max_err_q": 0,
+    "mismatch_count": 0,
+    "step_word": 0,
+    "tolerance": 0,
+    "worst_idx": -1
+  },
+  "params": {
+    "pre_zeros": 94,
+    "eps_frac": -0.10565254587491124,
+    "k_int": 0,
+    "amplitude": 1966.8178694104645,
+    "snr_db": 31.33659378900527
+  }
+}

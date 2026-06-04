@@ -1,0 +1,87 @@
+
+****** xsim v2022.2 (64-bit)
+  **** SW Build 3671981 on Fri Oct 14 04:59:54 MDT 2022
+  **** IP Build 3669848 on Fri Oct 14 08:30:02 MDT 2022
+    ** Copyright 1986-2022 Xilinx, Inc. All Rights Reserved.
+
+source xsim.dir/p3_25b_snap/xsim_script.tcl
+# xsim {p3_25b_snap} -autoloadwcfg -runall -onerror quit
+Time resolution is 1 ps
+run -all
+[HIER] Production hierarchy (USE_BEHAVIORAL_STUB=0 — real Xilinx FFT IP):
+[HIER]   meyr_integer_cfo_fft_frontend_top.u_fft → fft256_dual_symbol_frontend
+[HIER]   fft256_dual_symbol_frontend.u_fft → fft256_xilinx_wrapper
+[HIER]   fft256_xilinx_wrapper.gen_production.u_fft → fft256_xilinx (xfft_v9_1)
+[HIER]   meyr_integer_cfo_fft_frontend_top.u_est → meyr_integer_cfo_freq_estimator_top
+[HIER]   meyr_integer_cfo_freq_estimator_top.u_prod_gen → meyr_pss_sss_product_gen
+[HIER]   meyr_integer_cfo_freq_estimator_top.u_core → meyr_integer_cfo_core
+[HIER]   meyr_integer_cfo_core.u_peak → peak_detector
+[HIER]   HIERARCHY_AUDIT: PASS
+
+
+============================================================
+ P3-25B Real Xilinx FFT IP Validation TB
+ USE_BEHAVIORAL_STUB = 0 (real xfft_v9_1 IP, xsim)
+ Production frozen hierarchy
+============================================================
+
+[TB] Loading golden vectors from golden/p3_09_sweep/
+[TB] ROM override: vectors/meyr_pss_fft_romhex.txt
+
+[TB] Case               k0  exp_peak=255  exp_cfo=0
+[DBG_PSS_STREAM] STALL cnt=1
+[DBG_PSS_STREAM] STALL cnt=1
+[DBG_SSS_STREAM] STALL cnt=1
+[TB] PASS                k0  peak=255  int_cfo=0  score=551119181
+[TB] Case              kp1  exp_peak=256  exp_cfo=1
+[DBG_PSS_STREAM] STALL cnt=1
+[DBG_PSS_STREAM] STALL cnt=1
+[DBG_SSS_STREAM] STALL cnt=1
+[TB] PASS               kp1  peak=256  int_cfo=1  score=546586445
+[TB] Case              km1  exp_peak=254  exp_cfo=-1
+[DBG_PSS_STREAM] STALL cnt=1
+[DBG_PSS_STREAM] STALL cnt=1
+[DBG_SSS_STREAM] STALL cnt=1
+[TB] PASS               km1  peak=254  int_cfo=-1  score=455116793
+[TB] Case              kp2  exp_peak=257  exp_cfo=2
+[DBG_PSS_STREAM] STALL cnt=1
+[DBG_PSS_STREAM] STALL cnt=1
+[DBG_SSS_STREAM] STALL cnt=1
+[TB] PASS               kp2  peak=257  int_cfo=2  score=609114013
+[TB] Case              km2  exp_peak=253  exp_cfo=-2
+[DBG_PSS_STREAM] STALL cnt=1
+[DBG_PSS_STREAM] STALL cnt=1
+[DBG_SSS_STREAM] STALL cnt=1
+[TB] PASS               km2  peak=253  int_cfo=-2  score=451304185
+[TB] Case              kp4  exp_peak=259  exp_cfo=4
+[DBG_PSS_STREAM] STALL cnt=1
+[DBG_PSS_STREAM] STALL cnt=1
+[DBG_SSS_STREAM] STALL cnt=1
+[TB] PASS               kp4  peak=259  int_cfo=4  score=513340745
+[TB] Case              km4  exp_peak=251  exp_cfo=-4
+[DBG_PSS_STREAM] STALL cnt=1
+[DBG_PSS_STREAM] STALL cnt=1
+[DBG_SSS_STREAM] STALL cnt=1
+[TB] PASS               km4  peak=251  int_cfo=-4  score=513963081
+[TB] Case              kp8  exp_peak=263  exp_cfo=8
+[DBG_PSS_STREAM] STALL cnt=1
+[DBG_PSS_STREAM] STALL cnt=1
+[DBG_SSS_STREAM] STALL cnt=1
+[TB] PASS               kp8  peak=263  int_cfo=8  score=509590562
+[TB] Case              km8  exp_peak=247  exp_cfo=-8
+[DBG_PSS_STREAM] STALL cnt=1
+[DBG_PSS_STREAM] STALL cnt=1
+[DBG_SSS_STREAM] STALL cnt=1
+[TB] PASS               km8  peak=247  int_cfo=-8  score=509590562
+
+------------------------------------------------------------
+OFFICIAL_GATE: PASS — all 9 k_int sweep cases passed (real Xilinx FFT IP, xsim)
+  Production hierarchy: meyr_integer_cfo_fft_frontend_top
+    fft256_dual_symbol_frontend → fft256_xilinx_wrapper → xfft_v9_1
+------------------------------------------------------------
+
+$finish called at time : 6296345 ns : File "/home/zealatan/RTL_SYNC_PHASE3/tb/p3_25b_real_fft_ip_tb.sv" Line 274
+run: Time (s): cpu = 00:00:00.32 ; elapsed = 00:14:10 . Memory (MB): peak = 1244.285 ; gain = 0.000 ; free physical = 4277 ; free virtual = 7520
+exit
+INFO: xsimkernel Simulation Memory Usage: 123636 KB (Peak: 180976 KB), Simulation CPU Usage: 850650 ms
+INFO: [Common 17-206] Exiting xsim at Mon Jun  1 21:28:00 2026...

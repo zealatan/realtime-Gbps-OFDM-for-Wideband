@@ -1,0 +1,21 @@
+{
+  "convention": "unscaled 256-pt DFT, natural order, no fftshift, Xilinx {Im,Re} packing",
+  "note": "C reference fft_without_rearrange() divides by sqrt(256)=16; behavioral stub is unscaled (matches numpy.fft.fft)",
+  "vectors": [
+    {
+      "name": "V0_impulse",
+      "stim_hex": "v0_stim.hex",
+      "golden_csv": "v0_golden.csv"
+    },
+    {
+      "name": "V1_tone_k7",
+      "stim_hex": "v1_stim.hex",
+      "golden_csv": "v1_golden.csv"
+    },
+    {
+      "name": "V2_pseudo_rng",
+      "stim_hex": "v2_stim.hex",
+      "golden_csv": "v2_golden.csv"
+    }
+  ]
+}

@@ -1,51 +1,9 @@
+[INFO] fft256_xilinx_wrapper: USE_BEHAVIORAL_STUB=3 (behavioral DFT)
+[INFO]   Exact 256-pt DFT, real arithmetic, simulation-only.
+[INFO]   Enables k_int sweep validation without Xilinx IP.
 === [C2] Replay Correction Hardening — Session C2 / P3-14D ===
   Cycle start: 33
 
 --- C2-1: Replay Backpressure ---
-  output_count  : 576  (expected 576)    OK
-  tlast_count   : 1  (expected 1)    OK
-  error_flags   : 0x0  stall_timeout=0    OK
-  C2-1: PASS
-C21_RESULT backpressure_count=576 tlast_count=1 stall_timeout=0 c21_pass=1
-
---- C2-2: Integer CFO Sweep Replay (13 cases) ---
-  k_int=   0  step=0x00000000  oc=576  ia=1  tlast=1  PASS
-  k_int=   1  step=0xff000000  oc=576  ia=1  tlast=1  PASS
-  k_int=  -1  step=0x01000000  oc=576  ia=1  tlast=1  PASS
-  k_int=   2  step=0xfe000000  oc=576  ia=1  tlast=1  PASS
-  k_int=  -2  step=0x02000000  oc=576  ia=1  tlast=1  PASS
-  k_int=   4  step=0xfc000000  oc=576  ia=1  tlast=1  PASS
-  k_int=  -4  step=0x04000000  oc=576  ia=1  tlast=1  PASS
-  k_int=   8  step=0xf8000000  oc=576  ia=1  tlast=1  PASS
-  k_int=  -8  step=0x08000000  oc=576  ia=1  tlast=1  PASS
-  k_int=  12  step=0xf4000000  oc=576  ia=1  tlast=1  PASS
-  k_int= -12  step=0x0c000000  oc=576  ia=1  tlast=1  PASS
-  k_int=  16  step=0xf0000000  oc=576  ia=1  tlast=1  PASS
-  k_int= -16  step=0x10000000  oc=576  ia=1  tlast=1  PASS
-  C2-2: 13/13 passed  PASS
-C22_RESULT k_pass=13 k_fail=0 c22_pass=1
-
---- C2-3: Replay Restart (4 frames, no reset) ---
-  frame 0: output_count=576  (expected 576)    OK
-  frame 1: output_count=1152  (expected 1152)    OK
-  frame 2: output_count=1728  (expected 1728)    OK
-  frame 3: output_count=2304  (expected 2304)    OK
-  C2-3: PASS
-C23_RESULT frame0_oc=576 frame1_oc=1152 frame2_oc=1728 frame3_oc=2304 c23_pass=1
-
---- C2-4: Rotator Stability ---
-  Natural step_word from Meyr: 0x00000000
-  Phase continuity: errors=0  samples=576  expected_step=0x00000000  PASS
-  Phase reset: int_nco_phase_acc=0x00000000  PASS
-  C2-4: PASS
-C24_RESULT phase_cont_ok=1 phase_reset_ok=1 sample_cnt=576 c24_pass=1
-
-=== [C2] Replay Hardening Summary ===
-  C2-1 Backpressure     : PASS
-  C2-2 CFO Sweep        : PASS  (13/13)
-  C2-3 Restart (4x)     : PASS
-  C2-4 Rotator Stability: PASS
-  Total cycles          : 2065929
-
-REPLAY_HARDENING_GATE: PASS
-  All four replay hardening phases passed.
+WDG: TIMEOUT at 3000000 cycles — REPLAY_HARDENING_GATE: FAIL
+REPLAY_HARDENING_GATE: FAIL

@@ -1,3 +1,5 @@
+[WARNING] fft256_xilinx_wrapper: USE_BEHAVIORAL_STUB=1
+[WARNING] Passthrough stub only — NOT an FFT.
 [P3-15A] Feeding 704 IQ samples...
 [P3-15A] Stimulus done. Waiting for M_AXIS output...
 [P3-15A] Reading status registers...
@@ -12,10 +14,10 @@ SESSION_D: rtl_frac_iq.txt written (576 samples)
   PEAK_LAG         = 23  (golden=23)
   SLOT_START_INDEX = 63  (golden=64)
   FRAC_CFO_VALID   = 1
-  FRAC_CFO_WORD    = 3278
+  FRAC_CFO_WORD    = 3275
   INT_CFO_VALID    = 1
-  INT_CFO_WORD     = -16777216
-  MEYR_PEAK_INDEX  = 256
+  INT_CFO_WORD     = 0
+  MEYR_PEAK_INDEX  = 255
   INT_CFO_APPLIED  = 1
   OUTPUT_COUNT     = 576
   M_AXIS_CAPTURED  = 576

@@ -1,0 +1,7 @@
+Running: xsim.dir/p3_25b_snap/xsimk -runall -simmode gui -wdb p3_25b_snap.wdb -simrunnum 0 -socket 33867
+Design successfully loaded
+Design Loading Memory Usage: 41708 KB (Peak: 41708 KB)
+Design Loading CPU Usage: 220 ms
+Simulation completed
+Simulation Memory Usage: 123636 KB (Peak: 180976 KB)
+Simulation CPU Usage: 850650 ms

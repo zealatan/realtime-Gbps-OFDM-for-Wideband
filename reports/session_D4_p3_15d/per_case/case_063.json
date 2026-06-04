@@ -1,22 +1,19 @@
 {
   "case_id": "case_063",
-  "passed": false,
+  "passed": true,
   "failure_clusters": [
-    "d2_slot_start",
     "info_d2_meyr_peak",
     "info_d2_int_cfo_bins"
   ],
   "d2": {
-    "passed": false,
-    "frame_start_err": 1,
-    "peak_lag_err": 2,
-    "slot_start_err": 3,
-    "frac_cfo_rel_err": 0.0002970652442187891,
-    "meyr_peak_err": 70,
-    "int_cfo_bins_err": 70,
-    "failures": [
-      "slot_start"
-    ],
+    "passed": true,
+    "frame_start_err": 0,
+    "peak_lag_err": 0,
+    "slot_start_err": 0,
+    "frac_cfo_rel_err": 0.009229011971334081,
+    "meyr_peak_err": 18,
+    "int_cfo_bins_err": 18,
+    "failures": [],
     "info_warnings": [
       "meyr_peak",
       "int_cfo_bins"
@@ -27,7 +24,7 @@
     "max_err_i": 0,
     "max_err_q": 0,
     "mismatch_count": 0,
-    "step_word": 1174405120,
+    "step_word": 301989888,
     "tolerance": 1,
     "worst_idx": -1
   },

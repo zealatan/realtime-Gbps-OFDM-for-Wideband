@@ -16,5 +16,22 @@ PASS [B3-1/io2]: out 512/512 (input_count==output_count)
 PASS [B3-1/done2]: fft_done fired
 
 --- [B3-3/B3-4] Meyr Run 1 (zeros) ---
-FAIL [watchdog]: simulation timeout at 700k cycles
-FFT_PROTOCOL_GATE: FAIL (watchdog timeout)
+PASS [B3-3/peak1]: peak_index=0 in [0,510]
+PASS [B3-3/cfo1]: int_cfo=-255 in [-255,255]
+PASS [B3-4/done1]: meyr_done fired (wd=66834)
+
+--- [B3-3/B3-4] Meyr Run 2 (d=0xCAFE) ---
+PASS [B3-3/peak2]: peak_index=510 in [0,510]
+PASS [B3-3/cfo2]: int_cfo=255 in [-255,255]
+PASS [B3-4/done2]: meyr_done fired (wd=66834)
+
+--- [B3-3/B3-4] Meyr Run 3 (d=0xBEEF) ---
+PASS [B3-3/peak3]: peak_index=510 in [0,510]
+PASS [B3-3/cfo3]: int_cfo=255 in [-255,255]
+PASS [B3-4/done3]: meyr_done fired (wd=66834)
+
+=== RESULTS ===
+  Passes:   17
+  Failures: 0
+
+FFT_PROTOCOL_GATE: PASS

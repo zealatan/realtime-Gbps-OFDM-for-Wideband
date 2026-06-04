@@ -1,0 +1,13 @@
+WARNING: /home/zealatan/RTL_SYNC_PHASE3/scripts/../tb/phase3_sync_reference_compare_tb.sv:173: $readmemh(golden/phase3_iq_stimulus_q15.hex): Not enough words in the file for the requested range [0:65535].
+VCD info: dumpfile sim_out/phase3_sim.vcd opened for output.
+[TB] @37310 frame_start_valid: index=41
+[TB] @37310 frac_cfo_valid: word=3276 (Q1.15 = 0.314083 pi-rad)
+[TB] @37399 PSS first sample: I=672 Q=374
+[TB] @37909 PSS window done: 256 samples
+[TB] @37975 SSS first sample: I=1516 Q=954
+[TB] @38485 SSS window done: 256 samples
+[TB] @38486 slot_start_valid: slot=64  pss_start=32  sss_start=320
+[TB] @105320 integer_cfo_valid: step_word=0  meyr_peak_idx=255 (informational)
+[TB] @105321 DONE: error=0  error_code=0
+[TB] Results  → sim_out/rtl_results.txt
+[TB] CSV trace → logs/phase3_sync_rtl_dump.csv

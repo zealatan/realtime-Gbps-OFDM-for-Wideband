@@ -306,13 +306,13 @@ module session_D3_p3_15c_equiv_tb;
         // ============================================================
         $display("[D3] Feeding %0d stimulus samples...", STIM_DEPTH);
         for (i = 0; i < STIM_DEPTH; i = i + 1) begin
-            @(posedge aclk);
+            @(posedge aclk); #1;
             s_axis_tdata  = stim_mem[i];
             s_axis_tvalid = 1'b1;
             s_axis_tlast  = (i == STIM_DEPTH - 1) ? 1'b1 : 1'b0;
-            while (!s_axis_tready) @(posedge aclk);
+            while (!s_axis_tready) begin @(posedge aclk); #1; end
         end
-        @(posedge aclk);
+        @(posedge aclk); #1;
         s_axis_tvalid = 1'b0;
         s_axis_tlast  = 1'b0;
 

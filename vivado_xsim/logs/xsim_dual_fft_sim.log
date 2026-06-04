@@ -1,0 +1,46 @@
+
+****** xsim v2022.2 (64-bit)
+  **** SW Build 3671981 on Fri Oct 14 04:59:54 MDT 2022
+  **** IP Build 3669848 on Fri Oct 14 08:30:02 MDT 2022
+    ** Copyright 1986-2022 Xilinx, Inc. All Rights Reserved.
+
+source xsim.dir/dual_fft_gate_snap/xsim_script.tcl
+# xsim {dual_fft_gate_snap} -autoloadwcfg -runall -onerror quit
+Time resolution is 1 ps
+run -all
+[DFS] t=125000 START → S_PSS_FILL flush_rem=1
+
+--- Feeding PSS (sel=0) ---
+[DFS] t=2695000 PSS_FILL done → S_PSS_STREAM
+  Waiting for DUT to open for SSS...
+[DBG_PSS_STREAM] STALL cnt=1
+[DFS] t=11365000 PSS_FLUSH done → S_PSS_STREAM flush_rem=0
+[DBG_PSS_STREAM] STALL cnt=1
+[DFS] t=20035000 PSS_CAP done → S_SSS_FILL
+  DUT ready for SSS.
+
+--- Feeding SSS (sel=1) ---
+[DFS] t=20055000 SSS_FILL got sample in_cnt=0
+[DFS] t=20065000 SSS_FILL got sample in_cnt=1
+[DFS] t=20075000 SSS_FILL got sample in_cnt=2
+[DFS] t=20085000 SSS_FILL got sample in_cnt=3
+[DFS] t=22605000 SSS_FILL done → S_SSS_STREAM
+
+--- Capturing output stream (512 bins) ---
+[DBG_SSS_STREAM] STALL cnt=1
+[DFS] t=31275000 SSS_CAP done → S_STREAM_PSS
+[DFS] t=33845000 STREAM_PSS done → S_STREAM_SSS
+  Output capture complete.
+[DFS] t=36425000 S_DONE error=0
+  done pulse received.
+
+--- Value checks (tone k=8, A=1024, SCALE=256) ---
+  Value check PASS: PSS/SSS bin 8 ≈ 1024, sidelobes suppressed
+
+========================================
+GATE: PASS_VIVADO_XSIM_REAL_IP
+========================================
+
+$finish called at time : 36435 ns : File "/home/zealatan/RTL_SYNC_PHASE4/vivado_xsim/tb/xsim_dual_symbol_fft_real_ip_tb.sv" Line 320
+exit
+INFO: [Common 17-206] Exiting xsim at Wed Jun  3 22:45:06 2026...

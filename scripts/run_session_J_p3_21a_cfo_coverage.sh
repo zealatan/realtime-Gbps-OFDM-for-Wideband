@@ -269,55 +269,14 @@ if [[ "${SKIP_J2J3}" -eq 0 ]]; then
     echo "Step 3: J2/J3 — Full Wrapper Sweep (phase3_sync_axis_dma_wrapper)"
     echo "========================================================================"
 
-    LEGACY_SRCS=(
-        "${ROOT}/rtl/phase2_legacy/complex_mult.v"
-        "${ROOT}/rtl/phase2_legacy/complex_to_mag.v"
-        "${ROOT}/rtl/phase2_legacy/delay_sample.v"
-        "${ROOT}/rtl/phase2_legacy/delayT.v"
-        "${ROOT}/rtl/phase2_legacy/moving_avg_optimized.v"
-        "${ROOT}/rtl/phase2_legacy/ram_2port.v"
-    )
-
-    UNIT_TEST_SRCS=(
-        "${ROOT}/rtl/unit_test/and2.v"
-        "${ROOT}/rtl/unit_test/cp_autocorr_core.v"
-        "${ROOT}/rtl/unit_test/timing_metric_core.v"
-    )
-
-    RTL_SRCS=(
-        "${ROOT}/rtl/timing_sync_top.v"
-        "${ROOT}/rtl/frac_cfo_estimator.v"
-        "${ROOT}/rtl/timing_frac_cfo_top.v"
-        "${ROOT}/rtl/iq_frame_buffer.v"
-        "${ROOT}/rtl/frac_cfo_corrector_top.v"
-        "${ROOT}/rtl/fft256_dual_symbol_frontend.v"
-        "${ROOT}/rtl/meyr_term2_ref_rom.v"
-        "${ROOT}/rtl/meyr_integer_cfo_fft_frontend_top.v"
-        "${ROOT}/rtl/axis_complex_mult.v"
-        "${ROOT}/rtl/complex_mult_iq.v"
-        "${ROOT}/rtl/complex_rotator.v"
-        "${ROOT}/rtl/cordic_atan2.v"
-        "${ROOT}/rtl/nco_phase_gen.v"
-        "${ROOT}/rtl/peak_detector.v"
-        "${ROOT}/rtl/meyr_integer_cfo_core.v"
-        "${ROOT}/rtl/meyr_pss_sss_product_gen.v"
-        "${ROOT}/rtl/meyr_integer_cfo_freq_estimator_top.v"
-        "${ROOT}/rtl/pss_sss_symbol_extractor.v"
-        "${ROOT}/rtl/slot_start_controller.v"
-        "${ROOT}/rtl/sample_power_sq.v"
-        "${ROOT}/rtl/sliding_window_sum.v"
-        "${ROOT}/rtl/frame_detect_fsm.v"
-        "${ROOT}/rtl/frame_detector.v"
-        "${ROOT}/rtl/frac_cfo_frame_corrector_top.v"
-        "${ROOT}/rtl/phase3_sync_top.v"
-        "${ROOT}/rtl/iq_replay_buffer_576.v"
-        "${ROOT}/rtl/phase3_axi_lite_regs.v"
-        "${ROOT}/rtl/phase3_sync_axis_dma_wrapper.v"
-    )
+    # --------------------------------------------------------------------------
+    # Production DUT source list — single source of truth.
+    # --------------------------------------------------------------------------
+    FILELIST="${ROOT}/scripts/phase3_dut_filelist.f"
+    mapfile -t DUT_SRCS < <(grep -v '^#' "${FILELIST}" | grep -v '^[[:space:]]*$' | sed "s|^|${ROOT}/|")
 
     J2J3_TB="${ROOT}/tb/session_J_p3_21a_j2j3_wrapper_tb.sv"
     J2J3_VVP="${LOG_DIR}/p3_21a_j2j3.vvp"
-    ALL_SRCS=( "${LEGACY_SRCS[@]}" "${UNIT_TEST_SRCS[@]}" "${RTL_SRCS[@]}" )
 
     echo ""
     echo "--- ROM stubs ---"
@@ -334,7 +293,7 @@ if [[ "${SKIP_J2J3}" -eq 0 ]]; then
     echo ""
     echo "--- Checking J2/J3 source files ---"
     J2J3_SRC_BLOCKED=0
-    for f in "${ALL_SRCS[@]}" "${J2J3_TB}"; do
+    for f in "${DUT_SRCS[@]}" "${J2J3_TB}"; do
         bf="${f#${ROOT}/}"
         if [[ ! -f "$f" ]]; then
             echo "  [MISS] ${bf}"
@@ -342,7 +301,7 @@ if [[ "${SKIP_J2J3}" -eq 0 ]]; then
         fi
     done
     if [[ "${J2J3_SRC_BLOCKED}" -eq 0 ]]; then
-        echo "  All ${#ALL_SRCS[@]} RTL sources + TB present."
+        echo "  All ${#DUT_SRCS[@]} RTL sources + TB present."
     fi
 
     if [[ "${J2J3_SRC_BLOCKED}" -eq 1 ]]; then
@@ -356,7 +315,7 @@ if [[ "${SKIP_J2J3}" -eq 0 ]]; then
         echo "--- J2/J3 compile (iverilog -g2012) ---"
         iverilog -g2012 \
             -o "${J2J3_VVP}" \
-            "${ALL_SRCS[@]}" \
+            "${DUT_SRCS[@]}" \
             "${J2J3_TB}" \
             2>&1 | tee "${LOG_DIR}/p3_21a_j2j3_compile.log"
         J2J3_CC=${PIPESTATUS[0]}

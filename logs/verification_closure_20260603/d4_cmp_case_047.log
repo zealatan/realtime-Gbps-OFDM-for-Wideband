@@ -1,0 +1,30 @@
+
+============================================================
+ case_047
+  golden: /home/zealatan/RTL_SYNC_PHASE4/golden/p3_15d_stimuli/case_047_golden.txt
+  meta:   /home/zealatan/RTL_SYNC_PHASE4/golden/p3_15d_stimuli/case_047_meta.json
+  frame_len=576
+  k_int=4  eps_frac=0.2827  amp=2054  snr=35.9dB
+============================================================
+
+--- Stage D4-2: Metadata (case_047) ---
+  FAIL [frame_start]: RTL=32  ref=26  diff=6  tol=±5  [INFO]
+  PASS [peak_lag]: RTL=20  ref=24  diff=4  tol=±10  [INFO]
+  PASS [slot_start]: RTL=52  ref=50  diff=2  tol=±40
+  PASS [frac_cfo]: RTL=0.295922727  ref=0.28270629  rel_err=4.6750%  tol=5.0%+floor=0.008
+  PASS [meyr_peak]: RTL=255  ref=255  diff=0  tol=±5  [INFO]
+  [int_cfo] RTL step_word=0x00000000 → k_int_rtl=0  expected=0  stimulus_k_int=4  [INFO]
+  PASS [int_cfo_bins]: RTL=0  ref=0  diff=0  tol=±5  [INFO]
+  D4-2: PASS  (0 gate failure(s), 1 info-only warning(s))
+
+--- Stage D4-3: IQ equivalence (case_047) ---
+  step_word=0x00000000  tolerance=0 LSB
+  Max I error: 0 at n=-1
+  Max Q error: 0
+  Mismatches:  0/576
+  PASS: all 576 IQ samples within 0 LSB
+
+--- Stage D4-4: Failure clustering (case_047) ---
+  Info warnings: info_d2_frame_start
+
+CASE_EQUIV_GATE: PASS  (case_047)

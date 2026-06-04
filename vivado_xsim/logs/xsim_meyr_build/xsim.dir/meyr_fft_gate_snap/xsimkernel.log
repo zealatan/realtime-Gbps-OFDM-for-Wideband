@@ -1,0 +1,7 @@
+Running: xsim.dir/meyr_fft_gate_snap/xsimk -runall -simmode gui -wdb meyr_fft_gate_snap.wdb -simrunnum 0 -socket 56855
+Design successfully loaded
+Design Loading Memory Usage: 41712 KB (Peak: 41712 KB)
+Design Loading CPU Usage: 150 ms
+Simulation completed
+Simulation Memory Usage: 123640 KB (Peak: 180980 KB)
+Simulation CPU Usage: 857280 ms

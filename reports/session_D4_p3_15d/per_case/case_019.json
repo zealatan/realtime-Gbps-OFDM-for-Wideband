@@ -10,9 +10,9 @@
     "frame_start_err": 0,
     "peak_lag_err": 0,
     "slot_start_err": 0,
-    "frac_cfo_rel_err": 0.007307046343949861,
-    "meyr_peak_err": 6,
-    "int_cfo_bins_err": 6,
+    "frac_cfo_rel_err": 0.001293272932941194,
+    "meyr_peak_err": 9,
+    "int_cfo_bins_err": 9,
     "failures": [],
     "info_warnings": [
       "meyr_peak",
@@ -24,7 +24,7 @@
     "max_err_i": 0,
     "max_err_q": 0,
     "mismatch_count": 0,
-    "step_word": 4194304000,
+    "step_word": 150994944,
     "tolerance": 1,
     "worst_idx": -1
   },

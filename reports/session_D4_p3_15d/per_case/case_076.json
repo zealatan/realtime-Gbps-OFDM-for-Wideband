@@ -10,9 +10,9 @@
     "frame_start_err": 0,
     "peak_lag_err": 0,
     "slot_start_err": 0,
-    "frac_cfo_rel_err": 0.004500588504470324,
-    "meyr_peak_err": 17,
-    "int_cfo_bins_err": 17,
+    "frac_cfo_rel_err": 0.0025230864055472675,
+    "meyr_peak_err": 79,
+    "int_cfo_bins_err": 79,
     "failures": [],
     "info_warnings": [
       "meyr_peak",
@@ -24,15 +24,15 @@
     "max_err_i": 0,
     "max_err_q": 0,
     "mismatch_count": 0,
-    "step_word": 4009754624,
+    "step_word": 1325400064,
     "tolerance": 1,
     "worst_idx": -1
   },
   "params": {
     "pre_zeros": 66,
-    "eps_frac": -0.055149230712744524,
+    "eps_frac": -0.04353886635216675,
     "k_int": 0,
-    "amplitude": 3193.2809402245725,
+    "amplitude": 3272.800696462646,
     "snr_db": 37.09346210267993
   }
 }

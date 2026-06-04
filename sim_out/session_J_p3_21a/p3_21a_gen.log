@@ -1,0 +1,35 @@
+[gen_p3_21a] Base frame: 704 samples  peak_I=3000.0
+
+--- J1: Integer CFO sweep (frac=0) ---
+  k= +0  peak=255  word=          0  -> j1_kp0.mem
+  k= +1  peak=256  word=  -16777216  -> j1_kp1.mem
+  k= -1  peak=254  word=   16777216  -> j1_km1.mem
+  k= +2  peak=257  word=  -33554432  -> j1_kp2.mem
+  k= -2  peak=253  word=   33554432  -> j1_km2.mem
+  k= +4  peak=259  word=  -67108864  -> j1_kp4.mem
+  k= -4  peak=251  word=   67108864  -> j1_km4.mem
+  k= +8  peak=263  word= -134217728  -> j1_kp8.mem
+  k= -8  peak=247  word=  134217728  -> j1_km8.mem
+  k=+12  peak=267  word= -201326592  -> j1_kp12.mem
+  k=-12  peak=243  word=  201326592  -> j1_km12.mem
+  k=+16  peak=271  word= -268435456  -> j1_kp16.mem
+  k=-16  peak=239  word=  268435456  -> j1_km16.mem
+
+--- J2: Fractional CFO sweep (k_int=0) ---
+  frac=-0.45  word=-29491  -> j2_frac_m045.mem
+  frac=-0.30  word=-19661  -> j2_frac_m030.mem
+  frac=-0.15  word= -9830  -> j2_frac_m015.mem
+  frac=+0.00  word=    +0  -> j2_frac_p000.mem
+  frac=+0.15  word= +9830  -> j2_frac_p015.mem
+  frac=+0.30  word=+19661  -> j2_frac_p030.mem
+  frac=+0.45  word=+29491  -> j2_frac_p045.mem
+
+--- J3: Combined sweep ---
+  (+16,+0.45)  frac_word=+29491  -> j3_kp16_fp045.mem
+  (-16,-0.45)  frac_word=-29491  -> j3_km16_fm045.mem
+  (+12,-0.30)  frac_word=-19661  -> j3_kp12_fm030.mem
+  (-12,+0.30)  frac_word=+19661  -> j3_km12_fp030.mem
+
+[gen_p3_21a] 24 stimulus files in /home/zealatan/RTL_SYNC_PHASE4/golden/p3_21a_sweep/
+[gen_p3_21a] manifest -> /home/zealatan/RTL_SYNC_PHASE4/golden/p3_21a_sweep/manifest.json
+[gen_p3_21a] Done.

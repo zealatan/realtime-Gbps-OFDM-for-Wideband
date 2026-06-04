@@ -42,7 +42,7 @@ done
 SWEEP_DIR="golden/p3_09_sweep"
 SIM_OUT_DIR="sim_out/p3_09_sweep"
 MANIFEST="$SWEEP_DIR/manifest.json"
-FFT_SRC="rtl/unit_test/fft256_dual_symbol_frontend.v"
+FFT_SRC="${PROJECT_ROOT}/rtl/DUT/fft256_dual_symbol_frontend.v"
 
 echo "=========================================="
 echo "P3-09 Integer CFO Sweep Runner"
@@ -124,56 +124,13 @@ echo "--- Step 2: Simulate all sweep cases ---"
 mkdir -p "$SIM_OUT_DIR"
 mkdir -p "logs"
 
-# Source list (matches run_phase3_sync_sim.sh exactly)
-# Each case links its per-case stimulus to the canonical TB path.
-# The TB reads: golden/phase3_iq_stimulus_q15.hex
-
-LEGACY_SRCS=(
-    "rtl/phase2_legacy/complex_mult.v"
-    "rtl/phase2_legacy/complex_to_mag.v"
-    "rtl/phase2_legacy/delay_sample.v"
-    "rtl/phase2_legacy/delayT.v"
-    "rtl/phase2_legacy/moving_avg_optimized.v"
-    "rtl/phase2_legacy/ram_2port.v"
-)
-
-UNIT_TEST_SRCS=(
-    "rtl/unit_test/and2.v"
-    "rtl/unit_test/cp_autocorr_core.v"
-    "rtl/unit_test/timing_metric_core.v"
-    "rtl/timing_sync_top.v"
-    "rtl/frac_cfo_estimator.v"
-    "rtl/timing_frac_cfo_top.v"
-    "rtl/iq_frame_buffer.v"
-    "rtl/frac_cfo_corrector_top.v"
-    "rtl/fft256_dual_symbol_frontend.v"
-    "rtl/meyr_term2_ref_rom.v"
-    "rtl/meyr_integer_cfo_fft_frontend_top.v"
-)
-
-RTL_SRCS=(
-    "rtl/axis_complex_mult.v"
-    "rtl/complex_mult_iq.v"
-    "rtl/complex_rotator.v"
-    "rtl/cordic_atan2.v"
-    "rtl/nco_phase_gen.v"
-    "rtl/peak_detector.v"
-    "rtl/meyr_integer_cfo_core.v"
-    "rtl/meyr_pss_sss_product_gen.v"
-    "rtl/meyr_integer_cfo_freq_estimator_top.v"
-    "rtl/pss_sss_symbol_extractor.v"
-    "rtl/slot_start_controller.v"
-    "rtl/sample_power_sq.v"
-    "rtl/sliding_window_sum.v"
-    "rtl/frame_detect_fsm.v"
-    "rtl/frame_detector.v"
-    "rtl/frac_cfo_frame_corrector_top.v"
-    "rtl/phase3_sync_top.v"
-)
+# --------------------------------------------------------------------------
+# Production DUT source list — single source of truth.
+# --------------------------------------------------------------------------
+FILELIST="${PROJECT_ROOT}/scripts/phase3_dut_filelist.f"
+mapfile -t DUT_SRCS < <(grep -v '^#' "${FILELIST}" | grep -v '^[[:space:]]*$' | sed "s|^|${PROJECT_ROOT}/|")
 
 TB_SRC="tb/phase3_sync_reference_compare_tb.sv"
-
-ALL_VERILOG_SRCS=( "${LEGACY_SRCS[@]}" "${UNIT_TEST_SRCS[@]}" "${RTL_SRCS[@]}" )
 
 COMPILED_BIN="sim_out/p3_09_sweep_sim"
 
@@ -183,7 +140,7 @@ if [[ "$SIM" == "iverilog" ]]; then
     iverilog -g2012 \
         -I rtl \
         -o "$COMPILED_BIN" \
-        "${ALL_VERILOG_SRCS[@]}" \
+        "${DUT_SRCS[@]}" \
         "$TB_SRC" || {
         echo "  [ERROR] Compilation failed — check RTL source list."
         exit 1
@@ -200,7 +157,7 @@ elif [[ "$SIM" == "xsim" ]]; then
     fi
     xvlog -d SIMULATION \
         -i rtl \
-        "${ALL_VERILOG_SRCS[@]}" \
+        "${DUT_SRCS[@]}" \
         2>&1 | tee "sim_out/p3_09_xvlog_rtl.txt"
     xvlog --sv -d SIMULATION \
         -i rtl \

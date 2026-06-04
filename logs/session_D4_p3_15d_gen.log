@@ -1,4 +1,4 @@
-[gen] P3-15D: generating 100 random stimuli → /home/zealatan/RTL_SYNC_PHASE3/golden/p3_15d_stimuli
+[gen] P3-15D: generating 100 random stimuli → /home/zealatan/RTL_SYNC_PHASE4/golden/p3_15d_stimuli
 [gen] Master seed: 0xD4BEEF
 
 [gen] case_000: pre= 91  eps=+0.298  k=+0  amp=  1820  snr= 32.4dB  detect=OK
@@ -13,5 +13,5 @@
 [gen] case_090: pre= 89  eps=+0.236  k=+1  amp=  3155  snr= 41.0dB  detect=OK
 [gen] case_099: pre=106  eps=-0.022  k=-4  amp=  3027  snr= 31.7dB  detect=OK
 
-[gen] Done. 100 stimuli → /home/zealatan/RTL_SYNC_PHASE3/golden/p3_15d_stimuli
+[gen] Done. 100 stimuli → /home/zealatan/RTL_SYNC_PHASE4/golden/p3_15d_stimuli
 [gen] Detection failures (Python ref): 0/100

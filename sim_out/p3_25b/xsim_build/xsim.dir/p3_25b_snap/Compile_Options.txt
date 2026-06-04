@@ -1,0 +1,1 @@
+--nolog --initfile "/home/zealatan/RTL_SYNC_PHASE3/sim_out/p3_25b/xsim_build/xsim.ini" -L "work" -L "xil_defaultlib" -L "xfft_v9_1_8" --snapshot "p3_25b_snap" "work.p3_25b_real_fft_ip_tb" 

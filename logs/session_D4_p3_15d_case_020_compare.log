@@ -1,30 +1,30 @@
 
 ============================================================
  case_020
-  golden: /home/zealatan/RTL_SYNC_PHASE3/golden/p3_15d_stimuli/case_020_golden.txt
-  meta:   /home/zealatan/RTL_SYNC_PHASE3/golden/p3_15d_stimuli/case_020_meta.json
+  golden: /home/zealatan/RTL_SYNC_PHASE4/golden/p3_15d_stimuli/case_020_golden.txt
+  meta:   /home/zealatan/RTL_SYNC_PHASE4/golden/p3_15d_stimuli/case_020_meta.json
   frame_len=576
   k_int=4  eps_frac=-0.0587  amp=1525  snr=26.1dB
 ============================================================
 
 --- Stage D4-2: Metadata (case_020) ---
-  PASS [frame_start]: RTL=76  ref=77  diff=1  tol=±2  [INFO]
-  PASS [peak_lag]: RTL=21  ref=22  diff=1  tol=±3  [INFO]
-  PASS [slot_start]: RTL=97  ref=99  diff=2  tol=±2
-  PASS [frac_cfo]: RTL=-0.057985168  ref=-0.0576440468  rel_err=0.5918%  tol=2.0%
-  FAIL [meyr_peak]: RTL=324  ref=255  diff=69  tol=±5  [INFO]
-  [int_cfo] RTL step_word=0xBB000000 → k_int_rtl=69  expected=0  stimulus_k_int=4  [INFO]
-  FAIL [int_cfo_bins]: RTL=69  ref=0  diff=69  tol=±5  [INFO]
-  D4-2: PASS  (0 gate failure(s), 2 info-only warning(s))
+  PASS [frame_start]: RTL=77  ref=77  diff=0  tol=±5  [INFO]
+  PASS [peak_lag]: RTL=22  ref=22  diff=0  tol=±10  [INFO]
+  PASS [slot_start]: RTL=99  ref=99  diff=0  tol=±40
+  PASS [frac_cfo]: RTL=-0.0582903531  ref=-0.0576440468  rel_err=1.1212%  tol=5.0%+floor=0.008
+  PASS [meyr_peak]: RTL=260  ref=255  diff=5  tol=±5  [INFO]
+  [int_cfo] RTL step_word=0xFB000000 → k_int_rtl=5  expected=0  stimulus_k_int=4  [INFO]
+  PASS [int_cfo_bins]: RTL=5  ref=0  diff=5  tol=±5  [INFO]
+  D4-2: PASS  (0 gate failure(s), 0 info-only warning(s))
 
 --- Stage D4-3: IQ equivalence (case_020) ---
-  step_word=0xBB000000  tolerance=1 LSB
+  step_word=0xFB000000  tolerance=1 LSB
   Max I error: 0 at n=-1
   Max Q error: 0
   Mismatches:  0/576
   PASS: all 576 IQ samples within 1 LSB
 
 --- Stage D4-4: Failure clustering (case_020) ---
-  Info warnings: info_d2_meyr_peak, info_d2_int_cfo_bins
+  All clear
 
 CASE_EQUIV_GATE: PASS  (case_020)

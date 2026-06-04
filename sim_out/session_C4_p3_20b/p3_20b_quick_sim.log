@@ -1,0 +1,94 @@
+=== [C4] AXI Soak Test — P3-20B ===
+  Mode: quick     watchdog: 15000000  B1=10 B2=0 B3=10 frames
+
+--- B1: 10 frames, stall=0% ---
+    frame 1/10  oc=0  replay_done=0  cycle=773
+    frame 2/10  oc=576  replay_done=1  cycle=103871
+    frame 3/10  oc=1152  replay_done=2  cycle=206971
+    frame 4/10  oc=1728  replay_done=3  cycle=310071
+    frame 5/10  oc=2304  replay_done=4  cycle=413171
+    frame 6/10  oc=2880  replay_done=5  cycle=516271
+    frame 7/10  oc=3456  replay_done=6  cycle=619371
+    frame 8/10  oc=4032  replay_done=7  cycle=722471
+    frame 9/10  oc=4608  replay_done=8  cycle=825571
+    frame 10/10  oc=5184  replay_done=9  cycle=928671
+  out=5760  tlast=10  err=0x00000000  replay_done=10  b5_bk=0  PASS
+B1_RESULT: PASS  (out=5760 tlast=10)
+
+--- B2: SKIPPED (mode=quick   ) ---
+B2_RESULT: SKIP
+
+--- B3a: 10 frames, stall=10% ---
+    frame 1/10  oc=0  replay_done=0  cycle=1031949
+    frame 2/10  oc=576  replay_done=1  cycle=1135074
+    frame 3/10  oc=1152  replay_done=2  cycle=1238200
+    frame 4/10  oc=1728  replay_done=3  cycle=1341326
+    frame 5/10  oc=2304  replay_done=4  cycle=1444452
+    frame 6/10  oc=2880  replay_done=5  cycle=1547578
+    frame 7/10  oc=3456  replay_done=6  cycle=1650704
+    frame 8/10  oc=4032  replay_done=7  cycle=1753830
+    frame 9/10  oc=4608  replay_done=8  cycle=1856956
+    frame 10/10  oc=5184  replay_done=9  cycle=1960082
+  out=5760  tlast=10  err=0x00000004  replay_done=10  b5_bk=0  PASS
+
+--- B3b: 10 frames, stall=25% ---
+    frame 1/10  oc=0  replay_done=0  cycle=2063360
+    frame 2/10  oc=576  replay_done=1  cycle=2166568
+    frame 3/10  oc=1152  replay_done=2  cycle=2269778
+    frame 4/10  oc=1728  replay_done=3  cycle=2372985
+    frame 5/10  oc=2304  replay_done=4  cycle=2476194
+    frame 6/10  oc=2880  replay_done=5  cycle=2579404
+    frame 7/10  oc=3456  replay_done=6  cycle=2682611
+    frame 8/10  oc=4032  replay_done=7  cycle=2785820
+    frame 9/10  oc=4608  replay_done=8  cycle=2889030
+    frame 10/10  oc=5184  replay_done=9  cycle=2992237
+  out=5760  tlast=10  err=0x00000004  replay_done=10  b5_bk=0  PASS
+
+--- B3c: 10 frames, stall=50% ---
+    frame 1/10  oc=0  replay_done=0  cycle=3096015
+    frame 2/10  oc=576  replay_done=1  cycle=3199392
+    frame 3/10  oc=1152  replay_done=2  cycle=3302772
+    frame 4/10  oc=1728  replay_done=3  cycle=3406152
+    frame 5/10  oc=2304  replay_done=4  cycle=3509530
+    frame 6/10  oc=2880  replay_done=5  cycle=3612908
+    frame 7/10  oc=3456  replay_done=6  cycle=3716286
+    frame 8/10  oc=4032  replay_done=7  cycle=3819664
+    frame 9/10  oc=4608  replay_done=8  cycle=3923042
+    frame 10/10  oc=5184  replay_done=9  cycle=4026420
+  out=5760  tlast=10  err=0x00000004  replay_done=10  b5_bk=0  PASS
+B3_RESULT: PASS  (a=PASS b=PASS c=PASS)
+
+--- B4: Replay restart soak ---
+  Total replay_done: 40  expected: 40
+B4_RESULT: PASS  (replay_done=40 expected=40)
+
+--- B5: Counter stability ---
+B5_RESULT: PASS  (backward_errors=0)
+
+--- Checker (A1-A5) ---
+  A1 tdata stability : 0
+  A2 tlast stability : 0
+  A3 X tvalid/tdata/tlast : 0 / 0 / 0
+  A4 double TLAST    : 0
+  A5 long stall warns: 0
+  total_errors       : 0
+CHK_RESULT: PASS
+
+=== [C4] Results (quick    mode) ===
+  B1  10 frames no-stall  : PASS
+  B2  (skipped)
+  B3a 10 frames 10% stall : PASS
+  B3b 10 frames 25% stall : PASS
+  B3c 10 frames 50% stall : PASS
+  B4  replay restart soak : PASS
+  B5  counter stability   : PASS
+  CHK A1-A4 assertions    : PASS
+  Total cycles: 4129459
+
+B1_GATE: PASS
+B2_GATE: PASS
+B3_GATE: PASS
+B4_GATE: PASS
+B5_GATE: PASS
+CHK_GATE: PASS
+AXI_SOAK_GATE: PASS

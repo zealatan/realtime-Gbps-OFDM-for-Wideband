@@ -1,0 +1,186 @@
+
+****** xsim v2022.2 (64-bit)
+  **** SW Build 3671981 on Fri Oct 14 04:59:54 MDT 2022
+  **** IP Build 3669848 on Fri Oct 14 08:30:02 MDT 2022
+    ** Copyright 1986-2022 Xilinx, Inc. All Rights Reserved.
+
+source xsim.dir/meyr_fft_gate_snap/xsim_script.tcl
+# xsim {meyr_fft_gate_snap} -autoloadwcfg -runall -onerror quit
+Time resolution is 1 ps
+run -all
+[TB] Meyr Extended k_int Sweep — Real Xilinx FFT IP (USE_BEHAVIORAL_STUB=0)
+[TB] Loading golden vectors from golden/p3_09_sweep/
+[TB] Extended k_int values (±16..±128) skipped if no .mem file
+
+[TB] Case               k0  exp_peak=255  exp_cfo=0
+[DFS] t=255000 START → S_PSS_FILL flush_rem=1
+[DFS] t=2815000 PSS_FILL done → S_PSS_STREAM
+[TB] t=2826000 stream_symbol(SSS) k=0 started: s_valid=1 s_sym=1 s_ready=0
+[DBG_PSS_STREAM] STALL cnt=1
+[DFS] t=11485000 PSS_FLUSH done → S_PSS_STREAM flush_rem=0
+[DBG_PSS_STREAM] STALL cnt=1
+[DFS] t=20155000 PSS_CAP done → S_SSS_FILL s_valid=1 s_sym=1 s_ready=0
+[DFS] t=20165000 SSS_FILL got sample in_cnt=0
+[DFS] t=20175000 SSS_FILL got sample in_cnt=1
+[DFS] t=20185000 SSS_FILL got sample in_cnt=2
+[DFS] t=20195000 SSS_FILL got sample in_cnt=3
+[DFS] t=22715000 SSS_FILL done → S_SSS_STREAM
+[DBG_SSS_STREAM] STALL cnt=1
+[DFS] t=31385000 SSS_CAP done → S_STREAM_PSS
+[DFS] t=33955000 STREAM_PSS done → S_STREAM_SSS
+[DFS] t=36555000 S_DONE error=0
+[TB] PASS                k0  peak=255  int_cfo=0  score=551119181
+[TB] Case              kp1  exp_peak=256  exp_cfo=1
+[DFS] t=699845000 START → S_PSS_FILL flush_rem=1
+[DFS] t=702405000 PSS_FILL done → S_PSS_STREAM
+[TB] t=702416000 stream_symbol(SSS) k=0 started: s_valid=1 s_sym=1 s_ready=0
+[DBG_PSS_STREAM] STALL cnt=1
+[DFS] t=711075000 PSS_FLUSH done → S_PSS_STREAM flush_rem=0
+[DBG_PSS_STREAM] STALL cnt=1
+[DFS] t=719745000 PSS_CAP done → S_SSS_FILL s_valid=1 s_sym=1 s_ready=0
+[DFS] t=719755000 SSS_FILL got sample in_cnt=0
+[DFS] t=719765000 SSS_FILL got sample in_cnt=1
+[DFS] t=719775000 SSS_FILL got sample in_cnt=2
+[DFS] t=719785000 SSS_FILL got sample in_cnt=3
+[DFS] t=722305000 SSS_FILL done → S_SSS_STREAM
+[DBG_SSS_STREAM] STALL cnt=1
+[DFS] t=730975000 SSS_CAP done → S_STREAM_PSS
+[DFS] t=733545000 STREAM_PSS done → S_STREAM_SSS
+[DFS] t=736145000 S_DONE error=0
+[TB] PASS               kp1  peak=256  int_cfo=1  score=546586445
+[TB] Case              km1  exp_peak=254  exp_cfo=-1
+[DFS] t=1399435000 START → S_PSS_FILL flush_rem=1
+[DFS] t=1401995000 PSS_FILL done → S_PSS_STREAM
+[TB] t=1402006000 stream_symbol(SSS) k=0 started: s_valid=1 s_sym=1 s_ready=0
+[DBG_PSS_STREAM] STALL cnt=1
+[DFS] t=1410665000 PSS_FLUSH done → S_PSS_STREAM flush_rem=0
+[DBG_PSS_STREAM] STALL cnt=1
+[DFS] t=1419335000 PSS_CAP done → S_SSS_FILL s_valid=1 s_sym=1 s_ready=0
+[DFS] t=1419345000 SSS_FILL got sample in_cnt=0
+[DFS] t=1419355000 SSS_FILL got sample in_cnt=1
+[DFS] t=1419365000 SSS_FILL got sample in_cnt=2
+[DFS] t=1419375000 SSS_FILL got sample in_cnt=3
+[DFS] t=1421895000 SSS_FILL done → S_SSS_STREAM
+[DBG_SSS_STREAM] STALL cnt=1
+[DFS] t=1430565000 SSS_CAP done → S_STREAM_PSS
+[DFS] t=1433135000 STREAM_PSS done → S_STREAM_SSS
+[DFS] t=1435735000 S_DONE error=0
+[TB] PASS               km1  peak=254  int_cfo=-1  score=455116793
+[TB] Case              kp2  exp_peak=257  exp_cfo=2
+[DFS] t=2099025000 START → S_PSS_FILL flush_rem=1
+[DFS] t=2101585000 PSS_FILL done → S_PSS_STREAM
+[TB] t=2101596000 stream_symbol(SSS) k=0 started: s_valid=1 s_sym=1 s_ready=0
+[DBG_PSS_STREAM] STALL cnt=1
+[DFS] t=2110255000 PSS_FLUSH done → S_PSS_STREAM flush_rem=0
+[DBG_PSS_STREAM] STALL cnt=1
+[DFS] t=2118925000 PSS_CAP done → S_SSS_FILL s_valid=1 s_sym=1 s_ready=0
+[DFS] t=2118935000 SSS_FILL got sample in_cnt=0
+[DFS] t=2118945000 SSS_FILL got sample in_cnt=1
+[DFS] t=2118955000 SSS_FILL got sample in_cnt=2
+[DFS] t=2118965000 SSS_FILL got sample in_cnt=3
+[DFS] t=2121485000 SSS_FILL done → S_SSS_STREAM
+[DBG_SSS_STREAM] STALL cnt=1
+[DFS] t=2130155000 SSS_CAP done → S_STREAM_PSS
+[DFS] t=2132725000 STREAM_PSS done → S_STREAM_SSS
+[DFS] t=2135325000 S_DONE error=0
+[TB] PASS               kp2  peak=257  int_cfo=2  score=609114013
+[TB] Case              km2  exp_peak=253  exp_cfo=-2
+[DFS] t=2798615000 START → S_PSS_FILL flush_rem=1
+[DFS] t=2801175000 PSS_FILL done → S_PSS_STREAM
+[TB] t=2801186000 stream_symbol(SSS) k=0 started: s_valid=1 s_sym=1 s_ready=0
+[DBG_PSS_STREAM] STALL cnt=1
+[DFS] t=2809845000 PSS_FLUSH done → S_PSS_STREAM flush_rem=0
+[DBG_PSS_STREAM] STALL cnt=1
+[DFS] t=2818515000 PSS_CAP done → S_SSS_FILL s_valid=1 s_sym=1 s_ready=0
+[DFS] t=2818525000 SSS_FILL got sample in_cnt=0
+[DFS] t=2818535000 SSS_FILL got sample in_cnt=1
+[DFS] t=2818545000 SSS_FILL got sample in_cnt=2
+[DFS] t=2818555000 SSS_FILL got sample in_cnt=3
+[DFS] t=2821075000 SSS_FILL done → S_SSS_STREAM
+[DBG_SSS_STREAM] STALL cnt=1
+[DFS] t=2829745000 SSS_CAP done → S_STREAM_PSS
+[DFS] t=2832315000 STREAM_PSS done → S_STREAM_SSS
+[DFS] t=2834915000 S_DONE error=0
+[TB] PASS               km2  peak=253  int_cfo=-2  score=451304185
+[TB] Case              kp4  exp_peak=259  exp_cfo=4
+[DFS] t=3498205000 START → S_PSS_FILL flush_rem=1
+[DFS] t=3500765000 PSS_FILL done → S_PSS_STREAM
+[TB] t=3500776000 stream_symbol(SSS) k=0 started: s_valid=1 s_sym=1 s_ready=0
+[DBG_PSS_STREAM] STALL cnt=1
+[DFS] t=3509435000 PSS_FLUSH done → S_PSS_STREAM flush_rem=0
+[DBG_PSS_STREAM] STALL cnt=1
+[DFS] t=3518105000 PSS_CAP done → S_SSS_FILL s_valid=1 s_sym=1 s_ready=0
+[DFS] t=3518115000 SSS_FILL got sample in_cnt=0
+[DFS] t=3518125000 SSS_FILL got sample in_cnt=1
+[DFS] t=3518135000 SSS_FILL got sample in_cnt=2
+[DFS] t=3518145000 SSS_FILL got sample in_cnt=3
+[DFS] t=3520665000 SSS_FILL done → S_SSS_STREAM
+[DBG_SSS_STREAM] STALL cnt=1
+[DFS] t=3529335000 SSS_CAP done → S_STREAM_PSS
+[DFS] t=3531905000 STREAM_PSS done → S_STREAM_SSS
+[DFS] t=3534505000 S_DONE error=0
+[TB] PASS               kp4  peak=259  int_cfo=4  score=513340745
+[TB] Case              km4  exp_peak=251  exp_cfo=-4
+[DFS] t=4197795000 START → S_PSS_FILL flush_rem=1
+[DFS] t=4200355000 PSS_FILL done → S_PSS_STREAM
+[TB] t=4200366000 stream_symbol(SSS) k=0 started: s_valid=1 s_sym=1 s_ready=0
+[DBG_PSS_STREAM] STALL cnt=1
+[DFS] t=4209025000 PSS_FLUSH done → S_PSS_STREAM flush_rem=0
+[DBG_PSS_STREAM] STALL cnt=1
+[DFS] t=4217695000 PSS_CAP done → S_SSS_FILL s_valid=1 s_sym=1 s_ready=0
+[DFS] t=4217705000 SSS_FILL got sample in_cnt=0
+[DFS] t=4217715000 SSS_FILL got sample in_cnt=1
+[DFS] t=4217725000 SSS_FILL got sample in_cnt=2
+[DFS] t=4217735000 SSS_FILL got sample in_cnt=3
+[DFS] t=4220255000 SSS_FILL done → S_SSS_STREAM
+[DBG_SSS_STREAM] STALL cnt=1
+[DFS] t=4228925000 SSS_CAP done → S_STREAM_PSS
+[DFS] t=4231495000 STREAM_PSS done → S_STREAM_SSS
+[DFS] t=4234095000 S_DONE error=0
+[TB] PASS               km4  peak=251  int_cfo=-4  score=513963081
+[TB] Case              kp8  exp_peak=263  exp_cfo=8
+[DFS] t=4897385000 START → S_PSS_FILL flush_rem=1
+[DFS] t=4899945000 PSS_FILL done → S_PSS_STREAM
+[TB] t=4899956000 stream_symbol(SSS) k=0 started: s_valid=1 s_sym=1 s_ready=0
+[DBG_PSS_STREAM] STALL cnt=1
+[DFS] t=4908615000 PSS_FLUSH done → S_PSS_STREAM flush_rem=0
+[DBG_PSS_STREAM] STALL cnt=1
+[DFS] t=4917285000 PSS_CAP done → S_SSS_FILL s_valid=1 s_sym=1 s_ready=0
+[DFS] t=4917295000 SSS_FILL got sample in_cnt=0
+[DFS] t=4917305000 SSS_FILL got sample in_cnt=1
+[DFS] t=4917315000 SSS_FILL got sample in_cnt=2
+[DFS] t=4917325000 SSS_FILL got sample in_cnt=3
+[DFS] t=4919845000 SSS_FILL done → S_SSS_STREAM
+[DBG_SSS_STREAM] STALL cnt=1
+[DFS] t=4928515000 SSS_CAP done → S_STREAM_PSS
+[DFS] t=4931085000 STREAM_PSS done → S_STREAM_SSS
+[DFS] t=4933685000 S_DONE error=0
+[TB] PASS               kp8  peak=263  int_cfo=8  score=509590562
+[TB] Case              km8  exp_peak=247  exp_cfo=-8
+[DFS] t=5596975000 START → S_PSS_FILL flush_rem=1
+[DFS] t=5599535000 PSS_FILL done → S_PSS_STREAM
+[TB] t=5599546000 stream_symbol(SSS) k=0 started: s_valid=1 s_sym=1 s_ready=0
+[DBG_PSS_STREAM] STALL cnt=1
+[DFS] t=5608205000 PSS_FLUSH done → S_PSS_STREAM flush_rem=0
+[DBG_PSS_STREAM] STALL cnt=1
+[DFS] t=5616875000 PSS_CAP done → S_SSS_FILL s_valid=1 s_sym=1 s_ready=0
+[DFS] t=5616885000 SSS_FILL got sample in_cnt=0
+[DFS] t=5616895000 SSS_FILL got sample in_cnt=1
+[DFS] t=5616905000 SSS_FILL got sample in_cnt=2
+[DFS] t=5616915000 SSS_FILL got sample in_cnt=3
+[DFS] t=5619435000 SSS_FILL done → S_SSS_STREAM
+[DBG_SSS_STREAM] STALL cnt=1
+[DFS] t=5628105000 SSS_CAP done → S_STREAM_PSS
+[DFS] t=5630675000 STREAM_PSS done → S_STREAM_SSS
+[DFS] t=5633275000 S_DONE error=0
+[TB] PASS               km8  peak=247  int_cfo=-8  score=509590562
+
+[TB] ============================================================
+[TB] Results: 9/9 PASS  0 FAIL  8 PENDING_GOLDEN_VECTORS
+GATE: PASS_VIVADO_XSIM_REAL_IP (9/9 cases; 8 PENDING_GOLDEN_VECTORS)
+[TB] ============================================================
+$finish called at time : 6296425 ns : File "/home/zealatan/RTL_SYNC_PHASE4/vivado_xsim/tb/xsim_meyr_real_fft_ip_tb.sv" Line 315
+run: Time (s): cpu = 00:00:00.75 ; elapsed = 00:14:17 . Memory (MB): peak = 1365.246 ; gain = 60.480 ; free physical = 4555 ; free virtual = 7828
+exit
+INFO: xsimkernel Simulation Memory Usage: 123640 KB (Peak: 180980 KB), Simulation CPU Usage: 857280 ms
+INFO: [Common 17-206] Exiting xsim at Thu Jun  4 10:40:50 2026...

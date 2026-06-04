@@ -1,0 +1,1581 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>RTL_SYNC_PHASE4 — Algorithm Reference Specification</title>
+<style>
+/* ══════════════════════════════════════════════════════════
+   PALETTE
+   #001219  dark navy          – page background
+   #005F73  dark teal          – panels, cards, nav
+   #0A9396  medium teal        – secondary headings, borders
+   #94D2BD  light mint         – primary headings, pass
+   #E9D8A6  warm cream         – code text, equation text
+   #EE9B00  amber              – highlight, callout border
+   #CA6702  orange             – warning
+   #BB3E03  dark orange-red    – blocked / severe warn
+   #AE2012  red                – failure
+   #9B2226  dark red           – critical
+══════════════════════════════════════════════════════════ */
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --bg:        #001219;
+  --panel:     #00202e;
+  --card:      #002535;
+  --teal-dk:   #005F73;
+  --teal-md:   #0A9396;
+  --teal-lt:   #94D2BD;
+  --cream:     #E9D8A6;
+  --amber:     #EE9B00;
+  --orange:    #CA6702;
+  --orred:     #BB3E03;
+  --red:       #AE2012;
+  --dkred:     #9B2226;
+  --text:      #c8d8e0;
+  --muted:     #5a7a8a;
+  --border:    #005F73;
+}
+
+html { scroll-behavior: smooth; }
+
+body {
+  font-family: 'Courier New', Courier, monospace;
+  background: var(--bg);
+  color: var(--text);
+  font-size: 14px;
+  line-height: 1.65;
+}
+
+/* ── Layout ── */
+.layout { display: flex; min-height: 100vh; }
+
+/* ── Sidebar TOC ── */
+.sidebar {
+  width: 240px;
+  min-width: 240px;
+  background: linear-gradient(180deg, #00202e 0%, #001a26 100%);
+  border-right: 1px solid var(--teal-dk);
+  position: sticky;
+  top: 0;
+  height: 100vh;
+  overflow-y: auto;
+  padding: 20px 0;
+  flex-shrink: 0;
+}
+.sidebar-title {
+  color: var(--amber);
+  font-size: 0.75em;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  padding: 0 18px 12px;
+  border-bottom: 1px solid var(--teal-dk);
+  margin-bottom: 10px;
+}
+.toc-section { padding: 2px 0; }
+.toc-h2 a {
+  display: block;
+  padding: 5px 18px;
+  color: var(--teal-lt);
+  text-decoration: none;
+  font-size: 0.8em;
+  border-left: 2px solid transparent;
+  transition: border-color 0.15s, color 0.15s, background 0.15s;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.toc-h2 a:hover {
+  border-left-color: var(--amber);
+  color: var(--cream);
+  background: rgba(238,155,0,0.07);
+}
+.toc-h3 a {
+  display: block;
+  padding: 3px 18px 3px 30px;
+  color: var(--muted);
+  text-decoration: none;
+  font-size: 0.75em;
+  border-left: 2px solid transparent;
+  transition: border-color 0.15s, color 0.15s;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.toc-h3 a:hover {
+  border-left-color: var(--teal-md);
+  color: var(--teal-lt);
+}
+.toc-divider { height: 1px; background: var(--teal-dk); margin: 6px 14px; opacity: 0.4; }
+
+/* ── Main content ── */
+.main { flex: 1; min-width: 0; padding: 0 0 60px 0; }
+
+/* ── Hero ── */
+.hero {
+  background: linear-gradient(135deg, #00202e 0%, #003040 60%, #004555 100%);
+  border-bottom: 2px solid var(--teal-dk);
+  padding: 36px 48px 32px;
+  position: relative;
+  overflow: hidden;
+}
+.hero::before {
+  content: '';
+  position: absolute;
+  top: -60px; right: -60px;
+  width: 300px; height: 300px;
+  background: radial-gradient(circle, rgba(10,147,150,0.12) 0%, transparent 70%);
+  pointer-events: none;
+}
+.hero-label {
+  color: var(--amber);
+  font-size: 0.72em;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  margin-bottom: 8px;
+}
+.hero-title {
+  color: var(--teal-lt);
+  font-size: 1.75em;
+  font-weight: bold;
+  letter-spacing: 0.03em;
+  margin-bottom: 6px;
+}
+.hero-subtitle {
+  color: var(--teal-md);
+  font-size: 0.9em;
+  margin-bottom: 22px;
+}
+.hero-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 12px;
+  margin-top: 18px;
+}
+.hero-stat {
+  background: rgba(0,95,115,0.25);
+  border: 1px solid var(--teal-dk);
+  border-radius: 6px;
+  padding: 12px 16px;
+}
+.hero-stat-label { color: var(--muted); font-size: 0.72em; text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 4px; }
+.hero-stat-value { color: var(--cream); font-size: 0.92em; }
+.hero-stat.blocker { border-color: var(--red); background: rgba(174,32,18,0.12); }
+.hero-stat.blocker .hero-stat-label { color: var(--red); }
+.hero-stat.blocker .hero-stat-value { color: #e87070; }
+.hero-stat.milestone { border-color: var(--amber); background: rgba(238,155,0,0.08); }
+.hero-stat.milestone .hero-stat-label { color: var(--amber); }
+.hero-stat.milestone .hero-stat-value { color: var(--cream); }
+
+/* ── Content wrapper ── */
+.content { padding: 32px 48px; }
+
+/* ── Section headings ── */
+h1 { color: var(--teal-lt); font-size: 1.4em; border-bottom: 2px solid var(--teal-dk); padding-bottom: 8px; margin: 28px 0 16px; }
+h2 { color: var(--teal-lt); font-size: 1.15em; margin: 32px 0 12px; padding: 10px 16px;
+     background: linear-gradient(90deg, rgba(0,95,115,0.35) 0%, transparent 100%);
+     border-left: 3px solid var(--amber); border-radius: 0 4px 4px 0; }
+h3 { color: var(--teal-md); font-size: 1.0em; margin: 22px 0 8px; padding-left: 10px;
+     border-left: 2px solid var(--teal-dk); }
+h4 { color: var(--cream); font-size: 0.95em; margin: 16px 0 6px; }
+p { margin-bottom: 10px; color: var(--text); }
+a { color: var(--teal-md); text-decoration: none; }
+a:hover { color: var(--teal-lt); text-decoration: underline; }
+ul, ol { padding-left: 22px; margin-bottom: 10px; }
+li { margin-bottom: 4px; }
+
+/* ── Badges ── */
+.badge {
+  display: inline-block; padding: 2px 9px; border-radius: 4px;
+  font-size: 0.76em; font-weight: bold; letter-spacing: 0.05em;
+  text-transform: uppercase; vertical-align: middle;
+}
+.badge-pass  { background: rgba(148,210,189,0.15); color: var(--teal-lt);  border: 1px solid rgba(148,210,189,0.35); }
+.badge-fail  { background: rgba(174,32,18,0.2);    color: #e87070;          border: 1px solid rgba(174,32,18,0.5); }
+.badge-warn  { background: rgba(202,103,2,0.18);   color: var(--orange);    border: 1px solid rgba(202,103,2,0.4); }
+.badge-open  { background: rgba(10,147,150,0.15);  color: var(--teal-md);   border: 1px solid rgba(10,147,150,0.35); }
+.badge-block { background: rgba(187,62,3,0.18);    color: var(--orred);     border: 1px solid rgba(187,62,3,0.4); }
+.badge-crit  { background: rgba(155,34,38,0.22);   color: #dc6060;          border: 1px solid rgba(155,34,38,0.5); }
+.badge-unconf{ background: rgba(238,155,0,0.12);   color: var(--amber);     border: 1px solid rgba(238,155,0,0.35); }
+
+/* ── Tables ── */
+table { border-collapse: collapse; width: 100%; margin: 14px 0; font-size: 0.88em; }
+th {
+  background: linear-gradient(90deg, #004558 0%, #003244 100%);
+  color: var(--teal-lt); padding: 9px 13px; text-align: left;
+  border: 1px solid var(--teal-dk); font-size: 0.85em; letter-spacing: 0.04em;
+}
+td { padding: 8px 13px; border: 1px solid rgba(0,95,115,0.4); vertical-align: top; line-height: 1.55; }
+tr:nth-child(even) { background: rgba(0,32,46,0.45); }
+tr:hover { background: rgba(10,147,150,0.07); }
+.row-crit { background: rgba(174,32,18,0.1) !important; }
+.row-crit:hover { background: rgba(174,32,18,0.15) !important; }
+.row-warn { background: rgba(202,103,2,0.08) !important; }
+.row-pass { background: rgba(148,210,189,0.05) !important; }
+
+/* ── Code ── */
+code {
+  background: rgba(0,18,25,0.8); border: 1px solid rgba(0,95,115,0.4);
+  color: var(--cream); padding: 1px 6px; border-radius: 3px;
+  font-size: 0.92em; font-family: 'Courier New', monospace;
+}
+pre {
+  background: #000f18; border: 1px solid var(--teal-dk); border-radius: 6px;
+  padding: 14px 18px; overflow-x: auto; color: var(--cream);
+  line-height: 1.55; margin: 10px 0; font-size: 0.88em;
+}
+pre code { background: none; border: none; padding: 0; }
+
+/* ── Equation blocks ── */
+.eq {
+  background: linear-gradient(90deg, #003a4a 0%, #002a38 100%);
+  border-left: 3px solid var(--teal-md);
+  border-radius: 0 6px 6px 0;
+  padding: 12px 18px; margin: 12px 0;
+  color: var(--cream); font-size: 0.96em;
+  letter-spacing: 0.02em; line-height: 1.7;
+}
+
+/* ── Callout boxes ── */
+.callout {
+  border-left: 3px solid var(--amber);
+  background: rgba(238,155,0,0.07);
+  border-radius: 0 6px 6px 0;
+  padding: 12px 16px; margin: 12px 0;
+  color: var(--text); font-size: 0.9em;
+}
+.callout-crit {
+  border-left: 3px solid var(--red);
+  background: rgba(174,32,18,0.1);
+  border-radius: 0 6px 6px 0;
+  padding: 14px 18px; margin: 14px 0; color: var(--text);
+}
+.callout-crit h3 { color: #e87070; border-left: none; padding: 0; margin: 0 0 10px; }
+.callout-warn {
+  border-left: 3px solid var(--orange);
+  background: rgba(202,103,2,0.1);
+  border-radius: 0 6px 6px 0;
+  padding: 14px 18px; margin: 14px 0; color: var(--text);
+}
+.callout-warn h3 { color: var(--orange); border-left: none; padding: 0; margin: 0 0 10px; }
+.callout-info {
+  border-left: 3px solid var(--teal-md);
+  background: rgba(10,147,150,0.1);
+  border-radius: 0 6px 6px 0;
+  padding: 12px 16px; margin: 12px 0; color: var(--text); font-size: 0.9em;
+}
+
+/* ── Cards ── */
+.card {
+  background: var(--card);
+  border: 1px solid var(--teal-dk);
+  border-radius: 8px;
+  padding: 18px 22px; margin: 14px 0;
+}
+.card-title { color: var(--cream); font-weight: bold; font-size: 1.0em; margin-bottom: 4px; }
+.card-sub   { color: var(--teal-md); font-size: 0.82em; margin-bottom: 12px; }
+
+/* ── Pipeline diagram ── */
+.pipeline { padding: 24px; margin: 16px 0; }
+.pipe-stages {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  align-items: flex-start;
+  max-width: 600px;
+}
+.pipe-stage {
+  display: flex;
+  align-items: stretch;
+  width: 100%;
+}
+.pipe-box {
+  flex: 1;
+  background: linear-gradient(135deg, #003244 0%, #002535 100%);
+  border: 1px solid var(--teal-dk);
+  border-radius: 6px;
+  padding: 10px 18px;
+  position: relative;
+}
+.pipe-box.pass-stage { border-left: 3px solid var(--teal-lt); }
+.pipe-box.fail-stage { border-left: 3px solid var(--red); }
+.pipe-box.warn-stage { border-left: 3px solid var(--orange); }
+.pipe-stage-num { color: var(--amber); font-size: 0.72em; font-weight: bold; letter-spacing: 0.08em; }
+.pipe-stage-name { color: var(--teal-lt); font-size: 0.95em; font-weight: bold; }
+.pipe-stage-detail { color: var(--muted); font-size: 0.78em; margin-top: 2px; }
+.pipe-badge { position: absolute; right: 12px; top: 50%; transform: translateY(-50%); }
+.pipe-connector {
+  display: flex;
+  align-items: center;
+  padding: 3px 0 3px 28px;
+}
+.pipe-arrow { color: var(--teal-dk); font-size: 1.3em; line-height: 1; }
+
+/* ── Func inventory card ── */
+.func-card {
+  background: var(--card);
+  border: 1px solid var(--teal-dk);
+  border-radius: 8px;
+  padding: 16px 20px; margin: 14px 0;
+  border-left: 3px solid var(--teal-dk);
+}
+.func-card:hover { border-left-color: var(--amber); }
+.func-name { color: var(--cream); font-weight: bold; font-size: 1.0em; }
+.func-file { color: var(--teal-md); font-size: 0.8em; margin-bottom: 12px; margin-top: 2px; }
+.func-attr { color: var(--muted); font-size: 0.76em; text-transform: uppercase; letter-spacing: 0.08em; margin-top: 10px; }
+
+/* ── Verification readiness ── */
+.readiness-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 12px;
+  margin: 14px 0;
+}
+.readiness-card {
+  border-radius: 8px;
+  padding: 14px 16px;
+  border: 1px solid;
+}
+.readiness-ready  { background: rgba(148,210,189,0.08); border-color: rgba(148,210,189,0.3); }
+.readiness-partial{ background: rgba(238,155,0,0.07);   border-color: rgba(238,155,0,0.3); }
+.readiness-blocked{ background: rgba(174,32,18,0.08);   border-color: rgba(174,32,18,0.35); }
+.readiness-deeper { background: rgba(10,147,150,0.08);  border-color: rgba(10,147,150,0.3); }
+.readiness-label  { font-size: 0.72em; text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 8px; font-weight: bold; }
+.readiness-ready  .readiness-label { color: var(--teal-lt); }
+.readiness-partial .readiness-label { color: var(--amber); }
+.readiness-blocked .readiness-label { color: #e87070; }
+.readiness-deeper  .readiness-label { color: var(--teal-md); }
+.readiness-item { font-size: 0.84em; color: var(--text); padding: 2px 0; }
+
+/* ── Meta / footer ── */
+.meta { color: var(--muted); font-size: 0.82em; }
+.doc-footer {
+  background: #000f18; border-top: 1px solid var(--teal-dk);
+  padding: 16px 48px; margin-top: 40px;
+  color: var(--muted); font-size: 0.8em;
+}
+
+hr { border: none; border-top: 1px solid rgba(0,95,115,0.35); margin: 28px 0; }
+
+/* ── Checklist ── */
+.checklist { list-style: none; padding: 0; }
+.checklist li { padding: 6px 0 6px 28px; position: relative; border-bottom: 1px solid rgba(0,95,115,0.2); }
+.checklist li::before { content: '◻'; position: absolute; left: 0; color: var(--teal-md); }
+.checklist li:last-child { border-bottom: none; }
+
+/* ── Step cards ── */
+.step-card {
+  background: var(--card);
+  border: 1px solid var(--teal-dk);
+  border-radius: 8px;
+  padding: 14px 18px;
+  margin: 10px 0;
+  border-left: 3px solid var(--teal-md);
+}
+.step-card.step-crit { border-left-color: var(--red); }
+.step-num { color: var(--amber); font-size: 0.78em; font-weight: bold; text-transform: uppercase; letter-spacing: 0.08em; }
+
+/* ── Scrollbar ── */
+::-webkit-scrollbar { width: 6px; height: 6px; }
+::-webkit-scrollbar-track { background: #001219; }
+::-webkit-scrollbar-thumb { background: #005F73; border-radius: 3px; }
+::-webkit-scrollbar-thumb:hover { background: #0A9396; }
+
+/* ── Responsive ── */
+@media (max-width: 900px) {
+  .sidebar { display: none; }
+  .content { padding: 20px 24px; }
+  .hero { padding: 24px; }
+}
+</style>
+</head>
+<body>
+
+<div class="layout">
+
+<!-- ═══════════════════════════════════ SIDEBAR TOC ═══════════════════════════════════ -->
+<nav class="sidebar">
+  <div class="sidebar-title">Contents</div>
+  <div class="toc-section"><div class="toc-h2"><a href="#hero">▲ Overview</a></div></div>
+  <div class="toc-divider"></div>
+  <div class="toc-section"><div class="toc-h2"><a href="#s1">1. Project Purpose</a></div></div>
+  <div class="toc-section"><div class="toc-h2"><a href="#s2">2. Sync Flow</a></div></div>
+  <div class="toc-section"><div class="toc-h2"><a href="#s3">3. C Function Inventory</a></div>
+    <div class="toc-h3"><a href="#fn-synchronization">synchronization()</a></div>
+    <div class="toc-h3"><a href="#fn-frame_detector">frame_detector()</a></div>
+    <div class="toc-h3"><a href="#fn-vdb">VanDeBeekAutoCorr()</a></div>
+    <div class="toc-h3"><a href="#fn-auto_corr">auto_corr()</a></div>
+    <div class="toc-h3"><a href="#fn-apply_cfo">apply_carrier_freq_offset()</a></div>
+    <div class="toc-h3"><a href="#fn-meyr">carrierFreqOffsetEstMeyr()</a></div>
+    <div class="toc-h3"><a href="#fn-fft_corr">fft_correlation_Meyr()</a></div>
+    <div class="toc-h3"><a href="#fn-peak">find_peak_index()</a></div>
+    <div class="toc-h3"><a href="#fn-fft">fft_without_rearrange()</a></div>
+    <div class="toc-h3"><a href="#fn-seq">m_seq() / gold_seq()</a></div>
+  </div>
+  <div class="toc-section"><div class="toc-h2"><a href="#s4">4. Stage Breakdown</a></div></div>
+  <div class="toc-section"><div class="toc-h2"><a href="#s5">5. Math Formulation</a></div>
+    <div class="toc-h3"><a href="#m-frame">Frame Detection</a></div>
+    <div class="toc-h3"><a href="#m-cp">CP Autocorrelation</a></div>
+    <div class="toc-h3"><a href="#m-timing">Timing Metric</a></div>
+    <div class="toc-h3"><a href="#m-frac">Frac CFO</a></div>
+    <div class="toc-h3"><a href="#m-corr">CFO Correction</a></div>
+    <div class="toc-h3"><a href="#m-extract">PSS/SSS Boundaries</a></div>
+    <div class="toc-h3"><a href="#m-meyr">Meyr Integer CFO</a></div>
+  </div>
+  <div class="toc-section"><div class="toc-h2"><a href="#s6">6. Ref vs RTL Differences</a></div></div>
+  <div class="toc-section"><div class="toc-h2"><a href="#s7">7. Fixed-Point Constraints</a></div></div>
+  <div class="toc-section"><div class="toc-h2"><a href="#s8">8. Verification Mapping</a></div></div>
+  <div class="toc-section"><div class="toc-h2"><a href="#s9">9. Open Risks</a></div></div>
+  <div class="toc-section"><div class="toc-h2"><a href="#s10">10. Verification Checklist</a></div></div>
+  <div class="toc-section"><div class="toc-h2"><a href="#s11">11. Next Steps</a></div></div>
+  <div class="toc-section"><div class="toc-h2"><a href="#s12">12. Readiness Matrix</a></div></div>
+</nav>
+
+<!-- ═══════════════════════════════════ MAIN ═══════════════════════════════════ -->
+<main class="main">
+
+<!-- ── Hero ── -->
+<section class="hero" id="hero">
+  <div class="hero-label">RTL_SYNC_PHASE4 · Verification Document</div>
+  <div class="hero-title">Algorithm Reference Specification</div>
+  <div class="hero-subtitle">C floating-point reference → Fixed-point streaming RTL · Functional verification mapping</div>
+
+  <div class="hero-grid">
+    <div class="hero-stat">
+      <div class="hero-stat-label">Project Root</div>
+      <div class="hero-stat-value">/home/zealatan/RTL_SYNC_PHASE4</div>
+    </div>
+    <div class="hero-stat">
+      <div class="hero-stat-label">C Reference</div>
+      <div class="hero-stat-value">ref/receiver.c · ref/signal_processing_common.c</div>
+    </div>
+    <div class="hero-stat milestone">
+      <div class="hero-stat-label">Current Milestone</div>
+      <div class="hero-stat-value">P3-15D &amp; P3-16A — active investigation</div>
+    </div>
+    <div class="hero-stat">
+      <div class="hero-stat-label">Simulator</div>
+      <div class="hero-stat-value">iverilog · USE_BEHAVIORAL_STUB=3 (FFT)</div>
+    </div>
+    <div class="hero-stat blocker">
+      <div class="hero-stat-label">Open Blocker — ISSUE-001</div>
+      <div class="hero-stat-value">complex_mult_iq.v: s_axis_tready hardwired 1. P3-16A FAIL.</div>
+    </div>
+    <div class="hero-stat blocker">
+      <div class="hero-stat-label">Open Issue — ISSUE-002</div>
+      <div class="hero-stat-value">P3-15D random equiv: 15/100 D2 metadata failures</div>
+    </div>
+    <div class="hero-stat">
+      <div class="hero-stat-label">Last Updated</div>
+      <div class="hero-stat-value">2026-06-02</div>
+    </div>
+    <div class="hero-stat">
+      <div class="hero-stat-label">Scope</div>
+      <div class="hero-stat-value">RTL functionality verification against C golden reference</div>
+    </div>
+  </div>
+</section>
+
+<div class="content">
+
+<!-- ══════════════════════════════════════════════════════════════════ -->
+<h1 id="s1">1. Project Purpose</h1>
+
+<p>
+The <strong>C reference code</strong> (<code>ref/receiver.c</code>, <code>ref/signal_processing_common.c</code>)
+is the <strong style="color:var(--cream)">golden algorithm model</strong> for this OFDM/NR-style frame synchronizer.
+It operates on floating-point IQ arrays with direct random access.
+</p>
+<p>
+The <strong>RTL design</strong> (<code>rtl/phase3_sync_top.v</code> and its hierarchy) is a
+<strong style="color:var(--cream)">fixed-point streaming hardware implementation</strong> of the same algorithm,
+targeting FPGA deployment via AXI-Stream. Samples traverse the pipeline in strict order —
+no random access is possible without a replay buffer.
+</p>
+
+<table>
+  <tr><th>Dimension</th><th>C Reference (Golden)</th><th>RTL Implementation</th></tr>
+  <tr><td>Arithmetic</td><td>IEEE-754 single-precision float</td><td>Fixed-point signed 16-bit I/Q; Q1.15 for phase; 32/40/48-bit accumulators</td></tr>
+  <tr><td>Memory access</td><td>Random-access float arrays</td><td>AXI-S streaming; replay buffer required for re-processing</td></tr>
+  <tr><td>FFT engine</td><td>FFTW3 <code>fftwf_execute_dft()</code></td><td>Xilinx FFT IP (<code>fft256_xilinx_wrapper.v</code>); behavioral DFT stub in simulation</td></tr>
+  <tr><td>Phase computation</td><td><code>atan2()</code> from math.h</td><td>CORDIC 15-stage pipeline (<code>cordic_atan2.v</code>)</td></tr>
+  <tr><td>Execution model</td><td>Sequential function calls, full frame in RAM</td><td>Pipeline + FSM; stages run concurrently on the AXI-S stream</td></tr>
+</table>
+
+<div class="callout">
+  <strong style="color:var(--amber)">Key system parameters:</strong>
+  NSC=256 · CP_LEN=32 · FRAME_LEN=576=2×(NSC+CP_LEN) ·
+  PSS_OFFSET=32 · SSS_OFFSET=320 · NUM_SYN_BLOCKS=2 · FFT_SIZE=256
+</div>
+
+<hr>
+
+<!-- ══════════════════════════════════════════════════════════════════ -->
+<h1 id="s2">2. End-to-End Synchronization Flow</h1>
+
+<p>
+In the C reference, stages run as sequential calls inside <code>synchronization()</code> (receiver.c:261).
+In the RTL, Stages 0–3 are pipelined inside <code>frac_cfo_frame_corrector_top.v</code>;
+Stages 4–6 drive the Meyr FFT frontend; Stages 7–8 are handled by the DMA wrapper with the IQ replay buffer.
+</p>
+
+<div class="pipeline">
+  <div class="pipe-stages">
+
+    <div class="pipe-stage">
+      <div class="pipe-box pass-stage">
+        <div class="pipe-stage-num">Input</div>
+        <div class="pipe-stage-name">AXI-S IQ Input</div>
+        <div class="pipe-stage-detail">16-bit I + 16-bit Q packed in 32-bit tdata · valid/ready handshake</div>
+        <span class="pipe-badge"><span class="badge badge-open">ACTIVE</span></span>
+      </div>
+    </div>
+    <div class="pipe-connector"><div class="pipe-arrow">▼</div></div>
+
+    <div class="pipe-stage">
+      <div class="pipe-box pass-stage">
+        <div class="pipe-stage-num">Stage 0</div>
+        <div class="pipe-stage-name">Frame Detection</div>
+        <div class="pipe-stage-detail">25-sample sliding energy · threshold · 10-hit counter · 2-case logic</div>
+        <span class="pipe-badge"><span class="badge badge-pass">PASS P3-14C</span></span>
+      </div>
+    </div>
+    <div class="pipe-connector"><div class="pipe-arrow">▼</div></div>
+
+    <div class="pipe-stage">
+      <div class="pipe-box pass-stage">
+        <div class="pipe-stage-num">Stage 1</div>
+        <div class="pipe-stage-name">CP Autocorrelation &amp; Timing Metric</div>
+        <div class="pipe-stage-detail">P(d), R(d) · Van de Beek M(d)=2|P(d)|−R(d) · argmax → d_peak</div>
+        <span class="pipe-badge"><span class="badge badge-warn">ISSUE-002</span></span>
+      </div>
+    </div>
+    <div class="pipe-connector"><div class="pipe-arrow">▼</div></div>
+
+    <div class="pipe-stage">
+      <div class="pipe-box pass-stage">
+        <div class="pipe-stage-num">Stage 2</div>
+        <div class="pipe-stage-name">Fractional CFO Estimation</div>
+        <div class="pipe-stage-detail">ε_frac = −∠P(d_peak) / 2π · CORDIC atan2 · Q1.15 output</div>
+        <span class="pipe-badge"><span class="badge badge-warn">ISSUE-002</span></span>
+      </div>
+    </div>
+    <div class="pipe-connector"><div class="pipe-arrow">▼</div></div>
+
+    <div class="pipe-stage">
+      <div class="pipe-box pass-stage">
+        <div class="pipe-stage-num">Stage 3</div>
+        <div class="pipe-stage-name">Fractional CFO Correction</div>
+        <div class="pipe-stage-detail">y[n]=x[n]·exp(−j·2π·ε_frac·n/NSC) · NCO + complex_mult_iq</div>
+        <span class="pipe-badge"><span class="badge badge-fail">ISSUE-001</span></span>
+      </div>
+    </div>
+    <div class="pipe-connector"><div class="pipe-arrow">▼</div></div>
+
+    <div class="pipe-stage">
+      <div class="pipe-box fail-stage">
+        <div class="pipe-stage-num">Stage 4</div>
+        <div class="pipe-stage-name">PSS / SSS Extraction</div>
+        <div class="pipe-stage-detail">PSS: samples[32..287] · SSS: samples[320..575] · hold-register design</div>
+        <span class="pipe-badge"><span class="badge badge-block">BLOCKED</span></span>
+      </div>
+    </div>
+    <div class="pipe-connector"><div class="pipe-arrow">▼</div></div>
+
+    <div class="pipe-stage">
+      <div class="pipe-box pass-stage">
+        <div class="pipe-stage-num">Stage 5</div>
+        <div class="pipe-stage-name">FFT Frontend</div>
+        <div class="pipe-stage-detail">256-pt DFT of PSS then SSS · natural order · scaled 1/√256</div>
+        <span class="pipe-badge"><span class="badge badge-pass">PASS P3-13E</span></span>
+      </div>
+    </div>
+    <div class="pipe-connector"><div class="pipe-arrow">▼</div></div>
+
+    <div class="pipe-stage">
+      <div class="pipe-box pass-stage">
+        <div class="pipe-stage-num">Stage 6</div>
+        <div class="pipe-stage-name">Meyr Integer CFO Estimation</div>
+        <div class="pipe-stage-detail">term1=FFT(PSS)×conj(FFT(SSS)) · cross-corr vs term2 ROM · argmax → k_int</div>
+        <span class="pipe-badge"><span class="badge badge-pass">PASS P3-15A</span></span>
+      </div>
+    </div>
+    <div class="pipe-connector"><div class="pipe-arrow">▼</div></div>
+
+    <div class="pipe-stage">
+      <div class="pipe-box fail-stage">
+        <div class="pipe-stage-num">Stage 7</div>
+        <div class="pipe-stage-name">Replay Buffer + Integer CFO Correction</div>
+        <div class="pipe-stage-detail">iq_replay_buffer_576 re-feeds frac-corrected IQ · NCO step=−k_int×2²⁴</div>
+        <span class="pipe-badge"><span class="badge badge-block">BLOCKED</span></span>
+      </div>
+    </div>
+    <div class="pipe-connector"><div class="pipe-arrow">▼</div></div>
+
+    <div class="pipe-stage">
+      <div class="pipe-box pass-stage">
+        <div class="pipe-stage-num">Stage 8</div>
+        <div class="pipe-stage-name">AXI-S Output</div>
+        <div class="pipe-stage-detail">Corrected frame · INT_CFO_APPLIED flag · valid/ready handshake</div>
+        <span class="pipe-badge"><span class="badge badge-pass">PASS P3-20A</span></span>
+      </div>
+    </div>
+
+  </div><!-- /pipe-stages -->
+</div><!-- /pipeline -->
+
+<hr>
+
+<!-- ══════════════════════════════════════════════════════════════════ -->
+<h1 id="s3">3. C Reference Function Inventory</h1>
+<p class="meta">
+  Source files: <code>ref/receiver.c</code> · <code>ref/signal_processing_common.c</code> ·
+  <code>ref/auxiliary.c</code> · <code>ref/pluto.h</code>.
+  Functions below are restricted to those relevant to the synchronization chain mapped to RTL.
+</p>
+
+<!-- synchronization -->
+<div class="func-card" id="fn-synchronization">
+  <div class="func-name">synchronization()</div>
+  <div class="func-file">ref/receiver.c — line 261</div>
+  <table>
+    <tr><th width="160">Attribute</th><th>Detail</th></tr>
+    <tr><td><div class="func-attr">Inputs</div></td>
+      <td><code>rxI[], rxQ[]</code> (float IQ array), <code>rxLen</code>, frame parameters, FFTW plans, m/gold sequences</td></tr>
+    <tr><td><div class="func-attr">Outputs</div></td>
+      <td>Returns <code>slotStartIndex</code> (sample offset of detected frame start), or <code>-1</code> on failure</td></tr>
+    <tr><td><div class="func-attr">Algorithm</div></td>
+      <td>Calls: <code>frame_detector()</code> → <code>VanDeBeekAutoCorrelation()</code> → inline atan2 for frac CFO → <code>apply_carrier_freq_offset()</code> (frac) → <code>carrierFreqOffsetEstMeyr()</code> → <code>apply_carrier_freq_offset()</code> (integer)</td></tr>
+    <tr><td><div class="func-attr">Mathematical</div></td>
+      <td>Top-level 4-step synchronizer: energy detection → timing sync → frac CFO removal → integer CFO removal</td></tr>
+    <tr><td><div class="func-attr">RTL Equivalent</div></td>
+      <td><code>phase3_sync_top.v</code> — main FSM</td></tr>
+    <tr><td><div class="func-attr">Verif. Gate</div></td>
+      <td>All gates. End-to-end: P3-15A, P3-15D, P3-16A</td></tr>
+  </table>
+</div>
+
+<!-- frame_detector -->
+<div class="func-card" id="fn-frame_detector">
+  <div class="func-name">frame_detector()</div>
+  <div class="func-file">ref/receiver.c — line 327</div>
+  <table>
+    <tr><th width="160">Attribute</th><th>Detail</th></tr>
+    <tr><td><div class="func-attr">Inputs</div></td>
+      <td><code>freqOffsetDataI[], freqOffsetDataQ[]</code>, <code>len</code>, <code>wndLen=25</code>, <code>threshold=40000</code></td></tr>
+    <tr><td><div class="func-attr">Outputs</div></td>
+      <td>Returns <code>indexFrame</code> (first sample of 10-consecutive-hit run), or <code>-1</code></td></tr>
+    <tr><td><div class="func-attr">Algorithm</div></td>
+      <td>
+        1. Sliding window energy: <code>E(j) = (1/W)·Σ(I[i]²+Q[i]²)</code> for i∈[j,j+W)<br>
+        2. Case 1 (starts below threshold): count consecutive above-threshold windows; return start of 10-run.<br>
+        3. Case 2 (starts above threshold): skip initial above-threshold segment, then Case 1 logic.
+      </td></tr>
+    <tr><td><div class="func-attr">Mathematical</div></td>
+      <td>Energy envelope detector. Finds burst rising edge via 10-consecutive-window confirmation.</td></tr>
+    <tr><td><div class="func-attr">RTL Equivalent</div></td>
+      <td><code>frame_detector.v</code> → <code>sample_power_sq.v</code> + <code>sliding_window_sum.v</code> + <code>frame_detect_fsm.v</code></td></tr>
+    <tr><td><div class="func-attr">Verif. Gate</div></td>
+      <td>P3-12B, P3-12C, P3-14C</td></tr>
+  </table>
+</div>
+
+<!-- VanDeBeekAutoCorrelation -->
+<div class="func-card" id="fn-vdb">
+  <div class="func-name">VanDeBeekAutoCorrelation()</div>
+  <div class="func-file">ref/receiver.c — line 556</div>
+  <table>
+    <tr><th width="160">Attribute</th><th>Detail</th></tr>
+    <tr><td><div class="func-attr">Inputs</div></td>
+      <td><code>rxI[], rxQ[]</code>, <code>frameStart</code>, output arrays <code>autoCorrOutI[], autoCorrOutQ[]</code> length NSC</td></tr>
+    <tr><td><div class="func-attr">Outputs</div></td>
+      <td><code>autoCorrOutI/Q[]</code> (Re/Im of P(d) for d=0..NSC-1), returns <code>peakIndexAuto</code></td></tr>
+    <tr><td><div class="func-attr">Algorithm</div></td>
+      <td>
+        1. Calls <code>auto_corr()</code> to compute P(d), R(d) for d=0..NSC-1.<br>
+        2. Computes M(d) = 2·|P(d)| − R(d).<br>
+        3. Returns <code>find_max_index(M, NSC)</code>.
+      </td></tr>
+    <tr><td><div class="func-attr">Mathematical</div></td>
+      <td>Van de Beek timing estimator variant: maximizes normalized CP autocorrelation metric.</td></tr>
+    <tr><td><div class="func-attr">RTL Equivalent</div></td>
+      <td><code>streaming_cp_autocorr.v</code> + <code>timing_metric_core.v</code> + <code>peak_detector.v</code></td></tr>
+    <tr><td><div class="func-attr">Verif. Gate</div></td>
+      <td>P3-14C, P3-15A, P3-15C, P3-15D — <span class="badge badge-warn">ISSUE-002</span> edge failures</td></tr>
+  </table>
+</div>
+
+<!-- auto_corr -->
+<div class="func-card" id="fn-auto_corr">
+  <div class="func-name">auto_corr()</div>
+  <div class="func-file">ref/receiver.c — line 571</div>
+  <table>
+    <tr><th width="160">Attribute</th><th>Detail</th></tr>
+    <tr><td><div class="func-attr">Inputs</div></td>
+      <td><code>inI[], inQ[]</code>, output <code>outI[], outQ[]</code>, <code>normalizedValue[]</code>, <code>nFFT=256</code>, <code>cpLen=32</code></td></tr>
+    <tr><td><div class="func-attr">Outputs</div></td>
+      <td>For m=0..255: Re(P(m)), Im(P(m)), R(m)</td></tr>
+    <tr><td><div class="func-attr">Algorithm</div></td>
+      <td>
+        For each lag m, accumulate over i=0..31:<br>
+        <code>outI[m] += I[i+m]·I[i+m+N] + Q[i+m]·Q[i+m+N]</code><br>
+        <code>outQ[m] += −I[i+m]·Q[i+m+N] + Q[i+m]·I[i+m+N]</code><br>
+        <code>normVal[m] += |r[i+m+N]|² + |r[i+m]|²</code>
+      </td></tr>
+    <tr><td><div class="func-attr">Mathematical</div></td>
+      <td>P(m) = Σ r[i+m]·conj(r[i+m+N]) ; R(m) = Σ(|r[i+m+N]|²+|r[i+m]|²)</td></tr>
+    <tr><td><div class="func-attr">RTL Equivalent</div></td>
+      <td><code>streaming_cp_autocorr.v</code>: <code>delay_sample.v</code>(1cy) + <code>complex_mult.v</code>(3cy) + <code>moving_avg_optimized.v</code>×3(4cy each)</td></tr>
+    <tr><td><div class="func-attr">Verif. Gate</div></td>
+      <td>P3-24a/b/c, P3-14C, P3-15A</td></tr>
+  </table>
+</div>
+
+<!-- apply_carrier_freq_offset -->
+<div class="func-card" id="fn-apply_cfo">
+  <div class="func-name">apply_carrier_freq_offset()</div>
+  <div class="func-file">ref/receiver.c — line 443</div>
+  <table>
+    <tr><th width="160">Attribute</th><th>Detail</th></tr>
+    <tr><td><div class="func-attr">Inputs</div></td>
+      <td><code>freq_offset</code> (Hz), <code>phase</code> (rad), <code>freq_sampling</code> (Hz), <code>startPoint</code>, <code>lenIN</code>, in-place <code>outFadedI[], outFadedQ[]</code></td></tr>
+    <tr><td><div class="func-attr">Algorithm</div></td>
+      <td>
+        For j=0..lenIN-1:<br>
+        <code>rotI=cos(2π·f·(j+start)/fs+φ) ; rotQ=sin(...)</code><br>
+        <code>y_I[j]=rotI·x_I[j]−rotQ·x_Q[j]</code><br>
+        <code>y_Q[j]=rotI·x_Q[j]+rotQ·x_I[j]</code>
+      </td></tr>
+    <tr><td><div class="func-attr">Mathematical</div></td>
+      <td>Complex rotation by exp(+j·2π·f·n/fs). Called with f=−ε_frac·fs/NSC (Stage 3) and f=−k_int·fs/NSC (Stage 7). Net: y[n]=x[n]·exp(−j·2π·ε·n/NSC).</td></tr>
+    <tr><td><div class="func-attr">RTL Equivalent</div></td>
+      <td><code>nco_phase_gen.v</code> + <code>cordic_atan2.v</code> (rotator) + <code>complex_mult_iq.v</code> <span class="badge badge-fail">ISSUE-001</span></td></tr>
+    <tr><td><div class="func-attr">Verif. Gate</div></td>
+      <td>P3-14C, P3-15A, P3-15C, P3-15D</td></tr>
+  </table>
+</div>
+
+<!-- carrierFreqOffsetEstMeyr -->
+<div class="func-card" id="fn-meyr">
+  <div class="func-name">carrierFreqOffsetEstMeyr()</div>
+  <div class="func-file">ref/receiver.c — line 498</div>
+  <table>
+    <tr><th width="160">Attribute</th><th>Detail</th></tr>
+    <tr><td><div class="func-attr">Inputs</div></td>
+      <td><code>rxI[], rxQ[]</code> (frac-corrected), <code>mUI[], mUQ[]</code> (PSS ref), <code>goldUI[], goldUQ[]</code> (SSS ref), <code>slotStartIndex</code>, FFTW plans</td></tr>
+    <tr><td><div class="func-attr">Outputs</div></td>
+      <td>Returns integer CFO in subcarrier bins: <code>k_int = peakIndexMeyr − 255</code></td></tr>
+    <tr><td><div class="func-attr">Algorithm</div></td>
+      <td>
+        1. PSS = rxI[slotStart+CP_LEN .. +CP_LEN+NSC−1]; FFT(PSS) natural order.<br>
+        2. SSS = rxI[slotStart+2·CP_LEN+NSC .. +FRAME_LEN−1]; FFT(SSS) natural order.<br>
+        3. term1[j] = FFT(PSS)[j]×conj(FFT(SSS)[j]).<br>
+        4. term2[j] = mU[j+CP_LEN]×conj(goldU[j+CP_LEN]).<br>
+        5. Cross-correlate term1 vs term2 via fft_correlation_Meyr() → 511-element output.<br>
+        6. peakIndexMeyr = argmax |corr|². k_int = peak − 255.
+      </td></tr>
+    <tr><td><div class="func-attr">Mathematical</div></td>
+      <td>Meyr integer CFO estimator: frequency offset causes cyclic shift in the cross-correlation peak.</td></tr>
+    <tr><td><div class="func-attr">RTL Equivalent</div></td>
+      <td><code>meyr_integer_cfo_fft_frontend_top.v</code> → <code>fft256_dual_symbol_frontend.v</code> + <code>meyr_pss_sss_product_gen.v</code> + <code>meyr_integer_cfo_core.v</code></td></tr>
+    <tr><td><div class="func-attr">Verif. Gate</div></td>
+      <td>P3-14C, P3-15A, session_J</td></tr>
+  </table>
+</div>
+
+<!-- fft_correlation_Meyr -->
+<div class="func-card" id="fn-fft_corr">
+  <div class="func-name">fft_correlation_Meyr()</div>
+  <div class="func-file">ref/receiver.c — line 458</div>
+  <table>
+    <tr><th width="160">Attribute</th><th>Detail</th></tr>
+    <tr><td><div class="func-attr">Inputs</div></td>
+      <td><code>inI1[], inQ1[]</code> (term2/ref), <code>inI2[], inQ2[]</code> (term1/received), NSC each; 512-pt FFTW plans</td></tr>
+    <tr><td><div class="func-attr">Outputs</div></td>
+      <td>511-element linear cross-correlation <code>outI[], outQ[]</code></td></tr>
+    <tr><td><div class="func-attr">Algorithm</div></td>
+      <td>Zero-pad to 512 → FFT both → outFreq[i]=conj(FFT(term2)[i])×FFT(term1)[i] → IFFT → rearrange lags → normalize /2N</td></tr>
+    <tr><td><div class="func-attr">Mathematical</div></td>
+      <td>corr[p] = Σ_n term1[n]·conj(term2[n−p]) — efficient via FFT convolution theorem</td></tr>
+    <tr><td><div class="func-attr">RTL Equivalent</div></td>
+      <td><code>meyr_integer_cfo_core.v</code> — direct-lag fixed-point accumulation (not FFT-based). Both should produce same peak index.</td></tr>
+    <tr><td><div class="func-attr">Note</div></td>
+      <td><span class="badge badge-warn">DIFFERENCE</span> C uses FFT correlation; RTL uses direct-lag. Functional peak should match; off-peak precision may differ.</td></tr>
+  </table>
+</div>
+
+<!-- find_peak_index -->
+<div class="func-card" id="fn-peak">
+  <div class="func-name">find_peak_index() / find_max_index()</div>
+  <div class="func-file">ref/receiver.c — lines 543, 585</div>
+  <table>
+    <tr><th width="160">Attribute</th><th>Detail</th></tr>
+    <tr><td><div class="func-attr">find_peak_index</div></td>
+      <td>Power-based argmax: max I²+Q² over 511 elements. Returns index of Meyr correlation peak.</td></tr>
+    <tr><td><div class="func-attr">find_max_index</div></td>
+      <td>Value-based argmax over float array. Returns index of timing metric M(d) peak.</td></tr>
+    <tr><td><div class="func-attr">RTL Equivalent</div></td>
+      <td><code>peak_detector.v</code> (timing metric argmax) and argmax logic inside <code>meyr_integer_cfo_core.v</code></td></tr>
+    <tr><td><div class="func-attr">Verif. Risk</div></td>
+      <td>Tie-breaking at near-equal M(d) values may produce ±1 lag difference between float and fixed-point. Likely cause of ISSUE-002.</td></tr>
+  </table>
+</div>
+
+<!-- fft_without_rearrange -->
+<div class="func-card" id="fn-fft">
+  <div class="func-name">fft_without_rearrange()</div>
+  <div class="func-file">ref/signal_processing_common.c — line 301</div>
+  <table>
+    <tr><th width="160">Attribute</th><th>Detail</th></tr>
+    <tr><td><div class="func-attr">Inputs</div></td>
+      <td><code>inCmplx[]</code> (float complex), <code>len=256</code>, FFTW plan</td></tr>
+    <tr><td><div class="func-attr">Outputs</div></td>
+      <td><code>outI[], outQ[]</code> in natural (bit-reversed) order, scaled by 1/√256</td></tr>
+    <tr><td><div class="func-attr">Algorithm</div></td>
+      <td>FFTW forward DFT 256-pt. No fftshift. Scale 1/16.</td></tr>
+    <tr><td><div class="func-attr">RTL Equivalent</div></td>
+      <td><code>fft256_xilinx_wrapper.v</code> — Xilinx FFT IP natural order; behavioral stub (USE_BEHAVIORAL_STUB=3)</td></tr>
+    <tr><td><div class="func-attr">Coverage gate</div></td>
+      <td><span class="badge badge-pass">DOC-002 PASS</span> 2026-06-03: 3-vector comparison (impulse, tone, PRNG). Behavioral DFT (USE_BEHAVIORAL_STUB=3), unscaled. V0 max_err=0; V1/V2 max_err=1 LSB. <strong>Caveat:</strong> behavioral stub is unscaled (no ÷16); real Xilinx IP scales by 1/16 via SCALE_SCH=0xAA. Real-FFT confirmation requires xsim (P3-25B).</td></tr>
+  </table>
+</div>
+
+<!-- m_seq / gold_seq -->
+<div class="func-card" id="fn-seq">
+  <div class="func-name">m_seq() / gold_seq()</div>
+  <div class="func-file">ref/signal_processing_common.c — lines 216, 236</div>
+  <table>
+    <tr><th width="160">Attribute</th><th>Detail</th></tr>
+    <tr><td><div class="func-attr">m_seq</div></td>
+      <td>GF(2) shift register: x[i]=(x[i-3]+x[i-7]) mod 2; len=127, Nid_2=2. BPSK scaled √(NSC/len).</td></tr>
+    <tr><td><div class="func-attr">gold_seq</div></td>
+      <td>Product of two m-sequences with offsets m0=15·⌊Nid_1/112⌋+5·Nid_2, m1=Nid_1 mod 112. Nid_1=170.</td></tr>
+    <tr><td><div class="func-attr">RTL Equivalent</div></td>
+      <td>Pre-computed ROM: <code>vectors/meyr_pss_reference_romhex.txt</code> + <code>vectors/meyr_sss_reference_romhex.txt</code></td></tr>
+    <tr><td><div class="func-attr">ROM verification</div></td>
+      <td><span class="badge badge-pass">DOC-003 PASS</span> 2026-06-03: 256/256 PSS, 256/256 SSS entries match generator. ROM is stimulus-derived (bypass mode): PSS_rom = PSS_td × conj(SSS_td) normalized Q1.15; SSS_rom = all {I=+32767, Q=0}. SEED=0xC0FFEE, NSC=256, CP_LEN=32.</td></tr>
+  </table>
+</div>
+
+<hr>
+
+<!-- ══════════════════════════════════════════════════════════════════ -->
+<h1 id="s4">4. Algorithm Stage Breakdown</h1>
+
+<table>
+  <tr>
+    <th>Stage</th>
+    <th>C Reference Function</th>
+    <th>Algorithm Role</th>
+    <th>RTL Module</th>
+    <th>Gate</th>
+    <th>Status</th>
+    <th>Risk</th>
+  </tr>
+  <tr class="row-pass">
+    <td><strong>Stage 0</strong><br>Frame Detection</td>
+    <td><code>frame_detector()</code><br>receiver.c:327</td>
+    <td>25-sample sliding energy; 10-hit counter; Case1/Case2</td>
+    <td><code>frame_detector.v</code> → <code>sample_power_sq.v</code> + <code>sliding_window_sum.v</code> + <code>frame_detect_fsm.v</code></td>
+    <td>P3-12B/C, P3-14C</td>
+    <td><span class="badge badge-pass">PASS</span></td>
+    <td>Low</td>
+  </tr>
+  <tr class="row-warn">
+    <td><strong>Stage 1</strong><br>CP Autocorrelation &amp; Timing</td>
+    <td><code>VanDeBeekAutoCorrelation()</code><br><code>auto_corr()</code><br>receiver.c:556,571</td>
+    <td>P(d), R(d) accumulation; M(d)=2|P|−R; argmax d_peak</td>
+    <td><code>streaming_cp_autocorr.v</code> + <code>timing_metric_core.v</code> + <code>peak_detector.v</code></td>
+    <td>P3-14C, P3-15A, P3-15D</td>
+    <td><span class="badge badge-warn">ISSUE-002</span></td>
+    <td>Medium — float/fixed tie-break</td>
+  </tr>
+  <tr class="row-warn">
+    <td><strong>Stage 2</strong><br>Frac CFO Estimation</td>
+    <td>Inline in <code>synchronization()</code><br>receiver.c:296</td>
+    <td>ε_frac = −atan2(Im(P(d_peak)),Re(P(d_peak)))/2π</td>
+    <td><code>frac_cfo_estimator.v</code> + <code>cordic_atan2.v</code></td>
+    <td>P3-14C, P3-15A, P3-15D</td>
+    <td><span class="badge badge-warn">ISSUE-002</span></td>
+    <td>Medium — CORDIC ±1LSB Q1.15</td>
+  </tr>
+  <tr class="row-warn">
+    <td><strong>Stage 3</strong><br>Frac CFO Correction</td>
+    <td><code>apply_carrier_freq_offset()</code><br>receiver.c:443 (1st call)</td>
+    <td>y[n]=x[n]·exp(−j·2π·ε·n/NSC) per sample</td>
+    <td><code>frac_cfo_corrector_top.v</code> → <code>nco_phase_gen.v</code> + <code>complex_mult_iq.v</code></td>
+    <td>P3-14C, P3-15A, P3-16A</td>
+    <td><span class="badge badge-fail">ISSUE-001</span></td>
+    <td><strong style="color:var(--red)">CRITICAL — backpressure broken</strong></td>
+  </tr>
+  <tr class="row-crit">
+    <td><strong>Stage 4</strong><br>PSS/SSS Extraction</td>
+    <td>Array offsets in <code>carrierFreqOffsetEstMeyr()</code><br>receiver.c:516,519</td>
+    <td>PSS: [slotStart+32..+287]; SSS: [slotStart+320..+575]</td>
+    <td><code>pss_sss_symbol_extractor.v</code></td>
+    <td>P3-14B, P3-15A, P3-16A</td>
+    <td><span class="badge badge-block">BLOCKED</span></td>
+    <td><strong style="color:var(--red)">CRITICAL — SSS deadlock (ISSUE-001)</strong></td>
+  </tr>
+  <tr class="row-pass">
+    <td><strong>Stage 5</strong><br>FFT Frontend</td>
+    <td><code>fft_without_rearrange()</code><br>s_p_common.c:301</td>
+    <td>256-pt DFT of PSS then SSS; natural order; scale 1/√256</td>
+    <td><code>meyr_integer_cfo_fft_frontend_top.v</code> → <code>fft256_dual_symbol_frontend.v</code> → <code>fft256_xilinx_wrapper.v</code></td>
+    <td>P3-13E, P3-15A, XIP-001, XIP-002</td>
+    <td><span class="badge badge-pass">PASS</span></td>
+    <td>DOC-002 PASS (behavioral DFT 2026-06-03). <span class="badge badge-pass">XIP-001 PASS_VIVADO_XSIM_REAL_IP</span> — 6/6 direct wrapper cases, max_err ≤2 LSB. <span class="badge badge-pass">XIP-002 PASS_VIVADO_XSIM_REAL_IP</span> — PSS+SSS dual-symbol frontend, bin 8 tone check. Scale factor confirmed 1/256 (SCALE_SCH=0xAA, 8 radix-2 stages). 2026-06-03.</td>
+  </tr>
+  <tr class="row-pass">
+    <td><strong>Stage 6</strong><br>Meyr Integer CFO</td>
+    <td><code>carrierFreqOffsetEstMeyr()</code><br><code>fft_correlation_Meyr()</code><br><code>find_peak_index()</code></td>
+    <td>term1×conj(term2) cross-corr; argmax → k_int=peak−255</td>
+    <td><code>meyr_pss_sss_product_gen.v</code> + <code>meyr_integer_cfo_core.v</code></td>
+    <td>P3-15A, session_J, P3-25B, XIP-003</td>
+    <td><span class="badge badge-pass">PASS</span></td>
+    <td>DOC-003 ROM PASS. J1 13/13 PASS. P3-25B <span class="badge badge-pass">PASS_VIVADO_XSIM_REAL_IP</span> (9/9, 2026-06-01). <span class="badge badge-pass">XIP-003 PASS_VIVADO_XSIM_REAL_IP</span> — 9/9 k_int cases (0,±1,±2,±4,±8, 2026-06-04). Tier-2 (±16..±128) PENDING_GOLDEN_VECTORS.</td>
+  </tr>
+  <tr class="row-crit">
+    <td><strong>Stage 7</strong><br>Replay + Integer CFO Corr.</td>
+    <td><code>apply_carrier_freq_offset()</code><br>receiver.c:307 (2nd call)</td>
+    <td>Re-feed frac-corrected IQ through NCO at k_int step</td>
+    <td><code>iq_replay_buffer_576.v</code> + 2nd <code>frac_cfo_corrector_top.v</code></td>
+    <td>P3-14B, P3-16A</td>
+    <td><span class="badge badge-block">BLOCKED</span></td>
+    <td><strong style="color:var(--red)">CRITICAL — depends on ISSUE-001 fix</strong></td>
+  </tr>
+  <tr class="row-pass">
+    <td><strong>Stage 8</strong><br>AXI-S Output</td>
+    <td>return <code>slotStartIndex</code></td>
+    <td>Emit corrected frame; assert INT_CFO_APPLIED flag</td>
+    <td><code>phase3_sync_axis_dma_wrapper.v</code> + <code>phase3_axi_lite_regs.v</code></td>
+    <td>P3-20A, P3-22A, P3-23A</td>
+    <td><span class="badge badge-pass">PASS</span></td>
+    <td>Low</td>
+  </tr>
+</table>
+
+<hr>
+
+<!-- ══════════════════════════════════════════════════════════════════ -->
+<h1 id="s5">5. Mathematical Formulation</h1>
+
+<h3 id="m-frame">5.1 Frame Detection — Energy Envelope</h3>
+<p>Sliding window average energy at position j:</p>
+<div class="eq">
+  E(j) = (1/W) × Σ<sub>i=j</sub><sup>j+W−1</sup> (I[i]² + Q[i]²) &nbsp;&nbsp;&nbsp; W = 25
+</div>
+<p>Frame start criterion (10-consecutive-hit rule):</p>
+<div class="eq">
+  frameStart = min { j : E(j+k) &gt; θ  for all k = 0..9 }
+  &nbsp;&nbsp;&nbsp; θ = 40000 (float) = 10,240,000 × Q1.15 scale
+</div>
+<div class="callout">
+  <strong style="color:var(--amber)">RTL note:</strong> The RTL pre-multiplies threshold by window_len to avoid division:
+  <code>thresh_mult = threshold_in × window_len_in</code>.
+  Case 1 and Case 2 are both implemented in <code>frame_detect_fsm.v</code>.
+</div>
+
+<h3 id="m-cp">5.2 CP Autocorrelation</h3>
+<p>For symbol boundary lag d (d = 0..255):</p>
+<div class="eq">
+  P(d) = Σ<sub>i=0</sub><sup>31</sup> r[i+d] × conj(r[i+d+N]) &nbsp;&nbsp; N=256, CP_LEN=32
+</div>
+<p>In real arithmetic (C reference):</p>
+<div class="eq">
+  Re(P(d)) = Σ [ I[i+d]·I[i+d+N] + Q[i+d]·Q[i+d+N] ]<br>
+  Im(P(d)) = Σ [ −I[i+d]·Q[i+d+N] + Q[i+d]·I[i+d+N] ]
+</div>
+<p>Energy normalization:</p>
+<div class="eq">
+  R(d) = Σ<sub>i=0</sub><sup>31</sup> (|r[i+d+N]|² + |r[i+d]|²)
+</div>
+
+<h3 id="m-timing">5.3 Van de Beek Timing Metric</h3>
+<div class="eq">
+  M(d) = 2 × |P(d)| − R(d)
+  &nbsp;&nbsp;&nbsp; d_peak = argmax<sub>d=0..255</sub> M(d)
+</div>
+<p>At perfect timing, |P(d_peak)| ≈ R(d_peak)/2, so M(d_peak) ≈ 0.
+The argmax finds the OFDM symbol boundary in the received stream.</p>
+
+<h3 id="m-frac">5.4 Fractional CFO Estimation</h3>
+<div class="eq">
+  ε_frac = −∠P(d_peak) / (2π) = −atan2(Im(P(d_peak)), Re(P(d_peak))) / (2π)
+</div>
+<p>Units: normalized frequency (subcarrier bins). Range: (−0.5, +0.5).</p>
+<div class="callout">
+  <strong style="color:var(--amber)">RTL encoding:</strong> <code>frac_phase</code> is Q1.15 signed 16-bit.
+  <code>frac_phase = 0x7FFF</code> corresponds to +π radians.
+  CORDIC latency: 15 pipeline stages + 2 FSM overhead = 17 cycles.
+</div>
+
+<h3 id="m-corr">5.5 CFO Correction (Fractional and Integer)</h3>
+<div class="eq">
+  y[n] = x[n] × exp(−j × 2π × ε × n / NSC)
+  &nbsp;&nbsp;&nbsp; ε = ε_frac (Stage 3) or ε = k_int (Stage 7)
+</div>
+<p>RTL NCO implementation:</p>
+<div class="eq">
+  phase[n] = (phase[n−1] + step) mod 2³²<br>
+  rotI[n] = cos(2π × phase[n] / 2³²) &nbsp;&nbsp;&nbsp; rotQ[n] = sin(2π × phase[n] / 2³²)<br>
+  y_I[n] = x_I[n]·rotI[n] − x_Q[n]·rotQ[n]<br>
+  y_Q[n] = x_Q[n]·rotI[n] + x_I[n]·rotQ[n]
+</div>
+<p>Integer CFO step word:</p>
+<div class="eq">
+  step = −k_int × 2<sup>32 − log₂(NSC)</sup> = −k_int × 2²⁴ &nbsp;&nbsp; (NSC=256)
+</div>
+
+<h3 id="m-extract">5.6 PSS/SSS Extraction Boundaries</h3>
+<p>From slotStartIndex (= frameStart + d_peak) in C reference:</p>
+<div class="eq">
+  PSS: rxI[slotStart+CP_LEN .. slotStart+CP_LEN+NSC−1] = [slotStart+32 .. slotStart+287]<br>
+  SSS: rxI[slotStart+2·CP_LEN+NSC .. slotStart+FRAME_LEN−1] = [slotStart+320 .. slotStart+575]
+</div>
+<p>RTL extractor counts from frac-corrected stream output sample 0 (stream begins at detected slot start):</p>
+<div class="eq">
+  PSS window: corrected output samples [32 .. 287] &nbsp; (PSS_OFFSET = CP_LEN = 32)<br>
+  SSS window: corrected output samples [320 .. 575] &nbsp; (SSS_OFFSET = 2·CP_LEN+NSC = 320)
+</div>
+
+<h3 id="m-meyr">5.7 Meyr Integer CFO Estimation</h3>
+<p><strong>Received cross-product (term1):</strong></p>
+<div class="eq">
+  ĜPSS[k] = DFT{PSS_time}[k] &nbsp; ĜSSS[k] = DFT{SSS_time}[k] &nbsp; (256-pt, natural order)<br>
+  term1[k] = ĜPSS[k] × conj(ĜSSS[k])
+</div>
+<p><strong>Reference cross-product (term2):</strong></p>
+<div class="eq">
+  term2[k] = mU[k+CP_LEN] × conj(goldU[k+CP_LEN]) &nbsp;&nbsp; k=0..255
+</div>
+<p><strong>Cross-correlation and peak decode:</strong></p>
+<div class="eq">
+  corr[p] = Σ<sub>k</sub> term1[k] × conj(term2[k−p]) &nbsp;&nbsp; (linear via zero-pad FFT in C reference)<br><br>
+  p_peak = argmax<sub>p</sub> |corr[p]|²<br>
+  k_int  = p_peak − (NSC−1) = p_peak − 255 &nbsp;&nbsp; range: [−255, +255] bins
+</div>
+
+<hr>
+
+<!-- ══════════════════════════════════════════════════════════════════ -->
+<h1 id="s6">6. Reference vs RTL Implementation Differences</h1>
+
+<table>
+  <tr><th>Aspect</th><th>C Reference (Golden)</th><th>RTL Implementation</th><th>Verification Impact</th></tr>
+  <tr>
+    <td><strong>Arithmetic</strong></td>
+    <td>IEEE-754 float32</td>
+    <td>Fixed-point signed 16-bit I/Q; Q1.15 phase; 32/40/48-bit accumulators</td>
+    <td>Small quantization error expected. Tolerance bounds must be established per stage. ISSUE-002 likely caused by float-vs-fixed tie-breaking near M(d) peak.</td>
+  </tr>
+  <tr>
+    <td><strong>Memory access</strong></td>
+    <td>Random-access float arrays; can revisit any sample without cost</td>
+    <td>AXI-S streaming: samples arrive once in order. Revisiting requires replay buffer (<code>iq_replay_buffer_576.v</code>).</td>
+    <td>Replay buffer correctness is critical for Stage 7. ISSUE-001 in <code>complex_mult_iq.v</code> breaks the backpressure that protects the replay buffer.</td>
+  </tr>
+  <tr>
+    <td><strong>FFT engine</strong></td>
+    <td>FFTW3 256-pt, 1/√N scaling, natural order</td>
+    <td>Xilinx FFT IP 256-pt; behavioral exact DFT stub in iverilog (USE_BEHAVIORAL_STUB=3)</td>
+    <td>Bin ordering must match (both natural order, no rearrange). Scale factor: real Xilinx IP = 1/256 (SCALE_SCH=0xAA, 8 radix-2 stages each ÷2). XIP-001 PASS (6/6 direct wrapper cases, max_err ≤2 LSB). XIP-002 PASS (PSS+SSS dual-symbol, tone k=8 confirmed). 2026-06-03.</td>
+  </tr>
+  <tr>
+    <td><strong>Phase computation</strong></td>
+    <td><code>atan2(Q, I)</code> — math.h float, exact IEEE-754</td>
+    <td><code>cordic_atan2.v</code> — 15-stage CORDIC, Q1.15 output</td>
+    <td>CORDIC ±1 LSB of Q1.15. Frac CFO comparison needs tolerance window. Possible source of ISSUE-002 boundary failures.</td>
+  </tr>
+  <tr>
+    <td><strong>Execution model</strong></td>
+    <td>Sequential: each stage completes before next. Entire frame in RAM.</td>
+    <td>Pipeline: stages run concurrently. Timing metadata must be captured and held while stream proceeds.</td>
+    <td>Latency tracking must be verified. Metadata valid-pulse timing must coincide with the correct sample offset in the frac-corrected stream.</td>
+  </tr>
+  <tr>
+    <td><strong>Meyr correlation</strong></td>
+    <td>FFT-based 512-pt cross-correlation (<code>fft_correlation_Meyr()</code>)</td>
+    <td>Direct-lag fixed-point accumulation in <code>meyr_integer_cfo_core.v</code>, ROM-stored term2</td>
+    <td>Same peak index expected. Off-peak precision may differ. Peak index comparison is the functional test.</td>
+  </tr>
+  <tr>
+    <td><strong>AXI-S Backpressure</strong></td>
+    <td>N/A — pure software</td>
+    <td>Valid/ready handshake on all interfaces. Stalls must propagate correctly.</td>
+    <td><span class="badge badge-fail">ISSUE-001</span> <code>complex_mult_iq.v</code> hardwires tready=1. Any downstream stall causes sample loss. P3-16A fails.</td>
+  </tr>
+</table>
+
+<hr>
+
+<!-- ══════════════════════════════════════════════════════════════════ -->
+<h1 id="s7">7. Fixed-Point and Streaming Constraints</h1>
+
+<h3>7.1 Data Widths</h3>
+<table>
+  <tr><th>Signal</th><th>Width</th><th>Encoding</th><th>Notes</th></tr>
+  <tr><td>I, Q samples</td><td>16-bit each, packed 32-bit tdata</td><td>Signed 2's complement</td><td>tdata[15:0]=I, tdata[31:16]=Q (project convention)</td></tr>
+  <tr><td>Frac CFO phase word</td><td>16 bits (PHASE_WIDTH)</td><td>Q1.15 signed; 0x7FFF=+π</td><td>Output of <code>cordic_atan2.v</code> via <code>frac_cfo_estimator.v</code></td></tr>
+  <tr><td>NCO phase accumulator</td><td>32 bits (NCO_PHASE_WIDTH)</td><td>Full circle = 2³² counts</td><td><code>nco_phase_gen.v</code></td></tr>
+  <tr><td>Integer CFO step word</td><td>32 bits signed</td><td>step = −k_int × 2²⁴</td><td>Latched on <code>meyr_done</code> in <code>phase3_sync_top.v</code></td></tr>
+  <tr><td>CP autocorr accumulators</td><td>48 bits (ACC_W)</td><td>Signed</td><td>P_i, P_q, energy in <code>streaming_cp_autocorr.v</code></td></tr>
+  <tr><td>Frame energy accumulator</td><td>40 bits (ENERGY_WIDTH)</td><td>Unsigned</td><td><code>sliding_window_sum.v</code></td></tr>
+  <tr><td>Timing metric</td><td>32 bits (METRIC_WIDTH)</td><td>Signed</td><td><code>timing_metric_core.v</code></td></tr>
+  <tr><td>Peak index (timing)</td><td>9 bits (INDEX_WIDTH)</td><td>Unsigned, range 0..255</td><td><code>peak_detector.v</code> → <code>frac_peak_lag</code></td></tr>
+  <tr><td>Frame index</td><td>12 bits (BUF_AW)</td><td>Unsigned</td><td>Buffer address in IQ frame buffer</td></tr>
+</table>
+
+<h3>7.2 AXI-Stream Handshake</h3>
+<ul>
+  <li>Transfer occurs when <code>tvalid=1</code> AND <code>tready=1</code> simultaneously.</li>
+  <li>Source must hold <code>tdata</code> stable while <code>tvalid=1</code> and <code>tready=0</code>.</li>
+  <li><strong style="color:var(--red)">CRITICAL: <code>complex_mult_iq.v</code> violates this rule (ISSUE-001).</strong></li>
+</ul>
+
+<h3>7.3 Latency Budget</h3>
+<table>
+  <tr><th>Stage</th><th>Module</th><th>Latency</th><th>Notes</th></tr>
+  <tr><td>Frame detection</td><td><code>frame_detector.v</code></td><td>2×search_len + ~8 drain</td><td>2cy/sample (FETCH+PROC), 6-cycle drain</td></tr>
+  <tr><td>CP autocorrelation</td><td><code>streaming_cp_autocorr.v</code></td><td>~8 pipeline cycles</td><td>delay_sample(1) + complex_mult(3) + moving_avg(4)</td></tr>
+  <tr><td>Frac CFO estimation</td><td><code>frac_cfo_estimator.v</code></td><td>17 cycles</td><td>CORDIC 15-stage + 2 FSM</td></tr>
+  <tr><td>Frac CFO correction</td><td><code>frac_cfo_corrector_top.v</code></td><td>1 cycle/sample</td><td>1-cycle registered output in <code>complex_mult_iq.v</code></td></tr>
+  <tr><td>FFT (256-pt)</td><td><code>fft256_xilinx_wrapper.v</code></td><td>IP-dependent (~200+ cy)</td><td>Behavioral stub in iverilog</td></tr>
+  <tr><td>Meyr correlation</td><td><code>meyr_integer_cfo_core.v</code></td><td>NSC × LAG_COUNT</td><td>Direct-lag fixed-point accumulation</td></tr>
+</table>
+
+<h3>7.4 Frame-Level Decision Points</h3>
+<table>
+  <tr><th>Decision</th><th>RTL Signal</th><th>Timing</th></tr>
+  <tr><td>Frame start found</td><td><code>dbg_frame_start_valid</code> (1-cycle pulse)</td><td>After frame_detector completes</td></tr>
+  <tr><td>Peak timing lag d_peak</td><td><code>dbg_peak_index</code> with <code>dbg_peak_valid</code></td><td>Same clock as <code>frac_phase_valid</code></td></tr>
+  <tr><td>Slot start index</td><td><code>dbg_slot_start_index</code> with <code>dbg_slot_start_valid</code></td><td>1 cycle after <code>frac_done</code></td></tr>
+  <tr><td>Frac CFO word</td><td><code>dbg_frac_cfo_word</code> with <code>dbg_frac_cfo_valid</code></td><td>Same clock as <code>frac_phase_valid</code></td></tr>
+  <tr><td>Integer CFO step word</td><td><code>dbg_integer_cfo_word</code> with <code>dbg_integer_cfo_valid</code></td><td>1 cycle after <code>meyr_done</code></td></tr>
+</table>
+
+<hr>
+
+<!-- ══════════════════════════════════════════════════════════════════ -->
+<h1 id="s8">8. Verification Gate Mapping</h1>
+
+<table>
+  <tr>
+    <th>Gate ID</th>
+    <th>Session</th>
+    <th>Gate Name</th>
+    <th>Algorithm Stage</th>
+    <th>C Reference Function</th>
+    <th>Result</th>
+  </tr>
+  <tr class="row-pass"><td>P3-12B</td><td>—</td><td>CI_GATE (7/7)</td>
+    <td>Stage 7: Replay buffer</td><td>Infrastructure</td>
+    <td><span class="badge badge-pass">PASS</span></td></tr>
+  <tr class="row-pass"><td>P3-12C</td><td>—</td><td>CI_GATE (10/10)</td>
+    <td>Stage 7: Replay buffer extended</td><td>Infrastructure</td>
+    <td><span class="badge badge-pass">PASS</span></td></tr>
+  <tr class="row-pass"><td>P3-13E</td><td>session_B3</td><td>FFT_PROTOCOL_GATE (17/17)</td>
+    <td>Stage 5: FFT AXI-S protocol</td><td><code>fft_without_rearrange()</code></td>
+    <td><span class="badge badge-pass">PASS</span></td></tr>
+  <tr class="row-pass"><td>P3-14B</td><td>—</td><td>SANITY+OFFICIAL_GATE (14/14)</td>
+    <td>Stage 7: Replay buffer integration</td><td><code>apply_carrier_freq_offset()</code> 2nd call</td>
+    <td><span class="badge badge-pass">PASS</span></td></tr>
+  <tr class="row-pass"><td>P3-14C</td><td>session_C</td><td>OFFICIAL_GATE (Stages 1-3)</td>
+    <td>Stages 0–3: Frame det, autocorr, frac CFO est+corr</td><td><code>frame_detector()</code>, <code>auto_corr()</code>, atan2, <code>apply_carrier_freq_offset()</code></td>
+    <td><span class="badge badge-pass">PASS</span></td></tr>
+  <tr class="row-pass"><td>P3-15A</td><td>session_D</td><td>SANITY+EQUIV_GATE (6 stages)</td>
+    <td>Stages 0–6: Full equivalence (1 fixed stimulus)</td><td><code>synchronization()</code> end-to-end</td>
+    <td><span class="badge badge-pass">PASS</span> 2026-06-01</td></tr>
+  <tr class="row-pass"><td>P3-15C</td><td>session_D3</td><td>SANITY_ROBUST_EQUIV (5/5)</td>
+    <td>Stages 0–6: 5 varied stimuli</td><td><code>synchronization()</code> end-to-end</td>
+    <td><span class="badge badge-pass">PASS</span> 2026-05-29</td></tr>
+  <tr class="row-crit"><td>P3-15D</td><td>session_D4</td><td>RANDOM_EQUIV (85/100)</td>
+    <td>Stages 1–2: d2_slot_start, d2_frac_cfo metadata</td><td><code>VanDeBeekAutoCorrelation()</code>, inline atan2</td>
+    <td><span class="badge badge-fail">FAIL — ISSUE-002</span></td></tr>
+  <tr class="row-crit"><td>P3-16A</td><td>session_E</td><td>INTEGRATION_GATE</td>
+    <td>Stages 4–8: SSS path end-to-end</td><td><code>synchronization()</code> full</td>
+    <td><span class="badge badge-fail">FAIL — ISSUE-001</span></td></tr>
+  <tr class="row-pass"><td>P3-20A</td><td>session_I</td><td>SANITY_AXI_GATE (37/37)</td>
+    <td>Stage 8: AXI-S backpressure stress</td><td>Protocol compliance</td>
+    <td><span class="badge badge-pass">PASS</span> 2026-05-29</td></tr>
+  <tr class="row-pass"><td>P3-22A</td><td>session_K</td><td>CHANNEL_GATE</td>
+    <td>Stages 0–6: AWGN + multipath robustness</td><td><code>synchronization()</code> under noise</td>
+    <td><span class="badge badge-pass">PASS</span> (SNR≥15dB) · SNR=10dB expected fail</td></tr>
+  <tr class="row-pass"><td>P3-23A</td><td>session_L</td><td>STRESS_GATE (23/23)</td>
+    <td>Stages 0–8: Reset, multi-frame, CFO stress</td><td>Full recovery after reset</td>
+    <td><span class="badge badge-pass">PASS</span> 2026-06-01</td></tr>
+</table>
+
+<div class="callout">
+  <strong style="color:var(--amber)">Coverage gaps identified (from algorithm spec audit):</strong>
+  DOC-001: PASS (2026-06-03) — PSS/SSS boundary gate 17/17. ·
+  DOC-002: PASS (2026-06-03) — FFT bin value gate (behavioral DFT). XIP-001 PASS (6/6 real IP, ≤2 LSB). XIP-002 PASS (PSS+SSS dual-symbol real IP). XIP-003 PASS (9/9 k_int, 2026-06-04). XIP-004 PASS (9/9 full-sync E2E, 2026-06-04). Scale confirmed 1/256. ·
+  DOC-003: PASS (2026-06-03) — Meyr ROM confirmed against generator (bypass/TD cross-product mode).
+  See <a href="issue_tracking.html">issue_tracking.html</a>.
+</div>
+
+<hr>
+
+<!-- ══════════════════════════════════════════════════════════════════ -->
+<h1 id="s9">9. Known Open Functional Risks</h1>
+
+<div class="callout-crit">
+  <h3>ISSUE-001 (CRITICAL) — complex_mult_iq.v: Backpressure Ignored</h3>
+  <p><strong>Location:</strong> <code>rtl/complex_mult_iq.v</code>, lines 44–45</p>
+  <pre>    assign s_axis_a_tready = 1'b1;   // line 44 — HARDWIRED — BUG
+    assign s_axis_b_tready = 1'b1;   // line 45 — HARDWIRED — BUG</pre>
+  <p><strong>Root cause:</strong> Output register updates unconditionally every cycle. Any downstream <code>m_axis_tready=0</code> stall causes data to be overwritten before it is consumed.</p>
+  <p><strong>SSS deadlock sequence:</strong></p>
+  <ol>
+    <li><code>s_axis_a_tready=1</code> always → upstream blasts all 576 frac-corrected samples in ~1152 cycles.</li>
+    <li>PSS/SSS extractor enters SSS_FILL at sample 320 and asserts <code>frac_m_tready=0</code> while holding PSS.</li>
+    <li>But the corrector does not stall — samples 321–575 (SSS) are silently dropped.</li>
+    <li>SSS_FILL receives sample 320 (in_cnt=0) then s_valid=0 permanently → <strong>deadlock</strong>.</li>
+    <li>P3-16A INTEGRATION_GATE: FAIL.</li>
+  </ol>
+  <p><strong>Planned fix (NOT YET APPLIED):</strong></p>
+  <pre>    assign s_axis_a_tready = !m_axis_tvalid || m_axis_tready;
+    assign s_axis_b_tready = s_axis_a_tready;
+    // Gate output register:
+    always @(posedge aclk) begin
+        if (m_axis_tready || !m_axis_tvalid) begin
+            m_axis_tvalid &lt;= s_axis_a_tvalid &amp;&amp; s_axis_b_tvalid;
+            m_axis_tdata  &lt;= { out_Q_shifted[...], out_I_shifted[...] };
+        end
+    end
+    // Also gate NCO phase advance in nco_phase_gen.v</pre>
+  <p><strong>Algorithm mismatch:</strong> C reference accesses <code>rxI[slotStart+320..575]</code> directly. RTL must stream SSS in order — dropped samples cannot be recovered.</p>
+</div>
+
+<div class="callout-warn">
+  <h3>ISSUE-002 (MEDIUM) — P3-15D Random Equivalence: 15% Metadata Failures</h3>
+  <p><strong>Observed:</strong> session_D4_p3_15d: 85/100 PASS, 15 failures in <code>d2_slot_start</code> and/or <code>d2_frac_cfo</code> fields.
+  D3 IQ body comparison always PASS (max_err=0).</p>
+  <p><strong>Example:</strong> case_015 — pre_zeros=60, eps_frac=−0.0724, k_int=0, snr=42.7dB.</p>
+  <p><strong>Hypotheses:</strong></p>
+  <ul>
+    <li><strong>A — Timing boundary:</strong> Near-equal M(d) at two lags. Float C reference and fixed-point RTL argmax resolve tie differently by ±1 sample.</li>
+    <li><strong>B — CORDIC quantization:</strong> CORDIC ±1 LSB in Q1.15 phase word pushes frac_cfo comparison outside tolerance window at boundary epsilon values.</li>
+    <li><strong>C — Comparison tolerance:</strong> Script uses exact equality; 1-LSB discrepancy in Q1.15 causes comparison failure even though RTL data output is correct.</li>
+  </ul>
+  <p><strong>Status:</strong> Root cause NOT YET DETERMINED. NOT YET FIXED. Diagnose by diffing failing case_NNN_meta.json D2 fields.</p>
+</div>
+
+<div class="callout">
+  <strong style="color:var(--amber)">DOC-003 — Meyr ROM Migration Risk:</strong>
+  <code>meyr_integer_cfo_core.v</code> comment states "STEP 31 LIMITATION: term2 is a synthetic XOR-shift32 PRNG ROM."
+  ROM file parameters (<code>PSS_ROM_FILE</code>, <code>SSS_ROM_FILE</code>) point to <code>vectors/</code> files,
+  but no gate has confirmed they match C-generated <code>m_seq()/gold_seq()</code> values for Nid_1=170, Nid_2=2.
+</div>
+
+<hr>
+
+<!-- ══════════════════════════════════════════════════════════════════ -->
+<h1 id="s10">10. RTL Functionality Verification Checklist</h1>
+
+<table>
+  <tr><th>#</th><th>Check</th><th>Status</th><th>Gate</th></tr>
+  <tr class="row-pass">
+    <td>1</td>
+    <td>Frame detector output (frame_index) matches C reference <code>frame_detector()</code> result?</td>
+    <td><span class="badge badge-pass">PASS</span></td>
+    <td>P3-14C, P3-15A</td>
+  </tr>
+  <tr class="row-warn">
+    <td>2</td>
+    <td>Peak timing index (d_peak = peak_lag) matches C reference <code>VanDeBeekAutoCorrelation()</code>?</td>
+    <td><span class="badge badge-warn">WARN — 15% edge failures</span></td>
+    <td>P3-15D (ISSUE-002)</td>
+  </tr>
+  <tr class="row-warn">
+    <td>3</td>
+    <td>Frac CFO word matches C reference <code>−atan2(Q,I)/(2π)</code> within Q1.15 tolerance?</td>
+    <td><span class="badge badge-warn">WARN — 15% edge failures</span></td>
+    <td>P3-15D (ISSUE-002)</td>
+  </tr>
+  <tr class="row-pass">
+    <td>4</td>
+    <td>Frac-corrected IQ matches C reference <code>apply_carrier_freq_offset()</code> within fixed-point tolerance (max_err=0)?</td>
+    <td><span class="badge badge-pass">PASS</span></td>
+    <td>P3-15A, P3-15C, P3-15D (D3 body)</td>
+  </tr>
+  <tr class="row-crit">
+    <td>5</td>
+    <td>PSS/SSS extraction uses same symbol boundaries as C reference (PSS: +CP_LEN, SSS: +2·CP_LEN+NSC)?</td>
+    <td><span class="badge badge-block">BLOCKED</span></td>
+    <td>P3-16A blocked by ISSUE-001; DOC-001</td>
+  </tr>
+  <tr class="row-warn">
+    <td>6</td>
+    <td>FFT output bin ordering matches C reference natural order (no fftshift)?</td>
+    <td><span class="badge badge-unconf">UNCONFIRMED</span></td>
+    <td>P3-13E (protocol only); DOC-002</td>
+  </tr>
+  <tr class="row-pass">
+    <td>7</td>
+    <td>Meyr integer CFO peak index matches C reference <code>carrierFreqOffsetEstMeyr()</code>?</td>
+    <td><span class="badge badge-pass">PASS</span></td>
+    <td>session_J J1 PASS 13/13 (k_int {0,±1,±2,±4,±8,±12,±16}) — 2026-06-03. ROM parameter plumbing bug fixed.</td>
+  </tr>
+  <tr class="row-pass">
+    <td>8</td>
+    <td>Replay buffer preserves sample order and count (576 samples, no gaps)?</td>
+    <td><span class="badge badge-pass">PASS</span></td>
+    <td>P3-12B, P3-12C, P3-14B</td>
+  </tr>
+  <tr class="row-crit">
+    <td>9</td>
+    <td>AXI valid/ready preserves data integrity under downstream stall (no sample loss)?</td>
+    <td><span class="badge badge-fail">FAIL</span></td>
+    <td>P3-16A FAIL (ISSUE-001)</td>
+  </tr>
+  <tr class="row-pass">
+    <td>10</td>
+    <td>Reset recovers cleanly (no FSM hang, no stale metadata)?</td>
+    <td><span class="badge badge-pass">PASS</span></td>
+    <td>P3-23A (L1–L4 reset scenarios)</td>
+  </tr>
+</table>
+
+<hr>
+
+<!-- ══════════════════════════════════════════════════════════════════ -->
+<h1 id="s11">11. Recommended Next Verification Steps</h1>
+
+<div class="step-card step-crit">
+  <div class="step-num">Step 1 — CRITICAL BLOCKER</div>
+  <p><strong>Fix ISSUE-001 in <code>rtl/complex_mult_iq.v</code>.</strong><br>
+  Implement proper backpressure: <code>s_axis_a_tready = !m_axis_tvalid || m_axis_tready</code>.
+  Gate output register on <code>m_axis_tready || !m_axis_tvalid</code>.
+  Gate NCO phase advance in <code>nco_phase_gen.v</code> to keep phase coherent on stall/resume.<br>
+  <strong>Protocol:</strong> update <code>reports/issue_tracking.html</code> BEFORE modifying RTL; update <code>reports/current_status.html</code> AFTER simulation passes.</p>
+</div>
+
+<div class="step-card">
+  <div class="step-num">Step 2</div>
+  <p><strong>Re-run P3-16A integration gate</strong> after ISSUE-001 fix.<br>
+  Expected: SSS_FILL deadlock resolved. INTEGRATION_GATE transitions FAIL → PASS.
+  If further stalls surface, trace all AXI-S ready backpropagation paths.</p>
+</div>
+
+<div class="step-card">
+  <div class="step-num">Step 3</div>
+  <p><strong>Re-run P3-15D random equivalence gate</strong> (100 cases).<br>
+  If 15 failures persist after ISSUE-001 fix: diff case_NNN_meta.json d2_slot_start and d2_frac_cfo against C reference.
+  Check if failures cluster at peak_lag boundaries (near-equal M(d) values).
+  Widen comparison tolerance or add tie-break logic in <code>peak_detector.v</code> if justified.</p>
+</div>
+
+<div class="step-card" style="border-color:#3fb950">
+  <div class="step-num" style="color:#3fb950">Step 4 — DOC-001 PASS (2026-06-03)</div>
+  <p><strong>Stage 4 PSS/SSS boundary comparison gate: PASS.</strong><br>
+  17/17 checks: T1 no-backpressure, T2 random-backpressure, T3 error-injection. AXI-S pre-NBA sampling race
+  in output_collector fixed. Gate: <code>reports/verification_closure_20260603/doc001_pss_sss_boundary_gate.txt</code></p>
+</div>
+
+<div class="step-card" style="border-color:#3fb950">
+  <div class="step-num" style="color:#3fb950">Step 5 — DOC-002 PASS + xsim flow created (2026-06-03)</div>
+  <p><strong>Stage 5 FFT bin value comparison gate: PASS (behavioral DFT) + Vivado xsim infrastructure.</strong><br>
+  DOC-002: 3 vectors (impulse, tone k0=7, PRNG). V0 max_err=0; V1/V2 max_err=1 LSB. Behavioral stub (USE_BEHAVIORAL_STUB=3) unscaled DFT.
+  AXI-S driver race (post-posedge data update) fixed.
+  Gate: <code>reports/verification_closure_20260603/doc002_fft_value_gate.txt</code><br><br>
+  <strong>Vivado xsim real IP flow (2026-06-03):</strong>
+  vivado_xsim/ directory created. TCL gate scripts: run_xsim_fft_ip_gate.tcl (XIP-001), run_xsim_dual_symbol_fft_gate.tcl (XIP-002).
+  Reference vectors fft_ref_case_0..5.csv generated (scale confirmed 1/256, ±4 LSB tolerance).
+  <strong>XIP-001 FFT_IP_VALUE_PROTOCOL_GATE: PASS_VIVADO_XSIM_REAL_IP — 6/6 cases, max_err ≤2 LSB. 2026-06-03.</strong>
+  <strong>XIP-002 DUAL_SYMBOL_FFT_GATE: PASS_VIVADO_XSIM_REAL_IP — PSS+SSS dual-symbol, tone k=8 verified. 2026-06-03.</strong>
+  <strong>XIP-003 MEYR_EXTENDED_SWEEP_GATE: PASS_VIVADO_XSIM_REAL_IP — 9/9 k_int cases (0,±1,±2,±4,±8). Fix: do_reset() between cases (Xilinx FFT IP stale-state). Tier-2 (±16..±128) PENDING_GOLDEN_VECTORS. 2026-06-04.</strong>
+  <strong>XIP-004 FULL_SYNC_REAL_IP_GATE: PASS_VIVADO_XSIM_REAL_IP — 9/9 full-pipeline cases (k_int=0,±1,±2,±4,±8). phase3_sync_top end-to-end: frame_idx=41, peak_lag=23, slot_start=64, int_cfo=k_int. Key: defparam USE_BEHAVIORAL_STUB override, THRESHOLD=40000, exclude DMA wrapper files from xvlog. All 20 xsim gates PASS. 2026-06-04.</strong>
+  Existing P3-25B: <code>PASS_VIVADO_XSIM_REAL_IP</code> (9/9 k_int cases, 2026-06-01, real Xilinx xfft 9.1).
+  </p>
+</div>
+
+<div class="step-card" style="border-color:#3fb950">
+  <div class="step-num" style="color:#3fb950">Step 6 — DOC-003 PASS (2026-06-03)</div>
+  <p><strong>Meyr ROM confirmed against generator: PASS.</strong><br>
+  256/256 PSS entries, 256/256 SSS entries. ROM is stimulus-derived (bypass mode):
+  PSS_rom = PSS_td × conj(SSS_td) normalized Q1.15; SSS_rom = all {I=+32767, Q=0}.
+  SEED=0xC0FFEE, NSC=256, CP_LEN=32, TARGET_PEAK=3000.
+  Gate: <code>reports/verification_closure_20260603/doc003_meyr_rom_check.csv</code><br>
+  J1 k_int sweep: PASS 13/13 (k_int ∈ {0,±1,±2,±4,±8,±12,±16}). ROM parameter plumbing bug fixed:
+  PSS_ROM_FILE/SSS_ROM_FILE now threaded through meyr_fft256_actual_integration_top and meyr_integer_cfo_freq_estimator_top.
+  Extend sweep to k_int ∈ [−128, +128] with real FFT IP path (future work).</p>
+</div>
+
+<hr>
+
+<!-- ══════════════════════════════════════════════════════════════════ -->
+<h1 id="s12">12. Verification Readiness Matrix</h1>
+
+<div class="readiness-grid">
+  <div class="readiness-card readiness-ready">
+    <div class="readiness-label">✓ Ready for sign-off</div>
+    <div class="readiness-item">Stage 0: Frame detection</div>
+    <div class="readiness-item">Stage 5: FFT protocol compliance</div>
+    <div class="readiness-item">Stage 7: Replay buffer infrastructure</div>
+    <div class="readiness-item">Stage 8: AXI-S output / stress</div>
+    <div class="readiness-item">Reset recovery (P3-23A)</div>
+    <div class="readiness-item">AWGN robustness (SNR≥15dB)</div>
+  </div>
+
+  <div class="readiness-card readiness-partial">
+    <div class="readiness-label">⚠ Partially verified</div>
+    <div class="readiness-item">Stage 1: CP autocorr / timing (D3 data PASS; D2 metadata 15% fail)</div>
+    <div class="readiness-item">Stage 2: Frac CFO estimation (boundary tolerance unclear)</div>
+    <div class="readiness-item">Stage 3: Frac CFO correction (data PASS; backpressure broken)</div>
+    <div class="readiness-item">Stage 6: Meyr integer CFO — J1 PASS 13/13 (k_int ±16); DOC-003 ROM PASS; J1 ROM parameter bug fixed 2026-06-03</div>
+    <div class="readiness-item">Stage 4: DOC-001 PSS/SSS boundary gate PASS 17/17 (2026-06-03)</div>
+    <div class="readiness-item">Stage 5: DOC-002 FFT value gate PASS behavioral DFT (2026-06-03)</div>
+  </div>
+
+  <div class="readiness-card readiness-blocked">
+    <div class="readiness-label">⚠ Residual open</div>
+    <div class="readiness-item">P3-15D random equivalence: 1/100 case_087 unresolved (ISSUE-002 medium)</div>
+    <div class="readiness-item">XIP-003 MEYR_EXTENDED_SWEEP_GATE: PASS_VIVADO_XSIM_REAL_IP 9/9 (2026-06-04). Tier-2 (±16..±128) PENDING_GOLDEN_VECTORS.</div>
+    <div class="readiness-item">XIP-004 FULL_SYNC_REAL_IP_GATE: PASS_VIVADO_XSIM_REAL_IP 9/9 (2026-06-04). All 20 xsim gates now PASS.</div>
+    <div class="readiness-item">J2/J3: fractional + combined CFO sweep (full wrapper) not yet executed</div>
+  </div>
+
+  <div class="readiness-card readiness-deeper">
+    <div class="readiness-label">⟳ Future work</div>
+    <div class="readiness-item">Meyr integer CFO: extended k_int range sweep (±128 bins) with real FFT IP</div>
+    <div class="readiness-item">ROM migration to 5G-standard m_seq/gold_seq sequences (Step 31→32)</div>
+  </div>
+</div>
+
+<h3 style="margin-top:24px">RTL Module Status Summary</h3>
+<table>
+  <tr><th>Module</th><th>File</th><th>Status</th><th>Algorithm Stage</th></tr>
+  <tr class="row-pass"><td><code>complex_mult_iq</code></td><td>complex_mult_iq.v</td><td><span class="badge badge-pass">FIXED — ISSUE-001 resolved 2026-06-02</span></td><td>Stage 3, Stage 7</td></tr>
+  <tr class="row-pass"><td><code>phase3_sync_top</code></td><td>phase3_sync_top.v</td><td><span class="badge badge-open">ACTIVE</span></td><td>Orchestration</td></tr>
+  <tr class="row-pass"><td><code>frame_detector</code></td><td>frame_detector.v</td><td><span class="badge badge-pass">VERIFIED</span></td><td>Stage 0</td></tr>
+  <tr class="row-pass"><td><code>sliding_window_sum</code></td><td>sliding_window_sum.v</td><td><span class="badge badge-pass">VERIFIED</span></td><td>Stage 0</td></tr>
+  <tr class="row-pass"><td><code>streaming_cp_autocorr</code></td><td>streaming_cp_autocorr.v</td><td><span class="badge badge-pass">VERIFIED</span></td><td>Stage 1</td></tr>
+  <tr class="row-warn"><td><code>timing_metric_core</code></td><td>timing_metric_core.v</td><td><span class="badge badge-warn">ISSUE-002</span></td><td>Stage 1</td></tr>
+  <tr class="row-warn"><td><code>peak_detector</code></td><td>peak_detector.v</td><td><span class="badge badge-warn">ISSUE-002</span></td><td>Stage 1</td></tr>
+  <tr class="row-pass"><td><code>frac_cfo_estimator</code></td><td>frac_cfo_estimator.v</td><td><span class="badge badge-pass">VERIFIED</span></td><td>Stage 2</td></tr>
+  <tr class="row-pass"><td><code>cordic_atan2</code></td><td>cordic_atan2.v</td><td><span class="badge badge-pass">VERIFIED</span></td><td>Stage 2</td></tr>
+  <tr class="row-pass"><td><code>frac_cfo_corrector_top</code></td><td>frac_cfo_corrector_top.v</td><td><span class="badge badge-pass">FIXED — NCO enable gated 2026-06-02</span></td><td>Stage 3</td></tr>
+  <tr class="row-pass"><td><code>nco_phase_gen</code></td><td>nco_phase_gen.v</td><td><span class="badge badge-pass">VERIFIED — enable wiring correct</span></td><td>Stage 3, Stage 7</td></tr>
+  <tr class="row-pass"><td><code>pss_sss_symbol_extractor</code></td><td>pss_sss_symbol_extractor.v</td><td><span class="badge badge-pass">VERIFIED — DOC-001 PASS 17/17</span></td><td>Stage 4</td></tr>
+  <tr class="row-pass"><td><code>fft256_dual_symbol_frontend</code></td><td>fft256_dual_symbol_frontend.v</td><td><span class="badge badge-pass">VERIFIED (protocol)</span></td><td>Stage 5</td></tr>
+  <tr class="row-pass"><td><code>fft256_xilinx_wrapper</code></td><td>fft256_xilinx_wrapper.v</td><td><span class="badge badge-pass">VERIFIED (protocol)</span></td><td>Stage 5</td></tr>
+  <tr class="row-pass"><td><code>meyr_pss_sss_product_gen</code></td><td>meyr_pss_sss_product_gen.v</td><td><span class="badge badge-pass">VERIFIED</span></td><td>Stage 6</td></tr>
+  <tr class="row-pass"><td><code>meyr_integer_cfo_core</code></td><td>meyr_integer_cfo_core.v</td><td><span class="badge badge-pass">ROM CONFIRMED — DOC-003 PASS; J1 13/13</span></td><td>Stage 6</td></tr>
+  <tr class="row-pass"><td><code>iq_replay_buffer_576</code></td><td>iq_replay_buffer_576.v</td><td><span class="badge badge-pass">VERIFIED</span></td><td>Stage 7</td></tr>
+  <tr class="row-pass"><td><code>phase3_sync_axis_dma_wrapper</code></td><td>phase3_sync_axis_dma_wrapper.v</td><td><span class="badge badge-pass">VERIFIED</span></td><td>Stage 8</td></tr>
+</table>
+
+
+<!-- ══════════════════════════════════════════════════════════════════ -->
+<h1 id="s13">13. Module-Level Design Review Documentation</h1>
+
+<div class="callout" style="border-left-color:#0A9396;">
+  <strong style="color:#0A9396;">Complete RTL Design Review Documentation Package generated 2026-06-04 — 18 sections per module.</strong>
+  Each page covers: (1) Header/Hero, (2) Integration Context, (3) Block Diagram, (4) Input Interface,
+  (5) Output Interface, (6) Parameters, (7) Operation, (8) Timing Diagram, (9) Internal FSM,
+  (10) Algorithm Mapping, (11) Latency Analysis, (12) Throughput Analysis, (13) Resource Impact,
+  (14) RTL Simulation Coverage, (15) Known Issues/Lessons Learned, (16) FPGA Bring-Up Guide,
+  (17) Debug Checklist, (18) Review Notes.
+  Suitable as: RTL Design Review Package · FPGA Bring-Up Manual · Verification Closure Report · Handoff Document.
+</div>
+
+<table>
+  <tr>
+    <th>Module</th>
+    <th>Source File</th>
+    <th>Algorithm Stage</th>
+    <th>Documentation</th>
+    <th>Status</th>
+  </tr>
+  <tr class="row-pass">
+    <td><strong>Index / Overview</strong></td>
+    <td>— full DUT hierarchy —</td>
+    <td>All stages</td>
+    <td><a href="modules/index.html">modules/index.html</a></td>
+    <td><span class="badge badge-pass">COMPLETE</span></td>
+  </tr>
+  <tr class="row-pass">
+    <td><code>phase3_sync_axis_dma_wrapper</code></td>
+    <td>phase3_sync_axis_dma_wrapper.v</td>
+    <td>Board integration (wrapper)</td>
+    <td><a href="modules/01_phase3_sync_axis_dma_wrapper.html">01_phase3_sync_axis_dma_wrapper.html</a></td>
+    <td><span class="badge badge-pass">DOCUMENTED</span></td>
+  </tr>
+  <tr class="row-pass">
+    <td><code>phase3_sync_top</code></td>
+    <td>phase3_sync_top.v</td>
+    <td>Stages 0–6 orchestration</td>
+    <td><a href="modules/02_phase3_sync_top.html">02_phase3_sync_top.html</a></td>
+    <td><span class="badge badge-pass">DOCUMENTED</span></td>
+  </tr>
+  <tr class="row-pass">
+    <td><code>frac_cfo_frame_corrector_top</code></td>
+    <td>frac_cfo_frame_corrector_top.v</td>
+    <td>Stages 0–3 (frame det + frac CFO)</td>
+    <td><a href="modules/03_frac_cfo_frame_corrector_top.html">03_frac_cfo_frame_corrector_top.html</a></td>
+    <td><span class="badge badge-pass">DOCUMENTED</span></td>
+  </tr>
+  <tr class="row-pass">
+    <td><code>pss_sss_symbol_extractor</code></td>
+    <td>pss_sss_symbol_extractor.v</td>
+    <td>Stage 4 (PSS/SSS extraction)</td>
+    <td><a href="modules/04_pss_sss_symbol_extractor.html">04_pss_sss_symbol_extractor.html</a></td>
+    <td><span class="badge badge-pass">DOCUMENTED</span></td>
+  </tr>
+  <tr class="row-pass">
+    <td><code>fft256_dual_symbol_frontend</code></td>
+    <td>fft256_dual_symbol_frontend.v</td>
+    <td>Stage 5 (FFT frontend)</td>
+    <td><a href="modules/05_fft256_dual_symbol_frontend.html">05_fft256_dual_symbol_frontend.html</a></td>
+    <td><span class="badge badge-pass">DOCUMENTED</span></td>
+  </tr>
+  <tr class="row-pass">
+    <td><code>meyr_integer_cfo_fft_frontend_top</code></td>
+    <td>meyr_integer_cfo_fft_frontend_top.v</td>
+    <td>Stage 5–6 (FFT + Meyr top)</td>
+    <td><a href="modules/06_meyr_integer_cfo_fft_frontend_top.html">06_meyr_integer_cfo_fft_frontend_top.html</a></td>
+    <td><span class="badge badge-pass">DOCUMENTED</span></td>
+  </tr>
+  <tr class="row-pass">
+    <td><code>meyr_integer_cfo_core</code></td>
+    <td>meyr_integer_cfo_core.v</td>
+    <td>Stage 6 (integer CFO estimator)</td>
+    <td><a href="modules/07_meyr_integer_cfo_core.html">07_meyr_integer_cfo_core.html</a></td>
+    <td><span class="badge badge-pass">DOCUMENTED</span></td>
+  </tr>
+  <tr class="row-pass">
+    <td><code>iq_replay_buffer_576</code></td>
+    <td>iq_replay_buffer_576.v</td>
+    <td>Stage 7 (replay buffer)</td>
+    <td><a href="modules/08_iq_replay_buffer_576.html">08_iq_replay_buffer_576.html</a></td>
+    <td><span class="badge badge-pass">DOCUMENTED</span></td>
+  </tr>
+  <tr class="row-pass">
+    <td><strong>Low-level datapath blocks</strong> (14 modules)</td>
+    <td>frame_detector, streaming_cp_autocorr, timing_metric_core, peak_detector, frac_cfo_estimator, cordic_atan2, frac_cfo_corrector_top, nco_phase_gen, complex_mult_iq, complex_rotator, fft256_xilinx_wrapper, meyr_pss_sss_product_gen, phase3_axi_lite_regs, meyr_term2_ref_rom</td>
+    <td>Stages 0–6 (datapath primitives)</td>
+    <td><a href="modules/09_low_level_datapath_blocks.html">09_low_level_datapath_blocks.html</a></td>
+    <td><span class="badge badge-pass">DOCUMENTED</span></td>
+  </tr>
+</table>
+
+</div><!-- /content -->
+
+<div class="doc-footer">
+  <span>RTL_SYNC_PHASE4 — Algorithm Reference Specification</span> &nbsp;|&nbsp;
+  Generated: 2026-06-02; updated 2026-06-04 (XIP-004 FULL_SYNC_REAL_IP_GATE PASS 9/9 — all 20 gates PASS; 18-section design review package generated) &nbsp;|&nbsp;
+  C reference: <code>ref/receiver.c</code> · <code>ref/signal_processing_common.c</code> · <code>ref/pluto.h</code> &nbsp;|&nbsp;
+  22 RTL modules documented (9 top-level + 14 datapath) &nbsp;|&nbsp;
+  Prompt archives: <code>md_files/step_module_level_html_documentation.md</code> · <code>md_files/step_module_design_review_package.md</code> &nbsp;|&nbsp;
+  <a href="../reports/current_status.html">Status Dashboard</a> &nbsp;|&nbsp;
+  <a href="../reports/issue_tracking.html">Issue Tracking</a>
+</div>
+
+</main><!-- /main -->
+</div><!-- /layout -->
+
+</body>
+</html>

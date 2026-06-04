@@ -1,0 +1,8 @@
+[WARNING] fft256_xilinx_wrapper: USE_BEHAVIORAL_STUB=1
+[WARNING] Passthrough stub only — NOT an FFT.
+=== [P3-22A] Feeding 704 IQ samples  stimulus: golden/p3_22a/awgn_snr10dB.mem ===
+WDG: TIMEOUT at 200000 cycles
+  frame_found=0  int_cfo_valid=0  out_count=0
+  REASON: frame not detected (noise floor may exceed threshold=40000)
+RESULT frame_found=0 frame_idx=0 frame_drift=-41 peak_lag=0 peak_drift=-23 slot_start=0 frac_valid=0 int_valid=0 int_applied=0 out_count=0 tlast_ok=0
+CASE_FAIL

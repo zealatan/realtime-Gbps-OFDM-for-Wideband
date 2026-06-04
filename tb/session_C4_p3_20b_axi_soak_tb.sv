@@ -3,50 +3,55 @@
 // session_C4_p3_20b_axi_soak_tb — P3-20B AXI Soak Test
 //
 // DUT: phase3_sync_axis_dma_wrapper
-// Checker: tb/common/axi_stream_checker.sv (M_AXIS, assertions A1-A5)
+// CHK: tb/common/axi_stream_checker.sv (M_AXIS, assertions A1-A5)
 //
-// Test phases:
-//   B1  100 frames back-to-back, no backpressure
-//   B2  1000 frames back-to-back, no backpressure
-//   B3  100 frames × 3 stall rates: 10% / 25% / 50%
-//   B4  Replay restart monitoring (replay_done count vs frame count, piggyback B1-B3)
-//   B5  Counter stability: output_count must never decrease between frames
+// Mode selection via plusarg +MODE=<mode>:
+//   quick    10 frames B1 + 10 frames B3 each (no B2); watchdog 15M cycles
+//   standard 100 frames B1 + 100 frames B3 each (no B2); watchdog 80M cycles
+//   soak     100 frames B1 + 1000 frames B2 + 100 frames B3 each; watchdog 220M cycles
+//   (default = standard if no plusarg)
 //
-// Pass criteria per phase:
-//   Bn  output_count = 576 * n_frames
-//   Bn  tlast_count  = n_frames
-//   Bn  ERROR_FLAGS[3] = 0 (no STALL_TIMEOUT)
-//   B4  replay_done_count == n_frames (per phase), replay_busy=0 after completion
-//   B5  b5_err_backward == 0 across entire run
-//   CHK total_errors == 0 from axi_stream_checker
+// Phases:
+//   B1   N frames back-to-back, no backpressure
+//   B2   1000 frames back-to-back, no backpressure  (soak only)
+//   B3   N frames × 10% / 25% / 50% M_AXIS stall
+//   B4   replay_done count == total frames (global, across all phases)
+//   B5   output_count never decreases between frames
+//   CHK  AXI-S checker A1-A5 on M_AXIS throughout
 //
 // Gate:
-//   AXI_SOAK_GATE: PASS  — all phases pass, checker clean, B4 pass, B5 pass
+//   AXI_SOAK_GATE: PASS  — all active phases pass
 //   AXI_SOAK_GATE: FAIL  — any failure
-//
-// Simulator: iverilog -g2012    Watchdog: 220000000 cycles
 
 module session_C4_p3_20b_axi_soak_tb;
 
     // -----------------------------------------------------------------------
-    // Parameters
+    // Static parameters
     // -----------------------------------------------------------------------
-    localparam integer IQ_WIDTH        = 16;
-    localparam integer NSC             = 256;
-    localparam integer CP_LEN          = 32;
-    localparam integer BUF_AW          = 12;
-    localparam integer NCO_PHASE_WIDTH = 32;
-    localparam integer FRAME_LEN       = 2 * (NSC + CP_LEN);   // 576
-    localparam integer THRESHOLD_TB    = 40000;
-    localparam integer STIM_DEPTH      = 704;
-    localparam integer WATCHDOG_CYCLES = 220000000;
+    localparam integer IQ_WIDTH     = 16;
+    localparam integer NSC          = 256;
+    localparam integer CP_LEN       = 32;
+    localparam integer BUF_AW       = 12;
+    localparam integer NCO_PW       = 32;
+    localparam integer FRAME_LEN    = 2 * (NSC + CP_LEN);  // 576
+    localparam integer THRESHOLD_TB = 40000;
+    localparam integer STIM_DEPTH   = 704;
 
     // AXI-Lite addresses
     localparam [6:0] ADDR_CONTROL    = 7'h04;
-    localparam [6:0] ADDR_IN_COUNT   = 7'h10;
     localparam [6:0] ADDR_OUT_COUNT  = 7'h14;
     localparam [6:0] ADDR_TLAST_CNT  = 7'h50;
     localparam [6:0] ADDR_ERROR_FLAGS= 7'h54;
+
+    // -----------------------------------------------------------------------
+    // Mode: determined at time-0 from plusarg, used by watchdog + test body
+    // -----------------------------------------------------------------------
+    integer tb_mode;       // 0=quick 1=standard 2=soak
+    integer n_b1_frames;
+    integer n_b2_frames;   // 0 = skip B2
+    integer n_b3_frames;
+    integer prog_interval; // print every N frames
+    reg [31:0] watchdog_limit;
 
     // -----------------------------------------------------------------------
     // Clock / Reset
@@ -94,7 +99,7 @@ module session_C4_p3_20b_axi_soak_tb;
         .CP_LEN          (CP_LEN),
         .BUF_AW          (BUF_AW),
         .THRESHOLD       (THRESHOLD_TB),
-        .NCO_PHASE_WIDTH (NCO_PHASE_WIDTH)
+        .NCO_PHASE_WIDTH (NCO_PW)
     ) u_dut (
         .aclk               (aclk),            .aresetn            (aresetn),
         .s_axi_awaddr       (m_axi_awaddr),    .s_axi_awvalid      (m_axi_awvalid),
@@ -117,12 +122,12 @@ module session_C4_p3_20b_axi_soak_tb;
     );
 
     // -----------------------------------------------------------------------
-    // AXI-Stream checker (Part A — M_AXIS monitor)
+    // AXI-Stream checker (Part A — M_AXIS)
     // -----------------------------------------------------------------------
     reg         chk_enable;
     wire [31:0] chk_err_tdata, chk_err_tlast;
     wire [31:0] chk_err_xv, chk_err_xd, chk_err_xl;
-    wire [31:0] chk_err_double_tlast, chk_warn_stall;
+    wire [31:0] chk_err_dtlast, chk_warn_stall;
     wire [31:0] chk_total_errors;
 
     axi_stream_checker #(
@@ -141,13 +146,13 @@ module session_C4_p3_20b_axi_soak_tb;
         .err_x_tvalid        (chk_err_xv),
         .err_x_tdata         (chk_err_xd),
         .err_x_tlast         (chk_err_xl),
-        .err_double_tlast    (chk_err_double_tlast),
+        .err_double_tlast    (chk_err_dtlast),
         .warn_long_stall     (chk_warn_stall),
         .total_errors        (chk_total_errors)
     );
 
     // -----------------------------------------------------------------------
-    // Watchdog
+    // Watchdog — limit set from mode at time-0 in main initial block
     // -----------------------------------------------------------------------
     integer cycle_cnt;
     initial cycle_cnt = 0;
@@ -156,8 +161,9 @@ module session_C4_p3_20b_axi_soak_tb;
     initial begin
         forever begin
             @(posedge aclk);
-            if (cycle_cnt > WATCHDOG_CYCLES) begin
-                $display("WDG: TIMEOUT at %0d cycles", WATCHDOG_CYCLES);
+            if (cycle_cnt > watchdog_limit) begin
+                $display("WDG: TIMEOUT at %0d cycles (limit=%0d)",
+                         cycle_cnt, watchdog_limit);
                 $display("AXI_SOAK_GATE: FAIL");
                 $finish;
             end
@@ -165,7 +171,7 @@ module session_C4_p3_20b_axi_soak_tb;
     end
 
     // -----------------------------------------------------------------------
-    // B4: replay_done pulse counter (global, reset only on hard reset)
+    // B4: global replay_done pulse counter
     // -----------------------------------------------------------------------
     reg [31:0] b4_replay_done_cnt;
     always @(posedge aclk) begin
@@ -177,25 +183,23 @@ module session_C4_p3_20b_axi_soak_tb;
 
     // -----------------------------------------------------------------------
     // B5: output_count backward-motion check
-    // Fires if output_count decreases while the DUT is out of reset (not during
-    // a soft-reset cycle).  Uses a 1-cycle delay on dut_aresetn so the check
-    // is suppressed for 2 cycles around the soft-reset edge.
+    // Suppressed for 2 cycles around soft-reset using dut_aresetn edge detect.
     // -----------------------------------------------------------------------
     reg [31:0] b5_prev_oc;
     reg [31:0] b5_err_backward;
-    reg        b5_dut_aresetn_dly;
+    reg        b5_dut_aresetn_d;
 
     always @(posedge aclk) begin
         if (!aresetn) begin
-            b5_prev_oc           <= 32'd0;
-            b5_err_backward      <= 32'd0;
-            b5_dut_aresetn_dly   <= 1'b1;
+            b5_prev_oc       <= 32'd0;
+            b5_err_backward  <= 32'd0;
+            b5_dut_aresetn_d <= 1'b1;
         end else begin
-            b5_dut_aresetn_dly <= u_dut.dut_aresetn;
-            if (u_dut.dut_aresetn && b5_dut_aresetn_dly &&
+            b5_dut_aresetn_d <= u_dut.dut_aresetn;
+            if (u_dut.dut_aresetn && b5_dut_aresetn_d &&
                 (u_dut.output_count < b5_prev_oc)) begin
                 b5_err_backward <= b5_err_backward + 32'd1;
-                $display("[B5 @%0t] output_count went backwards: was %0d now %0d",
+                $display("[B5 @%0t] output_count backward: prev=%0d now=%0d",
                          $time, b5_prev_oc, u_dut.output_count);
             end
             b5_prev_oc <= u_dut.output_count;
@@ -203,12 +207,7 @@ module session_C4_p3_20b_axi_soak_tb;
     end
 
     // -----------------------------------------------------------------------
-    // M_AXIS random stall (7-bit primitive LFSR, x^7+x^3+1, period=127)
-    // m_stall_thresh controls stall probability = thresh/128.
-    //   0  → no stall (0%)
-    //   13 → ~10%
-    //   32 → 25%
-    //   64 → 50%
+    // M_AXIS random stall: 7-bit primitive LFSR (x^7+x^3+1, period 127)
     // -----------------------------------------------------------------------
     reg [6:0] m_lfsr;
     integer   m_stall_thresh;
@@ -219,38 +218,38 @@ module session_C4_p3_20b_axi_soak_tb;
             m_lfsr        <= 7'h2D;
         end else begin
             m_lfsr <= {m_lfsr[5:0], m_lfsr[6] ^ m_lfsr[2]};
-            if (m_stall_thresh == 0)
-                m_axis_tready <= 1'b1;
-            else
-                m_axis_tready <= (m_lfsr >= m_stall_thresh[6:0]) ? 1'b1 : 1'b0;
+            m_axis_tready <= (m_stall_thresh == 0) ? 1'b1 :
+                             (m_lfsr >= m_stall_thresh[6:0]) ? 1'b1 : 1'b0;
         end
     end
 
     // -----------------------------------------------------------------------
-    // Stimulus memory and module-level scratch variables
+    // Stimulus memory and shared task variables
     // -----------------------------------------------------------------------
     reg [31:0] stim_mem [0:STIM_DEPTH-1];
     reg [6:0]  s_lfsr;
+    integer    s_gap_thresh;
     reg [31:0] axi_rd_data;
     integer    ii;
 
-    // Phase-level scratch (used by run_soak_phase task)
+    // Scratch used by run_soak_phase (sequential, no re-entrance issue)
     integer phase_fi;
     integer phase_expected_oc;
     integer phase_rd_oc;
     integer phase_rd_tlast;
     integer phase_rd_err;
     integer phase_b4_base;
-    integer phase_max_stall;  // not measured here; placeholder
 
-    // Phase pass flags
+    // Top-level pass flags
     integer b1_pass, b2_pass;
     integer b3a_pass, b3b_pass, b3c_pass, b3_pass;
     integer b4_pass, b5_pass, chk_pass;
     integer gate_pass;
 
+    reg [63:0] mode_str;  // 8-char right-padded mode name for display
+
     // -----------------------------------------------------------------------
-    // 7-bit primitive LFSR step function (x^7 + x^3 + 1)
+    // 7-bit primitive LFSR step function
     // -----------------------------------------------------------------------
     function [6:0] lfsr7_step;
         input [6:0] s;
@@ -303,24 +302,20 @@ module session_C4_p3_20b_axi_soak_tb;
     endtask
 
     // -----------------------------------------------------------------------
-    // wait_oc: spin until u_dut.output_count reaches target (direct access)
-    // Polls every 500 cycles — fast and avoids flooding the AXI bus.
+    // wait_oc: spin on u_dut.output_count (direct, avoids AXI polling overhead)
     // -----------------------------------------------------------------------
     task wait_oc;
         input integer target;
         begin
-            while (u_dut.output_count < target[31:0]) begin
-                repeat (500) @(posedge aclk);
-            end
+            while (u_dut.output_count < target) repeat (500) @(posedge aclk);
         end
     endtask
 
     // -----------------------------------------------------------------------
-    // feed_one_frame: feed STIM_DEPTH samples; wait for tready per sample.
-    // s_lfsr determines any input gaps (s_gap_thresh=0 means continuous).
+    // feed_one_frame: feed STIM_DEPTH samples, waiting for tready per sample.
+    // s_gap_thresh = 0 means continuous; non-zero inserts one idle cycle with
+    // probability s_gap_thresh/128 before each sample.
     // -----------------------------------------------------------------------
-    integer s_gap_thresh;   // 0=no gaps; set before calling feed_one_frame
-
     task feed_one_frame;
         begin
             for (ii = 0; ii < STIM_DEPTH; ii = ii + 1) begin
@@ -344,9 +339,9 @@ module session_C4_p3_20b_axi_soak_tb;
     endtask
 
     // -----------------------------------------------------------------------
-    // run_soak_phase: soft reset, run n_frames with stall_thr, check counts.
-    // Sets pass=1 iff output_count/tlast_count match and no STALL_TIMEOUT.
-    // Reports replay_done count for B4 and current b5_err_backward for B5.
+    // run_soak_phase: soft reset, run n_frames, wait, read registers, report.
+    // Progress printed every prog_interval frames (module-level variable).
+    // Output: pass=1 iff output_count/tlast_count match and no STALL_TIMEOUT.
     // -----------------------------------------------------------------------
     task run_soak_phase;
         input  integer n_frames;
@@ -354,27 +349,29 @@ module session_C4_p3_20b_axi_soak_tb;
         output integer pass;
         begin
             do_soft_reset;
-            m_stall_thresh  = stall_thr;
-            s_gap_thresh    = 0;
-            s_lfsr          = 7'h1D;
+            m_stall_thresh    = stall_thr;
+            s_gap_thresh      = 0;
+            s_lfsr            = 7'h1D;
             phase_expected_oc = FRAME_LEN * n_frames;
             phase_b4_base     = b4_replay_done_cnt;
 
             for (phase_fi = 0; phase_fi < n_frames; phase_fi = phase_fi + 1) begin
                 feed_one_frame;
-                if (((phase_fi + 1) % 100 == 0) || (phase_fi == n_frames - 1))
-                    $display("    frame %0d/%0d  oc=%0d  replay_done=%0d",
+                if (((phase_fi + 1) % prog_interval == 0) ||
+                    (phase_fi == n_frames - 1)) begin
+                    $display("    frame %0d/%0d  oc=%0d  replay_done=%0d  cycle=%0d",
                              phase_fi + 1, n_frames,
                              u_dut.output_count,
-                             b4_replay_done_cnt - phase_b4_base);
+                             b4_replay_done_cnt - phase_b4_base,
+                             cycle_cnt);
+                end
             end
 
             wait_oc(phase_expected_oc);
             repeat (30) @(posedge aclk);
 
-            // Verify no stale replay state (B4: replay_busy must be low)
             if (u_dut.replay_busy)
-                $display("  [B4] WARNING: replay_busy still asserted after completion");
+                $display("  [B4] WARNING: replay_busy still high after completion");
 
             axi_read(ADDR_OUT_COUNT);    phase_rd_oc    = axi_rd_data;
             axi_read(ADDR_TLAST_CNT);    phase_rd_tlast = axi_rd_data;
@@ -396,7 +393,41 @@ module session_C4_p3_20b_axi_soak_tb;
     // Main test sequence
     // -----------------------------------------------------------------------
     initial begin
-        // Signal initialisation
+        // ── Mode selection (time-0, before first clock edge) ─────────────────
+        if      ($test$plusargs("MODE=quick")) tb_mode = 0;
+        else if ($test$plusargs("MODE=soak"))  tb_mode = 2;
+        else                                    tb_mode = 1;  // standard
+
+        case (tb_mode)
+            0: begin  // quick
+                n_b1_frames   = 10;
+                n_b2_frames   = 0;
+                n_b3_frames   = 10;
+                prog_interval = 1;
+                watchdog_limit = 32'd15_000_000;
+            end
+            2: begin  // soak
+                n_b1_frames   = 100;
+                n_b2_frames   = 1000;
+                n_b3_frames   = 100;
+                prog_interval = 100;
+                watchdog_limit = 32'd220_000_000;
+            end
+            default: begin  // standard
+                n_b1_frames   = 100;
+                n_b2_frames   = 0;
+                n_b3_frames   = 100;
+                prog_interval = 10;
+                watchdog_limit = 32'd80_000_000;
+            end
+        endcase
+        case (tb_mode)
+            0:       mode_str = "quick   ";
+            2:       mode_str = "soak    ";
+            default: mode_str = "standard";
+        endcase
+
+        // ── Signal initialisation ────────────────────────────────────────────
         m_axi_awaddr  = 7'h00;   m_axi_awvalid = 1'b0;
         m_axi_wdata   = 32'h0;   m_axi_wstrb   = 4'h0;
         m_axi_wvalid  = 1'b0;    m_axi_bready  = 1'b0;
@@ -406,111 +437,108 @@ module session_C4_p3_20b_axi_soak_tb;
         s_gap_thresh   = 0;
         s_lfsr         = 7'h1D;
         chk_enable     = 1'b0;
+        b2_pass        = 1;  // default pass for skipped B2
 
-        // Load stimulus
         $readmemh("golden/phase3_iq_stimulus.mem", stim_mem);
 
-        // Hard reset
+        // ── Hard reset ───────────────────────────────────────────────────────
         aresetn = 1'b0;
         repeat (20) @(posedge aclk);
         aresetn = 1'b1;
         repeat (5)  @(posedge aclk);
-
         axi_write(ADDR_CONTROL, 32'h00000001);  // enable=1
         repeat (5) @(posedge aclk);
         chk_enable = 1'b1;
 
         $display("=== [C4] AXI Soak Test — P3-20B ===");
-        $display("  Cycle start: %0d  WATCHDOG: %0d", cycle_cnt, WATCHDOG_CYCLES);
+        $display("  Mode: %s  watchdog: %0d  B1=%0d B2=%0d B3=%0d frames",
+                 mode_str, watchdog_limit, n_b1_frames, n_b2_frames, n_b3_frames);
 
         // ====================================================================
-        // B1: 100 frames, no backpressure
+        // B1
         // ====================================================================
         $display("");
-        $display("--- B1: 100 frames, stall=0%% ---");
-        run_soak_phase(100, 0, b1_pass);
-        $display("B1_RESULT: %s  (out=%0d tlast=%0d replay_done=%0d)",
-                 b1_pass ? "PASS" : "FAIL",
-                 phase_rd_oc, phase_rd_tlast,
-                 b4_replay_done_cnt);
+        $display("--- B1: %0d frames, stall=0%% ---", n_b1_frames);
+        run_soak_phase(n_b1_frames, 0, b1_pass);
+        $display("B1_RESULT: %s  (out=%0d tlast=%0d)",
+                 b1_pass ? "PASS":"FAIL", phase_rd_oc, phase_rd_tlast);
 
         // ====================================================================
-        // B2: 1000 frames, no backpressure
+        // B2 (soak only)
         // ====================================================================
-        $display("");
-        $display("--- B2: 1000 frames, stall=0%% ---");
-        run_soak_phase(1000, 0, b2_pass);
-        $display("B2_RESULT: %s  (out=%0d tlast=%0d replay_done=%0d)",
-                 b2_pass ? "PASS" : "FAIL",
-                 phase_rd_oc, phase_rd_tlast,
-                 b4_replay_done_cnt);
+        if (n_b2_frames > 0) begin
+            $display("");
+            $display("--- B2: %0d frames, stall=0%% ---", n_b2_frames);
+            run_soak_phase(n_b2_frames, 0, b2_pass);
+            $display("B2_RESULT: %s  (out=%0d tlast=%0d)",
+                     b2_pass ? "PASS":"FAIL", phase_rd_oc, phase_rd_tlast);
+        end else begin
+            $display("");
+            $display("--- B2: SKIPPED (mode=%s) ---", mode_str);
+            $display("B2_RESULT: SKIP");
+        end
 
         // ====================================================================
-        // B3: 100 frames × 3 stall rates
+        // B3
         // ====================================================================
         $display("");
-        $display("--- B3a: 100 frames, stall=10%% ---");
-        run_soak_phase(100, 13, b3a_pass);
+        $display("--- B3a: %0d frames, stall=10%% ---", n_b3_frames);
+        run_soak_phase(n_b3_frames, 13, b3a_pass);
 
         $display("");
-        $display("--- B3b: 100 frames, stall=25%% ---");
-        run_soak_phase(100, 32, b3b_pass);
+        $display("--- B3b: %0d frames, stall=25%% ---", n_b3_frames);
+        run_soak_phase(n_b3_frames, 32, b3b_pass);
 
         $display("");
-        $display("--- B3c: 100 frames, stall=50%% ---");
-        run_soak_phase(100, 64, b3c_pass);
+        $display("--- B3c: %0d frames, stall=50%% ---", n_b3_frames);
+        run_soak_phase(n_b3_frames, 64, b3c_pass);
 
         b3_pass = (b3a_pass && b3b_pass && b3c_pass) ? 1 : 0;
         $display("B3_RESULT: %s  (a=%s b=%s c=%s)",
-                 b3_pass ? "PASS" : "FAIL",
-                 b3a_pass ? "PASS" : "FAIL",
-                 b3b_pass ? "PASS" : "FAIL",
-                 b3c_pass ? "PASS" : "FAIL");
+                 b3_pass?"PASS":"FAIL",
+                 b3a_pass?"PASS":"FAIL", b3b_pass?"PASS":"FAIL", b3c_pass?"PASS":"FAIL");
 
         // ====================================================================
-        // B4: Replay restart soak summary
-        // (replay_done counts tracked per-phase in run_soak_phase; summarise here)
-        // Total replay_done across all phases = 100+1000+100+100+100 = 1400
+        // B4: replay_done count
+        // Expected = B1 + B2 + 3*B3
         // ====================================================================
-        $display("");
-        $display("--- B4: Replay restart soak ---");
-        $display("  Total replay_done pulses seen across all phases: %0d",
-                 b4_replay_done_cnt);
-        $display("  Expected: %0d  (100+1000+100+100+100 frames)", 1400);
-
-        b4_pass = (b4_replay_done_cnt == 32'd1400) ? 1 : 0;
-        // Allow ±1 for any boundary cycle differences in last phase's soft reset
-        if (!b4_pass && (b4_replay_done_cnt >= 32'd1398) && (b4_replay_done_cnt <= 32'd1402))
-            b4_pass = 1;
-
-        $display("B4_RESULT: %s  (replay_done=%0d)",
-                 b4_pass ? "PASS" : "FAIL", b4_replay_done_cnt);
+        begin : b4_check
+            integer b4_expected;
+            b4_expected = n_b1_frames + n_b2_frames + 3 * n_b3_frames;
+            $display("");
+            $display("--- B4: Replay restart soak ---");
+            $display("  Total replay_done: %0d  expected: %0d",
+                     b4_replay_done_cnt, b4_expected);
+            // Accept ±2 tolerance for soft-reset boundary timing
+            b4_pass = ((b4_replay_done_cnt >= b4_expected - 2) &&
+                       (b4_replay_done_cnt <= b4_expected + 2)) ? 1 : 0;
+            $display("B4_RESULT: %s  (replay_done=%0d expected=%0d)",
+                     b4_pass?"PASS":"FAIL", b4_replay_done_cnt, b4_expected);
+        end
 
         // ====================================================================
-        // B5: Counter stability summary
+        // B5: counter stability
         // ====================================================================
         $display("");
         $display("--- B5: Counter stability ---");
-        $display("  output_count backward errors: %0d", b5_err_backward);
         b5_pass = (b5_err_backward == 0) ? 1 : 0;
         $display("B5_RESULT: %s  (backward_errors=%0d)",
-                 b5_pass ? "PASS" : "FAIL", b5_err_backward);
+                 b5_pass?"PASS":"FAIL", b5_err_backward);
 
         // ====================================================================
-        // Checker summary (Part A)
+        // Checker summary (A1-A5)
         // ====================================================================
         $display("");
-        $display("--- Checker (A1-A5) Summary ---");
-        $display("  A1 tdata stability:  %0d errors", chk_err_tdata);
-        $display("  A2 tlast stability:  %0d errors", chk_err_tlast);
-        $display("  A3 X tvalid:         %0d errors", chk_err_xv);
-        $display("  A3 X tdata:          %0d errors", chk_err_xd);
-        $display("  A3 X tlast:          %0d errors", chk_err_xl);
-        $display("  A4 double TLAST:     %0d errors", chk_err_double_tlast);
-        $display("  A5 long stall warns: %0d events",  chk_warn_stall);
-        $display("  Total checker errors: %0d",         chk_total_errors);
+        $display("--- Checker (A1-A5) ---");
+        $display("  A1 tdata stability : %0d", chk_err_tdata);
+        $display("  A2 tlast stability : %0d", chk_err_tlast);
+        $display("  A3 X tvalid/tdata/tlast : %0d / %0d / %0d",
+                 chk_err_xv, chk_err_xd, chk_err_xl);
+        $display("  A4 double TLAST    : %0d", chk_err_dtlast);
+        $display("  A5 long stall warns: %0d", chk_warn_stall);
+        $display("  total_errors       : %0d", chk_total_errors);
         chk_pass = (chk_total_errors == 0) ? 1 : 0;
-        $display("CHK_RESULT: %s", chk_pass ? "PASS" : "FAIL");
+        $display("CHK_RESULT: %s", chk_pass?"PASS":"FAIL");
 
         // ====================================================================
         // Gate
@@ -519,37 +547,38 @@ module session_C4_p3_20b_axi_soak_tb;
                      b4_pass && b5_pass && chk_pass) ? 1 : 0;
 
         $display("");
-        $display("=== [C4] Soak Results ===");
-        $display("  B1  (100 frames, no stall):  %s", b1_pass  ? "PASS" : "FAIL");
-        $display("  B2  (1000 frames, no stall): %s", b2_pass  ? "PASS" : "FAIL");
-        $display("  B3a (100 frames, 10%% stall): %s", b3a_pass ? "PASS" : "FAIL");
-        $display("  B3b (100 frames, 25%% stall): %s", b3b_pass ? "PASS" : "FAIL");
-        $display("  B3c (100 frames, 50%% stall): %s", b3c_pass ? "PASS" : "FAIL");
-        $display("  B4  (replay restart soak):   %s", b4_pass  ? "PASS" : "FAIL");
-        $display("  B5  (counter stability):     %s", b5_pass  ? "PASS" : "FAIL");
-        $display("  CHK (A1-A4 assertions):      %s", chk_pass ? "PASS" : "FAIL");
+        $display("=== [C4] Results (%s mode) ===", mode_str);
+        $display("  B1  %0d frames no-stall  : %s", n_b1_frames,  b1_pass ?"PASS":"FAIL");
+        if (n_b2_frames > 0)
+            $display("  B2  %0d frames no-stall  : %s", n_b2_frames,  b2_pass ?"PASS":"FAIL");
+        else
+            $display("  B2  (skipped)");
+        $display("  B3a %0d frames 10%% stall : %s", n_b3_frames, b3a_pass?"PASS":"FAIL");
+        $display("  B3b %0d frames 25%% stall : %s", n_b3_frames, b3b_pass?"PASS":"FAIL");
+        $display("  B3c %0d frames 50%% stall : %s", n_b3_frames, b3c_pass?"PASS":"FAIL");
+        $display("  B4  replay restart soak : %s",              b4_pass ?"PASS":"FAIL");
+        $display("  B5  counter stability   : %s",              b5_pass ?"PASS":"FAIL");
+        $display("  CHK A1-A4 assertions    : %s",              chk_pass?"PASS":"FAIL");
         $display("  Total cycles: %0d", cycle_cnt);
-        $display("");
 
-        $display("B1_GATE: %s", b1_pass  ? "PASS" : "FAIL");
-        $display("B2_GATE: %s", b2_pass  ? "PASS" : "FAIL");
-        $display("B3_GATE: %s", b3_pass  ? "PASS" : "FAIL");
-        $display("B4_GATE: %s", b4_pass  ? "PASS" : "FAIL");
-        $display("B5_GATE: %s", b5_pass  ? "PASS" : "FAIL");
-        $display("CHK_GATE: %s", chk_pass ? "PASS" : "FAIL");
+        $display("");
+        $display("B1_GATE: %s",  b1_pass ?"PASS":"FAIL");
+        $display("B2_GATE: %s",  b2_pass ?"PASS":"FAIL");
+        $display("B3_GATE: %s",  b3_pass ?"PASS":"FAIL");
+        $display("B4_GATE: %s",  b4_pass ?"PASS":"FAIL");
+        $display("B5_GATE: %s",  b5_pass ?"PASS":"FAIL");
+        $display("CHK_GATE: %s", chk_pass?"PASS":"FAIL");
 
         if (gate_pass)
             $display("AXI_SOAK_GATE: PASS");
         else begin
             $display("AXI_SOAK_GATE: FAIL");
-            if (!b1_pass)  $display("  FAIL: B1 — 100-frame count mismatch");
-            if (!b2_pass)  $display("  FAIL: B2 — 1000-frame count mismatch");
-            if (!b3_pass)  $display("  FAIL: B3 — backpressure soak failure");
-            if (!b4_pass)  $display("  FAIL: B4 — replay_done count mismatch (%0d != 1400)",
-                                    b4_replay_done_cnt);
-            if (!b5_pass)  $display("  FAIL: B5 — output_count went backwards %0d time(s)",
-                                    b5_err_backward);
-            if (!chk_pass) $display("  FAIL: CHK — %0d assertion violation(s)", chk_total_errors);
+            if (!b1_pass)  $display("  FAIL B1");
+            if (!b2_pass)  $display("  FAIL B2");
+            if (!b3_pass)  $display("  FAIL B3 (a=%0d b=%0d c=%0d)", b3a_pass, b3b_pass, b3c_pass);
+            if (!b4_pass)  $display("  FAIL B4: replay_done=%0d", b4_replay_done_cnt);
+            if (!b5_pass)  $display("  FAIL B5: %0d backward events", b5_err_backward);
+            if (!chk_pass) $display("  FAIL CHK: %0d total errors", chk_total_errors);
         end
 
         $finish;

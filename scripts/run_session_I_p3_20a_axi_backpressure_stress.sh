@@ -59,57 +59,12 @@ echo " Time:      ${TIMESTAMP}"
 echo "============================================================"
 
 # ---------------------------------------------------------------------------
-# Source lists (identical to Session D runner — same DUT)
+# Production DUT source list — single source of truth.
 # ---------------------------------------------------------------------------
-
-LEGACY_SRCS=(
-    "${ROOT}/rtl/phase2_legacy/complex_mult.v"
-    "${ROOT}/rtl/phase2_legacy/complex_to_mag.v"
-    "${ROOT}/rtl/phase2_legacy/delay_sample.v"
-    "${ROOT}/rtl/phase2_legacy/delayT.v"
-    "${ROOT}/rtl/phase2_legacy/moving_avg_optimized.v"
-    "${ROOT}/rtl/phase2_legacy/ram_2port.v"
-)
-
-UNIT_TEST_SRCS=(
-    "${ROOT}/rtl/unit_test/and2.v"
-    "${ROOT}/rtl/unit_test/cp_autocorr_core.v"
-    "${ROOT}/rtl/unit_test/timing_metric_core.v"
-)
-
-RTL_SRCS=(
-    "${ROOT}/rtl/timing_sync_top.v"
-    "${ROOT}/rtl/frac_cfo_estimator.v"
-    "${ROOT}/rtl/timing_frac_cfo_top.v"
-    "${ROOT}/rtl/iq_frame_buffer.v"
-    "${ROOT}/rtl/frac_cfo_corrector_top.v"
-    "${ROOT}/rtl/fft256_dual_symbol_frontend.v"
-    "${ROOT}/rtl/meyr_term2_ref_rom.v"
-    "${ROOT}/rtl/meyr_integer_cfo_fft_frontend_top.v"
-    "${ROOT}/rtl/axis_complex_mult.v"
-    "${ROOT}/rtl/complex_mult_iq.v"
-    "${ROOT}/rtl/complex_rotator.v"
-    "${ROOT}/rtl/cordic_atan2.v"
-    "${ROOT}/rtl/nco_phase_gen.v"
-    "${ROOT}/rtl/peak_detector.v"
-    "${ROOT}/rtl/meyr_integer_cfo_core.v"
-    "${ROOT}/rtl/meyr_pss_sss_product_gen.v"
-    "${ROOT}/rtl/meyr_integer_cfo_freq_estimator_top.v"
-    "${ROOT}/rtl/pss_sss_symbol_extractor.v"
-    "${ROOT}/rtl/slot_start_controller.v"
-    "${ROOT}/rtl/sample_power_sq.v"
-    "${ROOT}/rtl/sliding_window_sum.v"
-    "${ROOT}/rtl/frame_detect_fsm.v"
-    "${ROOT}/rtl/frame_detector.v"
-    "${ROOT}/rtl/frac_cfo_frame_corrector_top.v"
-    "${ROOT}/rtl/phase3_sync_top.v"
-    "${ROOT}/rtl/iq_replay_buffer_576.v"
-    "${ROOT}/rtl/phase3_axi_lite_regs.v"
-    "${ROOT}/rtl/phase3_sync_axis_dma_wrapper.v"
-)
+FILELIST="${ROOT}/scripts/phase3_dut_filelist.f"
+mapfile -t DUT_SRCS < <(grep -v '^#' "${FILELIST}" | grep -v '^[[:space:]]*$' | sed "s|^|${ROOT}/|")
 
 TB_SRC="${ROOT}/tb/session_I_p3_20a_axi_backpressure_stress_tb.sv"
-ALL_SRCS=( "${LEGACY_SRCS[@]}" "${UNIT_TEST_SRCS[@]}" "${RTL_SRCS[@]}" )
 
 # ---------------------------------------------------------------------------
 # Pre-flight checks
@@ -118,7 +73,7 @@ ALL_SRCS=( "${LEGACY_SRCS[@]}" "${UNIT_TEST_SRCS[@]}" "${RTL_SRCS[@]}" )
 echo ""
 echo "--- Pre-flight checks ---"
 MISSING=0
-for f in "${ALL_SRCS[@]}" "${TB_SRC}"; do
+for f in "${DUT_SRCS[@]}" "${TB_SRC}"; do
     if [[ ! -f "$f" ]]; then
         echo "  MISSING: $f" >&2
         MISSING=1
@@ -144,7 +99,7 @@ if [[ "${SIM_TOOL}" == "iverilog" ]]; then
     iverilog -g2012 \
         -I "${ROOT}/vectors" \
         -o "${SIM_VVP}" \
-        "${ALL_SRCS[@]}" \
+        "${DUT_SRCS[@]}" \
         "${TB_SRC}" \
         2>&1 | tee "${COMPILE_LOG}"
     COMPILE_EXIT="${PIPESTATUS[0]}"
@@ -164,7 +119,7 @@ elif [[ "${SIM_TOOL}" == "xsim" ]]; then
     WORK="${ROOT}/sim_out/session_I_p3_20a_work"
     mkdir -p "${WORK}"
     pushd "${WORK}" > /dev/null
-    xvlog --nolog "${ALL_SRCS[@]}" 2>&1 | tee "${COMPILE_LOG}"
+    xvlog --nolog "${DUT_SRCS[@]}" 2>&1 | tee "${COMPILE_LOG}"
     xvlog --nolog -sv "${TB_SRC}" 2>&1 | tee -a "${COMPILE_LOG}"
     xelab --nolog -debug typical session_I_p3_20a_axi_backpressure_stress_tb \
         -s session_I_p3_20a_sim 2>&1 | tee -a "${COMPILE_LOG}"

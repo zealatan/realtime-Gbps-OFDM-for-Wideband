@@ -1,0 +1,10 @@
+label,status,frame_idx,peak_lag,slot_start,frac_cfo_word,meyr_peak,int_cfo
+k0,PASS,41,23,64,3270,255,0
+kp1,PASS,41,23,64,1085,256,1
+km1,PASS,41,23,64,1084,254,-1
+kp2,PASS,41,23,64,1084,257,2
+km2,PASS,41,23,64,1084,253,-2
+kp4,PASS,41,23,64,1084,259,4
+km4,PASS,41,23,64,1085,251,-4
+kp8,PASS,41,23,64,1085,263,8
+km8,PASS,41,23,64,1085,247,-8

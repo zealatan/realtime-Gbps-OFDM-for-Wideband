@@ -204,57 +204,18 @@ PYEOF
 echo ""
 echo "=== [d] Compiling RTL + TB with xvlog ==="
 
-LEGACY_SRCS=(
-    "${ROOT}/rtl/phase2_legacy/complex_mult.v"
-    "${ROOT}/rtl/phase2_legacy/complex_to_mag.v"
-    "${ROOT}/rtl/phase2_legacy/delay_sample.v"
-    "${ROOT}/rtl/phase2_legacy/delayT.v"
-    "${ROOT}/rtl/phase2_legacy/moving_avg_optimized.v"
-    "${ROOT}/rtl/phase2_legacy/ram_2port.v"
-)
-
-UNIT_TEST_SRCS=(
-    "${ROOT}/rtl/unit_test/and2.v"
-    "${ROOT}/rtl/unit_test/cp_autocorr_core.v"
-    "${ROOT}/rtl/unit_test/timing_metric_core.v"
-    "${ROOT}/rtl/timing_sync_top.v"
-    "${ROOT}/rtl/frac_cfo_estimator.v"
-    "${ROOT}/rtl/timing_frac_cfo_top.v"
-    "${ROOT}/rtl/iq_frame_buffer.v"
-    "${ROOT}/rtl/frac_cfo_corrector_top.v"
-    "${ROOT}/rtl/fft256_dual_symbol_frontend.v"
-    "${ROOT}/rtl/meyr_term2_ref_rom.v"
-    "${ROOT}/rtl/meyr_integer_cfo_fft_frontend_top.v"
-)
-
-RTL_SRCS=(
-    "${ROOT}/rtl/axis_complex_mult.v"
-    "${ROOT}/rtl/complex_mult_iq.v"
-    "${ROOT}/rtl/complex_rotator.v"
-    "${ROOT}/rtl/cordic_atan2.v"
-    "${ROOT}/rtl/nco_phase_gen.v"
-    "${ROOT}/rtl/peak_detector.v"
-    "${ROOT}/rtl/meyr_integer_cfo_core.v"
-    "${ROOT}/rtl/meyr_pss_sss_product_gen.v"
-    "${ROOT}/rtl/meyr_integer_cfo_freq_estimator_top.v"
-    "${ROOT}/rtl/pss_sss_symbol_extractor.v"
-    "${ROOT}/rtl/slot_start_controller.v"
-    "${ROOT}/rtl/sample_power_sq.v"
-    "${ROOT}/rtl/sliding_window_sum.v"
-    "${ROOT}/rtl/frame_detect_fsm.v"
-    "${ROOT}/rtl/frame_detector.v"
-    "${ROOT}/rtl/frac_cfo_frame_corrector_top.v"
-    "${ROOT}/rtl/phase3_sync_top.v"
-)
+# --------------------------------------------------------------------------
+# Production DUT source list — single source of truth.
+# --------------------------------------------------------------------------
+FILELIST="${ROOT}/scripts/phase3_dut_filelist.f"
+mapfile -t DUT_SRCS < <(grep -v '^#' "${FILELIST}" | grep -v '^[[:space:]]*$' | sed "s|^|${ROOT}/|")
 
 TB_SRC="${ROOT}/tb/phase3_sync_reference_compare_tb.sv"
-
-ALL_VERILOG_SRCS=( "${LEGACY_SRCS[@]}" "${UNIT_TEST_SRCS[@]}" "${RTL_SRCS[@]}" )
 
 # Compile Verilog sources
 xvlog -d SIMULATION \
     -i "${ROOT}/rtl" \
-    "${ALL_VERILOG_SRCS[@]}" \
+    "${DUT_SRCS[@]}" \
     2>&1 | tee "${ROOT}/sim_out/xvlog_rtl_log.txt"
 
 if [[ ${PIPESTATUS[0]} -ne 0 ]]; then

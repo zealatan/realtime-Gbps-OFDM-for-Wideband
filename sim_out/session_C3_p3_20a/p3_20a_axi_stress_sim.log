@@ -1,60 +1,10 @@
+[INFO] fft256_xilinx_wrapper: USE_BEHAVIORAL_STUB=3 (behavioral DFT)
+[INFO]   Exact 256-pt DFT, real arithmetic, simulation-only.
+[INFO]   Enables k_int sweep validation without Xilinx IP.
 === [C3] AXI Protocol + Random Backpressure Stress — P3-20A ===
   Cycle start: 33
   Runs: 9  (C3-1: 4, C3-2: 3, C3-3: 2)
 
 --- Run 0: gap=0/128  stall=0/128 ---
-  out_count=576  tlast=1  err=0x00000000  stab_err=0  PASS
-
---- Run 1: gap=13/128  stall=0/128 ---
-  out_count=576  tlast=1  err=0x00000004  stab_err=0  PASS
-
---- Run 2: gap=32/128  stall=0/128 ---
-  out_count=576  tlast=1  err=0x00000004  stab_err=0  PASS
-
---- Run 3: gap=64/128  stall=0/128 ---
-  out_count=576  tlast=1  err=0x00000004  stab_err=0  PASS
-
---- Run 4: gap=0/128  stall=13/128 ---
-  out_count=576  tlast=1  err=0x00000004  stab_err=0  PASS
-
---- Run 5: gap=0/128  stall=32/128 ---
-  out_count=576  tlast=1  err=0x00000004  stab_err=0  PASS
-
---- Run 6: gap=0/128  stall=64/128 ---
-  out_count=576  tlast=1  err=0x00000004  stab_err=0  PASS
-
---- Run 7: gap=32/128  stall=32/128 ---
-  out_count=576  tlast=1  err=0x00000004  stab_err=0  PASS
-
---- Run 8: gap=64/128  stall=64/128 ---
-  out_count=576  tlast=1  err=0x00000004  stab_err=0  PASS
-
-=== [C3] AXI Stress Results ===
-
-  C3-1 S_AXIS gap sweep   (runs 0-3):
-    run0 gap=0/128: oc=576 tlast=1 err=0x00000000  PASS
-    run1 gap=13/128: oc=576 tlast=1 err=0x00000004  PASS
-    run2 gap=32/128: oc=576 tlast=1 err=0x00000004  PASS
-    run3 gap=64/128: oc=576 tlast=1 err=0x00000004  PASS
-  C3-1: PASS
-
-  C3-2 M_AXIS stall sweep (runs 4-6):
-    run4 stall=13/128: oc=576 tlast=1 err=0x00000004  PASS
-    run5 stall=32/128: oc=576 tlast=1 err=0x00000004  PASS
-    run6 stall=64/128: oc=576 tlast=1 err=0x00000004  PASS
-  C3-2: PASS
-
-  C3-3 Combined S+M      (runs 7-8):
-    run7 gap=32 stall=32: oc=576 tlast=1 err=0x00000004  PASS
-    run8 gap=64 stall=64: oc=576 tlast=1 err=0x00000004  PASS
-  C3-3: PASS
-
-  C3-4 tdata/tlast stability: total_errors=0  PASS
-  Total cycles: 931137
-
-C31_RESULT pass=4 fail=0 c31_pass=1
-C32_RESULT pass=3 fail=0 c32_pass=1
-C33_RESULT pass=2 fail=0 c33_pass=1
-C34_RESULT stab_errors=0 c34_pass=1
-AXI_STRESS_GATE: PASS
-  All 9 AXI stress runs passed + 0 stability violations.
+WDG: TIMEOUT at 2000000 cycles — AXI_STRESS_GATE: FAIL
+AXI_STRESS_GATE: FAIL

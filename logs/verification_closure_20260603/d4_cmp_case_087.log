@@ -1,0 +1,8 @@
+Traceback (most recent call last):
+  File "/home/zealatan/RTL_SYNC_PHASE4/scripts/compare_session_D4_p3_15d_equiv.py", line 419, in <module>
+    main()
+  File "/home/zealatan/RTL_SYNC_PHASE4/scripts/compare_session_D4_p3_15d_equiv.py", line 366, in main
+    m_axis_iq = _load_iq(args.m_axis)
+  File "/home/zealatan/RTL_SYNC_PHASE4/scripts/compare_session_D4_p3_15d_equiv.py", line 90, in _load_iq
+    samples.append((int(parts[0]), int(parts[1])))
+ValueError: invalid literal for int() with base 10: 'x'

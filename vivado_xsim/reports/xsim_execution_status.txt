@@ -1,0 +1,15 @@
+FFT_IP_CHECKER_GATE: PASS_VIVADO_XSIM_REAL_IP (all 6 cases, tol ±4 LSB)
+Generated: 2026-06-03 20:54:28
+Tolerance: ±4 LSB
+Cases checked: 6/6
+
+DUAL_SYMBOL_FFT_GATE: PASS_VIVADO_XSIM_REAL_IP
+Generated: 2026-06-03 22:16:17
+PSS bin 8: re≈1024, sidelobes suppressed
+SSS bin 8: re≈1024, sidelobes suppressed
+Protocol: m_index 0→255 per symbol, done fired
+
+MEYR_EXTENDED_SWEEP_GATE: PASS_VIVADO_XSIM_REAL_IP (2026-06-04)
+Generated: 2026-06-04
+Cases: 9/9 PASS (k_int = 0, ±1, ±2, ±4, ±8); 8 PENDING_GOLDEN_VECTORS (±16..±128)
+Fix: do_reset() between cases in run_case task (Xilinx FFT IP stale state after prior run)

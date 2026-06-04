@@ -119,4 +119,28 @@ module iq_frame_buffer #(
         end
     end
 
+`ifdef TIMING_PROBE
+    integer buf_hi_cnt;
+    integer buf_wr_cnt;
+    initial buf_hi_cnt = 0;
+    initial buf_wr_cnt = 0;
+    always @(posedge aclk) begin
+        // Log first 60 fill writes (accept=1) showing address, data, and tvalid
+        if (accept && buf_wr_cnt < 60) begin
+            $display("[BUF_WR] t=%0t wr[%0d]: wr_ptr=%0d tdata=%08x tvalid=%0b tready=%0b",
+                     $time, buf_wr_cnt, wr_ptr, s_axis_tdata, s_axis_tvalid, s_axis_tready);
+            buf_wr_cnt = buf_wr_cnt + 1;
+        end
+        // Show everything in the window around TST scan start
+        if ($time >= 8540 && $time <= 8580)
+            $display("[BUF_TW] t=%0t rd_en=%0b rd_addr=%0d rd_data=%08x", $time, rd_en, rd_addr, rd_data);
+        // First 30 reads after TST scan starts
+        if (rd_en && $time > 8540 && buf_hi_cnt < 30) begin
+            $display("[BUF_HI] t=%0t hi[%0d]: rd_addr=%0d mem=%08x rd_data=%08x",
+                     $time, buf_hi_cnt, rd_addr, mem[rd_addr], rd_data);
+            buf_hi_cnt = buf_hi_cnt + 1;
+        end
+    end
+`endif
+
 endmodule

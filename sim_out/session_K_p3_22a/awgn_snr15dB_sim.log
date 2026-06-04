@@ -1,0 +1,35 @@
+[WARNING] fft256_xilinx_wrapper: USE_BEHAVIORAL_STUB=1
+[WARNING] Passthrough stub only — NOT an FFT.
+=== [P3-22A] Feeding 704 IQ samples  stimulus: golden/p3_22a/awgn_snr15dB.mem ===
+  M_AXIS: 576 beats at cycle 4623
+
+=== [P3-22A] Channel Robustness Results ===
+  Stimulus : golden/p3_22a/awgn_snr15dB.mem
+  Threshold: 40000  Cycle: 4664
+
+  --- Frame Detection ---
+  C1  frame_found  : 1  PASS
+  C2  frame_index  : 40  drift=-1  PASS  (golden=41, tol=±5)
+      peak_lag     : 23  drift=0  (golden=23)
+      slot_start   : 63  (golden=64)
+
+  --- CFO Pipeline ---
+  C3  frac_valid   : 1  PASS  frac_word=3765
+      int_valid    : 1  int_word=0  meyr_peak=255
+
+  --- Replay + M_AXIS ---
+  C4  int_applied  : 1  PASS
+  C5  output_count : 576  PASS  (expected 576)
+      tlast_at     : idx=575    OK  (expected 575)
+      max_gap      : 1  (limit=4)
+
+  --- AXI Registers ---
+  STATUS      : 0x00000003
+  INT_CFO_IDX : 255  INT_CFO_EST : 0x00000000
+  TLAST_COUNT : 1  ERROR_FLAGS : 0x00000000
+
+  Checks passed: 5 / 5
+
+RESULT frame_found=1 frame_idx=40 frame_drift=-1 peak_lag=23 peak_drift=0 slot_start=63 frac_valid=1 int_valid=1 int_applied=1 out_count=576 tlast_ok=1
+CASE_PASS
+  All 5 channel-robustness checks passed.
