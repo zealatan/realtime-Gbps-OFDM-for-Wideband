@@ -1,1 +1,0 @@
-SANITY_GATE: PASS (behavioral DFT, iverilog)

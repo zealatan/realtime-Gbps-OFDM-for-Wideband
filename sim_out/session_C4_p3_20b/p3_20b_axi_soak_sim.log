@@ -1,9 +1,0 @@
-=== [C4] AXI Soak Test — P3-20B ===
-  Cycle start: 33  WATCHDOG: 220000000
-
---- B1: 100 frames, stall=0% ---
-    frame 100/100  oc=57024  replay_done=99
-  out=57600  tlast=100  err=0x00000000  replay_done=100  b5_bk=0  PASS
-B1_RESULT: PASS  (out=57600 tlast=100 replay_done=100)
-
---- B2: 1000 frames, stall=0% ---

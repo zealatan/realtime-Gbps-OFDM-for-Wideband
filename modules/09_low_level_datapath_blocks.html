@@ -1,0 +1,1351 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>09 — Low-Level Datapath Blocks — ZCU216 Synchronizer</title>
+<style>
+  :root {
+    --bg:#001219; --card:#012a33; --accent1:#005F73; --accent2:#0A9396;
+    --light:#94D2BD; --warn:#EE9B00; --error:#AE2012; --text:#E9D8A6; --border:#1a4a55;
+  }
+  * { box-sizing:border-box; margin:0; padding:0; }
+  body { background:var(--bg); color:var(--text); font-family:'Consolas','Courier New',monospace; font-size:13px; line-height:1.6; }
+  nav { background:var(--accent1); padding:8px 20px; display:flex; flex-wrap:wrap; gap:10px; align-items:center; border-bottom:2px solid var(--accent2); position:sticky; top:0; z-index:100; }
+  nav a { color:var(--light); text-decoration:none; font-weight:bold; font-size:11px; padding:3px 7px; border-radius:3px; }
+  nav a:hover { background:var(--accent2); color:#fff; }
+  nav .brand { color:#fff; font-size:14px; font-weight:bold; margin-right:10px; }
+  .container { max-width:1380px; margin:0 auto; padding:24px; }
+  h1 { color:var(--accent2); font-size:22px; margin-bottom:4px; }
+  .subtitle { color:var(--light); font-size:12px; margin-bottom:6px; opacity:0.9; }
+  h2 { color:var(--light); font-size:15px; margin:30px 0 10px; border-bottom:2px solid var(--accent1); padding-bottom:5px; }
+  h3 { color:var(--accent2); font-size:13px; margin:16px 0 7px; }
+  h4 { color:var(--light); font-size:12px; margin:12px 0 5px; }
+  table { width:100%; border-collapse:collapse; margin-bottom:18px; }
+  th { background:var(--accent1); color:var(--light); padding:7px 9px; text-align:left; font-size:11px; }
+  td { padding:6px 9px; border-bottom:1px solid var(--border); font-size:12px; vertical-align:top; }
+  tr:nth-child(even) td { background:#021820; }
+  .badge-pass    { background:#1a3a1a; color:#3fb950; border:1px solid #3fb950; padding:2px 7px; border-radius:10px; font-size:11px; font-weight:bold; white-space:nowrap; }
+  .badge-pending { background:#1e2830; color:#8b949e; border:1px solid #8b949e; padding:2px 8px; border-radius:10px; font-size:11px; white-space:nowrap; display:inline-block; }
+  .badge-warn    { background:#3a2a00; color:#e3b341; border:1px solid #e3b341; padding:2px 7px; border-radius:10px; font-size:11px; }
+  .badge-resolved{ background:#0d2a4a; color:#58a6ff; border:1px solid #58a6ff; padding:2px 7px; border-radius:10px; font-size:11px; font-weight:bold; }
+  .badge-na      { background:#1e2830; color:#8b949e; border:1px solid #8b949e; padding:2px 7px; border-radius:10px; font-size:11px; }
+  .badge-confirm { background:#2a1a00; color:#CA6702; border:1px solid #CA6702; padding:2px 7px; border-radius:10px; font-size:11px; }
+  .card { background:var(--card); border:1px solid var(--border); border-radius:6px; padding:16px; margin-bottom:14px; }
+  .module-section { background:#010e16; border:1px solid var(--accent1); border-radius:6px; padding:18px; margin-bottom:28px; }
+  .module-header { display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:8px; margin-bottom:12px; padding-bottom:8px; border-bottom:1px solid var(--border); }
+  .module-title { color:var(--accent2); font-size:14px; font-weight:bold; }
+  .module-src { color:#8b949e; font-size:11px; font-style:italic; }
+  code { background:#021820; color:var(--accent2); padding:1px 5px; border-radius:3px; font-size:12px; }
+  .note { background:#021f2a; border-left:3px solid var(--warn); padding:8px 12px; margin:10px 0; font-size:12px; color:var(--warn); }
+  .ok   { background:#0a1f0a; border-left:3px solid #3fb950; padding:8px 12px; margin:10px 0; font-size:12px; color:#3fb950; }
+  .err  { background:#200808; border-left:3px solid var(--error); padding:8px 12px; margin:10px 0; font-size:12px; color:#ff6b6b; }
+  .info { background:#001a2a; border-left:3px solid var(--accent2); padding:8px 12px; margin:10px 0; font-size:12px; color:var(--light); }
+  .blk  { display:inline-block; border:1px solid var(--accent2); border-radius:4px; padding:6px 10px; font-size:11px; background:#012a33; color:var(--text); text-align:center; }
+  .blk.top { background:var(--accent1); color:#fff; font-weight:bold; }
+  .blk.ext { background:#001a22; border-color:var(--border); color:#8b949e; font-size:10px; }
+  .blk.sub { background:#001219; border-color:#1a5a66; color:var(--light); font-size:10px; }
+  .hrow { display:flex; align-items:center; justify-content:center; flex-wrap:wrap; gap:8px; margin:5px 0; }
+  .harrow { color:var(--accent2); font-size:18px; margin:0 4px; }
+  .varrow { color:var(--accent2); font-size:14px; text-align:center; display:block; }
+  .fsm-box { display:inline-block; border:2px solid var(--accent2); border-radius:6px; padding:7px 14px; font-size:12px; color:var(--accent2); background:#012a33; text-align:center; min-width:110px; }
+  .fsm-box.reset { border-color:var(--error); color:var(--error); }
+  .fsm-box.active { border-color:#3fb950; color:#3fb950; }
+  .fsm-row { display:flex; align-items:center; justify-content:center; gap:6px; flex-wrap:wrap; margin:8px 0; }
+  .fsm-arr { color:var(--warn); font-size:16px; }
+  .hero-badges { display:flex; flex-wrap:wrap; gap:6px; margin:8px 0 18px; }
+  .stat-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(190px,1fr)); gap:10px; margin-bottom:18px; }
+  .stat-card { background:var(--card); border:1px solid var(--border); border-radius:5px; padding:10px 14px; }
+  .stat-card .label { color:#8b949e; font-size:10px; margin-bottom:2px; }
+  .stat-card .value { color:var(--accent2); font-size:13px; font-weight:bold; }
+  .math { background:#021820; border:1px solid var(--border); border-radius:4px; padding:8px 14px; font-family:monospace; color:var(--light); margin:8px 0; font-size:12px; }
+  .toc { background:var(--card); border:1px solid var(--border); border-radius:6px; padding:14px; margin-bottom:24px; }
+  .toc a { color:var(--accent2); text-decoration:none; font-size:12px; }
+  .toc a:hover { color:var(--light); }
+  .toc-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(230px,1fr)); gap:8px; margin-top:8px; }
+  .toc-item { background:#011820; border:1px solid var(--border); border-radius:4px; padding:6px 10px; }
+  ul,ol { margin:6px 0 8px 20px; }
+  li { margin-bottom:3px; font-size:12px; }
+  .two-col { display:grid; grid-template-columns:1fr 1fr; gap:14px; }
+  .probe-tag { background:#002030; border:1px solid var(--accent1); border-radius:3px; padding:1px 6px; font-size:11px; color:var(--light); white-space:nowrap; }
+  /* --- inline math (self-contained, no external libs) --- */
+  .eq { font-family:'Cambria Math','STIX Two Math','Times New Roman',Georgia,serif;
+        font-size:13.5px; color:var(--light); background:#021820; padding:1px 7px;
+        border-radius:3px; white-space:nowrap; letter-spacing:0.01em; }
+  .eq i, .eq var { font-style:italic; }
+  .eq .op { color:var(--accent2); font-style:normal; padding:0 2px; }   /* = Σ ∏ operators */
+  .eq sub { font-size:0.72em; vertical-align:-0.28em; font-style:italic; }
+  .eq sup { font-size:0.72em; vertical-align:0.5em; font-style:normal; }
+  .eq .conj { text-decoration:overline; text-decoration-thickness:1px; }
+  .eq .frac { display:inline-flex; flex-direction:column; vertical-align:middle;
+              text-align:center; font-size:0.82em; line-height:1.05; margin:0 2px; }
+  .eq .frac > span:first-child { border-bottom:1px solid var(--light); padding:0 4px; }
+  .eqd { display:block; margin:10px 0; text-align:center; }             /* display (block) equation */
+  .eqd .eq { font-size:14.5px; white-space:normal; }
+</style>
+</head>
+<body>
+<nav>
+  <span class="brand">ZCU216 Synchronizer</span>
+  <a href="index.html">&#8592; Index</a>
+  <a href="01_phase3_sync_axis_dma_wrapper.html">01 DMA Wrap</a>
+  <a href="02_phase3_sync_top.html">02 Sync Top</a>
+  <a href="03_frac_cfo_frame_corrector_top.html">03 Frac CFO</a>
+  <a href="04_pss_sss_symbol_extractor.html">04 PSS/SSS</a>
+  <a href="05_fft256_dual_symbol_frontend.html">05 FFT Front</a>
+  <a href="06_meyr_integer_cfo_fft_frontend_top.html">06 Meyr FFT</a>
+  <a href="07_meyr_integer_cfo_core.html">07 Meyr Core</a>
+  <a href="08_iq_replay_buffer_576.html">08 Replay Buf</a>
+  <a href="09_low_level_datapath_blocks.html">09 Datapath</a>
+</nav>
+
+<div class="container">
+
+<!-- ===== SECTION 1: HEADER / HERO ===== -->
+<h1>09 &mdash; Low-Level Datapath Blocks (14 Modules)</h1>
+<div class="subtitle">
+  Primitive RTL blocks spanning pipeline stages 1&ndash;6 of the 5G/NR FPGA frame synchronizer.
+  This document covers every sub-module instantiated below the mid-level wrappers.
+  Date: 2026-06-04
+</div>
+
+<div class="hero-badges">
+  <span class="badge-pending">Not Verified</span>
+  <span class="badge-pending">Not Verified</span>
+  <span class="badge-pending">Not Verified</span>
+  <span class="badge-pending">Not Verified</span>
+  <span class="badge-pending">Not Verified</span>
+  <span class="badge-pending">Not Verified</span>
+  <span class="badge-pending">Not Verified</span>
+  <span class="badge-pending">Not Verified</span>
+  <span class="badge-pending">Not Verified</span>
+  <span class="badge-pending">Not Verified</span>
+  <span class="badge-pending">Not Verified</span>
+  <span class="badge-pending">Not Verified</span>
+</div>
+
+<div class="stat-grid">
+  <div class="stat-card"><div class="label">Sub-modules</div><div class="value">14 primitives</div></div>
+  <div class="stat-card"><div class="label">Pipeline Stages</div><div class="value">1 &ndash; 6</div></div>
+  <div class="stat-card"><div class="label">Frame Length</div><div class="value">576 samples</div></div>
+  <div class="stat-card"><div class="label">FFT Size</div><div class="value">256 bins</div></div>
+  <div class="stat-card"><div class="label">IQ Width</div><div class="value">16b (Q1.15)</div></div>
+  <div class="stat-card"><div class="label">NCO Phase Width</div><div class="value">32 bits</div></div>
+  <div class="stat-card"><div class="label">CORDIC Latency</div><div class="value">15 cycles</div></div>
+  <div class="stat-card"><div class="label">IQ Packing</div><div class="value">tdata[15:0]=I, [31:16]=Q</div></div>
+</div>
+
+<!-- ===== TABLE OF CONTENTS ===== -->
+<div class="toc">
+  <h3>14 Sub-Modules Covered</h3>
+  <div class="toc-grid">
+    <div class="toc-item"><a href="#sub-A">A. frame_detector</a></div>
+    <div class="toc-item"><a href="#sub-B">B. streaming_cp_autocorr</a></div>
+    <div class="toc-item"><a href="#sub-C">C. timing_metric_core</a></div>
+    <div class="toc-item"><a href="#sub-D">D. peak_detector</a></div>
+    <div class="toc-item"><a href="#sub-E">E. frac_cfo_estimator</a></div>
+    <div class="toc-item"><a href="#sub-F">F. cordic_atan2</a></div>
+    <div class="toc-item"><a href="#sub-G">G. frac_cfo_corrector_top</a></div>
+    <div class="toc-item"><a href="#sub-H">H. nco_phase_gen</a></div>
+    <div class="toc-item"><a href="#sub-I">I. complex_mult_iq</a></div>
+    <div class="toc-item"><a href="#sub-J">J. complex_rotator</a></div>
+    <div class="toc-item"><a href="#sub-K">K. fft256_xilinx_wrapper</a></div>
+    <div class="toc-item"><a href="#sub-L">L. meyr_pss_sss_product_gen</a></div>
+    <div class="toc-item"><a href="#sub-M">M. meyr_term2_ref_rom</a></div>
+    <div class="toc-item"><a href="#sub-N">N. phase3_axi_lite_regs</a></div>
+  </div>
+  <br>
+  <span style="color:#8b949e;font-size:11px;">Jump to master tables: </span>
+  <a href="#sec-coverage">Coverage</a> &nbsp;|&nbsp;
+  <a href="#sec-issues">Known Issues</a> &nbsp;|&nbsp;
+  <a href="#sec-bringup">FPGA Bring-Up</a> &nbsp;|&nbsp;
+  <a href="#sec-debug">Debug Checklist</a> &nbsp;|&nbsp;
+  <a href="#sec-review">Review Notes</a>
+</div>
+
+<!-- ===== SECTION 2: INTEGRATION CONTEXT ===== -->
+<h2>2. Integration Context</h2>
+<div class="card">
+  <p style="font-size:12px;margin-bottom:10px;">
+    The 14 primitives in this document constitute the leaf nodes of the RTL hierarchy.
+    They are instantiated inside the mid-level wrappers
+    (<code>frac_cfo_frame_corrector_top</code>, <code>meyr_integer_cfo_core</code>,
+    <code>fft256_dual_symbol_frontend</code>, <code>pss_sss_symbol_extractor</code>, etc.)
+    which in turn feed into <code>phase3_sync_top</code> and ultimately
+    <code>phase3_sync_axis_dma_wrapper</code>.
+  </p>
+  <p style="font-size:12px;">
+    All modules share a common AXI4-Stream IQ packing convention:
+    <code>tdata[15:0]&nbsp;= I</code>, <code>tdata[31:16]&nbsp;= Q</code>, Q1.15 fixed-point.
+    Backpressure follows the standard <code>valid/ready</code> handshake.
+    The sole exception is <code>fft256_xilinx_wrapper</code> with
+    <code>C_THROTTLE_SCHEME=0</code> (no output <code>tready</code> on the Xilinx IP).
+  </p>
+</div>
+
+<!-- ===== SECTION 3: BLOCK DIAGRAM ===== -->
+<h2>3. Block Diagram &mdash; Sub-Module Hierarchy</h2>
+<div class="card">
+  <div style="font-size:11px;color:#8b949e;margin-bottom:8px;">Arrows show data-flow direction. Wrappers shown in teal; primitives in default card style.</div>
+
+  <div class="hrow">
+    <div class="blk ext" style="min-width:200px;">phase3_sync_axis_dma_wrapper<br><span style="color:#555;font-size:9px;">(top of hierarchy)</span></div>
+  </div>
+  <div class="varrow">&#8595;</div>
+  <div class="hrow">
+    <div class="blk top" style="min-width:180px;">phase3_sync_top</div>
+    <span class="harrow">&#8594;</span>
+    <div class="blk sub">phase3_axi_lite_regs [N]</div>
+  </div>
+  <div class="varrow">&#8595;</div>
+  <div class="hrow" style="gap:14px;">
+    <div style="text-align:center;">
+      <div class="blk top" style="min-width:170px;margin-bottom:4px;">frac_cfo_frame_corrector_top</div>
+      <div class="hrow">
+        <div class="blk sub">frame_detector [A]</div>
+        <div class="blk sub">frac_cfo_estimator [E]</div>
+        <div class="blk sub">cordic_atan2 [F]</div>
+        <div class="blk sub">frac_cfo_corrector_top [G]</div>
+      </div>
+      <div class="hrow" style="margin-top:4px;">
+        <div class="blk sub" style="border-color:#CA6702;color:#CA6702;">nco_phase_gen [H]</div>
+        <div class="blk sub" style="border-color:#CA6702;color:#CA6702;">complex_rotator [J]</div>
+        <div class="blk sub" style="border-color:#CA6702;color:#CA6702;">complex_mult_iq [I]</div>
+      </div>
+      <div class="hrow" style="margin-top:4px;">
+        <div class="blk sub">streaming_cp_autocorr [B]</div>
+        <div class="blk sub">timing_metric_core [C]</div>
+        <div class="blk sub">peak_detector [D]</div>
+      </div>
+    </div>
+    <span class="harrow">&#8594;</span>
+    <div style="text-align:center;">
+      <div class="blk top" style="min-width:200px;margin-bottom:4px;">meyr_integer_cfo_fft_frontend_top<br>+ meyr_integer_cfo_core</div>
+      <div class="hrow">
+        <div class="blk sub">fft256_xilinx_wrapper [K]</div>
+        <div class="blk sub">meyr_pss_sss_product_gen [L]</div>
+        <div class="blk sub">meyr_term2_ref_rom [M]</div>
+      </div>
+      <div class="hrow" style="margin-top:4px;">
+        <div class="blk sub" style="border-color:#CA6702;color:#CA6702;">nco_phase_gen [H] (u_int_nco)</div>
+        <div class="blk sub" style="border-color:#CA6702;color:#CA6702;">complex_rotator [J] (u_int_rot)</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ===================================================== -->
+<!-- SUB-MODULE SECTIONS                                    -->
+<!-- ===================================================== -->
+
+<!-- ===== A. frame_detector ===== -->
+<h2 id="sub-A">A. frame_detector</h2>
+<div class="module-section">
+  <div class="module-header">
+    <span class="module-title">frame_detector</span>
+    <span class="module-src">rtl/DUT/frame_detector.v &nbsp;|&nbsp; P3-12A refactor</span>
+  </div>
+
+  <h3>A.1 Interface Summary</h3>
+  <table>
+    <tr><th>Port</th><th>Dir</th><th>Width</th><th>Description</th></tr>
+    <tr><td><code>aclk</code></td><td>in</td><td>1</td><td>System clock</td></tr>
+    <tr><td><code>aresetn</code></td><td>in</td><td>1</td><td>Active-low synchronous reset</td></tr>
+    <tr><td><code>start</code></td><td>in</td><td>1</td><td>1-cycle pulse to begin scan</td></tr>
+    <tr><td><code>threshold_in</code></td><td>in</td><td>ENERGY_WIDTH=40</td><td>Per-sample energy threshold</td></tr>
+    <tr><td><code>window_len_in</code></td><td>in</td><td>7</td><td>Sliding window length (max 64)</td></tr>
+    <tr><td><code>hit_count_in</code></td><td>in</td><td>4</td><td>Required consecutive hits to declare frame</td></tr>
+    <tr><td><code>search_base</code></td><td>in</td><td>ADDR_WIDTH=12</td><td>Start address in replay buffer</td></tr>
+    <tr><td><code>search_len</code></td><td>in</td><td>ADDR_WIDTH+1=13</td><td>Number of samples to search</td></tr>
+    <tr><td><code>buf_rd_addr</code></td><td>out</td><td>12</td><td>Registered read address to replay buffer</td></tr>
+    <tr><td><code>buf_rd_en</code></td><td>out</td><td>1</td><td>Read enable to replay buffer</td></tr>
+    <tr><td><code>buf_rd_data_I/Q</code></td><td>in</td><td>16 each</td><td>IQ sample from replay buffer (1-cycle latency)</td></tr>
+    <tr><td><code>frame_index</code></td><td>out</td><td>INDEX_WIDTH=12</td><td>Detected frame start index</td></tr>
+    <tr><td><code>frame_found</code></td><td>out</td><td>1</td><td>High if frame was found</td></tr>
+    <tr><td><code>done</code></td><td>out</td><td>1</td><td>1-cycle pulse on completion</td></tr>
+    <tr><td><code>busy</code></td><td>out</td><td>1</td><td>High while scan in progress</td></tr>
+  </table>
+  <div class="two-col">
+    <div>
+      <h4>Key Parameters</h4>
+      <table>
+        <tr><th>Parameter</th><th>Default</th><th>Notes</th></tr>
+        <tr><td>DATA_WIDTH</td><td>32</td><td>IQ packed width</td></tr>
+        <tr><td>ADDR_WIDTH</td><td>12</td><td>Buffer address bits</td></tr>
+        <tr><td>ENERGY_WIDTH</td><td>40</td><td>Sliding window accumulator</td></tr>
+        <tr><td>WINDOW_LEN</td><td>25</td><td>Default window (override via port)</td></tr>
+        <tr><td>DRAIN_CYCLES</td><td>6</td><td>Pipeline flush after last sample</td></tr>
+      </table>
+    </div>
+    <div>
+      <h4>Instantiated Sub-Modules</h4>
+      <ul>
+        <li><code>sample_power_sq</code> &mdash; combinatorial I&sup2;+Q&sup2;</li>
+        <li><code>sliding_window_sum</code> (u_sws) &mdash; ring-buffer rolling accumulator</li>
+        <li><code>frame_detect_fsm</code> (u_fsm) &mdash; Case1/Case2 hit-count FSM</li>
+      </ul>
+    </div>
+  </div>
+
+  <h3>A.2 Operation</h3>
+  <p style="font-size:12px;">
+    The wrapper FSM orchestrates a memory-mapped scan over <code>search_len</code> samples starting
+    at <code>search_base</code> in the replay buffer. Each sample costs 2 wrapper clocks:
+    <strong>S_FETCH</strong> issues the registered buffer read; <strong>S_PROC</strong> drives
+    <code>sample_valid</code> high with the returned data. Combinatorial block
+    <code>sample_power_sq</code> computes <code>I&sup2;+Q&sup2;</code> in the same clock.
+    <code>sliding_window_sum</code> maintains a rolling CP_LEN-sized energy window;
+    <code>frame_detect_fsm</code> counts consecutive windows exceeding
+    <code>thresh_mult = threshold_in &times; window_len_in</code>.
+  </p>
+  <p style="font-size:12px;margin-top:6px;">
+    On early termination (<code>fsm_frame_found_w</code> asserted mid-scan), the wrapper
+    exits immediately to <strong>S_DONE</strong>. After the last sample, <strong>S_DRAIN</strong>
+    holds for 6 clocks to flush the 2-stage SWS&rarr;FSM pipeline before declaring the result.
+  </p>
+
+  <h3>A.3 FSM</h3>
+  <div class="fsm-row">
+    <div class="fsm-box reset">S_IDLE</div><span class="fsm-arr">&#8594;</span>
+    <div class="fsm-box">S_START<br><span style="font-size:10px;">latch inputs,<br>clear sub-mods</span></div><span class="fsm-arr">&#8594;</span>
+    <div class="fsm-box">S_FETCH<br><span style="font-size:10px;">issue buf read</span></div><span class="fsm-arr">&#8594;</span>
+    <div class="fsm-box active">S_PROC<br><span style="font-size:10px;">sample_valid=1</span></div><span class="fsm-arr">&#8592;&#8599;</span>
+    <div class="fsm-box">S_DRAIN<br><span style="font-size:10px;">6 cycles flush</span></div><span class="fsm-arr">&#8594;</span>
+    <div class="fsm-box">S_DONE<br><span style="font-size:10px;">latch result</span></div>
+  </div>
+  <div style="font-size:11px;color:#8b949e;margin-top:4px;">
+    S_PROC loops back to S_FETCH for next sample; exits to S_DRAIN when sample_idx+1 &ge; slen_r,
+    or to S_DONE immediately if <code>fsm_frame_found_w</code> fires.
+  </div>
+
+  <h3>A.4 Algorithm Mapping</h3>
+  <div class="math">
+    Sliding-window average energy (C reference):<br>
+    <span class="eq"><i>E</i>[<i>j</i>] <span class="op">=</span> <span class="frac"><span>1</span><span>wndLen</span></span> <span class="op">&sum;</span><sub>i=0</sub><sup>wndLen&minus;1</sup> ( <i>I</i><sub>j+i</sub><sup>2</sup> <span class="op">+</span> <i>Q</i><sub>j+i</sub><sup>2</sup> )</span><br>
+    RTL scales the threshold instead of dividing: <span class="eq">thresh_mult <span class="op">=</span> threshold_in <span class="op">&middot;</span> window_len_in</span><br>
+    frame_detect_fsm: Case1 <span class="eq"><i>E</i> <span class="op">&gt;</span> thresh_mult</span>; Case2 declares frame when <span class="eq">hit_count <span class="op">&ge;</span> hit_count_in</span> (10 consecutive)<br>
+    C ref: <code>frame_detector()</code> @ ref/receiver.c:327
+  </div>
+
+  <h3>A.5 Latency / Throughput</h3>
+  <ul>
+    <li>2 clocks per sample (S_FETCH + S_PROC)</li>
+    <li>S_DRAIN: 6 additional clocks after last sample</li>
+    <li>Total search time: 2 &times; search_len + 6 + overhead clocks</li>
+  </ul>
+
+  <h3>A.6 Resource Impact</h3>
+  <ul>
+    <li>Combinatorial power: ~512 LUT4s (16-bit multiplier x2)</li>
+    <li>SWS ring buffer: ~64-entry shift register / small LUTRAM</li>
+    <li>FSM registers: ~60 flip-flops</li>
+  </ul>
+  <div class="ok">Gates P3-12B, P3-12C, P3-14C, P3-15A all PASS.</div>
+</div>
+
+<!-- ===== B. streaming_cp_autocorr ===== -->
+<h2 id="sub-B">B. streaming_cp_autocorr</h2>
+<div class="module-section">
+  <div class="module-header">
+    <span class="module-title">streaming_cp_autocorr</span>
+    <span class="module-src">rtl/DUT/streaming_cp_autocorr.v &nbsp;|&nbsp; P2-02 (refactored P2-08b)</span>
+  </div>
+
+  <h3>B.1 Interface Summary</h3>
+  <table>
+    <tr><th>Port</th><th>Dir</th><th>Width</th><th>Description</th></tr>
+    <tr><td><code>clk</code></td><td>in</td><td>1</td><td>System clock (note: uses <code>clk</code> not <code>aclk</code>)</td></tr>
+    <tr><td><code>aresetn</code></td><td>in</td><td>1</td><td>Active-low async reset (async posedge/negedge)</td></tr>
+    <tr><td><code>s_valid</code></td><td>in</td><td>1</td><td>Input sample valid (1 sample/clock)</td></tr>
+    <tr><td><code>s_data</code></td><td>in</td><td>32</td><td>IQ sample: [15:0]=I, [31:16]=Q</td></tr>
+    <tr><td><code>p_i</code></td><td>out</td><td>ACC_W=48</td><td>Rolling CP autocorr real sum (P_I)</td></tr>
+    <tr><td><code>p_q</code></td><td>out</td><td>ACC_W=48</td><td>Rolling CP autocorr imag sum (P_Q)</td></tr>
+    <tr><td><code>energy</code></td><td>out</td><td>ACC_W=48</td><td>Rolling energy window E</td></tr>
+    <tr><td><code>out_valid</code></td><td>out</td><td>1</td><td>Permanently high after first window fills</td></tr>
+    <tr><td><code>sample_index</code></td><td>out</td><td>32</td><td>Count of accepted input samples</td></tr>
+  </table>
+  <div class="two-col">
+    <div>
+      <h4>Key Parameters</h4>
+      <table>
+        <tr><th>Parameter</th><th>Default</th></tr>
+        <tr><td>SAMPLE_W</td><td>16</td></tr>
+        <tr><td>NSC</td><td>256</td></tr>
+        <tr><td>CP_LEN</td><td>32</td></tr>
+        <tr><td>ACC_W</td><td>48</td></tr>
+      </table>
+    </div>
+    <div>
+      <h4>Legacy Primitives Used</h4>
+      <ul>
+        <li><code>delay_sample</code> &mdash; 256-sample RAM delay</li>
+        <li><code>complex_mult</code> &mdash; 3-cycle pipelined multiplier</li>
+        <li><code>moving_avg_optimized</code> &mdash; CP_LEN sliding sum (&times;3)</li>
+        <li><code>sample_power_sq</code> &mdash; 2-cycle |x|&sup2;</li>
+        <li><code>complex_to_mag</code> &mdash; alpha-max/beta-min (debug only)</li>
+      </ul>
+    </div>
+  </div>
+
+  <h3>B.2 Operation</h3>
+  <p style="font-size:12px;">
+    Implements the Schmidl-Cox CP autocorrelation (also known as VanDeBeek):
+    for each input sample <em>n</em>, accumulates the sliding sum of
+    <code>conj(r[n-NSC]) &times; r[n]</code> over a CP_LEN-sample window.
+    The <code>delay_sample</code> RAM provides the NSC=256 sample delay.
+    A parallel energy path computes <code>|r[n]|&sup2;</code> and accumulates it
+    with the same window size, aligned by a 2-cycle padding stage to match the
+    <code>complex_mult</code> latency.
+  </p>
+  <div class="note">
+    Convention mismatch: legacy <code>complex_mult</code> expects I in the upper half but
+    Phase2 packs I in the lower half. The wiring compensates: <code>cm_a_i = delayed[15:0]</code>,
+    <code>cm_a_q = -delayed[31:16]</code> (conjugate), etc.
+  </div>
+
+  <h3>B.3 Pipeline</h3>
+  <div class="math">
+    delay_sample (1 cy) &rarr; complex_mult (3 cy) &rarr; moving_avg (4 cy) = 8 cy total (P path)<br>
+    sample_power_sq (2 cy) + 2 cy align-delay &rarr; moving_avg (4 cy) = 8 cy total (E path)
+  </div>
+
+  <h3>B.4 Algorithm Mapping</h3>
+  <div class="math">
+    <span class="eq"><i>P</i>[<i>n</i>] <span class="op">=</span> <span class="op">&sum;</span><sub>k=0</sub><sup>CP_LEN&minus;1</sup> <span class="conj"><i>r</i>[<i>n</i>+<i>k</i>]</span> <span class="op">&middot;</span> <i>r</i>[<i>n</i>+<i>k</i>+NSC]</span><br>
+    <span class="eq"><i>E</i>[<i>n</i>] <span class="op">=</span> <span class="op">&sum;</span><sub>k=0</sub><sup>CP_LEN&minus;1</sup> |<i>r</i>[<i>n</i>+<i>k</i>+NSC]|<sup>2</sup></span><br>
+    C ref: <code>VanDeBeekAutoCorrelation()</code> @ ref/receiver.c:556 &rarr; <code>auto_corr()</code> @ ref/receiver.c:571
+  </div>
+
+  <h3>B.5 Latency / Throughput</h3>
+  <ul>
+    <li>1 sample/clock input rate (s_valid=1 every cycle)</li>
+    <li>Out_valid latches permanently after first window (NSC+CP_LEN+8 ~296 cycles)</li>
+    <li>P and E outputs update every clock once valid</li>
+  </ul>
+
+  <h3>B.6 Resource Impact</h3>
+  <ul>
+    <li>delay_sample: 256&times;32b = 8 Kb &mdash; 1&times;BRAM18 or deep LUTRAM</li>
+    <li>3&times;moving_avg_optimized: 3 small BRAMs or SRL shift registers</li>
+    <li>complex_mult: ~4 DSP48 slices</li>
+  </ul>
+</div>
+
+<!-- ===== C. timing_metric_core ===== -->
+<h2 id="sub-C">C. timing_metric_core</h2>
+<div class="module-section">
+  <div class="module-header">
+    <span class="module-title">timing_metric_core</span>
+    <span class="module-src">rtl/DUT/timing_metric_core.v</span>
+  </div>
+
+  <h3>C.1 Interface Summary</h3>
+  <table>
+    <tr><th>Port</th><th>Dir</th><th>Width</th><th>Description</th></tr>
+    <tr><td><code>aclk / aresetn</code></td><td>in</td><td>1</td><td>Clock / active-low reset</td></tr>
+    <tr><td><code>start</code></td><td>in</td><td>1</td><td>1-cycle pulse to begin metric pass</td></tr>
+    <tr><td><code>num_lags</code></td><td>in</td><td>9</td><td>Number of lags to evaluate; latched on start</td></tr>
+    <tr><td><code>done / busy</code></td><td>out</td><td>1</td><td>1-cycle done pulse; busy flag</td></tr>
+    <tr><td><code>result_rd_addr</code></td><td>out</td><td>9</td><td>Drives cp_autocorr_core read address (comb)</td></tr>
+    <tr><td><code>result_autocorr_I/Q</code></td><td>in</td><td>32</td><td>Autocorr P_I/P_Q from cp_autocorr_core (comb)</td></tr>
+    <tr><td><code>result_norm_E</code></td><td>in</td><td>32</td><td>Normalised energy E from cp_autocorr_core (comb)</td></tr>
+    <tr><td><code>metric_out</code></td><td>out</td><td>METRIC_WIDTH=32</td><td>Inverted Cauchy-Schwarz metric per lag</td></tr>
+    <tr><td><code>metric_valid</code></td><td>out</td><td>1</td><td>High in S_RUN</td></tr>
+    <tr><td><code>metric_last</code></td><td>out</td><td>1</td><td>High on last lag</td></tr>
+  </table>
+
+  <h3>C.2 Operation</h3>
+  <p style="font-size:12px;">
+    Drives a sequential read address from lag=0 to lag=num_lags-1.
+    On each cycle the combinatorial metric is computed from the zero-latency autocorr read port.
+    The metric uses a squared Cauchy-Schwarz form to avoid magnitude-approximation ordering errors:
+  </p>
+  <div class="math">
+    <span class="eq">sq_neg <span class="op">=</span> <i>E</i><sub>s</sub><sup>2</sup> <span class="op">&minus;</span> 4<span class="op">&middot;</span>( <i>P</i><sub>I,s</sub><sup>2</sup> <span class="op">+</span> <i>P</i><sub>Q,s</sub><sup>2</sup> ) <span class="op">&ge;</span> 0</span> (always, by Cauchy-Schwarz)<br>
+    <span class="eq">metric_out <span class="op">=</span> ~sq_neg[58:27]</span> &larr; invert so peak_detector MAX finds minimum sq_neg<br>
+    Correct lag: <span class="eq">sq_neg <span class="op">&asymp;</span> 0 <span class="op">&rarr;</span> metric_out <span class="op">&asymp;</span> 0xFFFFFFFF</span>
+  </div>
+
+  <h3>C.3 FSM</h3>
+  <div class="fsm-row">
+    <div class="fsm-box reset">S_IDLE</div><span class="fsm-arr">&#8594;</span>
+    <div class="fsm-box active">S_RUN<br><span style="font-size:10px;">metric_valid=1<br>lag 0..num-1</span></div><span class="fsm-arr">&#8594;</span>
+    <div class="fsm-box">S_DONE<br><span style="font-size:10px;">done pulse</span></div>
+  </div>
+
+  <h3>C.4 Algorithm Mapping</h3>
+  <div class="math">
+    Software timing metric (VanDeBeek normalised value):<br>
+    <span class="eq"><i>M</i>[<i>n</i>] <span class="op">=</span> 2<span class="op">&middot;</span>&radic;<span style="border-top:1px solid;padding-top:1px;">( <i>P</i><sub>I</sub><sup>2</sup> + <i>P</i><sub>Q</sub><sup>2</sup> )</span> <span class="op">&minus;</span> <i>E</i>[<i>n</i>]</span>, peak at <span class="eq">argmax<sub>n</sub> <i>M</i>[<i>n</i>]</span><br>
+    RTL squares this to avoid the &radic; and inverts so a MAX finds the peak:<br>
+    <span class="eq">sq_neg <span class="op">=</span> <i>E</i><sub>s</sub><sup>2</sup> <span class="op">&minus;</span> 4<span class="op">&middot;</span>( <i>P</i><sub>I,s</sub><sup>2</sup> <span class="op">+</span> <i>P</i><sub>Q,s</sub><sup>2</sup> )</span>, <span class="eq">metric_out <span class="op">=</span> ~sq_neg[58:27]</span><br>
+    C ref: <code>VanDeBeekAutoCorrelation()</code> @ ref/receiver.c:556 (normalizedValue @ line 564) &rarr; <code>find_max_index()</code> @ ref/receiver.c:585
+  </div>
+
+  <h3>C.5 Latency / Throughput</h3>
+  <ul>
+    <li>Total latency: num_lags + 1 clocks (num_lags cycles S_RUN, 1 cycle S_DONE)</li>
+    <li>Combinatorial metric available immediately; no pipeline stalls</li>
+  </ul>
+
+  <h3>C.6 Resource Impact</h3>
+  <ul>
+    <li>Two 33&times;33-bit squarers and one 32&times;32-bit squarer &mdash; ~6 DSP48 slices</li>
+    <li>68-bit subtraction and 32-bit inversion: combinatorial LUTs</li>
+    <li>Minimal state: 2-bit FSM + 9-bit lag counter</li>
+  </ul>
+</div>
+
+<!-- ===== D. peak_detector ===== -->
+<h2 id="sub-D">D. peak_detector</h2>
+<div class="module-section">
+  <div class="module-header">
+    <span class="module-title">peak_detector</span>
+    <span class="module-src">rtl/DUT/peak_detector.v</span>
+  </div>
+
+  <h3>D.1 Interface Summary</h3>
+  <table>
+    <tr><th>Port</th><th>Dir</th><th>Width</th><th>Description</th></tr>
+    <tr><td><code>aclk / aresetn</code></td><td>in</td><td>1</td><td>Clock / active-low reset</td></tr>
+    <tr><td><code>start</code></td><td>in</td><td>1</td><td>1-cycle pulse; latches max_count, clears state</td></tr>
+    <tr><td><code>max_count</code></td><td>in</td><td>COUNT_WIDTH=10</td><td>Expected number of values; 0 = no limit check</td></tr>
+    <tr><td><code>data_in</code></td><td>in</td><td>METRIC_WIDTH=64</td><td>Unsigned metric per clock</td></tr>
+    <tr><td><code>data_valid</code></td><td>in</td><td>1</td><td>Input sample valid</td></tr>
+    <tr><td><code>data_last</code></td><td>in</td><td>1</td><td>Terminates scan on data_valid=1</td></tr>
+    <tr><td><code>peak_index</code></td><td>out</td><td>INDEX_WIDTH=9</td><td>0-based index of maximum value</td></tr>
+    <tr><td><code>peak_value</code></td><td>out</td><td>METRIC_WIDTH=64</td><td>Maximum value seen</td></tr>
+    <tr><td><code>done</code></td><td>out</td><td>1</td><td>1-cycle pulse on scan completion</td></tr>
+    <tr><td><code>busy</code></td><td>out</td><td>1</td><td>High from start until done</td></tr>
+    <tr><td><code>error</code></td><td>out</td><td>1</td><td>Sticky: start-while-busy or overflow</td></tr>
+  </table>
+
+  <h3>D.2 Operation</h3>
+  <p style="font-size:12px;">
+    Pure streaming unsigned argmax. Accepts up to <code>max_count</code> values
+    (one per clock while <code>data_valid</code>). Updates <code>running_max</code>
+    and <code>peak_index</code> on strict improvement (<code>data_in &gt; running_max</code>),
+    ensuring first-occurrence tie-breaking. Terminates when <code>data_valid &amp;&amp; data_last</code>.
+    Used in <code>meyr_integer_cfo_core</code> to find the argmax of 511 metric scores from
+    <code>timing_metric_core</code>.
+  </p>
+
+  <h3>D.3 Algorithm Mapping</h3>
+  <div class="math">
+    Streaming unsigned argmax (first-occurrence tie-break):<br>
+    <span class="eq">peak_index <span class="op">=</span> argmax<sub>n</sub> data_in[<i>n</i>]</span>, update when <span class="eq">data_in <span class="op">&gt;</span> running_max</span> (strict)<br>
+    In the timing path the metric is <span class="eq">|conv[<i>n</i>]|<sup>2</sup> <span class="op">=</span> <i>I</i><sub>n</sub><sup>2</sup> <span class="op">+</span> <i>Q</i><sub>n</sub><sup>2</sup></span>, matching the C peak search.<br>
+    C ref: <code>find_peak_index()</code> @ ref/receiver.c:543 (argmax of |conv|<sup>2</sup>) and <code>find_max_index()</code> @ ref/receiver.c:585 (scalar argmax)
+  </div>
+
+  <h3>D.4 Error Handling</h3>
+  <ul>
+    <li>Sticky <code>error</code> flag set on: start-while-busy; or count overflow when max_count &ne; 0</li>
+    <li>Cleared only by <code>aresetn</code></li>
+  </ul>
+
+  <h3>D.5 Latency / Throughput</h3>
+  <ul>
+    <li>1 sample/clock throughput</li>
+    <li>Result stable from <code>done</code> until next <code>start</code></li>
+    <li>No output pipeline; comparator result registered in the same cycle data is accepted</li>
+  </ul>
+
+  <h3>D.6 Resource Impact</h3>
+  <ul>
+    <li>64-bit unsigned comparator: ~32 LUT4s</li>
+    <li>Registers: peak_index (9b) + peak_value (64b) + running_max (64b) + count (10b)</li>
+  </ul>
+</div>
+
+<!-- ===== E. frac_cfo_estimator ===== -->
+<h2 id="sub-E">E. frac_cfo_estimator</h2>
+<div class="module-section">
+  <div class="module-header">
+    <span class="module-title">frac_cfo_estimator</span>
+    <span class="module-src">rtl/DUT/frac_cfo_estimator.v</span>
+  </div>
+
+  <h3>E.1 Interface Summary</h3>
+  <table>
+    <tr><th>Port</th><th>Dir</th><th>Width</th><th>Description</th></tr>
+    <tr><td><code>aclk / aresetn</code></td><td>in</td><td>1</td><td>Clock / active-low reset</td></tr>
+    <tr><td><code>start</code></td><td>in</td><td>1</td><td>1-cycle pulse to trigger estimation</td></tr>
+    <tr><td><code>peak_lag</code></td><td>in</td><td>9</td><td>Lag index from peak_detector</td></tr>
+    <tr><td><code>result_rd_addr</code></td><td>out</td><td>9</td><td>Drives cp_autocorr_core read (comb)</td></tr>
+    <tr><td><code>autocorr_I/Q</code></td><td>in</td><td>32</td><td>Autocorr at peak_lag (comb)</td></tr>
+    <tr><td><code>frac_phase</code></td><td>out</td><td>PHASE_WIDTH=16</td><td>atan2 result in Q1.15</td></tr>
+    <tr><td><code>frac_phase_valid</code></td><td>out</td><td>1</td><td>1-cycle pulse with valid frac_phase</td></tr>
+    <tr><td><code>done / busy</code></td><td>out</td><td>1</td><td>1-cycle done pulse; busy flag</td></tr>
+  </table>
+
+  <h3>E.2 Operation</h3>
+  <p style="font-size:12px;">
+    Reads the CP autocorrelation at <code>peak_lag</code>, feeds it to the internal
+    <code>cordic_atan2</code> instance, and waits CORD_LAT=15 cycles for the result.
+    Total latency from <code>start</code> to <code>frac_phase_valid</code>: L+2=17 clocks.
+  </p>
+
+  <h3>E.3 FSM</h3>
+  <div class="fsm-row">
+    <div class="fsm-box reset">S_IDLE</div><span class="fsm-arr">&#8594;</span>
+    <div class="fsm-box">S_SEND<br><span style="font-size:10px;">tvalid=1 to CORDIC</span></div><span class="fsm-arr">&#8594;</span>
+    <div class="fsm-box active">S_WAIT<br><span style="font-size:10px;">cnt 0..14</span></div><span class="fsm-arr">&#8594;</span>
+    <div class="fsm-box">S_DONE<br><span style="font-size:10px;">latch cordic_phase</span></div>
+  </div>
+
+  <h3>E.4 Algorithm Mapping</h3>
+  <div class="math">
+    <span class="eq">frac_phase <span class="op">=</span> atan2( autocorr_Q[peak_lag],&nbsp;autocorr_I[peak_lag] )</span><br>
+    Encoded Q1.15: <span class="eq">0x7FFF <span class="op">=</span> +&pi;</span>, <span class="eq">0x8000 <span class="op">=</span> &minus;&pi;</span>, <span class="eq">0x0000 <span class="op">=</span> 0</span><br>
+    C ref: <span class="eq">fracfreqOffset <span class="op">=</span> <span class="op">&minus;</span>atan2(<i>P</i><sub>Q</sub>,&nbsp;<i>P</i><sub>I</sub>) <span class="op">/</span> 2&pi;</span> &mdash; <code>receiver.c:296</code> (leading &minus; folded into step_word, see G)
+  </div>
+
+  <h3>E.5 Latency</h3>
+  <ul>
+    <li>S_SEND: 1 cycle (tvalid assertion)</li>
+    <li>S_WAIT: CORD_LAT=15 cycles</li>
+    <li>S_DONE: 1 cycle (read cordic output)</li>
+    <li>Total: 17 clocks start &rarr; frac_phase_valid</li>
+  </ul>
+</div>
+
+<!-- ===== F. cordic_atan2 ===== -->
+<h2 id="sub-F">F. cordic_atan2</h2>
+<div class="module-section">
+  <div class="module-header">
+    <span class="module-title">cordic_atan2</span>
+    <span class="module-src">rtl/DUT/cordic_atan2.v &nbsp;|&nbsp; Behavioral LATENCY-stage pipeline</span>
+  </div>
+
+  <h3>F.1 Interface Summary</h3>
+  <table>
+    <tr><th>Port</th><th>Dir</th><th>Width</th><th>Description</th></tr>
+    <tr><td><code>aclk / aresetn</code></td><td>in</td><td>1</td><td>Clock / active-low reset</td></tr>
+    <tr><td><code>s_axis_cartesian_tdata</code></td><td>in</td><td>64</td><td>{Q[63:32], I[31:0]} packed</td></tr>
+    <tr><td><code>s_axis_cartesian_tvalid</code></td><td>in</td><td>1</td><td>AXI-S input valid</td></tr>
+    <tr><td><code>s_axis_cartesian_tready</code></td><td>out</td><td>1</td><td>Always 1 (always-ready slave)</td></tr>
+    <tr><td><code>m_axis_dout_tdata</code></td><td>out</td><td>PHASE_WIDTH=16</td><td>atan2 result Q1.15</td></tr>
+    <tr><td><code>m_axis_dout_tvalid</code></td><td>out</td><td>1</td><td>Output valid</td></tr>
+  </table>
+  <div class="two-col">
+    <div>
+      <h4>Key Parameters</h4>
+      <table>
+        <tr><th>Parameter</th><th>Default</th></tr>
+        <tr><td>INPUT_WIDTH</td><td>32</td></tr>
+        <tr><td>PHASE_WIDTH</td><td>16</td></tr>
+        <tr><td>LATENCY</td><td>15</td></tr>
+      </table>
+    </div>
+    <div>
+      <h4>Q1.15 Encoding</h4>
+      <div class="math" style="margin-top:8px;">
+        <span class="eq">0x7FFF <span class="op">=</span> +&pi;</span><br>
+        <span class="eq">0x8000 <span class="op">=</span> &minus;&pi;</span><br>
+        <span class="eq">0x0000 <span class="op">=</span> 0</span><br>
+        <span class="eq">value <span class="op">=</span> round( atan2(<i>Q</i>,&nbsp;<i>I</i>) <span class="op">/</span> &pi; <span class="op">&middot;</span> 2<sup>15</sup> )</span>
+      </div>
+    </div>
+  </div>
+
+  <h3>F.2 Operation</h3>
+  <p style="font-size:12px;">
+    Behavioral simulation model using <code>$atan2()</code>, implementing a LATENCY-stage
+    shift register pipeline. The 64-bit input is split into signed 32-bit I/Q halves after
+    propagating through the pipeline. Output is clamped to [-32768, 32767] before
+    truncation to PHASE_WIDTH bits. Always-ready slave; no backpressure.
+  </p>
+  <div class="note">
+    This is a behavioral stub for simulation. Synthesis targets should substitute the
+    Xilinx CORDIC IP or a synthesizable CORDIC implementation with matching latency.
+  </div>
+
+  <h3>F.3 Algorithm Mapping</h3>
+  <div class="math">
+    Four-quadrant arctangent, Q1.15 scaled:<br>
+    <span class="eq">m_axis_dout <span class="op">=</span> round( atan2(<i>Q</i>,&nbsp;<i>I</i>) <span class="op">/</span> &pi; <span class="op">&middot;</span> 2<sup>15</sup> )</span>, clamped to [<span class="eq">&minus;2<sup>15</sup></span>, <span class="eq">2<sup>15</sup>&minus;1</span>]<br>
+    Behavioral model calls <code>$atan2(Q,I)</code>; synthesis substitutes the Xilinx CORDIC IP.<br>
+    C ref: <code>atan2()</code> primitive of the frac-CFO path @ ref/receiver.c:296
+  </div>
+
+  <h3>F.4 Latency</h3>
+  <ul>
+    <li>LATENCY=15 pipeline registers from input to output</li>
+    <li>Output valid fires LATENCY cycles after input valid</li>
+  </ul>
+</div>
+
+<!-- ===== G. frac_cfo_corrector_top ===== -->
+<h2 id="sub-G">G. frac_cfo_corrector_top</h2>
+<div class="module-section">
+  <div class="module-header">
+    <span class="module-title">frac_cfo_corrector_top</span>
+    <span class="module-src">rtl/DUT/frac_cfo_corrector_top.v &nbsp;|&nbsp; Wraps nco_phase_gen + complex_rotator</span>
+  </div>
+
+  <h3>G.1 Interface Summary</h3>
+  <table>
+    <tr><th>Port</th><th>Dir</th><th>Width</th><th>Description</th></tr>
+    <tr><td><code>aclk / aresetn</code></td><td>in</td><td>1</td><td>Clock / active-low reset</td></tr>
+    <tr><td><code>load_step</code></td><td>in</td><td>1</td><td>1-cycle: latch step_word into NCO</td></tr>
+    <tr><td><code>step_word</code></td><td>in</td><td>NCO_PHASE_WIDTH=32</td><td>NCO frequency step word (signed)</td></tr>
+    <tr><td><code>phase_reset</code></td><td>in</td><td>1</td><td>1-cycle: clear phase_acc</td></tr>
+    <tr><td><code>enable</code></td><td>in</td><td>1</td><td>Gate NCO pipeline; when 0 entire pipeline freezes</td></tr>
+    <tr><td><code>s_axis_iq_tdata</code></td><td>in</td><td>32</td><td>Input IQ stream {Q[31:16], I[15:0]}</td></tr>
+    <tr><td><code>s_axis_iq_tvalid/ready/last</code></td><td>in/out/in</td><td>1</td><td>AXI-S input handshake</td></tr>
+    <tr><td><code>m_axis_tdata</code></td><td>out</td><td>32</td><td>Rotated IQ stream {Q[31:16], I[15:0]}</td></tr>
+    <tr><td><code>m_axis_tvalid/ready/last</code></td><td>out/in/out</td><td>1</td><td>AXI-S output handshake</td></tr>
+    <tr><td><code>phase_acc</code></td><td>out</td><td>32</td><td>Debug: NCO phase accumulator</td></tr>
+    <tr><td><code>sin_out / cos_out</code></td><td>out</td><td>16</td><td>Debug: NCO sin/cos outputs (Q1.15)</td></tr>
+    <tr><td><code>sincos_valid</code></td><td>out</td><td>1</td><td>NCO output pipeline valid</td></tr>
+  </table>
+
+  <h3>G.2 Operation</h3>
+  <p style="font-size:12px;">
+    Top-level integrator for fractional CFO correction.
+    The NCO is gated by <code>enable &amp;&amp; s_axis_iq_tready</code> so the phase accumulator
+    advances only for accepted samples, maintaining exact phase alignment.
+    Caller must load the step word, reset the phase, then assert enable; IQ samples should arrive
+    only after <code>sincos_valid</code> rises (LATENCY=15 clocks later).
+  </p>
+  <div class="math">
+    <span class="eq">step_word <span class="op">=</span> round( <span class="op">&minus;</span>frac_phase <span class="op">&middot;</span> 2<sup>32</sup> <span class="op">/</span> 2&pi; )</span><br>
+    <span class="eq"><i>r</i><sub>out</sub>[<i>n</i>] <span class="op">=</span> <i>r</i><sub>in</sub>[<i>n</i>] <span class="op">&middot;</span> e<sup>&nbsp;&minus;j&theta;[n]</sup></span>, with <span class="eq">&theta;[<i>n</i>] <span class="op">=</span> step_word <span class="op">&middot;</span> <i>n</i></span> (NCO phase ramp)<br>
+    C ref: <code>apply_carrier_freq_offset()</code> @ ref/receiver.c:443
+  </div>
+
+  <h3>G.3 Sub-Module Connections</h3>
+  <div class="hrow">
+    <div class="blk sub">nco_phase_gen<br>(u_nco)</div>
+    <span class="harrow">&#8594;</span>
+    <span style="font-size:11px;color:var(--light);">sin_out, cos_out,<br>sincos_valid</span>
+    <span class="harrow">&#8594;</span>
+    <div class="blk sub">complex_rotator<br>(u_rot)</div>
+    <span class="harrow">&#8594;</span>
+    <div class="blk ext">m_axis output</div>
+  </div>
+
+  <h3>G.4 Latency</h3>
+  <ul>
+    <li>NCO pipeline: LATENCY=15 registers + 1 output register = 16 cycles</li>
+    <li>complex_rotator (complex_mult_iq): 1 cycle</li>
+    <li>End-to-end from first sample to first rotated output: 17 cycles (after sincos_valid)</li>
+  </ul>
+</div>
+
+<!-- ===== H. nco_phase_gen ===== -->
+<h2 id="sub-H">H. nco_phase_gen</h2>
+<div class="module-section">
+  <div class="module-header">
+    <span class="module-title">nco_phase_gen</span>
+    <span class="module-src">rtl/DUT/nco_phase_gen.v &nbsp;|&nbsp; 256-entry Q1.15 sin/cos ROM NCO</span>
+  </div>
+
+  <h3>H.1 Interface Summary</h3>
+  <table>
+    <tr><th>Port</th><th>Dir</th><th>Width</th><th>Description</th></tr>
+    <tr><td><code>aclk / aresetn</code></td><td>in</td><td>1</td><td>Clock / active-low reset</td></tr>
+    <tr><td><code>load_step</code></td><td>in</td><td>1</td><td>Latch step_word_r from step_word port</td></tr>
+    <tr><td><code>step_word</code></td><td>in</td><td>NCO_PHASE_WIDTH=32</td><td>Frequency step (signed Q format)</td></tr>
+    <tr><td><code>phase_reset</code></td><td>in</td><td>1</td><td>Synchronously clear phase_acc_r to 0</td></tr>
+    <tr><td><code>enable</code></td><td>in</td><td>1</td><td>Gate entire pipeline (including phase_acc)</td></tr>
+    <tr><td><code>sin_out</code></td><td>out</td><td>ROTATOR_COEFF_WIDTH=16</td><td>Sine output Q1.15</td></tr>
+    <tr><td><code>cos_out</code></td><td>out</td><td>16</td><td>Cosine output Q1.15</td></tr>
+    <tr><td><code>sincos_valid</code></td><td>out</td><td>1</td><td>High after pipeline fills (LATENCY+1 cycles)</td></tr>
+    <tr><td><code>phase_acc</code></td><td>out</td><td>32</td><td>Raw 32-bit phase accumulator (debug)</td></tr>
+  </table>
+  <div class="two-col">
+    <div>
+      <h4>Key Parameters</h4>
+      <table>
+        <tr><th>Parameter</th><th>Default</th></tr>
+        <tr><td>NCO_PHASE_WIDTH</td><td>32</td></tr>
+        <tr><td>ROTATOR_COEFF_WIDTH</td><td>16</td></tr>
+        <tr><td>LATENCY</td><td>15</td></tr>
+      </table>
+    </div>
+    <div>
+      <h4>ROM Design</h4>
+      <ul>
+        <li>256-entry LUT: index = phase_acc[31:24] (8 MSBs)</li>
+        <li>Full 2&pi; cycle; 0x40&rarr;90&deg;, 0x80&rarr;180&deg;</li>
+        <li>Convention: 0x7FFF=+1.0, 0x0000=0, 0x8001=&minus;1.0</li>
+        <li>Synthesizes as distributed RAM / LUTRAM in Vivado</li>
+      </ul>
+    </div>
+  </div>
+
+  <h3>H.2 Operation</h3>
+  <p style="font-size:12px;">
+    Phase accumulator <code>phase_acc_r</code> increments by <code>step_word_r</code> every enabled clock.
+    The 8 MSBs index the ROM; the ROM output propagates through a LATENCY=15 register pipeline
+    followed by a final output register, yielding 16 total cycles of latency.
+    When <code>enable=0</code> the entire pipeline (including <code>phase_acc_r</code>) freezes,
+    keeping NCO phase aligned to accepted AXI-S samples.
+  </p>
+  <div class="note">
+    enable is driven as <code>enable &amp;&amp; s_axis_iq_tready</code> from frac_cfo_corrector_top,
+    ensuring NCO phase does not advance when downstream is stalled.
+  </div>
+
+  <h3>H.3 Pipeline Diagram</h3>
+  <div class="math">
+    phase_acc_r (+= step_word_r)<br>
+    &rarr; ROM lookup [phase_acc_r[31:24]]<br>
+    &rarr; sin_pipe[0..14] / cos_pipe[0..14] / valid_pipe[0..14]  (15 stages)<br>
+    &rarr; sin_out_r / cos_out_r / sincos_valid_r  (1 output register)<br>
+    Total: 16 cycles
+  </div>
+
+  <h3>H.4 Latency / Throughput</h3>
+  <ul>
+    <li>LATENCY=15 pipeline + 1 output register = 16 cycles total</li>
+    <li>Throughput: 1 sin/cos pair per clock when enabled</li>
+  </ul>
+
+  <h3>H.5 Resource Impact</h3>
+  <ul>
+    <li>256&times;16b sin ROM + 256&times;16b cos ROM = 8 Kb total &mdash; LUTRAM or BRAM16</li>
+    <li>15&times;2 = 30 pipeline registers of 16 bits each + valid pipeline</li>
+    <li>32-bit phase accumulator adder: ~1 carry-chain</li>
+  </ul>
+</div>
+
+<!-- ===== I. complex_mult_iq ===== -->
+<h2 id="sub-I">I. complex_mult_iq</h2>
+<div class="module-section">
+  <div class="module-header">
+    <span class="module-title">complex_mult_iq</span>
+    <span class="module-src">rtl/DUT/complex_mult_iq.v &nbsp;|&nbsp; 1-cycle AXI-S complex multiplier</span>
+  </div>
+
+  <h3>I.1 Interface Summary</h3>
+  <table>
+    <tr><th>Port</th><th>Dir</th><th>Width</th><th>Description</th></tr>
+    <tr><td><code>aclk / aresetn</code></td><td>in</td><td>1</td><td>Clock / active-low reset</td></tr>
+    <tr><td><code>s_axis_a_tdata/valid/ready/last</code></td><td>in/in/out/in</td><td>32/1/1/1</td><td>A input stream (IQ signal)</td></tr>
+    <tr><td><code>s_axis_b_tdata/valid/ready</code></td><td>in/in/out</td><td>32/1/1</td><td>B input stream (NCO phasor); tready=1 hardwired</td></tr>
+    <tr><td><code>m_axis_tdata/valid/ready/last</code></td><td>out/out/in/out</td><td>32/1/1/1</td><td>Output stream</td></tr>
+  </table>
+  <div class="two-col">
+    <div>
+      <h4>Key Parameters</h4>
+      <table>
+        <tr><th>Parameter</th><th>Default</th></tr>
+        <tr><td>DATA_WIDTH</td><td>32</td></tr>
+        <tr><td>COMPONENT_WIDTH</td><td>16</td></tr>
+        <tr><td>SHIFT</td><td>15</td></tr>
+        <tr><td>CONJ_A</td><td>0</td></tr>
+        <tr><td>CONJ_B</td><td>0 (1 in rotator)</td></tr>
+      </table>
+    </div>
+    <div>
+      <h4>Arithmetic (CONJ_B=1 mode)</h4>
+      <div class="math">
+        I_out = (Ia&times;Ib + Qa&times;Qb) &gt;&gt; SHIFT<br>
+        Q_out = (Qa&times;Ib &minus; Ia&times;Qb) &gt;&gt; SHIFT<br>
+        <br>
+        CONJ_B=0 (standard):<br>
+        I_out = (Ia&times;Ib &minus; Qa&times;Qb) &gt;&gt; SHIFT<br>
+        Q_out = (Ia&times;Qb + Qa&times;Ib) &gt;&gt; SHIFT
+      </div>
+    </div>
+  </div>
+
+  <h3>I.2 Operation</h3>
+  <p style="font-size:12px;">
+    Four 16&times;16 products computed combinatorially; results summed with sign-extension
+    (SUM_W=33 bits) to avoid overflow; arithmetic right-shifted by SHIFT=15; result
+    registered on next posedge. Backpressure: <code>can_accept = !m_axis_tvalid || m_axis_tready</code>
+    (ISSUE-001 fix &mdash; resolved).
+    The B-side (<code>s_axis_b_tready = 1'b1</code>) has no backpressure because the NCO source
+    has no tready input.
+  </p>
+  <div class="ok">ISSUE-001 RESOLVED: can_accept backpressure logic corrected 2026-06-03.</div>
+
+  <h3>I.3 Latency / Throughput</h3>
+  <ul>
+    <li>1-cycle latency: output valid one cycle after input</li>
+    <li>Full throughput when downstream ready</li>
+  </ul>
+
+  <h3>I.4 Resource Impact</h3>
+  <ul>
+    <li>4&times;DSP48 slices (four 16&times;16 multipliers)</li>
+    <li>Two 33-bit adders (LUT-based)</li>
+    <li>Output registers: 32b data + 1b valid + 1b last</li>
+  </ul>
+</div>
+
+<!-- ===== J. complex_rotator ===== -->
+<h2 id="sub-J">J. complex_rotator</h2>
+<div class="module-section">
+  <div class="module-header">
+    <span class="module-title">complex_rotator</span>
+    <span class="module-src">rtl/DUT/complex_rotator.v &nbsp;|&nbsp; Wraps complex_mult_iq with CONJ_B=1</span>
+  </div>
+
+  <h3>J.1 Interface Summary</h3>
+  <table>
+    <tr><th>Port</th><th>Dir</th><th>Width</th><th>Description</th></tr>
+    <tr><td><code>aclk / aresetn</code></td><td>in</td><td>1</td><td>Clock / active-low reset</td></tr>
+    <tr><td><code>s_axis_iq_tdata/valid/ready/last</code></td><td>in/in/out/in</td><td>32/1/1/1</td><td>Input IQ stream</td></tr>
+    <tr><td><code>sin_in / cos_in</code></td><td>in</td><td>16</td><td>NCO phasor (from nco_phase_gen)</td></tr>
+    <tr><td><code>sincos_valid</code></td><td>in</td><td>1</td><td>Gates B-side of internal multiplier</td></tr>
+    <tr><td><code>m_axis_tdata/valid/ready/last</code></td><td>out/out/in/out</td><td>32/1/1/1</td><td>Rotated IQ output</td></tr>
+  </table>
+
+  <h3>J.2 Operation</h3>
+  <p style="font-size:12px;">
+    Packs <code>{sin_in, cos_in}</code> as B input: <code>sc_tdata = {sin_in[31:16], cos_in[15:0]}</code>.
+    Instantiates <code>complex_mult_iq</code> with <code>CONJ_B=1</code>; negating sin implements
+    the <code>exp(&minus;j&theta;)</code> rotation:
+  </p>
+  <div class="math">
+    r_out[n] = r_in[n] &times; exp(&minus;j&theta;[n])<br>
+    I_out = I_in&times;cos + Q_in&times;sin<br>
+    Q_out = Q_in&times;cos &minus; I_in&times;sin<br>
+    C ref: apply_carrier_freq_offset() in ref/receiver.c
+  </div>
+  <div class="info">
+    complex_rotator is instantiated twice: once in <code>frac_cfo_corrector_top</code>
+    (fractional CFO correction) and once in <code>phase3_sync_axis_dma_wrapper</code>
+    as <code>u_int_rot</code> (integer CFO correction).
+  </div>
+
+  <h3>J.3 Latency / Throughput</h3>
+  <ul>
+    <li>1-cycle latency (directly from complex_mult_iq)</li>
+    <li>Full AXI-S backpressure passthrough</li>
+  </ul>
+
+  <h3>J.4 Resource Impact</h3>
+  <ul>
+    <li>Purely a structural wrapper; resources from complex_mult_iq (4&times;DSP48)</li>
+    <li>No additional registers beyond sc_tdata packing (combinatorial)</li>
+  </ul>
+</div>
+
+<!-- ===== K. fft256_xilinx_wrapper ===== -->
+<h2 id="sub-K">K. fft256_xilinx_wrapper</h2>
+<div class="module-section">
+  <div class="module-header">
+    <span class="module-title">fft256_xilinx_wrapper</span>
+    <span class="module-src">rtl/DUT/fft256_xilinx_wrapper.v &nbsp;|&nbsp; Wraps Xilinx xfft_v9_1_8</span>
+  </div>
+
+  <h3>K.1 Interface Summary</h3>
+  <table>
+    <tr><th>Port</th><th>Dir</th><th>Width</th><th>Description</th></tr>
+    <tr><td><code>aclk / aresetn</code></td><td>in</td><td>1</td><td>Clock; aresetn gates config SM only (C_HAS_ARESETN=0)</td></tr>
+    <tr><td><code>start</code></td><td>in</td><td>1</td><td>Sideband compat; unused internally (tied <code>_unused</code>)</td></tr>
+    <tr><td><code>s_axis_tdata</code></td><td>in</td><td>2&times;IQ_WIDTH=32</td><td>{Im[15:0], Re[15:0]} Xilinx native packing</td></tr>
+    <tr><td><code>s_axis_tvalid / tready / tlast</code></td><td>in/out/in</td><td>1</td><td>AXI-S input</td></tr>
+    <tr><td><code>m_axis_tdata</code></td><td>out</td><td>32</td><td>{Im[15:0], Re[15:0]} output packing</td></tr>
+    <tr><td><code>m_axis_tvalid / tready / tlast</code></td><td>out/in/out</td><td>1</td><td>AXI-S output; tready NOT connected to IP (throttle=0)</td></tr>
+    <tr><td><code>m_axis_tuser</code></td><td>out</td><td>8</td><td>xk_index: bin index in natural order</td></tr>
+    <tr><td><code>busy / done / error</code></td><td>out</td><td>1</td><td>Status flags</td></tr>
+    <tr><td>event_* (6 signals)</td><td>out</td><td>1</td><td>Xilinx FFT IP event outputs</td></tr>
+  </table>
+  <div class="two-col">
+    <div>
+      <h4>Key Parameters</h4>
+      <table>
+        <tr><th>Parameter</th><th>Default</th><th>Notes</th></tr>
+        <tr><td>FFT_LEN</td><td>256</td><td>FFT size</td></tr>
+        <tr><td>IQ_WIDTH</td><td>16</td><td>Input sample width</td></tr>
+        <tr><td>USE_BEHAVIORAL_STUB</td><td>1</td><td>0=real IP, 1=passthrough, 2=sequential, 3=DFT</td></tr>
+        <tr><td>STUB_TLAST_AT</td><td>255</td><td>Stub mode 2: TLAST bin index</td></tr>
+        <tr><td>STUB_STOP_AT</td><td>255</td><td>Stub mode 2: last bin output</td></tr>
+      </table>
+    </div>
+    <div>
+      <h4>Config Word</h4>
+      <div class="math">
+        CFG_TDATA = 16'h0155<br>
+        bit[0]   = FWD_INV = 1 (forward FFT)<br>
+        bits[8:1] = SCALE_SCH = 0xAA<br>
+        (scale at alternating radix-2 stages)<br>
+        C_THROTTLE_SCHEME = 0 (no m_ready on IP)<br>
+        C_HAS_ARESETN = 0 (no reset port on IP)
+      </div>
+    </div>
+  </div>
+
+  <h3>K.2 Operation</h3>
+  <p style="font-size:12px;">
+    A <code>generate</code> block selects among four modes. In synthesis
+    (<code>USE_BEHAVIORAL_STUB=0</code>) the actual Xilinx <code>xfft_v9_1_8</code> IP is
+    instantiated. The config channel is driven continuously (tvalid=1) after reset deasserts;
+    the IP latches the config word at the accepted handshake before each frame.
+    Due to <code>C_THROTTLE_SCHEME=0</code>, the IP's output does not respect downstream
+    backpressure &mdash; the downstream logic must always be ready to consume.
+  </p>
+  <div class="note">
+    C_HAS_ARESETN=0: the underlying IP has NO reset port. The wrapper must be reset between
+    FFT frames by managing the config state machine. Lesson XIP-003: do_reset() must be called
+    per frame case to avoid config state machine lockout.
+  </div>
+
+  <h3>K.3 Behavioral Stub Modes</h3>
+  <table>
+    <tr><th>USE_BEHAVIORAL_STUB</th><th>Mode</th><th>Use Case</th></tr>
+    <tr><td>0</td><td>Real Xilinx xfft_v9_1_8 IP</td><td>Synthesis / full sim with IP</td></tr>
+    <tr><td>1</td><td>Passthrough (input = output)</td><td>Compile check; NOT a functional FFT</td></tr>
+    <tr><td>2</td><td>Sequential stub; outputs bin-by-bin</td><td>AXI-S flow testing</td></tr>
+    <tr><td>3</td><td>Behavioral DFT (unscaled)</td><td>Functional verification without IP license</td></tr>
+  </table>
+  <div class="note">Behavioral DFT (mode 3): unscaled output. Real IP applies &divide;256 via SCALE_SCH=0xAA.</div>
+
+  <h3>K.4 Verification Summary</h3>
+  <div class="ok">XIP-001 PASS 6/6 &nbsp;|&nbsp; XIP-002 PASS &nbsp;|&nbsp; XIP-003 PASS 9/9 &nbsp;|&nbsp; XIP-004 PASS 9/9</div>
+</div>
+
+<!-- ===== L. meyr_pss_sss_product_gen ===== -->
+<h2 id="sub-L">L. meyr_pss_sss_product_gen</h2>
+<div class="module-section">
+  <div class="module-header">
+    <span class="module-title">meyr_pss_sss_product_gen</span>
+    <span class="module-src">rtl/DUT/meyr_pss_sss_product_gen.v &nbsp;|&nbsp; Step 32</span>
+  </div>
+
+  <h3>L.1 Interface Summary</h3>
+  <table>
+    <tr><th>Port</th><th>Dir</th><th>Width</th><th>Description</th></tr>
+    <tr><td><code>aclk / aresetn</code></td><td>in</td><td>1</td><td>Clock / active-low reset</td></tr>
+    <tr><td><code>s_valid / s_ready</code></td><td>in/out</td><td>1</td><td>Input handshake (ready = !m_valid || m_ready)</td></tr>
+    <tr><td><code>s_index</code></td><td>in</td><td>8</td><td>Bin index [0..255]</td></tr>
+    <tr><td><code>pss_i / pss_q</code></td><td>in</td><td>IQ_WIDTH=16</td><td>PSS FFT bin I/Q (signed)</td></tr>
+    <tr><td><code>sss_i / sss_q</code></td><td>in</td><td>16</td><td>SSS FFT bin I/Q (signed)</td></tr>
+    <tr><td><code>m_valid / m_ready</code></td><td>out/in</td><td>1</td><td>Output handshake</td></tr>
+    <tr><td><code>m_index</code></td><td>out</td><td>8</td><td>Propagated bin index</td></tr>
+    <tr><td><code>term1_i / term1_q</code></td><td>out</td><td>PROD_WIDTH=32</td><td>PSS &times; conj(SSS) result I/Q</td></tr>
+  </table>
+
+  <h3>L.2 Operation</h3>
+  <p style="font-size:12px;">
+    Two-clock pipeline: inputs registered in stage 1; products computed combinatorially
+    from registered values; outputs registered in stage 2. A 33-bit intermediate
+    (<code>t1_i_full = {prd_ac[31],prd_ac} + {prd_bd[31],prd_bd}</code>) avoids
+    overflow when summing two 32-bit products of 16-bit operands.
+    Backpressure: <code>s_ready = !m_valid || m_ready</code> (natural pipeline backpressure).
+  </p>
+
+  <h3>L.3 Algorithm Mapping</h3>
+  <div class="math">
+    term1_i = PSS_I&times;SSS_I + PSS_Q&times;SSS_Q<br>
+    term1_q = PSS_Q&times;SSS_I &minus; PSS_I&times;SSS_Q<br>
+    <br>
+    C ref (receiver.c lines 523-525):<br>
+    crossCorrTerm1I[j] = signalPSSfftI[j]*signalSSSfftI[j] + signalPSSfftQ[j]*signalSSSfftQ[j]<br>
+    crossCorrTerm1Q[j] = &minus;signalPSSfftI[j]*signalSSSfftQ[j] + signalPSSfftQ[j]*signalSSSfftI[j]
+  </div>
+
+  <h3>L.4 Latency / Throughput</h3>
+  <ul>
+    <li>2-clock pipeline latency (input reg &rarr; output reg)</li>
+    <li>1 sample/clock throughput when m_ready=1</li>
+  </ul>
+
+  <h3>L.5 Resource Impact</h3>
+  <ul>
+    <li>4&times;16&times;16 multipliers: ~4 DSP48 slices</li>
+    <li>Two 33-bit adders; output registers: 2&times;32b + 8b index + 1b valid</li>
+  </ul>
+</div>
+
+<!-- ===== M. meyr_term2_ref_rom ===== -->
+<h2 id="sub-M">M. meyr_term2_ref_rom</h2>
+<div class="module-section">
+  <div class="module-header">
+    <span class="module-title">meyr_term2_ref_rom</span>
+    <span class="module-src">REQUIRES_CONFIRMATION: no standalone RTL file &mdash; integrated inline in meyr_integer_cfo_core</span>
+  </div>
+
+  <div class="badge-confirm" style="display:inline-block;margin-bottom:10px;">REQUIRES_CONFIRMATION &mdash; No standalone meyr_term2_ref_rom.v found</div>
+
+  <h3>M.1 Description</h3>
+  <p style="font-size:12px;">
+    The term2 reference ROM is implemented inline within <code>meyr_integer_cfo_core</code>
+    via <code>$readmemh()</code> calls. There is no separate RTL module file.
+  </p>
+  <div class="math">
+    term2[j] = PSS_ref[j] &times; sign(SSS_ref_I[j])<br>
+    PSS_ref: Zadoff-Chu FFT-domain sequence (Q1.15)<br>
+    SSS_ref: BPSK &plusmn;1 sequence applied as sign multiplier<br>
+    ROM files: vectors/meyr_pss_fft_romhex.txt + vectors/meyr_sss_fft_romhex.txt
+  </div>
+
+  <h3>M.2 ROM Loading</h3>
+  <table>
+    <tr><th>ROM File</th><th>Content</th><th>Width</th><th>Depth</th></tr>
+    <tr><td><code>vectors/meyr_pss_fft_romhex.txt</code></td><td>PSS FFT-domain reference (ZC seq)</td><td>32b (I+Q packed)</td><td>256</td></tr>
+    <tr><td><code>vectors/meyr_sss_fft_romhex.txt</code></td><td>SSS FFT-domain reference (BPSK)</td><td>32b</td><td>256</td></tr>
+  </table>
+
+  <h3>M.3 Known Bug (Resolved)</h3>
+  <div class="ok">
+    ROM parameter plumbing bug fixed 2026-06-03: meyr_integer_cfo_core was incorrectly
+    using bypass TD ROMs instead of the FFT-domain ROMs. Now correctly loads
+    <code>meyr_pss_fft_romhex.txt</code> and <code>meyr_sss_fft_romhex.txt</code>.
+  </div>
+</div>
+
+<!-- ===== N. phase3_axi_lite_regs ===== -->
+<h2 id="sub-N">N. phase3_axi_lite_regs</h2>
+<div class="module-section">
+  <div class="module-header">
+    <span class="module-title">phase3_axi_lite_regs</span>
+    <span class="module-src">rtl/DUT/phase3_axi_lite_regs.v &nbsp;|&nbsp; P3-14A &mdash; 21-register AXI4-Lite slave</span>
+  </div>
+
+  <h3>N.1 Interface Summary</h3>
+  <table>
+    <tr><th>Port Group</th><th>Signals</th><th>Description</th></tr>
+    <tr><td>AXI4-Lite Write</td><td>awaddr/awvalid/awready/wdata/wstrb/wvalid/wready/bresp/bvalid/bready</td><td>Standard AXI4-Lite write channel</td></tr>
+    <tr><td>AXI4-Lite Read</td><td>araddr/arvalid/arready/rdata/rresp/rvalid/rready</td><td>Standard AXI4-Lite read channel</td></tr>
+    <tr><td>Status inputs</td><td>busy_i, done_pulse_i, error_i, frame_start_valid_i, frac_cfo_valid_i, int_cfo_valid_i, tlast_count_i, ...</td><td>Live signals from phase3_sync_top</td></tr>
+    <tr><td>Control outputs</td><td>enable_o, soft_reset_o, frame_len_o, bypass_enable_o, force_tlast_o, ...</td><td>Configuration to sync pipeline</td></tr>
+    <tr><td>Snapshot inputs</td><td>dbg_frame_index_i, dbg_peak_index_i, dbg_slot_start_i, dbg_frac_cfo_phase_i, dbg_integer_cfo_word_i</td><td>5 synchronised result signals</td></tr>
+  </table>
+
+  <h3>N.2 Register Map (21 registers)</h3>
+  <table>
+    <tr><th>Offset</th><th>Name</th><th>Access</th><th>Width</th><th>Description</th></tr>
+    <tr><td>0x00</td><td>VERSION</td><td>R</td><td>32</td><td>Constant 0x00316001</td></tr>
+    <tr><td>0x04</td><td>CONTROL</td><td>R/W</td><td>2</td><td>bit0=enable; bit1=soft_reset (W1S, reads 0)</td></tr>
+    <tr><td>0x08</td><td>STATUS</td><td>R/W1C</td><td>8</td><td>bit0=busy; bit1=done_seen(W1C); bit2=error_seen(W1C); [7:4]=last_error_code</td></tr>
+    <tr><td>0x0C</td><td>FRAME_LEN_SAMPLES</td><td>R/W</td><td>12</td><td>Default=576; range 1-4095</td></tr>
+    <tr><td>0x10</td><td>INPUT_COUNT</td><td>R</td><td>32</td><td>Running input sample count</td></tr>
+    <tr><td>0x14</td><td>OUTPUT_COUNT</td><td>R</td><td>32</td><td>Running output sample count</td></tr>
+    <tr><td>0x18</td><td>FRAME_START_VALID</td><td>R/clr</td><td>1</td><td>Sticky latch; read clears</td></tr>
+    <tr><td>0x1C</td><td>FRAME_START_INDEX</td><td>R</td><td>12</td><td>Latched on frame_start_valid_i</td></tr>
+    <tr><td>0x20</td><td>PEAK_INDEX</td><td>R</td><td>9</td><td>Latched on frame_start_valid_i</td></tr>
+    <tr><td>0x24</td><td>SLOT_START_INDEX</td><td>R</td><td>12</td><td>Latched on slot_start_valid_i</td></tr>
+    <tr><td>0x28</td><td>FRAC_CFO_VALID</td><td>R/clr</td><td>1</td><td>Sticky latch; read clears</td></tr>
+    <tr><td>0x2C</td><td>FRAC_CFO_PHASE</td><td>R</td><td>32</td><td>Q1.15 frac CFO word sign-extended 16&rarr;32</td></tr>
+    <tr><td>0x30</td><td>PSS_DONE</td><td>R/clr</td><td>1</td><td>Sticky; TODO: not yet wired</td></tr>
+    <tr><td>0x34</td><td>SSS_DONE</td><td>R/clr</td><td>1</td><td>Sticky; TODO: not yet wired</td></tr>
+    <tr><td>0x38</td><td>INT_CFO_VALID</td><td>R/clr</td><td>1</td><td>Sticky; <strong>reading while latch=1 triggers snapshot</strong></td></tr>
+    <tr><td>0x3C</td><td>INT_CFO_EST</td><td>R</td><td>32</td><td>32-bit NCO step word (or snapshot)</td></tr>
+    <tr><td>0x40</td><td>INT_CFO_INDEX</td><td>R</td><td>9</td><td>Meyr peak index; TODO: always 0</td></tr>
+    <tr><td>0x44</td><td>INT_CFO_APPLIED</td><td>R</td><td>1</td><td>Sticky; TODO: not yet wired</td></tr>
+    <tr><td>0x48</td><td>RESET_STATUS</td><td>R/W1C</td><td>2</td><td>bit0=RESET_DONE(W1C); bit1=PIPELINE_IDLE(live)</td></tr>
+    <tr><td>0x4C</td><td>DEBUG_CONTROL</td><td>R/W</td><td>4</td><td>bit0=BYPASS_ENABLE; bit1=FORCE_TLAST(self-clr); bit2=COUNTER_CLEAR(self-clr); bit3=DEBUG_MODE</td></tr>
+    <tr><td>0x50</td><td>TLAST_COUNT</td><td>R</td><td>32</td><td>From tlast_count_i</td></tr>
+    <tr><td>0x54</td><td>ERROR_FLAGS</td><td>R/W1C</td><td>4</td><td>bit0=FRAME_LEN_MISMATCH; bit1=TLAST_TIMEOUT; bit2=RESET_WHILE_ACTIVE; bit3=STALL_TIMEOUT</td></tr>
+  </table>
+  <div class="note">All other addresses return SLVERR. Snapshot registers (0x1C/0x20/0x24/0x2C/0x3C) return shadow values while snapshot_valid=1.</div>
+
+  <h3>N.3 Snapshot Protocol</h3>
+  <div class="math">
+    1. frame_start_valid_i fires &rarr; 5 result fields latched into live registers<br>
+    2. SW reads 0x38 (INT_CFO_VALID) while latch=1<br>
+    3. &rarr; 5 shadow registers frozen simultaneously (frame_index, peak_index, slot_start, frac_cfo, int_cfo_word)<br>
+    4. Reads of 0x1C/0x20/0x24/0x2C/0x3C return shadow values until snapshot_valid clears<br>
+    5. snapshot_valid clears when SW reads 0x38 again or when next int_cfo_valid fires
+  </div>
+
+  <h3>N.4 Resource Impact</h3>
+  <ul>
+    <li>21 control/status registers: ~256 flip-flops</li>
+    <li>5 snapshot shadow registers: ~100 flip-flops</li>
+    <li>AXI4-Lite FSM: ~10 flip-flops</li>
+    <li>ADDR_WIDTH=7 (128-byte address space)</li>
+  </ul>
+</div>
+
+<!-- ===================================================== -->
+<!-- MASTER COVERAGE TABLE                                  -->
+<!-- ===================================================== -->
+<h2 id="sec-coverage">Section 14 &mdash; RTL Simulation Coverage (All Sub-Modules)</h2>
+<div class="card">
+<table>
+  <tr>
+    <th>Sub-module</th>
+    <th>Source File</th>
+    <th>Verification Gate</th>
+    <th>Tests Passed</th>
+    <th>Status</th>
+  </tr>
+  <tr><td>frame_detector</td><td>frame_detector.v</td><td>P3-12B, P3-12C, P3-14C, P3-15A</td><td>P3-15A: 100/100</td><td><span class="badge-pending">Not Verified</span></td></tr>
+  <tr><td>streaming_cp_autocorr</td><td>streaming_cp_autocorr.v</td><td>P3-12B, P3-12C</td><td>10/10</td><td><span class="badge-pending">Not Verified</span></td></tr>
+  <tr><td>timing_metric_core</td><td>timing_metric_core.v</td><td>P3-14C, P3-15A</td><td>100/100</td><td><span class="badge-pending">Not Verified</span></td></tr>
+  <tr><td>peak_detector</td><td>peak_detector.v</td><td>P3-14C, P3-15A</td><td>100/100</td><td><span class="badge-pending">Not Verified</span></td></tr>
+  <tr><td>frac_cfo_estimator</td><td>frac_cfo_estimator.v</td><td>P3-12B, P3-14C</td><td>PASS</td><td><span class="badge-pending">Not Verified</span></td></tr>
+  <tr><td>cordic_atan2</td><td>cordic_atan2.v</td><td>P3-12B (behavioral)</td><td>PASS</td><td><span class="badge-pending">Not Verified</span></td></tr>
+  <tr><td>frac_cfo_corrector_top</td><td>frac_cfo_corrector_top.v</td><td>P3-12B, P3-15D</td><td>P3-15D: 100/100</td><td><span class="badge-pending">Not Verified</span></td></tr>
+  <tr><td>nco_phase_gen</td><td>nco_phase_gen.v</td><td>P3-12B, P3-15D</td><td>100/100</td><td><span class="badge-pending">Not Verified</span></td></tr>
+  <tr><td>complex_mult_iq</td><td>complex_mult_iq.v</td><td>P3-12B, P3-15D</td><td>PASS (ISSUE-001 fix)</td><td><span class="badge-pending">Not Verified</span></td></tr>
+  <tr><td>complex_rotator</td><td>complex_rotator.v</td><td>P3-12B, P3-15D</td><td>100/100</td><td><span class="badge-pending">Not Verified</span></td></tr>
+  <tr><td>fft256_xilinx_wrapper</td><td>fft256_xilinx_wrapper.v</td><td>XIP-001, XIP-002, XIP-003, XIP-004</td><td>XIP-003: 9/9, XIP-004: 9/9</td><td><span class="badge-pending">Not Verified</span></td></tr>
+  <tr><td>meyr_pss_sss_product_gen</td><td>meyr_pss_sss_product_gen.v</td><td>P3-14C, P3-15A</td><td>100/100</td><td><span class="badge-pending">Not Verified</span></td></tr>
+  <tr><td>meyr_term2_ref_rom</td><td>(inline in meyr_integer_cfo_core)</td><td>P3-15A</td><td>100/100 (post ROM fix)</td><td><span class="badge-pending">Not Verified</span> <span class="badge-confirm">REQUIRES_CONFIRMATION</span></td></tr>
+  <tr><td>phase3_axi_lite_regs</td><td>phase3_axi_lite_regs.v</td><td>P3-14A, P3-14B, P3-15D</td><td>100/100</td><td><span class="badge-pending">Not Verified</span></td></tr>
+</table>
+<div class="ok">All 20 verification gates PASS as of 2026-06-04.</div>
+</div>
+
+<!-- ===================================================== -->
+<!-- KNOWN ISSUES                                           -->
+<!-- ===================================================== -->
+<h2 id="sec-issues">Section 15 &mdash; Known Issues &amp; Lessons Learned</h2>
+<div class="card">
+
+  <h3>ISSUE-001 &mdash; complex_mult_iq Backpressure Logic</h3>
+  <div class="ok">RESOLVED 2026-06-03</div>
+  <table>
+    <tr><th>Field</th><th>Detail</th></tr>
+    <tr><td>Module</td><td>complex_mult_iq</td></tr>
+    <tr><td>Symptom</td><td>Output stall when <code>m_axis_tvalid=1</code> and <code>m_axis_tready=0</code>; new input was incorrectly consumed, overwriting valid output</td></tr>
+    <tr><td>Root Cause</td><td>Missing <code>!m_axis_tvalid</code> guard in can_accept; module accepted new input when output was stalled</td></tr>
+    <tr><td>Fix</td><td><code>can_accept = !m_axis_tvalid || m_axis_tready</code></td></tr>
+    <tr><td>Impact</td><td>Affected complex_rotator, frac_cfo_corrector_top; verified via P3-15D 100/100</td></tr>
+  </table>
+
+  <h3>ISSUE-002 &mdash; Testbench AXI-S Race Condition</h3>
+  <div class="ok">RESOLVED 2026-06-03 (TB fix)</div>
+  <table>
+    <tr><th>Field</th><th>Detail</th></tr>
+    <tr><td>Module</td><td>Testbench (not RTL)</td></tr>
+    <tr><td>Symptom</td><td>Sporadic mismatches in P3-15D at high simulation speeds; first sample occasionally dropped</td></tr>
+    <tr><td>Root Cause</td><td>TB drove AXI-S signals on same clock edge as DUT sampled them (race in simulation delta)</td></tr>
+    <tr><td>Fix</td><td>Added <code>#1</code> delay after clock edge before TB drives valid/data</td></tr>
+    <tr><td>Impact</td><td>P3-15D: 100/100 PASS after fix</td></tr>
+  </table>
+
+  <h3>meyr_term2_ref_rom Parameter Bug</h3>
+  <div class="ok">RESOLVED 2026-06-03</div>
+  <table>
+    <tr><th>Field</th><th>Detail</th></tr>
+    <tr><td>Module</td><td>meyr_integer_cfo_core (inline ROM)</td></tr>
+    <tr><td>Symptom</td><td>Integer CFO estimate incorrect; cross-correlation sum wrong</td></tr>
+    <tr><td>Root Cause</td><td>$readmemh was loading bypass TD ROMs instead of FFT-domain ROMs</td></tr>
+    <tr><td>Fix</td><td>Parameter corrected to load meyr_pss_fft_romhex.txt and meyr_sss_fft_romhex.txt</td></tr>
+  </table>
+
+  <h3>XIP-003 Lesson &mdash; FFT Reset Between Frames</h3>
+  <div class="note">Lesson: fft256_xilinx_wrapper config state machine must be reset (do_reset() called) between FFT frames. Failure to reset causes config SM lockout where IP never accepts new config, stalling the input channel indefinitely.</div>
+
+  <h3>Lessons Learned Summary</h3>
+  <ul>
+    <li>Always include <code>!m_axis_tvalid</code> guard in AXI-S <code>can_accept</code> logic for registered pipelines</li>
+    <li>TB timing: use <code>#1</code> delta delay before driving AXI-S signals post-clock-edge</li>
+    <li>Xilinx FFT IP with C_HAS_ARESETN=0 requires wrapper-level reset sequencing per frame</li>
+    <li>ROM path parameters must be verified against the actual intended ROM content (FFT-domain vs time-domain)</li>
+    <li>NCO enable must track <code>s_axis_iq_tready</code> to prevent phase/data misalignment under backpressure</li>
+  </ul>
+</div>
+
+<!-- ===================================================== -->
+<!-- FPGA BRING-UP                                          -->
+<!-- ===================================================== -->
+<h2 id="sec-bringup">Section 16 &mdash; FPGA Bring-Up Master Probe List</h2>
+<div class="card">
+  <table>
+    <tr><th>Priority</th><th>Sub-Module</th><th>Signal</th><th>Description</th><th>ILA / ChipScope</th></tr>
+    <tr><td>P0</td><td>complex_mult_iq</td><td><code>can_accept</code>, <code>m_axis_tvalid</code>, <code>m_axis_tready</code></td><td>Verify backpressure; ISSUE-001 regression check</td><td><span class="probe-tag">ILA CH0</span></td></tr>
+    <tr><td>P0</td><td>nco_phase_gen</td><td><code>phase_acc</code>, <code>sincos_valid</code>, <code>enable</code></td><td>Confirm phase advance matches expected frac CFO step</td><td><span class="probe-tag">ILA CH1</span></td></tr>
+    <tr><td>P0</td><td>fft256_xilinx_wrapper</td><td><code>event_frame_started</code>, <code>event_tlast_missing</code>, <code>m_axis_tuser</code></td><td>Confirm FFT frames complete cleanly; no TLAST missing</td><td><span class="probe-tag">ILA CH2</span></td></tr>
+    <tr><td>P0</td><td>phase3_axi_lite_regs</td><td><code>INT_CFO_EST (0x3C)</code>, <code>FRAC_CFO_PHASE (0x2C)</code>, <code>STATUS (0x08)</code></td><td>Primary health check via AXI read</td><td><span class="probe-tag">JTAG/AXI</span></td></tr>
+    <tr><td>P1</td><td>frame_detector</td><td><code>busy</code>, <code>done</code>, <code>frame_found</code>, <code>frame_index</code></td><td>Verify frame detection latency and index accuracy</td><td><span class="probe-tag">ILA CH3</span></td></tr>
+    <tr><td>P1</td><td>timing_metric_core</td><td><code>metric_out</code>, <code>metric_valid</code>, <code>result_rd_addr</code></td><td>Check metric profile shape; peak at expected lag</td><td><span class="probe-tag">ILA CH4</span></td></tr>
+    <tr><td>P1</td><td>peak_detector</td><td><code>peak_index</code>, <code>peak_value</code>, <code>done</code>, <code>error</code></td><td>Confirm argmax output; error=0 required</td><td><span class="probe-tag">ILA CH4</span></td></tr>
+    <tr><td>P1</td><td>frac_cfo_estimator</td><td><code>frac_phase</code>, <code>frac_phase_valid</code></td><td>Verify Q1.15 phase angle matches expected CFO</td><td><span class="probe-tag">ILA CH5</span></td></tr>
+    <tr><td>P2</td><td>meyr_pss_sss_product_gen</td><td><code>term1_i</code>, <code>term1_q</code>, <code>m_valid</code>, <code>m_index</code></td><td>Validate cross-correlation products for first few bins</td><td><span class="probe-tag">ILA CH6</span></td></tr>
+    <tr><td>P2</td><td>complex_rotator</td><td><code>s_axis_iq_tdata</code>, <code>m_axis_tdata</code>, <code>sincos_valid</code></td><td>Check rotation correctness for known tone input</td><td><span class="probe-tag">ILA CH7</span></td></tr>
+    <tr><td>P2</td><td>streaming_cp_autocorr</td><td><code>p_i</code>, <code>p_q</code>, <code>energy</code>, <code>out_valid</code></td><td>Autocorrelation profile during frame search</td><td><span class="probe-tag">ILA CH8</span></td></tr>
+    <tr><td>P3</td><td>phase3_axi_lite_regs</td><td><code>ERROR_FLAGS (0x54)</code>, <code>DEBUG_CONTROL (0x4C)</code></td><td>Check for error accumulation during extended run</td><td><span class="probe-tag">JTAG/AXI</span></td></tr>
+  </table>
+</div>
+
+<!-- ===================================================== -->
+<!-- DEBUG CHECKLIST                                        -->
+<!-- ===================================================== -->
+<h2 id="sec-debug">Section 17 &mdash; Master Debug Checklist</h2>
+<div class="card">
+
+  <h3>17.1 AXI-S Backpressure (complex_mult_iq / complex_rotator)</h3>
+  <ul>
+    <li>Confirm <code>can_accept = !m_axis_tvalid || m_axis_tready</code> in synthesis netlist (check for ISSUE-001 regression)</li>
+    <li>Verify <code>s_axis_b_tready = 1'b1</code> is correctly tied off &mdash; NCO has no tready input</li>
+    <li>Stress test with alternating <code>m_axis_tready=0/1</code>; check no output samples dropped</li>
+  </ul>
+
+  <h3>17.2 NCO Phase Alignment (nco_phase_gen / frac_cfo_corrector_top)</h3>
+  <ul>
+    <li>Assert <code>load_step</code> for exactly 1 cycle, then <code>phase_reset</code> for 1 cycle before streaming</li>
+    <li>Wait for <code>sincos_valid=1</code> (16 cycles) before sending first IQ sample</li>
+    <li>Verify <code>enable</code> is gated with <code>s_axis_iq_tready</code> to prevent phase drift under backpressure</li>
+    <li>Check <code>phase_acc</code> advances by <code>step_word</code> each enabled clock</li>
+  </ul>
+
+  <h3>17.3 FFT Wrapper (fft256_xilinx_wrapper)</h3>
+  <ul>
+    <li>Confirm <code>USE_BEHAVIORAL_STUB=0</code> for synthesis; check parameter in XCI file</li>
+    <li>Verify <code>event_tlast_missing=0</code> and <code>event_tlast_unexpected=0</code> during operation</li>
+    <li>Ensure reset is called between frames (XIP-003 lesson)</li>
+    <li>Remember <code>C_THROTTLE_SCHEME=0</code>: downstream must never de-assert ready</li>
+    <li>Scale check: behavioral DFT (stub=3) is unscaled; real IP divides by 256</li>
+  </ul>
+
+  <h3>17.4 Frame Detector</h3>
+  <ul>
+    <li>Confirm <code>search_len</code> does not exceed replay buffer size (max 576)</li>
+    <li>Check <code>thresh_mult = threshold_in &times; window_len_in</code> gives reasonable energy gate</li>
+    <li>Verify DRAIN_CYCLES=6 is sufficient for SWS+FSM pipeline depth when window_len changes</li>
+    <li>Early-exit path: confirm frame_index is stable when <code>fsm_frame_found_w</code> fires mid-scan</li>
+  </ul>
+
+  <h3>17.5 Integer CFO / ROM</h3>
+  <ul>
+    <li>Verify <code>meyr_integer_cfo_core</code> loads <code>meyr_pss_fft_romhex.txt</code> (FFT-domain), not TD ROMs</li>
+    <li>Confirm integer CFO peak appears at expected frequency offset bin in timing_metric_core output</li>
+    <li>Cross-check peak_detector <code>error=0</code> after each scan (no start-while-busy)</li>
+  </ul>
+
+  <h3>17.6 AXI4-Lite Registers</h3>
+  <ul>
+    <li>Read 0x00 (VERSION): expect 0x00316001</li>
+    <li>Snapshot sequence: read 0x38 while INT_CFO_VALID latch=1 &rarr; check 0x1C/0x20/0x24/0x2C/0x3C return frozen values</li>
+    <li>Check 0x54 (ERROR_FLAGS) = 0 during normal operation</li>
+    <li>Self-clearing bits: FORCE_TLAST (0x4C[1]) and COUNTER_CLEAR (0x4C[2]) should read back 0 one cycle after write</li>
+  </ul>
+</div>
+
+<!-- ===================================================== -->
+<!-- REVIEW NOTES                                           -->
+<!-- ===================================================== -->
+<h2 id="sec-review">Section 18 &mdash; Review Notes</h2>
+<div class="card">
+
+  <h3>Open Items for Future Review</h3>
+  <table>
+    <tr><th>Item</th><th>Module</th><th>Priority</th><th>Note</th></tr>
+    <tr><td>meyr_term2_ref_rom standalone module</td><td>meyr_integer_cfo_core</td><td>Low</td><td>Currently inline $readmemh. Consider extracting to named module for cleaner hierarchy and easier ROM swap.</td></tr>
+    <tr><td>INT_CFO_INDEX not wired</td><td>phase3_axi_lite_regs 0x40</td><td>Medium</td><td>Always reads 0. Wire from peak_detector peak_index for complete observability.</td></tr>
+    <tr><td>PSS_DONE / SSS_DONE not wired</td><td>phase3_axi_lite_regs 0x30/0x34</td><td>Medium</td><td>TODO in RTL header. Needed for software handshake to symbol extractor.</td></tr>
+    <tr><td>INT_CFO_APPLIED not wired</td><td>phase3_axi_lite_regs 0x44</td><td>Medium</td><td>Replay buffer connection pending. Required for closed-loop CFO apply confirmation.</td></tr>
+    <tr><td>cordic_atan2 synthesis model</td><td>cordic_atan2.v</td><td>High (synthesis)</td><td>Behavioral $atan2() not synthesizable. Must substitute Xilinx CORDIC IP before RTL-to-gates.</td></tr>
+    <tr><td>meyr_pss_sss_product_gen PROD_WIDTH overflow note</td><td>meyr_pss_sss_product_gen</td><td>Low</td><td>RTL comment notes PROD_WIDTH=32 truncation is safe for 8-bit synthetic data; for full 16-bit input near extremes, widen PROD_WIDTH to 33+.</td></tr>
+    <tr><td>streaming_cp_autocorr clock name</td><td>streaming_cp_autocorr.v</td><td>Low</td><td>Uses port <code>clk</code> (not <code>aclk</code>) and async reset style; inconsistent with rest of design. Low risk for simulation; verify CDC rules in synthesis.</td></tr>
+  </table>
+
+  <h3>Reviewer Sign-Off Criteria</h3>
+  <ul>
+    <li>All 20 verification gates PASS (confirmed 2026-06-04)</li>
+    <li>ISSUE-001 and ISSUE-002 both RESOLVED (confirmed)</li>
+    <li>ROM parameter bug resolved (confirmed 2026-06-03)</li>
+    <li>cordic_atan2 synthesis replacement plan documented before tapeout</li>
+    <li>INT_CFO_INDEX, PSS_DONE, SSS_DONE, INT_CFO_APPLIED wiring tracked as known TODOs</li>
+  </ul>
+
+  <div class="ok" style="margin-top:12px;">
+    Document generated: 2026-06-04 &nbsp;|&nbsp; All 14 sub-modules reviewed &nbsp;|&nbsp; 20/20 gates PASS
+  </div>
+</div>
+
+</div><!-- /container -->
+</body>
+</html>

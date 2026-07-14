@@ -1,0 +1,6 @@
+mod_sel=1
+mod_name=16qam
+bits_per_axis=2
+bits_per_sym=4
+data_bits_per_frame=10608
+scale=0.31622776601683794

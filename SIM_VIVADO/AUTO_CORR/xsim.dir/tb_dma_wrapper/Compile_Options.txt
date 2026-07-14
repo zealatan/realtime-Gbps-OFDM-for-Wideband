@@ -1,0 +1,1 @@
+"tb_dma_wrapper" -debug "all" -s "tb_dma_wrapper" 

@@ -1,0 +1,591 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>07 meyr_integer_cfo_core — ZCU216 Synchronizer</title>
+<style>
+  :root { --bg:#001219; --card:#012a33; --accent1:#005F73; --accent2:#0A9396; --light:#94D2BD; --warn:#EE9B00; --error:#AE2012; --text:#E9D8A6; --border:#1a4a55; }
+  * { box-sizing:border-box; margin:0; padding:0; }
+  body { background:var(--bg); color:var(--text); font-family:'Consolas','Courier New',monospace; font-size:13px; line-height:1.6; }
+  nav { background:var(--accent1); padding:8px 20px; display:flex; flex-wrap:wrap; gap:12px; align-items:center; border-bottom:2px solid var(--accent2); }
+  nav a { color:var(--light); text-decoration:none; font-weight:bold; font-size:11px; padding:3px 7px; border-radius:3px; }
+  nav a:hover { background:var(--accent2); color:#fff; }
+  nav .brand { color:#fff; font-size:14px; font-weight:bold; margin-right:12px; }
+  .container { max-width:1300px; margin:0 auto; padding:24px; }
+  h1 { color:var(--accent2); font-size:22px; margin-bottom:4px; }
+  .subtitle { color:var(--light); font-size:12px; margin-bottom:24px; opacity:0.85; }
+  h2 { color:var(--light); font-size:15px; margin:32px 0 10px; border-bottom:1px solid var(--border); padding-bottom:5px; }
+  h3 { color:var(--accent2); font-size:13px; margin:16px 0 8px; }
+  table { width:100%; border-collapse:collapse; margin-bottom:20px; }
+  th { background:var(--accent1); color:var(--light); padding:7px 9px; text-align:left; font-size:11px; }
+  td { padding:6px 9px; border-bottom:1px solid var(--border); font-size:12px; vertical-align:top; }
+  tr:nth-child(even) td { background:#021820; }
+  .badge-pass { background:#1a3a1a; color:#3fb950; border:1px solid #3fb950; padding:2px 7px; border-radius:10px; font-size:11px; font-weight:bold; white-space:nowrap; display:inline-block; margin:2px; }
+  .badge-pending { background:#1e2830; color:#8b949e; border:1px solid #8b949e; padding:2px 8px; border-radius:10px; font-size:11px; white-space:nowrap; display:inline-block; }
+  .badge-info { background:#001a2a; color:var(--accent2); border:1px solid var(--accent2); padding:2px 7px; border-radius:10px; font-size:11px; display:inline-block; margin:2px; }
+  .card { background:var(--card); border:1px solid var(--border); border-radius:6px; padding:16px; margin-bottom:16px; }
+  code { background:#021820; color:var(--accent2); padding:1px 5px; border-radius:3px; font-size:12px; }
+  .note { background:#021f2a; border-left:3px solid var(--warn); padding:8px 12px; margin:10px 0; font-size:12px; color:var(--warn); }
+  .ok { background:#0a1f0a; border-left:3px solid #3fb950; padding:8px 12px; margin:10px 0; font-size:12px; color:#3fb950; }
+  .err-box { background:#1f0a0a; border-left:3px solid var(--error); padding:8px 12px; margin:10px 0; font-size:12px; color:#e05050; }
+  .blk { display:inline-block; border:1px solid var(--accent2); border-radius:4px; padding:6px 10px; font-size:11px; background:#012a33; color:var(--text); text-align:center; min-width:80px; }
+  .blk.top { background:var(--accent1); color:#fff; font-weight:bold; }
+  .blk.ext { background:#00191f; color:var(--light); border-color:var(--border); }
+  .blk.sub { background:#001a20; color:var(--accent2); border-color:var(--accent1); }
+  .hrow { display:flex; align-items:center; justify-content:center; flex-wrap:wrap; gap:8px; margin:8px 0; }
+  .harrow { color:var(--accent2); font-size:18px; margin:0 4px; }
+  .fsm-box { display:inline-block; border:2px solid var(--accent2); border-radius:6px; padding:6px 12px; font-size:11px; color:var(--accent2); background:#012a33; min-width:90px; text-align:center; }
+  .fsm-box.reset-state { border-color:#3fb950; color:#3fb950; }
+  .fsm-box.done-state { border-color:var(--warn); color:var(--warn); }
+  .fsm-row { display:flex; align-items:center; justify-content:center; gap:6px; flex-wrap:wrap; margin:10px 0; }
+  .fsm-arr { color:var(--warn); font-size:16px; }
+  .wave-row { display:flex; align-items:center; margin:2px 0; }
+  .wave-label { width:160px; font-size:11px; color:var(--light); flex-shrink:0; text-align:right; padding-right:8px; }
+  .wave-track { flex:1; height:20px; position:relative; display:flex; align-items:center; flex-wrap:nowrap; overflow:hidden; }
+  .wave-hi { height:14px; background:var(--accent2); display:inline-block; }
+  .wave-lo { height:4px; background:#1a4a55; display:inline-block; }
+  .wave-data { height:14px; display:inline-block; border-left:2px solid var(--warn); border-right:2px solid var(--warn); }
+  .wave-ann { font-size:10px; color:var(--warn); margin:0 4px; white-space:nowrap; }
+  .stats-grid { display:grid; grid-template-columns:repeat(auto-fit, minmax(160px, 1fr)); gap:10px; margin-bottom:16px; }
+  .stat-card { background:#021820; border:1px solid var(--border); border-radius:4px; padding:10px; text-align:center; }
+  .stat-val { font-size:18px; color:var(--accent2); font-weight:bold; }
+  .stat-lbl { font-size:10px; color:#8b949e; margin-top:4px; }
+  ul { margin:8px 0 8px 20px; }
+  li { margin:2px 0; }
+  p { margin:6px 0; }
+  ol { margin:8px 0 8px 20px; }
+  .math { background:#021820; border:1px solid var(--border); border-radius:4px; padding:10px 14px; margin:8px 0; font-size:12px; color:var(--light); }
+  /* --- inline math (self-contained, no external libs) --- */
+  .eq { font-family:'Cambria Math','STIX Two Math','Times New Roman',Georgia,serif;
+        font-size:13.5px; color:var(--light); background:#021820; padding:1px 7px;
+        border-radius:3px; white-space:nowrap; letter-spacing:0.01em; }
+  .eq i, .eq var { font-style:italic; }
+  .eq .op { color:var(--accent2); font-style:normal; padding:0 2px; }   /* = Σ ∏ operators */
+  .eq sub { font-size:0.72em; vertical-align:-0.28em; font-style:italic; }
+  .eq sup { font-size:0.72em; vertical-align:0.5em; font-style:normal; }
+  .eq .conj { text-decoration:overline; text-decoration-thickness:1px; }
+  .eq .frac { display:inline-flex; flex-direction:column; vertical-align:middle;
+              text-align:center; font-size:0.82em; line-height:1.05; margin:0 2px; }
+  .eq .frac > span:first-child { border-bottom:1px solid var(--light); padding:0 4px; }
+  .eqd { display:block; margin:10px 0; text-align:center; }             /* display (block) equation */
+  .eqd .eq { font-size:14.5px; white-space:normal; }
+</style>
+</head>
+<body>
+<nav>
+  <span class="brand">ZCU216 Synchronizer</span>
+  <a href="index.html">&#8592; Index</a>
+  <a href="01_phase3_sync_axis_dma_wrapper.html">01 DMA</a>
+  <a href="02_phase3_sync_top.html">02 Sync Top</a>
+  <a href="03_frac_cfo_frame_corrector_top.html">03 Frac CFO</a>
+  <a href="04_pss_sss_symbol_extractor.html">04 PSS/SSS Extr</a>
+  <a href="05_fft256_dual_symbol_frontend.html">05 FFT Frontend</a>
+  <a href="06_meyr_integer_cfo_fft_frontend_top.html">06 Meyr FFT Top</a>
+  <a href="07_meyr_integer_cfo_core.html">07 Meyr Core</a>
+  <a href="08_iq_replay_buffer_576.html">08 Replay Buf</a>
+  <a href="09_low_level_datapath_blocks.html">09 Datapath</a>
+</nav>
+<div class="container">
+
+  <!-- ===== SECTION 1: Header/Hero ===== -->
+  <h1>07 &mdash; meyr_integer_cfo_core</h1>
+  <div class="subtitle">
+    Source: <code>rtl/DUT/meyr_integer_cfo_core.v</code> &nbsp;|&nbsp;
+    Pipeline Stage: 6 &nbsp;|&nbsp; Role: Meyr integer CFO correlation engine; loads NSC term1 samples into RAM, correlates against ROM term2 reference, finds peak lag, reports int_cfo
+  </div>
+
+  <div style="display:flex; flex-wrap:wrap; gap:6px; margin-bottom:20px;">
+    <span class="badge-pending">Not Verified</span>
+    <span class="badge-pending">Not Verified</span>
+    <span class="badge-pending">Not Verified</span>
+    <span class="badge-pending">Not Verified</span>
+    <span class="badge-info">LAG_COUNT=511 lags</span>
+    <span class="badge-info">CENTER=255 (zero-CFO index)</span>
+  </div>
+
+  <div class="stats-grid">
+    <div class="stat-card"><div class="stat-val">7</div><div class="stat-lbl">FSM states</div></div>
+    <div class="stat-card"><div class="stat-val">511</div><div class="stat-lbl">LAG_COUNT (2&times;NSC-1)</div></div>
+    <div class="stat-card"><div class="stat-val">255</div><div class="stat-lbl">CENTER (zero-CFO index)</div></div>
+    <div class="stat-card"><div class="stat-val">56-bit</div><div class="stat-lbl">ACC_WIDTH accumulator</div></div>
+    <div class="stat-card"><div class="stat-val">64-bit</div><div class="stat-lbl">SCORE_WIDTH peak score</div></div>
+    <div class="stat-card"><div class="stat-val">~131k</div><div class="stat-lbl">MAC cycles total</div></div>
+  </div>
+
+  <!-- ===== SECTION 2: Integration Context ===== -->
+  <h2>2. Integration Context</h2>
+  <div class="card">
+    <div class="hrow">
+      <div class="blk ext">meyr_pss_sss_product_gen<br><span style="font-size:10px;">term1_valid, term1_index[7:0]<br>term1_i/q[31:0] (Q1.30)</span></div>
+      <span class="harrow">&#8594;</span>
+      <div class="blk top">meyr_integer_cfo_core<br><span style="font-size:10px; font-weight:normal;">Stage 6 — Integer CFO Correlation</span></div>
+      <span class="harrow">&#8594;</span>
+      <div class="blk ext">meyr_integer_cfo_freq_estimator_top<br><span style="font-size:10px;">int_cfo, peak_index, peak_score, done</span></div>
+    </div>
+    <p style="margin-top:12px;"><strong>Parent module:</strong> <code>meyr_integer_cfo_freq_estimator_top</code> (not shown in RTL files above, but instantiates this module)</p>
+    <p><strong>Sub-module:</strong> <code>peak_detector</code> (u_peak) — accepts correlation scores sequentially, tracks argmax</p>
+    <p><strong>ROM files:</strong> PSS_ROM_FILE = <code>vectors/meyr_pss_reference_romhex.txt</code>, SSS_ROM_FILE = <code>vectors/meyr_sss_reference_romhex.txt</code></p>
+    <p><strong>Clock domain:</strong> Single domain, <code>aclk</code>. No CDC crossings.</p>
+    <p><strong>Reset:</strong> <code>aresetn</code> is synchronous active-low. Error flag is sticky; cleared by aresetn only.</p>
+    <p><strong>term1 data format:</strong> term1_i and term1_q are PROD_WIDTH=32-bit Q1.30 values (product of two Q1.15 PSS_FFT and SSS_FFT components). The MAC in this core scales by &gt;&gt;16 before multiplying with Q1.15 term2 ROM entries.</p>
+  </div>
+
+  <!-- ===== SECTION 3: Block Diagram ===== -->
+  <h2>3. Block Diagram</h2>
+  <div class="card" style="padding:20px; overflow-x:auto;">
+    <div style="min-width:750px;">
+      <div style="display:flex; gap:8px; align-items:flex-start; justify-content:center;">
+        <div class="blk ext" style="min-width:90px; margin-top:50px; font-size:10px;">term1_valid<br>term1_index[7:0]<br>term1_i/q[31:0]<br>term1_ready</div>
+        <span class="harrow" style="margin-top:64px;">&#8594;</span>
+        <div style="border:2px solid var(--accent1); border-radius:8px; padding:14px 18px; background:#00202a; min-width:480px;">
+          <div style="text-align:center; color:#fff; font-weight:bold; font-size:12px; margin-bottom:12px;">meyr_integer_cfo_core</div>
+          <div style="display:flex; gap:10px; align-items:flex-start; flex-wrap:wrap; justify-content:center;">
+            <div class="blk" style="min-width:90px; font-size:10px;">term1 RAM<br>term1_i_ram[256]<br>term1_q_ram[256]<br>(S_LOAD state)</div>
+            <span style="color:var(--accent2); margin-top:14px;">+</span>
+            <div class="blk" style="min-width:90px; font-size:10px;">term2 ROM<br>term2_i_rom[256]<br>term2_q_rom[256]<br>(PSS&times;sign(SSS_I))</div>
+            <span style="color:var(--accent2); margin-top:14px;">&#8594;</span>
+            <div class="blk" style="min-width:110px; font-size:10px;">MAC Engine<br>511 lags, 1 MAC/cy<br>acc_i[55:0] / acc_q[55:0]<br>score = |acc[39:8]|^2</div>
+            <span style="color:var(--accent2); margin-top:14px;">&#8594;</span>
+            <div class="blk sub" style="min-width:90px; font-size:10px;">peak_detector<br>(u_peak)<br>argmax over<br>511 scores</div>
+          </div>
+          <div style="margin-top:10px; font-size:10px; color:#8b949e; text-align:center;">
+            t1_idx = n_cnt + lag_p - CENTER (= n_cnt + lag_p - 255) ; always in [0..255]<br>
+            term1_ready = (state==S_LOAD) ; correlation automatic after all 256 term1 loaded<br>
+            int_cfo = peak_index - 255
+          </div>
+        </div>
+        <span class="harrow" style="margin-top:64px;">&#8594;</span>
+        <div class="blk ext" style="min-width:90px; margin-top:50px; font-size:10px;">int_cfo[15:0]<br>peak_index[8:0]<br>peak_score[63:0]<br>done/busy/error</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== SECTION 4: Input Interface ===== -->
+  <h2>4. Input Interface</h2>
+  <table>
+    <thead><tr><th>Signal</th><th>Width</th><th>Dir</th><th>Type</th><th>Description</th><th>Valid/Ready Relation</th><th>Reset State</th></tr></thead>
+    <tbody>
+      <tr><td><code>aclk</code></td><td>1</td><td>in</td><td>clock</td><td>System clock, all FFs on posedge</td><td>—</td><td>—</td></tr>
+      <tr><td><code>aresetn</code></td><td>1</td><td>in</td><td>reset</td><td>Active-low synchronous reset. Resets all state, counters, accumulators, peak_detector via propagation.</td><td>—</td><td>0 = reset active</td></tr>
+      <tr><td><code>start</code></td><td>1</td><td>in</td><td>ctrl</td><td>1-cycle start pulse. Sets busy=1, load_cnt=0, transitions to S_LOAD. start while busy sets error (sticky).</td><td>Must be pulsed in S_IDLE</td><td>0</td></tr>
+      <tr><td><code>term1_valid</code></td><td>1</td><td>in</td><td>AXI-S</td><td>Input term1 sample valid. term1_ready gates acceptance. Fire = term1_valid &amp;&amp; term1_ready (= state==S_LOAD).</td><td>Fire when term1_valid &amp;&amp; term1_ready</td><td>—</td></tr>
+      <tr><td><code>term1_index</code></td><td>[7:0]</td><td>in</td><td>tag</td><td>Write address into term1 RAM (0..NSC-1 = 0..255). Must increment from 0 to 255 in order. Used directly as RAM write address: term1_i_ram[term1_index].</td><td>Present with term1_valid</td><td>—</td></tr>
+      <tr><td><code>term1_i</code></td><td>signed [PROD_WIDTH-1:0] = [31:0]</td><td>in</td><td>AXI-S</td><td>I component of term1 (Q1.30 — product of two Q1.15 FFT bins). Written to term1_i_ram[term1_index] on fire.</td><td>Captured on term1 fire</td><td>—</td></tr>
+      <tr><td><code>term1_q</code></td><td>signed [PROD_WIDTH-1:0] = [31:0]</td><td>in</td><td>AXI-S</td><td>Q component of term1 (Q1.30). Written to term1_q_ram[term1_index].</td><td>Captured on term1 fire</td><td>—</td></tr>
+    </tbody>
+  </table>
+
+  <!-- ===== SECTION 5: Output Interface ===== -->
+  <h2>5. Output Interface</h2>
+  <table>
+    <thead><tr><th>Signal</th><th>Width</th><th>Dir</th><th>Type</th><th>Description</th><th>Timing</th><th>Notes</th></tr></thead>
+    <tbody>
+      <tr><td><code>term1_ready</code></td><td>1</td><td>out</td><td>AXI-S</td><td>Combinatorial wire: <code>= (state == S_LOAD)</code>. High only in S_LOAD; deasserts when correlation begins (S_PD_START).</td><td>Combinatorial from state</td><td>Wire assign, not registered</td></tr>
+      <tr><td><code>busy</code></td><td>1</td><td>out</td><td>ctrl</td><td>High from start pulse until S_DONE (simultaneous busy=0 and done=1).</td><td>Registered</td><td>—</td></tr>
+      <tr><td><code>done</code></td><td>1</td><td>out</td><td>ctrl</td><td>1-cycle pulse in S_DONE state. Simultaneous with busy=0.</td><td>Registered; 1-cycle pulse</td><td>—</td></tr>
+      <tr><td><code>error</code></td><td>1</td><td>out</td><td>ctrl</td><td>Sticky error flag. Set by start_while_busy. Cleared only by aresetn.</td><td>Registered; sticky</td><td>—</td></tr>
+      <tr><td><code>int_cfo</code></td><td>signed [15:0]</td><td>out</td><td>result</td><td>Integer CFO in subcarrier units: <code>int_cfo = $signed({7'b0, pd_peak_index}) - 16'sd255</code>. Range -255..+255. Valid after done pulse.</td><td>Registered in S_WAIT_PD on pd_done</td><td>int_cfo = peak_index - CENTER</td></tr>
+      <tr><td><code>peak_index</code></td><td>[INDEX_WIDTH-1:0] = [8:0]</td><td>out</td><td>result</td><td>Raw correlation peak lag index 0..510. Zero CFO = index 255 = CENTER.</td><td>Registered in S_WAIT_PD on pd_done</td><td>Latched from pd_peak_index</td></tr>
+      <tr><td><code>peak_score</code></td><td>[SCORE_WIDTH-1:0] = [63:0]</td><td>out</td><td>result</td><td>|acc|^2 at peak lag = si_abs^2 + sq_abs^2 where si/sq = acc[39:8]. 64-bit result.</td><td>Registered in S_WAIT_PD on pd_done</td><td>Quality metric; 0 indicates no correlation energy</td></tr>
+    </tbody>
+  </table>
+
+  <!-- ===== SECTION 6: Parameters and Localparams ===== -->
+  <h2>6. Parameters and Localparams</h2>
+  <table>
+    <thead><tr><th>Name</th><th>Default</th><th>Meaning</th><th>Where Used</th><th>Dependency</th></tr></thead>
+    <tbody>
+      <tr><td><code>NSC</code></td><td>256</td><td>Number of subcarriers / term1 samples / term2 ROM entries. Drives all buffer sizes and loop bounds.</td><td>term1_i/q_ram[0:NSC-1], term2_i/q_rom[0:NSC-1], load_cnt terminal, n_end_cur, n_start_cur, n_cnt range</td><td>Must equal FFT_LEN=256</td></tr>
+      <tr><td><code>IQ_WIDTH</code></td><td>16</td><td>FFT output component width. Not directly used in core arithmetic; PROD_WIDTH=32 is the operative width.</td><td>Informational; parent modules use IQ_WIDTH for FFT I/O</td><td>Parent consistency</td></tr>
+      <tr><td><code>PROD_WIDTH</code></td><td>32</td><td>Width of term1_i/q RAM entries and MAC input. Q1.30 product of two Q1.15 FFT bins.</td><td>term1_i/q_ram element width; t1_i_w/t1_q_w wires; mac_i/q_w operands; also term2_i/q_rom element width (Q1.15 stored in 32-bit field)</td><td>Must be 2&times;IQ_WIDTH=32; term2 ROM values are Q1.15 in lower 16 bits</td></tr>
+      <tr><td><code>ACC_WIDTH</code></td><td>56</td><td>Accumulator width for correlation sum. Must accommodate NSC=256 terms of sign-extended PROD_WIDTH=32-bit products.</td><td>acc_i[ACC_WIDTH-1:0], acc_q[ACC_WIDTH-1:0]; sign extension of mac_i/q to ACC_WIDTH</td><td>Must be &ge; 32 + $clog2(256) = 40 bits minimum. 56-bit provides 16-bit headroom.</td></tr>
+      <tr><td><code>SCORE_WIDTH</code></td><td>64</td><td>Width of peak score (|acc|^2). Computed as si_abs^2 + sq_abs^2 where si/sq = acc[39:8] (32-bit slices).</td><td>pd_data_in_r, peak_score register; passed to peak_detector</td><td>2&times;32 = 64 for squared 32-bit slice sum</td></tr>
+      <tr><td><code>INDEX_WIDTH</code></td><td>9</td><td>Bit width for peak_index and lag_p. Covers 0..511 = LAG_COUNT-1.</td><td>lag_p[INDEX_WIDTH-1:0], peak_index register, pd_peak_index wire, pd_start termination count width</td><td>Must be &ge; $clog2(2*NSC-1) = $clog2(511) = 9</td></tr>
+      <tr><td><code>PSS_ROM_FILE</code></td><td>"vectors/meyr_pss_reference_romhex.txt"</td><td>Hex file for PSS reference ROM. Contains NSC=256 32-bit packed words: {Q_q15[31:16], I_q15[15:0]}. Loaded via $readmemh at elaboration.</td><td>$readmemh into _pss_rom_packed[256]</td><td>Must contain 256 entries; path relative to simulation working directory</td></tr>
+      <tr><td><code>SSS_ROM_FILE</code></td><td>"vectors/meyr_sss_reference_romhex.txt"</td><td>Hex file for SSS reference ROM. Same format. Used only for sign determination: sign(SSS_ref_I[j]) modulates term2.</td><td>$readmemh into _sss_rom_packed[256]</td><td>Must contain 256 entries; same path convention as PSS</td></tr>
+      <tr><td><code>LAG_COUNT</code> (localparam)</td><td>2*NSC-1 = 511</td><td>Total number of correlation lags. Linear correlation range: lag = -255..+255, index 0..510.</td><td>pd_data_last_r terminal condition; lag_p terminal; LAG_COUNT-1=510 comparison</td><td>Derived from NSC</td></tr>
+      <tr><td><code>CENTER</code> (localparam)</td><td>NSC-1 = 255</td><td>Lag index corresponding to zero integer CFO. Used in n_start/n_end computation and int_cfo decode.</td><td>n_start_cur/nxt computation: <code>(lag_p &gt;= CENTER)</code>; int_cfo = pd_peak_index - CENTER</td><td>Derived from NSC</td></tr>
+    </tbody>
+  </table>
+
+  <!-- ===== SECTION 7: Operation ===== -->
+  <h2>7. Operation</h2>
+  <div class="card">
+    <h3>ROM Initialization (Simulation Elaboration)</h3>
+    <p>At simulation elaboration (initial block), $readmemh loads PSS and SSS reference data into temporary packed arrays. The term2 ROM is then computed:</p>
+    <div class="math">
+      For j = 0..255:<br>
+      &nbsp;&nbsp;_pss_i_val = $signed(_pss_rom_packed[j][15:0])  -- PSS_ref I component (Q1.15)<br>
+      &nbsp;&nbsp;_pss_q_val = $signed(_pss_rom_packed[j][31:16]) -- PSS_ref Q component (Q1.15)<br>
+      &nbsp;&nbsp;_sss_i_val = $signed(_sss_rom_packed[j][15:0])  -- SSS_ref I component (sign only)<br>
+      &nbsp;&nbsp;if _sss_i_val &ge; 0: term2_i_rom[j] = +_pss_i_val; term2_q_rom[j] = +_pss_q_val<br>
+      &nbsp;&nbsp;if _sss_i_val &lt; 0: term2_i_rom[j] = -_pss_i_val; term2_q_rom[j] = -_pss_q_val<br>
+    </div>
+    <div class="eqd"><span class="eq"><i>term2</i>[<i>j</i>] <span class="op">=</span> <i>PSS</i><sub>ref</sub>[<i>j</i>] <span class="op">·</span> sign(<i>SSS</i><sub>ref,I</sub>[<i>j</i>])</span></div>
+    <p style="text-align:center; font-size:11px; color:#8b949e; margin-top:-4px;">BPSK SSS modulation cancellation</p>
+    <p>This pre-computation matches the C reference formula for the Meyr CFO estimator where the SSS subcarrier sign (BPSK) is applied to the PSS reference to create a composite term2 sequence.</p>
+
+    <h3>S_IDLE: Waiting for start</h3>
+    <p>Module is idle, busy=0, done=0. start_while_busy guard active. On start: busy=1, load_cnt=0, state=S_LOAD.</p>
+
+    <h3>S_LOAD: Receive 256 term1 Samples into RAM</h3>
+    <p>term1_ready is high (combinatorial wire). On each term1 fire: <code>term1_i_ram[term1_index] &lt;= term1_i</code>. load_cnt increments. When load_cnt == NSC-1 (=255): state=S_PD_START. Note: load_cnt is compared to NSC-1, not NSC, because the write happens simultaneously with the comparison — the 256th sample (index 255) triggers the transition on the same clock it is written.</p>
+
+    <h3>S_PD_START: Initialize Correlation Loop</h3>
+    <p>pd_start_r=1 (1-cycle pulse to peak_detector), lag_p=0, n_cnt=n_start_cur (for lag_p=0), n_end_r=n_end_cur (for lag_p=0), acc_i=0, acc_q=0, state=S_CORR.</p>
+    <p>For lag_p=0 (lag = -255): n_start_cur = 255-0 = 255, n_end_cur = 255. So only n=255 is accumulated for lag=0. This is correct: at lag=-255, only the overlap index n=255 produces a valid t1_idx=0.</p>
+
+    <h3>S_CORR: One MAC Per Clock</h3>
+    <p>The term1 RAM read address maps the (lag, n) coordinates as:</p>
+    <div class="eqd"><span class="eq"><i>t1_idx</i> <span class="op">=</span> <i>n_cnt</i> <span class="op">+</span> <i>lag_p</i> <span class="op">−</span> CENTER <span class="op">=</span> <i>n_cnt</i> <span class="op">+</span> <i>lag_p</i> <span class="op">−</span> 255</span></div>
+    <p>The MAC computes one term per clock cycle:</p>
+    <div class="math">
+      t1_idx = n_cnt + lag_p - 255  (wire: t1_sum - 10'd255)<br>
+      t1_i_w = term1_i_ram[t1_idx]  (Q1.30 product of PSS_FFT[j]*conj(SSS_FFT[j]) I-part)<br>
+      t2_i_w = term2_i_rom[n_cnt]   (Q1.15 term2 reference at index n)<br>
+      <br>
+      Scale: t1 &gt;&gt;= 16 to reduce Q1.30 to Q1.14 range before multiply with Q1.15 term2<br>
+      mac_i_w = (t1_i_w &gt;&gt;&gt; 16) * t2_i_w + (t1_q_w &gt;&gt;&gt; 16) * t2_q_w  -- real part of t1*conj(t2)<br>
+      mac_q_w = (t1_q_w &gt;&gt;&gt; 16) * t2_i_w - (t1_i_w &gt;&gt;&gt; 16) * t2_q_w  -- imag part<br>
+      <br>
+      acc_i += sign_extend(mac_i_w, 56)<br>
+      acc_q += sign_extend(mac_q_w, 56)<br>
+      <br>
+      When n_cnt == n_end_r: state = S_LAG_END<br>
+      Else: n_cnt += 1
+    </div>
+    <p>The complex multiply is the product of term1 with the conjugate of term2:</p>
+    <div class="eqd"><span class="eq">(<i>a</i>+<i>jb</i>)(<i>c</i>−<i>jd</i>) <span class="op">=</span> (<i>ac</i>+<i>bd</i>) <span class="op">+</span> <i>j</i>(<i>bc</i>−<i>ad</i>)</span></div>
+    <p>This matches the C reference cross-correlation:</p>
+    <div class="eqd"><span class="eq"><i>corr</i>[<i>p</i>] <span class="op">=</span> <span class="op">∑</span><sub>n</sub> <i>term1</i>[<i>n</i>+<i>lag</i>] <span class="op">·</span> <span class="conj"><i>term2</i>[<i>n</i>]</span></span></div>
+
+    <h3>S_LAG_END: Score Current Lag, Advance to Next</h3>
+    <p>Score computation:</p>
+    <div class="math">
+      si_s = acc_i[39:8]   -- 32-bit significant slice (bits 39..8 of 56-bit accumulator)<br>
+      sq_s = acc_q[39:8]<br>
+      si_abs = |si_s|, sq_abs = |sq_s|  (2's complement absolute value)<br>
+      score_w = si_abs^2 + sq_abs^2     (64-bit: {32'd0, si_abs}^2 + {32'd0, sq_abs}^2)<br>
+      <br>
+      pd_data_in_r = score_w<br>
+      pd_data_valid_r = 1  (1-cycle)<br>
+      pd_data_last_r = (lag_p == LAG_COUNT-1)  -- last lag is lag_p=510<br>
+      <br>
+      acc_i = 0; acc_q = 0  (reset for next lag)<br>
+      <br>
+      If lag_p == LAG_COUNT-1: state = S_WAIT_PD<br>
+      Else: lag_p++; n_cnt = n_start_nxt; n_end_r = n_end_nxt; state = S_CORR
+    </div>
+    <p>The slice <code>acc_i[39:8]</code> corresponds to keeping bits with significant energy. For 256 terms of Q1.14 &middot; Q1.15 = Q2.29 products, the accumulator max magnitude is approximately <span class="eq">256 <span class="op">·</span> 2<sup>29</sup> <span class="op">=</span> 2<sup>37</sup></span>. Bits <span class="eq">[39:8]</span> represent a 32-bit window that captures this range with 2 bits of overflow headroom. The per-lag score is <span class="eq"><i>score</i> <span class="op">=</span> |<i>acc</i><sub>I</sub>[39:8]|<sup>2</sup> <span class="op">+</span> |<i>acc</i><sub>Q</sub>[39:8]|<sup>2</sup></span>.</p>
+
+    <h3>n_start / n_end for Each Lag</h3>
+    <div class="math">
+      lag = lag_p - CENTER = lag_p - 255<br>
+      <br>
+      If lag_p &ge; CENTER (lag &ge; 0):  n_start = 0,             n_end = NSC-1 - lag = 510 - lag_p<br>
+      If lag_p &lt;  CENTER (lag &lt;  0):  n_start = -lag = 255-lag_p, n_end = NSC-1 = 255<br>
+      <br>
+      Equivalently: overlap length = NSC - |lag| = 256 - |lag_p - 255|<br>
+      At lag_p=0 (lag=-255): 1 term. At lag_p=255 (lag=0): 256 terms. At lag_p=510 (lag=+255): 1 term.
+    </div>
+    <div class="eqd"><span class="eq"><i>overlap</i> <span class="op">=</span> NSC <span class="op">−</span> |<i>lag</i>| <span class="op">=</span> 256 <span class="op">−</span> |<i>lag_p</i> <span class="op">−</span> 255|</span></div>
+    <p>The n_start_nxt and n_end_nxt wires pre-compute values for lag_p+1, allowing simultaneous lag advancement in S_LAG_END without a stall cycle.</p>
+
+    <h3>S_WAIT_PD: Wait for Peak Detector</h3>
+    <p>Waits for pd_done from u_peak. On pd_done: peak_index=pd_peak_index, peak_score=pd_peak_value, state=S_DONE. The signed integer CFO is decoded as:</p>
+    <div class="eqd"><span class="eq"><i>int_cfo</i> <span class="op">=</span> <i>peak_index</i> <span class="op">−</span> CENTER <span class="op">=</span> <i>peak_index</i> <span class="op">−</span> 255</span></div>
+
+    <h3>S_DONE</h3>
+    <p>done=1, busy=0, state=S_IDLE. 1-cycle state.</p>
+  </div>
+
+  <!-- ===== SECTION 8: Timing Diagram ===== -->
+  <h2>8. Timing Diagram</h2>
+  <div class="card" style="overflow-x:auto;">
+    <div style="min-width:900px;">
+      <div style="font-size:11px; color:#8b949e; margin-bottom:8px;">Phase breakdown. S_LOAD=256cy. S_PD_START=1cy. S_CORR+S_LAG_END loop for 511 lags (variable length per lag, avg ~128 cycles). Peak_detector finishes within a few cycles after last lag. Total &asymp; 131k cycles.</div>
+
+      <div class="wave-row"><div class="wave-label">start</div><div class="wave-track">
+        <div class="wave-hi" style="width:6px;"></div><div class="wave-lo" style="width:700px;"></div>
+        <span class="wave-ann">1cy</span>
+      </div></div>
+
+      <div class="wave-row"><div class="wave-label">state</div><div class="wave-track">
+        <div class="wave-data" style="width:20px; background:#001a0f; color:#3fb950; font-size:9px;">IDLE</div>
+        <div class="wave-data" style="width:40px; background:#002010; color:var(--light); font-size:9px;">S_LOAD 256cy</div>
+        <div class="wave-data" style="width:6px; background:#001810; color:var(--light); font-size:8px;">PD</div>
+        <div class="wave-data" style="width:200px; background:#001a20; color:var(--light); font-size:9px;">S_CORR / S_LAG_END loop &times;511 lags (~131k cycles)</div>
+        <div class="wave-data" style="width:20px; background:#200a00; color:#e3b341; font-size:9px;">W_PD</div>
+        <div class="wave-data" style="width:8px; background:#1a0a00; color:#e3b341; font-size:9px;">D</div>
+        <div class="wave-data" style="width:6px; background:#001a0f; color:#3fb950; font-size:9px;">I</div>
+      </div></div>
+
+      <div class="wave-row"><div class="wave-label">term1_ready</div><div class="wave-track">
+        <div class="wave-lo" style="width:20px;"></div>
+        <div class="wave-hi" style="width:40px;" title="S_LOAD: ready=1"></div>
+        <div class="wave-lo" style="width:240px;"></div>
+      </div></div>
+
+      <div class="wave-row"><div class="wave-label">term1_valid (in)</div><div class="wave-track">
+        <div class="wave-lo" style="width:20px;"></div>
+        <div class="wave-hi" style="width:40px;" title="256 term1 beats from product_gen"></div>
+        <div class="wave-lo" style="width:240px;"></div>
+      </div></div>
+
+      <div class="wave-row"><div class="wave-label">pd_start_r</div><div class="wave-track">
+        <div class="wave-lo" style="width:60px;"></div>
+        <div class="wave-hi" style="width:6px;" title="S_PD_START: 1-cycle pulse"></div>
+        <div class="wave-lo" style="width:234px;"></div>
+        <span class="wave-ann">1cy pulse</span>
+      </div></div>
+
+      <div class="wave-row"><div class="wave-label">lag_p[8:0]</div><div class="wave-track">
+        <div class="wave-lo" style="width:66px;"></div>
+        <div class="wave-data" style="width:200px; background:#001a20; color:var(--light); font-size:9px;">0&#8594;510 (inner CORR loop varies per lag; 1..256 MAC cycles/lag)</div>
+        <div class="wave-lo" style="width:34px;"></div>
+      </div></div>
+
+      <div class="wave-row"><div class="wave-label">pd_data_valid_r</div><div class="wave-track">
+        <div class="wave-lo" style="width:66px;"></div>
+        <div style="display:flex; flex-wrap:nowrap;">
+          <div class="wave-hi" style="width:4px;"></div><div class="wave-lo" style="width:4px;"></div>
+          <div class="wave-hi" style="width:4px;"></div><div class="wave-lo" style="width:4px;"></div>
+          <span class="wave-ann" style="font-size:9px;">1-cycle pulse per lag (511 pulses total)</span>
+        </div>
+      </div></div>
+
+      <div class="wave-row"><div class="wave-label">pd_done</div><div class="wave-track">
+        <div class="wave-lo" style="width:266px;"></div>
+        <div class="wave-hi" style="width:6px;" title="1-cycle done from peak_detector after last lag score"></div>
+        <div class="wave-lo" style="width:28px;"></div>
+        <span class="wave-ann">1cy after data_last</span>
+      </div></div>
+
+      <div class="wave-row"><div class="wave-label">done</div><div class="wave-track">
+        <div class="wave-lo" style="width:280px;"></div>
+        <div class="wave-hi" style="width:6px;" title="1-cycle done pulse from this module (S_DONE)"></div>
+        <div class="wave-lo" style="width:14px;"></div>
+        <span class="wave-ann">S_DONE (1cy)</span>
+      </div></div>
+    </div>
+  </div>
+
+  <!-- ===== SECTION 9: Internal FSM ===== -->
+  <h2>9. Internal FSM</h2>
+  <div class="card">
+    <div class="fsm-row">
+      <div style="display:flex; flex-direction:column; align-items:center; gap:2px;">
+        <div class="fsm-box reset-state">S_IDLE<br><span style="font-size:10px;">3'd0</span></div>
+        <div style="font-size:10px; color:#8b949e;">reset state</div>
+      </div>
+      <span class="fsm-arr">&#8594;</span>
+      <div class="fsm-box">S_LOAD<br><span style="font-size:10px;">3'd1</span></div>
+      <span class="fsm-arr">&#8594;</span>
+      <div class="fsm-box">S_PD_START<br><span style="font-size:10px;">3'd2</span></div>
+      <span class="fsm-arr">&#8594;</span>
+      <div style="display:flex; flex-direction:column; align-items:center; gap:2px;">
+        <div class="fsm-box">S_CORR<br><span style="font-size:10px;">3'd3</span></div>
+        <div style="font-size:10px; color:var(--warn);">&#8597; 1-n terms/lag</div>
+        <div class="fsm-box">S_LAG_END<br><span style="font-size:10px;">3'd4</span></div>
+      </div>
+      <span class="fsm-arr">&#8594;</span>
+      <div class="fsm-box">S_WAIT_PD<br><span style="font-size:10px;">3'd5</span></div>
+      <span class="fsm-arr">&#8594;</span>
+      <div class="fsm-box done-state">S_DONE<br><span style="font-size:10px;">3'd6</span></div>
+      <span class="fsm-arr">&#8594;</span>
+      <div style="font-size:10px; color:#3fb950; margin-top:10px;">S_IDLE</div>
+    </div>
+    <div style="text-align:center; font-size:10px; color:#8b949e; margin-top:4px;">S_CORR&#8594;S_LAG_END when n_cnt==n_end_r; S_LAG_END&#8594;S_CORR when lag_p&lt;LAG_COUNT-1; S_LAG_END&#8594;S_WAIT_PD when lag_p==LAG_COUNT-1</div>
+
+    <table style="margin-top:14px;">
+      <thead><tr><th>From</th><th>Condition</th><th>To</th><th>Key Actions</th></tr></thead>
+      <tbody>
+        <tr><td>S_IDLE</td><td>start &amp;&amp; !busy</td><td>S_LOAD</td><td>busy=1, load_cnt=0</td></tr>
+        <tr><td>S_LOAD</td><td>term1_valid &amp;&amp; load_cnt==NSC-1</td><td>S_PD_START</td><td>term1 RAM fully loaded (last write at index 255)</td></tr>
+        <tr><td>S_PD_START</td><td>unconditional (1-cycle)</td><td>S_CORR</td><td>pd_start_r=1, lag_p=0, n_cnt=n_start_cur, n_end_r=n_end_cur, acc_i/q=0</td></tr>
+        <tr><td>S_CORR</td><td>n_cnt==n_end_r</td><td>S_LAG_END</td><td>last MAC for this lag; acc includes final term</td></tr>
+        <tr><td>S_CORR</td><td>n_cnt!=n_end_r</td><td>S_CORR</td><td>n_cnt++; acc_i/q += mac_i/q</td></tr>
+        <tr><td>S_LAG_END</td><td>lag_p==LAG_COUNT-1 (=510)</td><td>S_WAIT_PD</td><td>pd_data_valid_r=1, pd_data_last_r=1, score fed; acc reset</td></tr>
+        <tr><td>S_LAG_END</td><td>lag_p&lt;LAG_COUNT-1</td><td>S_CORR</td><td>pd_data_valid_r=1, pd_data_last_r=0; lag_p++; n_cnt=n_start_nxt; n_end_r=n_end_nxt; acc reset</td></tr>
+        <tr><td>S_WAIT_PD</td><td>pd_done</td><td>S_DONE</td><td>Latch peak_index, peak_score, int_cfo</td></tr>
+        <tr><td>S_DONE</td><td>unconditional (1-cycle)</td><td>S_IDLE</td><td>done=1, busy=0</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- ===== SECTION 10: Algorithm Mapping ===== -->
+  <h2>10. Algorithm Mapping</h2>
+  <div class="card">
+    <p>This module implements the core of the Meyr integer CFO estimation algorithm. The C reference function <code>carrierFreqOffsetEstMeyr()</code> (<code>receiver.c:498</code>) computes a cross-correlation between term1 <span class="eq">= <i>PSS</i><sub>FFT</sub>[<i>j</i>] <span class="op">·</span> <span class="conj"><i>SSS</i><sub>FFT</sub>[<i>j</i>]</span></span> and term2 <span class="eq">= <i>mU</i>[<i>j</i>] <span class="op">·</span> <span class="conj"><i>goldU</i>[<i>j</i>]</span></span> over all lags (loop body <code>receiver.c:523&ndash;529</code>, correlation <code>receiver.c:531</code>, argmax <code>receiver.c:534</code>). The RTL folds the BPSK SSS reference to the equivalent sign form <span class="eq"><i>term2</i>[<i>j</i>] = <i>PSS</i><sub>ref</sub>[<i>j</i>] <span class="op">·</span> sign(<i>SSS</i><sub>ref,I</sub>[<i>j</i>])</span>.</p>
+
+    <table>
+      <thead><tr><th>RTL Construct</th><th>C Reference (function @ file:line)</th><th>Formula</th><th>Notes</th></tr></thead>
+      <tbody>
+        <tr><td><code>term2_i_rom[j]</code> (ROM init)</td><td><code>carrierFreqOffsetEstMeyr()</code> @ receiver.c:527&ndash;528</td><td><span class="eq"><i>term2</i>[<i>j</i>] <span class="op">=</span> <i>mU</i>[<i>j</i>] <span class="op">·</span> <span class="conj"><i>goldU</i>[<i>j</i>]</span> <span class="op">≡</span> <i>PSS</i><sub>ref</sub>[<i>j</i>] <span class="op">·</span> sign(<i>SSS</i><sub>ref,I</sub>[<i>j</i>])</span></td><td>Pre-computed at elaboration from ROM files</td></tr>
+        <tr><td>Outer loop: <code>lag_p</code> = 0..510</td><td><code>find_peak_index()</code> @ receiver.c:543&ndash;553</td><td><span class="eq"><i>lag</i> <span class="op">=</span> <i>lag_p</i> <span class="op">−</span> 255, <i>k</i> <span class="op">=</span> −255..+255</span></td><td>LAG_COUNT=511 = 2·NSC−1 (crossCorrLen, receiver.c:504)</td></tr>
+        <tr><td>Inner loop: <code>n</code> = n_start..n_end</td><td><code>carrierFreqOffsetEstMeyr()</code> @ receiver.c:523</td><td><span class="eq"><i>n</i> <span class="op">=</span> max(0,−<i>k</i>) .. min(NSC−1, NSC−1−<i>k</i>)</span></td><td>Linear (non-circular) cross-correlation; valid overlap only</td></tr>
+        <tr><td><code>t1_idx = n_cnt + lag_p - 255</code></td><td><code>carrierFreqOffsetEstMeyr()</code> @ receiver.c:531</td><td><span class="eq"><i>t1_idx</i> <span class="op">=</span> <i>n</i> <span class="op">+</span> <i>k</i> <span class="op">+</span> CENTER</span></td><td>+lag (not −lag) because lag_p = k + CENTER</td></tr>
+        <tr><td><code>mac_i_w = (t1_i&gt;&gt;&gt;16)·t2_i + (t1_q&gt;&gt;&gt;16)·t2_q</code></td><td><code>carrierFreqOffsetEstMeyr()</code> @ receiver.c:524&ndash;525</td><td><span class="eq">Re{<i>term1</i>·<span class="conj"><i>term2</i></span>} <span class="op">=</span> <i>t1</i><sub>I</sub><i>t2</i><sub>I</sub> <span class="op">+</span> <i>t1</i><sub>Q</sub><i>t2</i><sub>Q</sub></span></td><td>Scale by &gt;&gt;16 to prevent 32-bit overflow before accumulation</td></tr>
+        <tr><td><code>acc_i/q</code> accumulates 1..256 MACs/lag</td><td><code>find_peak_index()</code> @ receiver.c:531 (fft_correlation_Meyr)</td><td><span class="eq"><i>corr</i>[<i>k</i>] <span class="op">=</span> <span class="op">∑</span><sub>n</sub> <i>term1</i>[<i>n</i>+<i>k</i>] <span class="op">·</span> <span class="conj"><i>term2</i>[<i>n</i>]</span></span></td><td>Fewer terms at boundary lags (triangular overlap)</td></tr>
+        <tr><td><code>score_w = |acc[39:8]|^2</code></td><td><code>find_peak_index()</code> @ receiver.c:546,548</td><td><span class="eq"><i>score</i> <span class="op">=</span> |<i>corr</i>[<i>k</i>]|<sup>2</sup> <span class="op">=</span> <i>corr</i><sub>I</sub><sup>2</sup> <span class="op">+</span> <i>corr</i><sub>Q</sub><sup>2</sup></span></td><td>acc[39:8] slice approximates full magnitude; see Section 7</td></tr>
+        <tr><td><code>peak_detector</code> argmax over 511 scores</td><td><code>find_peak_index()</code> @ receiver.c:547&ndash;552</td><td><span class="eq"><i>k</i><sup>*</sup> <span class="op">=</span> argmax<sub>k</sub> |<i>corr</i>[<i>k</i>]|<sup>2</sup></span></td><td>Hardware runs online argmax (1 score per lag_p)</td></tr>
+        <tr><td><code>int_cfo = pd_peak_index - 255</code></td><td><code>carrierFreqOffsetEstMeyr()</code> @ receiver.c:535</td><td><span class="eq"><i>intCFO</i> <span class="op">=</span> <i>k</i><sup>*</sup> <span class="op">−</span> (NSC−1)</span></td><td>Maps peak lag index back to signed integer CFO</td></tr>
+      </tbody>
+    </table>
+
+    <h3>m_seq() and gold_seq() Reference Mapping</h3>
+    <p>The ROM content (term2) corresponds to the C functions <code>m_seq()</code> (<code>signal_processing_common.c:216</code>) and <code>gold_seq()</code> (<code>signal_processing_common.c:236</code>) which generate the 5G NR PSS m-sequence and SSS Gold-sequence reference symbols (<code>mU</code> and <code>goldU</code> in <code>carrierFreqOffsetEstMeyr()</code>). The ROM was generated offline and stored in the hex files. The composite reference</p>
+    <div class="eqd"><span class="eq"><i>term2</i>[<i>j</i>] <span class="op">=</span> <i>PSS</i><sub>ref</sub>[<i>j</i>] <span class="op">·</span> sign(<i>SSS</i><sub>ref,I</sub>[<i>j</i>])</span></div>
+    <p>combines both sequences so the correlation with term1 <span class="eq">= <i>PSS</i><sub>FFT</sub> <span class="op">·</span> <span class="conj"><i>SSS</i><sub>FFT</sub></span></span> produces a peak at the integer CFO lag.</p>
+  </div>
+
+  <!-- ===== SECTION 11: Latency Analysis ===== -->
+  <h2>11. Latency Analysis</h2>
+  <table>
+    <thead><tr><th>Operation</th><th>Cycles</th><th>Measurement</th><th>Notes</th></tr></thead>
+    <tbody>
+      <tr><td>S_LOAD (256 term1 writes)</td><td>256</td><td>load_cnt 0..255</td><td>1 write/clock; stalls if term1_valid=0</td></tr>
+      <tr><td>S_PD_START (init)</td><td>1</td><td>1-cycle state</td><td>pd_start_r pulse; lag_p, n_cnt, acc initialized</td></tr>
+      <tr><td>S_CORR per lag (avg)</td><td>1..256 (avg ~128)</td><td>n_cnt from n_start to n_end</td><td>Lag 0: 1 MAC; lag 255: 256 MAC; lag 510: 1 MAC; triangular distribution</td></tr>
+      <tr><td>S_LAG_END per lag</td><td>1</td><td>1-cycle per lag</td><td>Score feed to pd; lag advance</td></tr>
+      <tr><td>Total S_CORR+S_LAG_END (511 lags)</td><td>&asymp;131k</td><td>Sum of (n_end-n_start+1+1) for all lags</td><td>Sum of (2*i-1) for i=1..256 plus 511 LAG_END cycles = 256^2 + 511 = 65,536+511 = 66,047 ... actually triangular: sum(n_terms) = sum_{k=0}^{255}(k+1) + sum_{k=1}^{255}(k+1) = 256^2/2 * ... let precise value be sum = 2*(1+2+...+256) - 256 = 256*257 - 256 = 65,792 MAC cycles + 511 LAG_END = &asymp;66,303</td><td>Exact: 2*(1+...+256)-256 = 65792 MAC + 511 = 66303 total corr cycles</td></tr>
+      <tr><td>S_WAIT_PD (peak_detector)</td><td>&lt;10</td><td>pd_done latency</td><td>peak_detector runs online; minimal settling after data_last</td></tr>
+      <tr><td>S_DONE</td><td>1</td><td>1-cycle state</td><td>done pulse</td></tr>
+      <tr><td>Total (no stall in S_LOAD)</td><td>&asymp;66,571</td><td>start to done</td><td>256 + 1 + 66303 + &lt;10 + 1 &asymp; 66,571 cycles</td></tr>
+    </tbody>
+  </table>
+
+  <!-- ===== SECTION 12: Throughput Analysis ===== -->
+  <h2>12. Throughput Analysis</h2>
+  <table>
+    <thead><tr><th>Mode</th><th>Rate</th><th>Bottleneck</th><th>Notes</th></tr></thead>
+    <tbody>
+      <tr><td>S_LOAD term1 input</td><td>1 sample/clock (if term1_valid=1)</td><td>Upstream term1 generation rate</td><td>term1_ready=1 throughout S_LOAD; no stall from this module</td></tr>
+      <tr><td>Correlation MAC throughput</td><td>1 MAC/clock</td><td>Sequential correlation loop</td><td>Single multiplier, no pipelining; 1 complex multiply per cycle</td></tr>
+      <tr><td>Score feed to peak_detector</td><td>1 score/lag (1 cycle per lag)</td><td>S_LAG_END state</td><td>pd_data_valid is 1-cycle pulse once per lag; pd accepts continuously</td></tr>
+      <tr><td>End-to-end frame rate</td><td>1 CFO estimate / ~66,571 cycles</td><td>Correlation loop (511 lags)</td><td>Adding DSP pipelining or parallel lag computation would improve throughput; not implemented</td></tr>
+    </tbody>
+  </table>
+
+  <!-- ===== SECTION 13: Resource Impact ===== -->
+  <h2>13. Resource Impact</h2>
+  <table>
+    <thead><tr><th>Resource</th><th>Estimate</th><th>Notes</th></tr></thead>
+    <tbody>
+      <tr><td>LUTs</td><td>~300-500</td><td>7-state FSM (3-bit), n_start/n_end combinatorial (9-bit comparators), lag_p/n_cnt/load_cnt comparisons, score abs value (32-bit), t1_idx arithmetic (10-bit sum)</td></tr>
+      <tr><td>FFs</td><td>~350-500</td><td>state(3), lag_p(9), n_cnt(8), n_end_r(8), load_cnt(8), acc_i(56), acc_q(56), pd_start_r/data_in(64)/valid(1)/last(1), busy/done/error, int_cfo(16)+peak_index(9)+peak_score(64)</td></tr>
+      <tr><td>Block RAM (term1 RAM)</td><td>1 BRAM18</td><td>term1_i_ram[256] and term1_q_ram[256]: each 256&times;32 = 8 Kbits. 16 Kbits total = 1 BRAM36 or 2 BRAM18.</td></tr>
+      <tr><td>Block RAM (term2 ROM)</td><td>1 BRAM18</td><td>term2_i_rom[256] and term2_q_rom[256]: same size as term1 RAM. Vivado may use distributed ROM for simulation; BRAM for synthesis.</td></tr>
+      <tr><td>DSP48s (MAC)</td><td>2-4</td><td>mac_i_w and mac_q_w each require 2 multiplications: (t1_i&gt;&gt;16)*t2_i and (t1_q&gt;&gt;16)*t2_q for mac_i; similar for mac_q. Total 4 DSP48s for the 4 multiplications. Operand widths: (32-16=16 bit) * 32-bit = 48-bit product, fits in DSP48 cascade.</td></tr>
+      <tr><td>peak_detector</td><td>~50 LUT, ~100 FF</td><td>Simple argmax with 64-bit comparator and 9-bit index register</td></tr>
+      <tr><td>Optimization notes</td><td>—</td><td>Parallel lag computation would require multiple MAC engines and LAG_COUNT/N_PARALLEL BRAMs. For single-use low-resource FPGA, sequential 1-MAC is optimal. DSP48 pipeline depth allows 1 MAC/cycle at any clock rate for 32&times;32-bit operands (with 16-bit truncation of t1).</td></tr>
+    </tbody>
+  </table>
+
+  <!-- ===== SECTION 14: RTL Simulation Coverage ===== -->
+  <h2>14. RTL Simulation Coverage</h2>
+  <table>
+    <thead><tr><th>Gate ID</th><th>Simulator</th><th>Cases</th><th>Status</th><th>What Was Verified</th></tr></thead>
+    <tbody>
+      <tr><td>DOC-003</td><td>iverilog</td><td>ROM content check 512/512</td><td><span class="badge-pending">Not Verified</span></td><td>Both PSS_ROM and SSS_ROM loaded correctly (512 total entries = 2&times;256); all entries non-zero; initial block $readmemh verified. Fixed ROM parameter plumbing bug (parameters were not threaded from parent modules).</td></tr>
+      <tr><td>J1 k_int sweep</td><td>iverilog</td><td>13/13 k_int values</td><td><span class="badge-pending">Not Verified</span></td><td>k_int = -6..+6 (13 cases); int_cfo output matches injected k_int for all cases; peak_score &gt; 0 for all; peak at correct lag_p index</td></tr>
+      <tr><td>XIP-003</td><td>Vivado xsim</td><td>9/9 k_int sweep</td><td><span class="badge-pending">Not Verified</span></td><td>k_int = -4..+4 with real Xilinx FFT IP; term1 data from real FFT bins; correlation peak at correct lag for all cases</td></tr>
+      <tr><td>XIP-004</td><td>Vivado xsim</td><td>9/9 k_int sweep</td><td><span class="badge-pending">Not Verified</span></td><td>FULL_SYNC_REAL_IP_GATE: end-to-end full pipeline; meyr_integer_cfo_core produces correct int_cfo from real FFT bins</td></tr>
+    </tbody>
+  </table>
+
+  <!-- ===== SECTION 15: Known Issues / Lessons Learned ===== -->
+  <h2>15. Known Issues and Lessons Learned</h2>
+  <div class="ok">ISSUE-001 (complex_mult_iq backpressure): RESOLVED — this core's term1_ready = (state==S_LOAD) is a clean backpressure signal. The upstream product_gen module must respect term1_ready; confirmed working in all test gates.</div>
+  <div class="ok">ISSUE-002 (TB AXI-S race, #1 fix): RESOLVED — the term1 input to this module is not a standard AXI-S interface with separate handshake timing. The term1_valid/ready protocol is simple; no AXI-S race issue here.</div>
+  <div class="ok">ROM parameter plumbing bug: RESOLVED (DOC-003). Root cause: PSS_ROM_FILE and SSS_ROM_FILE parameters were not propagated from phase3_sync_top through meyr_integer_cfo_fft_frontend_top through meyr_integer_cfo_freq_estimator_top to meyr_integer_cfo_core. Each instantiation used the module default ("vectors/...") which resolved correctly only when the simulation was run from the correct directory. The bug manifested as zeros in term2 ROM when run from a different directory. Fix: explicitly pass parameters at each instantiation level.</div>
+  <div class="note">FLUSH_COUNT=1 lesson (XIP-003): This module was not the root cause of XIP-003 failures. The SSS fill deadlock was in fft256_dual_symbol_frontend. However, without correct SSS term1 data, the correlation here would produce random peak results regardless of correctness. The chain of fixes (aresetn between cases + FLUSH_COUNT=1 + ROM parameter threading) was needed for all 9/9 cases to pass.</div>
+  <div class="note">acc[39:8] score slice: The choice of bits [39:8] was empirically validated against the C reference for the test stimulus (Q1.15 FFT outputs with SNR ~30 dB). For different signal levels (e.g., very strong or very weak signals), the peak score magnitude may shift outside this slice range. If peak_score appears abnormally small, check whether the accumulator saturates in the upper bits (check acc_i[55:40] is all-zero or all-one sign extension).</div>
+  <div class="note">load_cnt compared to NSC-1 (not NSC): The S_LOAD exit condition is <code>load_cnt==NSC-1</code> because load_cnt starts at 0 and increments on each write. When term1_index=255 arrives, load_cnt is at 255 (=NSC-1), triggering the transition while the 256th write occurs. This is correct and verified; do not change to NSC-1 termination to NSC or the last term1 sample will be missed.</div>
+
+  <!-- ===== SECTION 16: FPGA Bring-Up Guide ===== -->
+  <h2>16. FPGA Bring-Up Guide</h2>
+  <div class="card">
+    <h3>ILA Probe Signals</h3>
+    <table>
+      <thead><tr><th>Signal</th><th>Expected Behavior</th></tr></thead>
+      <tbody>
+        <tr><td><code>state[2:0]</code></td><td>0&#8594;1&#8594;2&#8594;3&#8596;4 (511 times)&#8594;5&#8594;6&#8594;0. S_CORR (3) and S_LAG_END (4) alternate; inner loop varies per lag.</td></tr>
+        <tr><td><code>lag_p[8:0]</code></td><td>Counts 0..510 during S_CORR/S_LAG_END loop. One increment per lag.</td></tr>
+        <tr><td><code>n_cnt[7:0]</code></td><td>For each lag_p: varies from n_start to n_end. At lag_p=255: 0..255 (256 values). At lag_p=0 or 510: single value.</td></tr>
+        <tr><td><code>acc_i[39:8]</code></td><td>Signed accumulator slice. Should show non-zero values during correlation; resets to 0 at S_PD_START and each S_LAG_END.</td></tr>
+        <tr><td><code>pd_data_in_r[63:0]</code></td><td>Score fed to peak_detector per lag. Should vary; highest score at lag_p = int_cfo + 255.</td></tr>
+        <tr><td><code>pd_data_valid_r</code></td><td>1-cycle pulse once per lag in S_LAG_END. Total 511 pulses.</td></tr>
+        <tr><td><code>peak_index</code></td><td>Expected: int_cfo + 255. Zero CFO: 255. k_int=+1: 256. k_int=-1: 254.</td></tr>
+        <tr><td><code>int_cfo</code></td><td>Expected: matches injected k_int (±255 range).</td></tr>
+        <tr><td><code>peak_score</code></td><td>Should be large positive value; zero indicates ROM load failure or no correlation energy.</td></tr>
+      </tbody>
+    </table>
+
+    <h3>Reset Sequence</h3>
+    <ol>
+      <li>Assert aresetn=0 for &ge;16 cycles. Resets FSM, accumulators, counters, and peak_detector sub-module.</li>
+      <li>Release aresetn=1. Verify state=S_IDLE (0), busy=0, load_cnt=0.</li>
+      <li>ROM data is initialized at elaboration (initial block); no runtime reload needed.</li>
+      <li>Pulse start=1 for 1 cycle. Verify state=S_LOAD within 1 cycle, term1_ready=1.</li>
+      <li>Stream 256 term1 pairs (term1_valid=1, term1_index=0..255, term1_i/q from product_gen).</li>
+      <li>Monitor load_cnt increase; verify transition to S_PD_START at load_cnt=255.</li>
+      <li>Monitor lag_p progress through S_CORR/S_LAG_END loop.</li>
+      <li>Read int_cfo and peak_score registers after done pulse.</li>
+    </ol>
+
+    <h3>Hardware Risks</h3>
+    <ul>
+      <li><strong>ROM file path:</strong> PSS_ROM_FILE and SSS_ROM_FILE paths are relative to the simulation working directory. For synthesis, Vivado uses a different working directory. Ensure ROM file paths in the synthesis project are absolute or correctly relative. ROM files must be present at synthesis time for $readmemh to execute in simulation; for synthesis, the ROM contents must be pre-loaded or converted to a BRAM initialization file.</li>
+      <li><strong>DSP48 timing:</strong> The MAC uses 32-bit operands after the &gt;&gt;16 shift (16-bit effective). At high clock rates (&gt;200 MHz), the 32&times;32-bit DSP48 chain may require pipeline register insertion. The current RTL uses combinatorial multiply (mac_i_w as wire); for high-frequency synthesis, pipeline registers may be needed, which would change the FSM timing.</li>
+      <li><strong>peak_score = 0 on hardware:</strong> If peak_score is consistently 0 or very small, the most likely causes are: (1) term2 ROM contains zeros (parameter plumbing bug), (2) term1 data from upstream is all zeros (FFT or product_gen failure), (3) the acc[39:8] slice is in the wrong range for the actual signal levels.</li>
+    </ul>
+  </div>
+
+  <!-- ===== SECTION 17: Debug Checklist ===== -->
+  <h2>17. Debug Checklist</h2>
+  <ol>
+    <li>Confirm state=S_IDLE (0) and busy=0 after aresetn release.</li>
+    <li>Pulse start and confirm state=S_LOAD within 1 cycle, term1_ready=1.</li>
+    <li>Verify 256 term1 fire events (term1_valid &amp;&amp; term1_ready=1) during S_LOAD; load_cnt must reach 255.</li>
+    <li>Confirm S_PD_START is exactly 1 cycle; pd_start_r=1 during this cycle.</li>
+    <li>At S_CORR entry: lag_p=0, n_cnt=255 (n_start for lag_p=0), n_end_r=255.</li>
+    <li>Verify t1_idx = n_cnt + lag_p - 255 = 255 + 0 - 255 = 0 for first MAC. term1_i_ram[0] should be valid.</li>
+    <li>Verify lag_p increments correctly: lag_p=0 (1 MAC), lag_p=1 (2 MAC), ..., lag_p=255 (256 MAC), ..., lag_p=510 (1 MAC).</li>
+    <li>Confirm pd_data_valid_r pulses exactly 511 times (once per S_LAG_END).</li>
+    <li>Verify pd_data_last_r=1 only at lag_p=510 (the 511th score).</li>
+    <li>Monitor acc_i/q resets to 0 in S_PD_START and each S_LAG_END.</li>
+    <li>At lag_p=peak_lag (expected int_cfo+255): confirm acc_i/q has maximum magnitude; pd_data_in_r has maximum score.</li>
+    <li>Confirm pd_done fires within 5 cycles after last S_LAG_END.</li>
+    <li>Confirm int_cfo = pd_peak_index - 255 after S_WAIT_PD.</li>
+    <li>Check peak_score &gt; 0; if zero: read term2_i_rom[0] via simulation to confirm ROM loaded.</li>
+    <li>If stuck in S_LOAD: verify term1_valid=1 from upstream and term1_index increments 0..255.</li>
+    <li>If stuck in S_CORR indefinitely: check n_end_r is being set correctly for current lag_p; add ILA on n_cnt vs n_end_r.</li>
+    <li>If int_cfo is wrong by a constant offset: check CENTER=255 parameter; verify PSS_ROM_FILE and SSS_ROM_FILE are the correct reference sequences.</li>
+  </ol>
+
+  <!-- ===== SECTION 18: Review Notes ===== -->
+  <h2>18. Review Notes</h2>
+  <div class="card">
+    <h3>Non-Obvious Design Decisions</h3>
+    <ul>
+      <li><strong>term2 = PSS * sign(SSS_I) (not PSS * SSS):</strong> The Meyr algorithm exploits the fact that the SSS uses BPSK modulation (sign = ±1 per subcarrier). By dividing by the SSS sign, the product term1[j] = PSS_FFT[j] * conj(SSS_FFT[j]) cancels the BPSK modulation, leaving only the CFO-dependent phase shift. The correlation peak aligns at the integer CFO lag regardless of the SSS sequence content.</li>
+      <li><strong>t1_idx = n_cnt + lag_p - CENTER:</strong> This maps the (lag, n) coordinates to a RAM address. For lag &ge; 0 (lag_p &ge; 255): n ranges 0..NSC-1-lag, and t1_idx = n + lag (offset from zero). For lag &lt; 0: n ranges -lag..NSC-1, and t1_idx = n + lag (still a valid 0..NSC-1 address). The formula ensures t1_idx always falls in [0..255] for valid (lag_p, n_cnt) combinations. This is verified by the n_start/n_end constraints.</li>
+      <li><strong>Score using acc[39:8], not full acc:</strong> Full 56-bit squaring would require 112-bit arithmetic for the score. The [39:8] slice trades precision for implementation simplicity. The 32-bit slice has ~8 bits of signal-to-quantization margin for the expected accumulator magnitudes. The peak is clearly distinguishable even with this truncation (J1 sweep: 13/13 correct detections).</li>
+      <li><strong>No circular correlation:</strong> The correlation is linear (not circular). This matches the C reference which uses linear cross-correlation to estimate the integer frequency offset. Circular correlation would mix lag=+N with lag=0, which would corrupt the CFO estimate for large integer offsets.</li>
+      <li><strong>Online argmax via peak_detector:</strong> Scores are fed to peak_detector one at a time as they are computed. This avoids storing all 511 scores simultaneously (which would require a 511-deep BRAM). The peak_detector maintains a running maximum with O(1) memory.</li>
+      <li><strong>n_end_nxt / n_start_nxt pre-computation:</strong> These wires compute the next lag's n boundaries in the same clock as S_LAG_END, eliminating a stall cycle that would otherwise occur when advancing lag_p. The forward-looking computation is based on lag_p+1 = lag_p_nxt.</li>
+    </ul>
+    <h3>Notes for Future Engineers</h3>
+    <ul>
+      <li>The ROM initialization uses Verilog initial blocks and $readmemh. These are simulation constructs. For FPGA synthesis, the ROMs must be implemented either as: (a) BRAM with .coe initialization files, (b) distributed LUT ROM using generate blocks with explicit case statements, or (c) external AXI-Lite write interface. The current RTL is simulation-valid; synthesis needs attention for ROM loading.</li>
+      <li>Increasing NSC beyond 256 requires widening: n_cnt (8-bit), load_cnt (8-bit, compare to NSC-1), lag_p (INDEX_WIDTH must cover 2*NSC-1). Also update n_end_cur_9 wire (currently 9-bit for 9'd510). If NSC=512: lag_p needs 10-bit, n_cnt needs 9-bit.</li>
+      <li>The MAC scale factor (&gt;&gt;16) was chosen empirically. For different data pipelines (e.g., 12-bit FFT output instead of 16-bit), recalculate the scale: term1 would be Q2.22 (product of two Q1.11), term2 Q1.11. Adjust the &gt;&gt; shift accordingly to keep the product within PROD_WIDTH=32 bits.</li>
+      <li>peak_detector accepts max_count=0 (no count limit) and terminates on data_last=1. If LAG_COUNT changes, no peak_detector parameter update is needed — it automatically terminates when data_last fires at lag_p=LAG_COUNT-1.</li>
+    </ul>
+  </div>
+
+</div>
+</body>
+</html>

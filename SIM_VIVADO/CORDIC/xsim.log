@@ -1,0 +1,163 @@
+#-----------------------------------------------------------
+# xsim v2022.2 (64-bit)
+# SW Build 3671981 on Fri Oct 14 04:59:54 MDT 2022
+# IP Build 3669848 on Fri Oct 14 08:30:02 MDT 2022
+# Start of session at: Mon Apr 20 14:55:36 2026
+# Process ID: 90730
+# Current directory: /home/zealatan/FPGA_Based_OFDM_Transceiver/SIM_VIVADO/CORDIC
+# Command line: xsim -source {xsim.dir/tb_cordic_arctan_wrapper/xsim_script.tcl}
+# Log file: /home/zealatan/FPGA_Based_OFDM_Transceiver/SIM_VIVADO/CORDIC/xsim.log
+# Journal file: /home/zealatan/FPGA_Based_OFDM_Transceiver/SIM_VIVADO/CORDIC/xsim.jou
+# Running On: DESKTOP-FAIRVEG, OS: Linux, CPU Frequency: 2496.000 MHz, CPU Physical cores: 6, Host memory: 8134 MB
+#-----------------------------------------------------------
+start_gui
+source xsim.dir/tb_cordic_arctan_wrapper/xsim_script.tcl
+# set_param project.enableReportConfiguration 0
+# load_feature core
+# current_fileset
+WARNING: [Board 49-26] cannot add Board Part xilinx.com:ac701:part0:1.4 available at /home/zealatan/Downloads/Vivado/2022.2/data/xhub/boards/XilinxBoardStore/boards/Xilinx/ac701/1.4/board.xml as part xc7a200tfbg676-2 specified in board_part file is either invalid or not available
+WARNING: [Board 49-26] cannot add Board Part xilinx.com:kc705:part0:1.6 available at /home/zealatan/Downloads/Vivado/2022.2/data/xhub/boards/XilinxBoardStore/boards/Xilinx/kc705/1.6/board.xml as part xc7k325tffg900-2 specified in board_part file is either invalid or not available
+WARNING: [Board 49-26] cannot add Board Part xilinx.com:kcu105:part0:1.6 available at /home/zealatan/Downloads/Vivado/2022.2/data/xhub/boards/XilinxBoardStore/boards/Xilinx/kcu105/1.6/board.xml as part xcku040-ffva1156-2-e specified in board_part file is either invalid or not available
+WARNING: [Board 49-26] cannot add Board Part xilinx.com:kcu105:part0:1.7 available at /home/zealatan/Downloads/Vivado/2022.2/data/xhub/boards/XilinxBoardStore/boards/Xilinx/kcu105/1.7/board.xml as part xcku040-ffva1156-2-e specified in board_part file is either invalid or not available
+WARNING: [Board 49-26] cannot add Board Part xilinx.com:kcu1500:part0:1.2 available at /home/zealatan/Downloads/Vivado/2022.2/data/xhub/boards/XilinxBoardStore/boards/Xilinx/kcu1500/1.2/board.xml as part xcku115-flvb2104-2-e specified in board_part file is either invalid or not available
+WARNING: [Board 49-26] cannot add Board Part xilinx.com:sp701:part0:1.0 available at /home/zealatan/Downloads/Vivado/2022.2/data/xhub/boards/XilinxBoardStore/boards/Xilinx/sp701/1.0/board.xml as part xc7s100fgga676-2 specified in board_part file is either invalid or not available
+WARNING: [Board 49-26] cannot add Board Part xilinx.com:sp701:part0:1.1 available at /home/zealatan/Downloads/Vivado/2022.2/data/xhub/boards/XilinxBoardStore/boards/Xilinx/sp701/1.1/board.xml as part xc7s100fgga676-2 specified in board_part file is either invalid or not available
+WARNING: [Board 49-26] cannot add Board Part xilinx.com:vc707:part0:1.4 available at /home/zealatan/Downloads/Vivado/2022.2/data/xhub/boards/XilinxBoardStore/boards/Xilinx/vc707/1.4/board.xml as part xc7vx485tffg1761-2 specified in board_part file is either invalid or not available
+WARNING: [Board 49-26] cannot add Board Part xilinx.com:vc709:part0:1.8 available at /home/zealatan/Downloads/Vivado/2022.2/data/xhub/boards/XilinxBoardStore/boards/Xilinx/vc709/1.8/board.xml as part xc7vx690tffg1761-2 specified in board_part file is either invalid or not available
+WARNING: [Board 49-26] cannot add Board Part xilinx.com:vck190:part0:2.2 available at /home/zealatan/Downloads/Vivado/2022.2/data/xhub/boards/XilinxBoardStore/boards/Xilinx/vck190/production/2.2/board.xml as part xcvc1902-vsva2197-2mp-e-s specified in board_part file is either invalid or not available
+WARNING: [Board 49-26] cannot add Board Part xilinx.com:vck190:part0:3.0 available at /home/zealatan/Downloads/Vivado/2022.2/data/xhub/boards/XilinxBoardStore/boards/Xilinx/vck190/production/3.0/board.xml as part xcvc1902-vsva2197-2mp-e-s specified in board_part file is either invalid or not available
+WARNING: [Board 49-26] cannot add Board Part xilinx.com:vck190:part0:3.1 available at /home/zealatan/Downloads/Vivado/2022.2/data/xhub/boards/XilinxBoardStore/boards/Xilinx/vck190/production/3.1/board.xml as part xcvc1902-vsva2197-2mp-e-s specified in board_part file is either invalid or not available
+WARNING: [Board 49-26] cannot add Board Part xilinx.com:vck190_newl:part0:1.0 available at /home/zealatan/Downloads/Vivado/2022.2/data/xhub/boards/XilinxBoardStore/boards/Xilinx/vck190_newl/production/1.0/board.xml as part xcvc1902-vsva2197-2mp-e-s specified in board_part file is either invalid or not available
+WARNING: [Board 49-26] cannot add Board Part xilinx.com:vcu108:part0:1.6 available at /home/zealatan/Downloads/Vivado/2022.2/data/xhub/boards/XilinxBoardStore/boards/Xilinx/vcu108/1.6/board.xml as part xcvu095-ffva2104-2-e specified in board_part file is either invalid or not available
+WARNING: [Board 49-26] cannot add Board Part xilinx.com:vcu108:part0:1.7 available at /home/zealatan/Downloads/Vivado/2022.2/data/xhub/boards/XilinxBoardStore/boards/Xilinx/vcu108/1.7/board.xml as part xcvu095-ffva2104-2-e specified in board_part file is either invalid or not available
+WARNING: [Board 49-26] cannot add Board Part xilinx.com:vcu110:part0:1.4 available at /home/zealatan/Downloads/Vivado/2022.2/data/xhub/boards/XilinxBoardStore/boards/Xilinx/vcu110/1.4/board.xml as part xcvu190-flgc2104-2-e specified in board_part file is either invalid or not available
+WARNING: [Board 49-26] cannot add Board Part xilinx.com:vcu118:part0:2.0 available at /home/zealatan/Downloads/Vivado/2022.2/data/xhub/boards/XilinxBoardStore/boards/Xilinx/vcu118/2.0/board.xml as part xcvu9p-flga2104-2l-e specified in board_part file is either invalid or not available
+WARNING: [Board 49-26] cannot add Board Part xilinx.com:vcu118:part0:2.3 available at /home/zealatan/Downloads/Vivado/2022.2/data/xhub/boards/XilinxBoardStore/boards/Xilinx/vcu118/2.3/board.xml as part xcvu9p-flga2104-2l-e specified in board_part file is either invalid or not available
+WARNING: [Board 49-26] cannot add Board Part xilinx.com:vcu118:part0:2.4 available at /home/zealatan/Downloads/Vivado/2022.2/data/xhub/boards/XilinxBoardStore/boards/Xilinx/vcu118/2.4/board.xml as part xcvu9p-flga2104-2l-e specified in board_part file is either invalid or not available
+WARNING: [Board 49-26] cannot add Board Part xilinx.com:vcu128:part0:1.0 available at /home/zealatan/Downloads/Vivado/2022.2/data/xhub/boards/XilinxBoardStore/boards/Xilinx/vcu128/production/1.0/board.xml as part xcvu37p-fsvh2892-2l-e specified in board_part file is either invalid or not available
+WARNING: [Board 49-26] cannot add Board Part xilinx.com:vcu129:part0:1.0 available at /home/zealatan/Downloads/Vivado/2022.2/data/xhub/boards/XilinxBoardStore/boards/Xilinx/vcu129/production/1.0/board.xml as part xcvu29p-fsga2577-2l-e specified in board_part file is either invalid or not available
+WARNING: [Board 49-26] cannot add Board Part xilinx.com:vcu1525:part0:1.3 available at /home/zealatan/Downloads/Vivado/2022.2/data/xhub/boards/XilinxBoardStore/boards/Xilinx/vcu1525/1.3/board.xml as part xcvu9p-fsgd2104-2l-e specified in board_part file is either invalid or not available
+WARNING: [Board 49-26] cannot add Board Part xilinx.com:vek280_es:part0:1.0 available at /home/zealatan/Downloads/Vivado/2022.2/data/xhub/boards/XilinxBoardStore/boards/Xilinx/vek280/es/1.0/board.xml as part xcve2802-vsvh1760-2lp-e-s-es1 specified in board_part file is either invalid or not available
+WARNING: [Board 49-26] cannot add Board Part xilinx.com:vermeo_t1_mpsoc:part0:1.0 available at /home/zealatan/Downloads/Vivado/2022.2/data/xhub/boards/XilinxBoardStore/boards/Xilinx/vermeo_t1_mpsoc/1.0/board.xml as part xczu19eg-ffvd1760-2l-e specified in board_part file is either invalid or not available
+WARNING: [Board 49-26] cannot add Board Part xilinx.com:vermeo_t1_rfsoc:part0:1.0 available at /home/zealatan/Downloads/Vivado/2022.2/data/xhub/boards/XilinxBoardStore/boards/Xilinx/vermeo_t1_rfsoc/1.0/board.xml as part xczu21dr-ffvd1156-2l-e specified in board_part file is either invalid or not available
+WARNING: [Board 49-26] cannot add Board Part xilinx.com:vhk158_es:part0:1.0 available at /home/zealatan/Downloads/Vivado/2022.2/data/xhub/boards/XilinxBoardStore/boards/Xilinx/vhk158/es/1.0/board.xml as part xcvh1582-vsva3697-2mp-e-s-es1 specified in board_part file is either invalid or not available
+WARNING: [Board 49-26] cannot add Board Part xilinx.com:vmk180:part0:2.2 available at /home/zealatan/Downloads/Vivado/2022.2/data/xhub/boards/XilinxBoardStore/boards/Xilinx/vmk180/production/2.2/board.xml as part xcvm1802-vsva2197-2mp-e-s specified in board_part file is either invalid or not available
+WARNING: [Board 49-26] cannot add Board Part xilinx.com:vmk180:part0:3.0 available at /home/zealatan/Downloads/Vivado/2022.2/data/xhub/boards/XilinxBoardStore/boards/Xilinx/vmk180/production/3.0/board.xml as part xcvm1802-vsva2197-2mp-e-s specified in board_part file is either invalid or not available
+WARNING: [Board 49-26] cannot add Board Part xilinx.com:vmk180:part0:3.1 available at /home/zealatan/Downloads/Vivado/2022.2/data/xhub/boards/XilinxBoardStore/boards/Xilinx/vmk180/production/3.1/board.xml as part xcvm1802-vsva2197-2mp-e-s specified in board_part file is either invalid or not available
+WARNING: [Board 49-26] cannot add Board Part xilinx.com:vmk180_newl:part0:1.0 available at /home/zealatan/Downloads/Vivado/2022.2/data/xhub/boards/XilinxBoardStore/boards/Xilinx/vmk180_newl/production/1.0/board.xml as part xcvm1802-vsva2197-2mp-e-s specified in board_part file is either invalid or not available
+WARNING: [Board 49-26] cannot add Board Part xilinx.com:vpk120:part0:1.0 available at /home/zealatan/Downloads/Vivado/2022.2/data/xhub/boards/XilinxBoardStore/boards/Xilinx/vpk120/production/1.0/board.xml as part xcvp1202-vsva2785-2mp-e-s specified in board_part file is either invalid or not available
+WARNING: [Board 49-26] cannot add Board Part xilinx.com:vpk120_es:part0:1.2 available at /home/zealatan/Downloads/Vivado/2022.2/data/xhub/boards/XilinxBoardStore/boards/Xilinx/vpk120/es/1.2/board.xml as part xcvp1202-vsva2785-2mp-e-s-es1 specified in board_part file is either invalid or not available
+WARNING: [Board 49-26] cannot add Board Part xilinx.com:vpk120_es_revb:part0:1.0 available at /home/zealatan/Downloads/Vivado/2022.2/data/xhub/boards/XilinxBoardStore/boards/Xilinx/vpk120_revb/es/1.0/board.xml as part xcvp1202-vsva2785-2mp-e-s-es1 specified in board_part file is either invalid or not available
+WARNING: [Board 49-26] cannot add Board Part xilinx.com:vpk180_es:part0:1.0 available at /home/zealatan/Downloads/Vivado/2022.2/data/xhub/boards/XilinxBoardStore/boards/Xilinx/vpk180/es/1.0/board.xml as part xcvp1802-lsvc4072-2mp-e-s-es1 specified in board_part file is either invalid or not available
+WARNING: [Board 49-26] cannot add Board Part xilinx.com:zc706:part0:1.4 available at /home/zealatan/Downloads/Vivado/2022.2/data/xhub/boards/XilinxBoardStore/boards/Xilinx/zc706/1.4/board.xml as part xc7z045ffg900-2 specified in board_part file is either invalid or not available
+WARNING: [Board 49-26] cannot add Board Part xilinx.com:zcu102:part0:3.3 available at /home/zealatan/Downloads/Vivado/2022.2/data/xhub/boards/XilinxBoardStore/boards/Xilinx/zcu102/3.3/board.xml as part xczu9eg-ffvb1156-2-e specified in board_part file is either invalid or not available
+WARNING: [Board 49-26] cannot add Board Part xilinx.com:zcu102:part0:3.4 available at /home/zealatan/Downloads/Vivado/2022.2/data/xhub/boards/XilinxBoardStore/boards/Xilinx/zcu102/3.4/board.xml as part xczu9eg-ffvb1156-2-e specified in board_part file is either invalid or not available
+WARNING: [Board 49-26] cannot add Board Part xilinx.com:zcu111:part0:1.2 available at /home/zealatan/Downloads/Vivado/2022.2/data/xhub/boards/XilinxBoardStore/boards/Xilinx/zcu111/1.2/board.xml as part xczu28dr-ffvg1517-2-e specified in board_part file is either invalid or not available
+WARNING: [Board 49-26] cannot add Board Part xilinx.com:zcu111:part0:1.3 available at /home/zealatan/Downloads/Vivado/2022.2/data/xhub/boards/XilinxBoardStore/boards/Xilinx/zcu111/1.3/board.xml as part xczu28dr-ffvg1517-2-e specified in board_part file is either invalid or not available
+WARNING: [Board 49-26] cannot add Board Part xilinx.com:zcu111:part0:1.4 available at /home/zealatan/Downloads/Vivado/2022.2/data/xhub/boards/XilinxBoardStore/boards/Xilinx/zcu111/1.4/board.xml as part xczu28dr-ffvg1517-2-e specified in board_part file is either invalid or not available
+WARNING: [Board 49-26] cannot add Board Part xilinx.com:zcu1275:part0:1.0 available at /home/zealatan/Downloads/Vivado/2022.2/data/xhub/boards/XilinxBoardStore/boards/Xilinx/zcu1275/1.0/board.xml as part xczu29dr-ffvf1760-2-e specified in board_part file is either invalid or not available
+WARNING: [Board 49-26] cannot add Board Part xilinx.com:zcu1285:part0:1.0 available at /home/zealatan/Downloads/Vivado/2022.2/data/xhub/boards/XilinxBoardStore/boards/Xilinx/zcu1285/1.0/board.xml as part xczu39dr-ffvf1760-2-i specified in board_part file is either invalid or not available
+WARNING: [Board 49-26] cannot add Board Part xilinx.com:zcu208:part0:2.0 available at /home/zealatan/Downloads/Vivado/2022.2/data/xhub/boards/XilinxBoardStore/boards/Xilinx/zcu208/production/2.0/board.xml as part xczu48dr-fsvg1517-2-e specified in board_part file is either invalid or not available
+WARNING: [Board 49-26] cannot add Board Part xilinx.com:zcu208ld:part0:2.0 available at /home/zealatan/Downloads/Vivado/2022.2/data/xhub/boards/XilinxBoardStore/boards/Xilinx/zcu208ld/production/2.0/board.xml as part xczu58dr-fsvg1517-2-i specified in board_part file is either invalid or not available
+WARNING: [Board 49-26] cannot add Board Part xilinx.com:zcu216:part0:2.0 available at /home/zealatan/Downloads/Vivado/2022.2/data/xhub/boards/XilinxBoardStore/boards/Xilinx/zcu216/production/2.0/board.xml as part xczu49dr-ffvf1760-2-e specified in board_part file is either invalid or not available
+WARNING: [Board 49-26] cannot add Board Part xilinx.com:zcu216ld:part0:2.0 available at /home/zealatan/Downloads/Vivado/2022.2/data/xhub/boards/XilinxBoardStore/boards/Xilinx/zcu216ld/production/2.0/board.xml as part xczu59dr-ffvf1760-2-i specified in board_part file is either invalid or not available
+WARNING: [Board 49-26] cannot add Board Part xilinx.com:zcu670:part0:2.0 available at /home/zealatan/Downloads/Vivado/2022.2/data/xhub/boards/XilinxBoardStore/boards/Xilinx/zcu670/2.0/board.xml as part xczu67dr-fsve1156-2-i specified in board_part file is either invalid or not available
+WARNING: [Board 49-26] cannot add Board Part xilinx.com:zcu670ld:part0:1.0 available at /home/zealatan/Downloads/Vivado/2022.2/data/xhub/boards/XilinxBoardStore/boards/Xilinx/zcu670ld/1.0/board.xml as part xczu57dr-fsve1156-2-i specified in board_part file is either invalid or not available
+INFO: [IP_Flow 19-234] Refreshing IP repositories
+INFO: [IP_Flow 19-1704] No user IP repositories specified
+INFO: [IP_Flow 19-2313] Loaded Vivado IP repository '/home/zealatan/Downloads/Vivado/2022.2/data/ip'.
+current_fileset: Time (s): cpu = 00:00:26 ; elapsed = 00:00:12 . Memory (MB): peak = 9608.301 ; gain = 416.051 ; free physical = 4098 ; free virtual = 7350
+# xsim {tb_cordic_arctan_wrapper} -autoloadwcfg
+Time resolution is 1 ps
+add_wave {{/tb_cordic_arctan_wrapper/dut/clock}} {{/tb_cordic_arctan_wrapper/dut/reset}} {{/tb_cordic_arctan_wrapper/dut/enable}} {{/tb_cordic_arctan_wrapper/dut/avg_out_i}} {{/tb_cordic_arctan_wrapper/dut/avg_out_q}} {{/tb_cordic_arctan_wrapper/dut/avg_out_strobe}} {{/tb_cordic_arctan_wrapper/dut/phase_cordic}} {{/tb_cordic_arctan_wrapper/dut/phase_strobe}} {{/tb_cordic_arctan_wrapper/dut/i_sf_r}} {{/tb_cordic_arctan_wrapper/dut/q_sf_r}} {{/tb_cordic_arctan_wrapper/dut/stb_r}} {{/tb_cordic_arctan_wrapper/dut/msb}} {{/tb_cordic_arctan_wrapper/dut/sh}} {{/tb_cordic_arctan_wrapper/dut/abs_i}} {{/tb_cordic_arctan_wrapper/dut/abs_q}} {{/tb_cordic_arctan_wrapper/dut/max_mag}} {{/tb_cordic_arctan_wrapper/dut/s_axis_cartesian_tvalid}} {{/tb_cordic_arctan_wrapper/dut/s_axis_cartesian_tdata}} {{/tb_cordic_arctan_wrapper/dut/m_axis_dout_tvalid}} {{/tb_cordic_arctan_wrapper/dut/m_axis_dout_tdata}} 
+restart
+INFO: [Wavedata 42-604] Simulation restarted
+run all
+
+=========================================================
+[TB] TEST 1: smoke / axes / quadrants
+=========================================================
+[TB] out@40 in@10 lat=30 exp=0 got=0 |err|=0
+[TB] out@43 in@13 lat=30 exp=3294199 got=3294199 |err|=0
+[TB] out@46 in@16 lat=30 exp=-6588397 got=-6588397 |err|=0
+[TB] out@49 in@19 lat=30 exp=-3294199 got=-3294199 |err|=0
+[TB] out@52 in@22 lat=30 exp=1647099 got=1647100 |err|=1
+[TB] out@55 in@25 lat=30 exp=4941298 got=4941298 |err|=0
+[TB] out@58 in@28 lat=30 exp=-4941298 got=-4941298 |err|=0
+[TB] out@61 in@31 lat=30 exp=-1647099 got=-1647100 |err|=1
+[TB] FIFO drained after 29 cycle(s)
+
+=========================================================
+[TB] TEST 2: zero / tiny / near-axis
+=========================================================
+[TB][SKIP] out@93 in@63 lat=30 exp=0 got=2008837
+[TB][SKIP] out@96 in@66 lat=30 exp=0 got=-64158
+[TB][SKIP] out@99 in@69 lat=30 exp=3294199 got=3230040
+[TB] out@102 in@72 lat=30 exp=0 got=1 |err|=1
+[TB] out@105 in@75 lat=30 exp=3294198 got=3294198 |err|=0
+[TB] out@108 in@78 lat=30 exp=6588397 got=6588396 |err|=1
+[TB] out@111 in@81 lat=30 exp=-3294198 got=-3294198 |err|=0
+[TB] FIFO drained after 29 cycle(s)
+
+=========================================================
+[TB] TEST 3: scale invariance
+=========================================================
+[TB] out@143 in@113 lat=30 exp=2321859 got=2321580 |err|=279
+[TB] out@146 in@116 lat=30 exp=2321859 got=2321836 |err|=23
+[TB] out@149 in@119 lat=30 exp=2321859 got=2321852 |err|=7
+[TB] out@152 in@122 lat=30 exp=2321859 got=2321860 |err|=1
+[TB] FIFO drained after 29 cycle(s)
+
+=========================================================
+[TB] TEST 4: back-to-back stream (no bubbles)
+=========================================================
+[TB] out@184 in@154 lat=30 exp=972340 got=972339 |err|=1
+[TB] out@185 in@155 lat=30 exp=1349520 got=1349520 |err|=0
+[TB] out@186 in@156 lat=30 exp=5131426 got=5131426 |err|=0
+[TB] out@187 in@157 lat=30 exp=-6004761 got=-6004761 |err|=0
+[TB] out@188 in@158 lat=30 exp=-1415034 got=-1415035 |err|=1
+[TB][SKIP] out@189 in@159 lat=30 exp=1647099 got=1747034
+[TB][SKIP] out@190 in@160 lat=30 exp=4941298 got=5041232
+[TB] out@191 in@161 lat=30 exp=-2903110 got=-2903110 |err|=0
+[TB] FIFO drained after 31 cycle(s)
+
+=========================================================
+[TB] TEST 5: enable masking
+=========================================================
+[TB] FIFO drained after 0 cycle(s)
+[TB] enable -> 0
+[TB] enable -> 1
+[TB] out@278 in@248 lat=30 exp=-932014 got=-932014 |err|=0
+[TB] FIFO drained after 31 cycle(s)
+
+=========================================================
+[TB] TEST 6: mid-run reset
+=========================================================
+[TB] FIFO drained after 0 cycle(s)
+[TB][INFO] Ignored phase_strobe during reset-settle window at cyc=21
+[TB] out@40 in@10 lat=30 exp=-4751170 got=-4751170 |err|=0
+[TB] out@42 in@12 lat=30 exp=335360 got=335360 |err|=0
+[TB] FIFO drained after 31 cycle(s)
+
+=========================================================
+[TB] TEST 7: file-driven regression
+=========================================================
+WARNING: file cordic_tc_24b.hex could not be opened
+[TB][INFO] cordic_tc_24b.hex not found -> file regression skipped
+[TB] FIFO drained after 0 cycle(s)
+
+=========================================================
+[TB] FINAL SUMMARY
+=========================================================
+[TB] sample_count_total = 31
+[TB] output_count_total = 30
+[TB] pass_count_total   = 25
+[TB] fail_count_total   = 0
+[TB] skip_count_total   = 5
+[TB] warn_count_total   = 0
+=========================================================
+[TB] RESULT: PASS
+$finish called at time : 3725 ns : File "/home/zealatan/FPGA_Based_OFDM_Transceiver/SIM_VIVADO/CORDIC/tb_cordic_arctan_wrapper.v" Line 702
+close_sim
+INFO: [Common 17-41] Interrupt caught. Command should exit soon.
+INFO: [Common 17-41] Interrupt caught. Command should exit soon.

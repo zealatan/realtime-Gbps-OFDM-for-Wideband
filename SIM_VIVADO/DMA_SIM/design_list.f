@@ -1,0 +1,14 @@
+./dma_ip/dut.v 
+./dma_ip/dma_ip_control_s_axi.v 
+./dma_ip/dma_ip_top.v 
+./dma_ip/dma_wrapper.v 
+./dma_ip/RDMA/hls_rdma.v
+./dma_ip/RDMA/hls_rdma_flow_control_loop_pipe_sequential_init.v
+./dma_ip/RDMA/hls_rdma_gmem_m_axi.v 
+./dma_ip/RDMA/hls_rdma_hls_rdma_Pipeline_VITIS_LOOP_11_1.v 
+./dma_ip/WDMA/hls_wdma.v 
+./dma_ip/WDMA/hls_wdma_flow_control_loop_pipe_sequential_init.v 
+./dma_ip/WDMA/hls_wdma_gmem_m_axi.v 
+./dma_ip/WDMA/hls_wdma_hls_wdma_Pipeline_VITIS_LOOP_11_1.v 
+./peripheral/skid_buffer.v
+./peripheral/sync_fifo.v

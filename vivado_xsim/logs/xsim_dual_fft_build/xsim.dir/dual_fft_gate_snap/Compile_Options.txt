@@ -1,1 +1,0 @@
---nolog --initfile "/home/zealatan/RTL_SYNC_PHASE4/vivado_xsim/logs/xsim_dual_fft_build/xsim.ini" -L "work" -L "xil_defaultlib" -L "xfft_v9_1_8" --snapshot "dual_fft_gate_snap" "work.xsim_dual_symbol_fft_real_ip_tb" 

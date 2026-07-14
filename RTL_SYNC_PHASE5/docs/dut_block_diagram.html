@@ -1,0 +1,275 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>DUT block diagram — OFDM RX synchronizer (phase3_sync_axis_dma_wrapper)</title>
+<style>
+:root{--bg:#0d1117;--surf:#161b22;--surf2:#1c2230;--line:#2a313c;--line2:#363f4d;
+--tx:#d8dee6;--tx2:#8b949e;--tx3:#636e7b;--teal:#3fd0c9;--green:#56d364;--amber:#e3b341;
+--red:#f47067;--gray:#6e7681;--purple:#bc8cff;--blue:#6cb6ff;
+--mono:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;
+--sans:-apple-system,BlinkMacSystemFont,"Segoe UI",Inter,system-ui,sans-serif;}
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--bg);color:var(--tx);font-family:var(--sans);line-height:1.5;
+padding:28px 20px 60px;max-width:1320px;margin:0 auto;font-size:14px}
+.eyebrow{font-family:var(--mono);font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--teal);margin-bottom:8px}
+h1{font-size:21px;font-weight:600;letter-spacing:-.01em}
+.goal{color:var(--tx2);margin-top:8px;max-width:920px}.goal b{color:var(--tx);font-weight:600}
+.meta{display:flex;flex-wrap:wrap;gap:8px;margin-top:14px}
+.chip{font-family:var(--mono);font-size:11px;color:var(--tx2);border:1px solid var(--line2);border-radius:6px;padding:3px 9px;background:var(--surf2)}
+.chip b{color:var(--teal);font-weight:500}
+header{border:1px solid var(--line2);background:var(--surf);border-radius:12px;padding:20px 22px;margin-bottom:18px}
+h2{font-size:12px;font-family:var(--mono);letter-spacing:.12em;text-transform:uppercase;color:var(--tx3);margin:26px 0 13px;display:flex;align-items:center;gap:10px}
+h2::after{content:"";flex:1;height:1px;background:var(--line)}
+
+/* layout: regs side rail + main flow */
+.layout{display:grid;grid-template-columns:248px 1fr;gap:18px;align-items:start}
+
+/* register rail */
+.regrail{border:1px solid var(--line2);background:var(--surf);border-radius:11px;padding:14px 14px 8px}
+.regrail .rt{font-family:var(--mono);font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--teal);margin-bottom:4px}
+.regrail .rs{font-size:11px;color:var(--tx3);margin-bottom:11px}
+.reg{border:1px solid var(--line);background:var(--surf2);border-radius:7px;padding:7px 9px;margin-bottom:7px;font-size:11.5px}
+.reg .a{font-family:var(--mono);font-size:10px;color:var(--tx3)}
+.reg .n{font-family:var(--mono);font-size:11.5px;color:var(--tx);font-weight:600}
+.reg .d{color:var(--tx2);font-size:11px;margin-top:2px}
+.reg.ctl{border-left:2px solid var(--amber)}
+.reg.sta{border-left:2px solid var(--blue)}
+.reg.cfg{border-left:2px solid var(--teal)}
+
+/* flow */
+.flow{display:flex;flex-direction:column;gap:0}
+.io{align-self:flex-start;border:1px dashed var(--line2);background:var(--surf2);border-radius:9px;padding:9px 14px;font-family:var(--mono);font-size:12px;color:var(--tx)}
+.io b{color:var(--teal)}
+.io.out{align-self:flex-end}
+.io .sub{display:block;font-size:10.5px;color:var(--tx3);margin-top:2px;font-family:var(--mono)}
+
+.arrow{align-self:center;display:flex;flex-direction:column;align-items:center;color:var(--tx3);margin:2px 0}
+.arrow .lbl{font-family:var(--mono);font-size:10.5px;color:var(--teal);background:var(--surf);border:1px solid var(--line);border-radius:5px;padding:2px 8px;margin-bottom:2px}
+.arrow .v{font-size:16px;line-height:1}
+
+/* big container box for a top module */
+.mod{border:1px solid var(--line2);background:var(--surf);border-radius:12px;padding:14px 16px 16px;position:relative}
+.mod>.hd{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:4px}
+.mod>.hd .mn{font-family:var(--mono);font-size:13px;font-weight:600;color:var(--tx)}
+.mod>.hd .inst{font-family:var(--mono);font-size:10.5px;color:var(--tx3)}
+.mod>.desc{font-size:11.5px;color:var(--tx2);margin-bottom:11px;max-width:780px}
+
+/* inner sub-block row */
+.subrow{display:flex;align-items:stretch;flex-wrap:wrap;gap:0;overflow-x:auto;padding-bottom:2px}
+.blk{flex:1;min-width:128px;border:1px solid var(--line);background:var(--surf2);border-radius:9px;padding:10px 11px;position:relative}
+.blk+.blk{margin-left:26px}
+.blk::before{content:"";position:absolute;left:-26px;top:50%;width:26px;height:2px;background:var(--line2)}
+.blk::after{content:"";position:absolute;left:-9px;top:calc(50% - 4px);border:4px solid transparent;border-left-color:var(--line2)}
+.blk:first-child::before,.blk:first-child::after{display:none}
+.blk .bn{font-family:var(--mono);font-size:11.5px;font-weight:600;color:var(--tx)}
+.blk .bi{font-family:var(--mono);font-size:10px;color:var(--tx3);margin-top:1px}
+.blk .bd{font-size:10.5px;color:var(--tx2);margin-top:6px;line-height:1.4}
+.blk.lit{border-color:var(--teal);box-shadow:0 0 0 1px rgba(63,208,201,.18) inset}
+.blk.xfft{border-color:var(--purple)}
+.blk.xfft::before,.blk.xfft::after{background:var(--purple);border-left-color:var(--purple)}
+
+.badges{display:flex;flex-wrap:wrap;gap:6px;margin-top:9px}
+.badge{font-family:var(--mono);font-size:9.5px;padding:2px 7px;border-radius:11px;font-weight:600;white-space:nowrap}
+.b-new{background:rgba(63,208,201,.13);color:var(--teal);border:1px solid rgba(63,208,201,.32)}
+.b-fix{background:rgba(86,211,100,.12);color:var(--green);border:1px solid rgba(86,211,100,.3)}
+.b-warn{background:rgba(227,179,65,.12);color:var(--amber);border:1px solid rgba(227,179,65,.3)}
+.b-ip{background:rgba(188,140,255,.12);color:var(--purple);border:1px solid rgba(188,140,255,.3)}
+.b-key{background:rgba(108,182,255,.12);color:var(--blue);border:1px solid rgba(108,182,255,.3)}
+
+/* branch tap note */
+.tap{align-self:flex-start;font-family:var(--mono);font-size:10.5px;color:var(--tx3);border-left:2px solid var(--line2);padding:3px 0 3px 10px;margin:6px 0 6px 18px}
+.tap b{color:var(--amber)}
+
+/* FSM card */
+.fsm{border:1px solid var(--line2);background:var(--surf);border-radius:11px;padding:14px 16px}
+.fsm .ft{font-family:var(--mono);font-size:12px;font-weight:600;color:var(--tx);margin-bottom:3px}
+.fsm .fdesc{font-size:11.5px;color:var(--tx2);margin-bottom:11px}
+.states{display:flex;align-items:center;flex-wrap:wrap;gap:0}
+.state{border:1px solid var(--line);background:var(--surf2);border-radius:8px;padding:8px 13px;font-family:var(--mono);font-size:11.5px;color:var(--tx)}
+.state .se{display:block;font-size:9.5px;color:var(--tx3);margin-top:2px}
+.state+.state{margin-left:30px;position:relative}
+.state+.state::before{content:"→";position:absolute;left:-22px;top:50%;transform:translateY(-50%);color:var(--teal);font-size:14px}
+.state.run{border-color:var(--amber)}
+
+.legend{display:flex;flex-wrap:wrap;gap:14px;margin-top:8px}
+.lg{display:flex;align-items:center;gap:7px;font-size:11.5px;color:var(--tx2)}
+.lg .sw{width:22px;height:12px;border-radius:4px;border:1px solid var(--line2)}
+.sw.s-core{background:var(--surf);border-color:var(--line2)}
+.sw.s-sub{background:var(--surf2);border-color:var(--line)}
+.sw.s-ip{background:var(--surf2);border-color:var(--purple)}
+.sw.s-io{background:var(--surf2);border:1px dashed var(--line2)}
+
+footer{margin-top:34px;padding-top:16px;border-top:1px solid var(--line);font-family:var(--mono);font-size:11px;color:var(--tx3);display:flex;justify-content:space-between;flex-wrap:wrap;gap:8px}
+@media(max-width:880px){.layout{grid-template-columns:1fr}}
+</style></head>
+<body>
+
+<header>
+  <div class="eyebrow">RTL_SYNC_PHASE5 · DUT architecture</div>
+  <h1>OFDM Receiver Synchronizer — signal-flow block diagram</h1>
+  <p class="goal">Top module <b>phase3_sync_axis_dma_wrapper</b>: AXI-Lite control/status slave +
+  AXI-Stream slave (raw IQ from DMA/player) + AXI-Stream master (frac+integer corrected IQ to DMA).
+  The DUT estimates and removes <b>fractional CFO + timing</b> (live stream), estimates the
+  <b>integer CFO</b> via an FFT-correlation Meyr core (off the corrected stream), and applies the
+  integer correction with a CORDIC NCO + complex rotator on the way out.
+  Drawn from the current RTL hierarchy &amp; instantiations (read-only).</p>
+  <div class="meta">
+    <span class="chip">top <b>phase3_sync_axis_dma_wrapper.v</b></span>
+    <span class="chip">orchestrator <b>phase3_sync_top.v</b> (S_IDLE→S_RUN→S_DONE)</span>
+    <span class="chip">FRAME_LEN <b>4032</b> (14×288)</span>
+    <span class="chip">INPUT_PERIOD <b>4160</b></span>
+    <span class="chip">IQ <b>[31:16]=Q [15:0]=I</b></span>
+    <span class="chip">line rate <b>250 MHz / 250 Msps</b></span>
+  </div>
+</header>
+
+<div class="layout">
+
+  <!-- ===================== AXI-Lite register rail ===================== -->
+  <aside class="regrail">
+    <div class="rt">AXI4-Lite regs</div>
+    <div class="rs">phase3_axi_lite_regs.v (u_regs) · 7-bit addr</div>
+
+    <div class="reg ctl"><span class="a">0x04</span> <span class="n">CONTROL</span>
+      <div class="d">enable · soft_reset (W1S)</div></div>
+    <div class="reg ctl"><span class="a">0x4C</span> <span class="n">DEBUG_CONTROL</span>
+      <div class="d">bypass_en · force_tlast · counter_clear · debug_mode</div></div>
+    <div class="reg cfg"><span class="a">0x0C</span> <span class="n">FRAME_LEN_SAMPLES</span>
+      <div class="d">default <b>4032</b> — M_AXIS TLAST period (corrected slot)</div></div>
+    <div class="reg cfg"><span class="a">0x58</span> <span class="n">INPUT_PERIOD</span>
+      <div class="d">default <b>4160</b> — S_AXIS frame boundary (player period)</div></div>
+
+    <div class="rt" style="margin-top:12px">status (R / W1C)</div>
+    <div class="reg sta"><span class="a">0x08</span> <span class="n">STATUS</span>
+      <div class="d">busy · done · error · error_code</div></div>
+    <div class="reg sta"><span class="a">0x10/0x14</span> <span class="n">IN/OUT_COUNT</span>
+      <div class="d">accepted beat counters</div></div>
+    <div class="reg sta"><span class="a">0x18–0x2C</span> <span class="n">FRAME / FRAC</span>
+      <div class="d">frame_start, peak_index, slot_start, frac_cfo_phase</div></div>
+    <div class="reg sta"><span class="a">0x38–0x44</span> <span class="n">INT_CFO</span>
+      <div class="d">int_cfo_valid · est (step word) · index · applied (sticky)</div></div>
+    <div class="reg sta"><span class="a">0x48/0x50/0x54</span> <span class="n">RESET/TLAST/ERR</span>
+      <div class="d">reset_done · pipeline_idle · tlast_count · error_flags</div></div>
+
+    <div class="rs" style="margin-top:6px">enable=0 ⇒ S_AXIS/M_AXIS gated off.
+    bypass=1 ⇒ S_AXIS passes straight to M_AXIS (DUT idle).</div>
+  </aside>
+
+  <!-- ===================== Main signal flow ===================== -->
+  <div class="flow">
+
+    <div class="io"><b>S_AXIS</b> — raw IQ in (from DMA / IQ player)
+      <span class="sub">tdata[31:0]=IQ · tvalid/tready · tlast · gated by enable &amp; !bypass</span></div>
+
+    <div class="arrow"><span class="lbl">gated_s_valid</span><span class="v">▼</span></div>
+
+    <!-- frac corrector top -->
+    <div class="mod">
+      <div class="hd"><span class="mn">frac_cfo_frame_corrector_top</span>
+        <span class="inst">u_frac_corr (inside phase3_sync_top)</span></div>
+      <div class="desc">Timing + fractional-CFO acquisition and live correction. FSM:
+        IDLE→FILL(wait buf)→FRAME_DET→TIMING_CFO→LOAD_NCO→CORRECT→DONE. Sub-blocks share one
+        captured frame buffer via an FSM-muxed read port.</div>
+      <div class="subrow">
+        <div class="blk lit"><div class="bn">iq_capture_pingpong</div><div class="bi">u_cap · buf A / buf B</div>
+          <div class="bd">Continuous dual-buffer ingest. buf_ready / proc_take / proc_free handoff so the chain runs back-to-back slots without going deaf.</div>
+          <div class="badges"><span class="badge b-new">ping-pong</span><span class="badge b-fix">H1a continuous</span></div></div>
+        <div class="blk"><div class="bn">frame_detector</div><div class="bi">u_fd</div>
+          <div class="bd">Sliding-window energy frame start over the captured buffer → frame_index.</div></div>
+        <div class="blk"><div class="bn">frame_frac_cfo_top</div><div class="bi">u_tfc</div>
+          <div class="bd">CP autocorr → timing metric (peak_lag) → CORDIC atan2 → frac_phase (Q1.15). Contains timing_sync_top / streaming_cp_autocorr / frac_cfo_estimator.</div></div>
+        <div class="blk"><div class="bn">frac NCO + corrector</div><div class="bi">u_corr (frac_cfo_corrector_top)</div>
+          <div class="bd">Buffer playback (slot_start = frame_index+peak_lag) → CORDIC NCO + complex_rotator removes frac CFO. 2-deep output FIFO, 1 sample/clk.</div>
+          <div class="badges"><span class="badge b-fix">H1b 1/clk · 2-deep FIFO</span></div></div>
+      </div>
+    </div>
+
+    <div class="arrow"><span class="lbl">frac_m_* (tready tied 1) · FRAME_LEN=4032 beats + tlast</span><span class="v">▼</span></div>
+
+    <div class="io"><b>frac-corrected IQ stream</b> (dbg_frac_m_* tap)
+      <span class="sub">fans out to: (1) Meyr integer-CFO estimator &nbsp; (2) int-rotator → M_AXIS</span></div>
+
+    <div class="tap">branch ① — estimate-only path (no back-pressure; consumed by always-ready sinks)</div>
+
+    <div class="arrow"><span class="lbl">frac_m_first_beat = slot_start pulse</span><span class="v">▼</span></div>
+
+    <!-- meyr integer CFO branch -->
+    <div class="mod">
+      <div class="hd"><span class="mn">Meyr integer-CFO core</span>
+        <span class="inst">slot_start_controller (u_ssc) gates · in phase3_sync_top</span></div>
+      <div class="desc">FFT-correlation integer-CFO estimator. Completes EARLY (after PSS+SSS) while the
+        frac corrector is still streaming the rest of the slot. Result latched in S_RUN as the NCO
+        step word for slot k+1 (natural 1-slot delay).</div>
+      <div class="subrow">
+        <div class="blk"><div class="bn">meyr_slot_frontend</div><div class="bi">u_slot_fe · NUM_SYN=2 NUM_DATA=12</div>
+          <div class="bd">Routes PSS+SSS payload from the frac stream; emits meyr_tdata + pss/sss_first_beat.</div></div>
+        <div class="blk"><div class="bn">meyr_sync_capture</div><div class="bi">u_capture · 2N buffer</div>
+          <div class="bd">Drop-free 2N capture between frontend and core; out_tvalid/out_tready handshake.</div></div>
+        <div class="blk lit"><div class="bn">meyr_cfo_top</div><div class="bi">u_meyr · N_LOG2_MAX=12</div>
+          <div class="bd">feeder → xfft_N → meyr_Rm_dut (FFT_ak + xfft_2N) → meyr_ifft_peak_dut (xfft_IFFT) → cfo_int, peak_idx, cfo_valid.</div>
+          <div class="badges"><span class="badge b-ip">xfft N / 2N / IFFT IPs</span><span class="badge b-key">302 MHz OOC</span></div></div>
+      </div>
+    </div>
+
+    <div class="arrow"><span class="lbl">meyr_cfo_valid → latch int_cfo_step_word (in S_RUN)</span><span class="v">▼</span></div>
+
+    <div class="io"><b>integer-CFO estimate</b> → step word
+      <span class="sub">int_cfo_step_word = (−cfo_int) ≪ (32−log2 NSC) · loaded into int NCO</span></div>
+
+    <div class="tap">branch ② — correction datapath (lives in phase3_sync_axis_dma_wrapper)</div>
+
+    <div class="arrow"><span class="lbl">frac_m_* (skid_push, every beat)</span><span class="v">▼</span></div>
+
+    <!-- int rotator branch -->
+    <div class="mod">
+      <div class="hd"><span class="mn">Integer-CFO correction datapath</span>
+        <span class="inst">wrapper-level (phase3_sync_axis_dma_wrapper)</span></div>
+      <div class="desc">Applies the integer-CFO step to the frac-corrected stream on the way to M_AXIS.
+        Replay buffer RETIRED (P5-03 option-B): correction is now continuous/live.</div>
+      <div class="subrow">
+        <div class="blk lit"><div class="bn">int-rotator SKID FIFO</div><div class="bi">skid_mem · 32-deep</div>
+          <div class="bd">Holds frac beats during the CORDIC NCO warm-up (sincos_valid=0 after phase_reset) so no M_AXIS beat is swallowed. Presents beats only when sincos_valid=1.</div>
+          <div class="badges"><span class="badge b-new">skid (NCO-warmup)</span><span class="badge b-fix">mout=4032 fix</span></div></div>
+        <div class="blk"><div class="bn">nco_phase_gen</div><div class="bi">u_int_nco · CORDIC</div>
+          <div class="bd">load_step/phase_reset on int_cfo_valid; advances per consumed beat (skid_pop). Produces sin/cos + sincos_valid.</div></div>
+        <div class="blk"><div class="bn">complex_rotator</div><div class="bi">u_int_rot</div>
+          <div class="bd">Rotates skid IQ by the int-NCO sin/cos (gated on sincos_valid) → integer-corrected IQ + tlast.</div></div>
+        <div class="blk"><div class="bn">TLAST + counters</div><div class="bi">out_frame_cnt / in_frame_cnt</div>
+          <div class="bd">M_AXIS TLAST every FRAME_LEN(4032); input boundary checked vs INPUT_PERIOD(4160); error flags.</div>
+          <div class="badges"><span class="badge b-warn">INPUT_PERIOD 4160 vs FRAME_LEN 4032</span></div></div>
+      </div>
+    </div>
+
+    <div class="arrow"><span class="lbl">int_corr_m_* (gated by enable &amp; !bypass &amp; m_axis_tready)</span><span class="v">▼</span></div>
+
+    <div class="io out"><b>M_AXIS</b> — corrected IQ out (to DMA)
+      <span class="sub">frac + integer corrected · tlast on FRAME_LEN boundary</span></div>
+
+  </div>
+</div>
+
+<!-- ===================== Orchestrator FSM ===================== -->
+<h2>Orchestrator FSM — phase3_sync_top (start / done contract)</h2>
+<div class="fsm">
+  <div class="ft">phase3_sync_top FSM</div>
+  <div class="fdesc">Preserves the legacy start/done interface while the frac + Meyr chain runs continuously
+    underneath. The wrapper auto-rearms <code>start</code> after each <code>done</code> (replay buffer retired),
+    running slots back-to-back.</div>
+  <div class="states">
+    <div class="state">S_IDLE<span class="se">start &amp; !busy → frac_start, busy=1</span></div>
+    <div class="state run">S_RUN<span class="se">wait frac_done; latch meyr_cfo_valid → int step word</span></div>
+    <div class="state">S_DONE<span class="se">done pulse · busy=0 · re-arm</span></div>
+  </div>
+  <div class="legend">
+    <div class="lg"><span class="sw s-core"></span> top / sub-system module</div>
+    <div class="lg"><span class="sw s-sub"></span> RTL sub-block (instance)</div>
+    <div class="lg"><span class="sw s-ip"></span> Xilinx xfft IP</div>
+    <div class="lg"><span class="sw s-io"></span> AXI port / stream</div>
+  </div>
+</div>
+
+<footer>
+  <span>docs/dut_block_diagram.html · generated from RTL (read-only)</span>
+  <span>top = phase3_sync_axis_dma_wrapper · branch RX_SYNC</span>
+</footer>
+
+</body></html>

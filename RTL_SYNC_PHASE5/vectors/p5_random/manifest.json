@@ -1,0 +1,608 @@
+{
+  "generator": "scripts/gen_p5_random_sweep.py",
+  "seed": 14598366,
+  "n_cases": 100,
+  "status": "INFRASTRUCTURE_READY \u2014 manifest written; the actual stimulus + TB iteration is deferred to the next session. See docs/p5_08_p2_status.md.",
+  "cases": [
+    {
+      "id": "r000",
+      "k_int": -17,
+      "frac": 0.4703,
+      "snr_db": 20
+    },
+    {
+      "id": "r001",
+      "k_int": 18,
+      "frac": -0.4597,
+      "snr_db": 10
+    },
+    {
+      "id": "r002",
+      "k_int": -32,
+      "frac": -0.1407,
+      "snr_db": 30
+    },
+    {
+      "id": "r003",
+      "k_int": 16,
+      "frac": -0.15,
+      "snr_db": 10
+    },
+    {
+      "id": "r004",
+      "k_int": 5,
+      "frac": -0.0284,
+      "snr_db": 20
+    },
+    {
+      "id": "r005",
+      "k_int": -3,
+      "frac": 0.4555,
+      "snr_db": 20
+    },
+    {
+      "id": "r006",
+      "k_int": -20,
+      "frac": 0.4137,
+      "snr_db": null
+    },
+    {
+      "id": "r007",
+      "k_int": 9,
+      "frac": 0.005,
+      "snr_db": 30
+    },
+    {
+      "id": "r008",
+      "k_int": 1,
+      "frac": -0.2446,
+      "snr_db": 10
+    },
+    {
+      "id": "r009",
+      "k_int": 12,
+      "frac": -0.2033,
+      "snr_db": null
+    },
+    {
+      "id": "r010",
+      "k_int": -19,
+      "frac": 0.4435,
+      "snr_db": null
+    },
+    {
+      "id": "r011",
+      "k_int": -11,
+      "frac": -0.3779,
+      "snr_db": 20
+    },
+    {
+      "id": "r012",
+      "k_int": -18,
+      "frac": -0.3986,
+      "snr_db": 30
+    },
+    {
+      "id": "r013",
+      "k_int": -22,
+      "frac": -0.2057,
+      "snr_db": 20
+    },
+    {
+      "id": "r014",
+      "k_int": -9,
+      "frac": -0.2916,
+      "snr_db": 10
+    },
+    {
+      "id": "r015",
+      "k_int": 26,
+      "frac": -0.0687,
+      "snr_db": 10
+    },
+    {
+      "id": "r016",
+      "k_int": 28,
+      "frac": -0.3391,
+      "snr_db": 10
+    },
+    {
+      "id": "r017",
+      "k_int": -27,
+      "frac": 0.365,
+      "snr_db": null
+    },
+    {
+      "id": "r018",
+      "k_int": -26,
+      "frac": -0.4207,
+      "snr_db": 20
+    },
+    {
+      "id": "r019",
+      "k_int": -11,
+      "frac": 0.1071,
+      "snr_db": 10
+    },
+    {
+      "id": "r020",
+      "k_int": -29,
+      "frac": -0.4114,
+      "snr_db": null
+    },
+    {
+      "id": "r021",
+      "k_int": 7,
+      "frac": 0.1816,
+      "snr_db": 30
+    },
+    {
+      "id": "r022",
+      "k_int": -3,
+      "frac": -0.0527,
+      "snr_db": 30
+    },
+    {
+      "id": "r023",
+      "k_int": -10,
+      "frac": 0.4217,
+      "snr_db": 10
+    },
+    {
+      "id": "r024",
+      "k_int": -26,
+      "frac": -0.1246,
+      "snr_db": 20
+    },
+    {
+      "id": "r025",
+      "k_int": 7,
+      "frac": -0.3916,
+      "snr_db": 20
+    },
+    {
+      "id": "r026",
+      "k_int": 30,
+      "frac": -0.4071,
+      "snr_db": 30
+    },
+    {
+      "id": "r027",
+      "k_int": 12,
+      "frac": 0.2773,
+      "snr_db": 10
+    },
+    {
+      "id": "r028",
+      "k_int": 20,
+      "frac": 0.1544,
+      "snr_db": 30
+    },
+    {
+      "id": "r029",
+      "k_int": -15,
+      "frac": 0.1111,
+      "snr_db": 10
+    },
+    {
+      "id": "r030",
+      "k_int": -10,
+      "frac": 0.2722,
+      "snr_db": 20
+    },
+    {
+      "id": "r031",
+      "k_int": 29,
+      "frac": 0.1841,
+      "snr_db": null
+    },
+    {
+      "id": "r032",
+      "k_int": -28,
+      "frac": -0.3949,
+      "snr_db": null
+    },
+    {
+      "id": "r033",
+      "k_int": 0,
+      "frac": 0.3814,
+      "snr_db": null
+    },
+    {
+      "id": "r034",
+      "k_int": -32,
+      "frac": 0.3751,
+      "snr_db": 20
+    },
+    {
+      "id": "r035",
+      "k_int": 2,
+      "frac": 0.3714,
+      "snr_db": 20
+    },
+    {
+      "id": "r036",
+      "k_int": -22,
+      "frac": 0.2481,
+      "snr_db": 30
+    },
+    {
+      "id": "r037",
+      "k_int": 17,
+      "frac": -0.4473,
+      "snr_db": 10
+    },
+    {
+      "id": "r038",
+      "k_int": 22,
+      "frac": -0.1429,
+      "snr_db": 10
+    },
+    {
+      "id": "r039",
+      "k_int": 14,
+      "frac": 0.0878,
+      "snr_db": 10
+    },
+    {
+      "id": "r040",
+      "k_int": 15,
+      "frac": -0.0373,
+      "snr_db": 30
+    },
+    {
+      "id": "r041",
+      "k_int": 18,
+      "frac": -0.1041,
+      "snr_db": null
+    },
+    {
+      "id": "r042",
+      "k_int": 29,
+      "frac": 0.4161,
+      "snr_db": 20
+    },
+    {
+      "id": "r043",
+      "k_int": -27,
+      "frac": 0.4424,
+      "snr_db": 20
+    },
+    {
+      "id": "r044",
+      "k_int": 11,
+      "frac": -0.408,
+      "snr_db": 10
+    },
+    {
+      "id": "r045",
+      "k_int": 19,
+      "frac": -0.4754,
+      "snr_db": 10
+    },
+    {
+      "id": "r046",
+      "k_int": 15,
+      "frac": 0.4467,
+      "snr_db": 10
+    },
+    {
+      "id": "r047",
+      "k_int": 11,
+      "frac": 0.2309,
+      "snr_db": 30
+    },
+    {
+      "id": "r048",
+      "k_int": -7,
+      "frac": 0.1122,
+      "snr_db": 10
+    },
+    {
+      "id": "r049",
+      "k_int": -32,
+      "frac": 0.2353,
+      "snr_db": 30
+    },
+    {
+      "id": "r050",
+      "k_int": 4,
+      "frac": 0.0633,
+      "snr_db": 10
+    },
+    {
+      "id": "r051",
+      "k_int": 25,
+      "frac": 0.475,
+      "snr_db": 10
+    },
+    {
+      "id": "r052",
+      "k_int": -21,
+      "frac": -0.3098,
+      "snr_db": null
+    },
+    {
+      "id": "r053",
+      "k_int": -18,
+      "frac": 0.2806,
+      "snr_db": null
+    },
+    {
+      "id": "r054",
+      "k_int": -9,
+      "frac": 0.4111,
+      "snr_db": null
+    },
+    {
+      "id": "r055",
+      "k_int": -17,
+      "frac": 0.3987,
+      "snr_db": 10
+    },
+    {
+      "id": "r056",
+      "k_int": -4,
+      "frac": -0.0335,
+      "snr_db": null
+    },
+    {
+      "id": "r057",
+      "k_int": 0,
+      "frac": 0.0317,
+      "snr_db": 30
+    },
+    {
+      "id": "r058",
+      "k_int": 23,
+      "frac": -0.188,
+      "snr_db": 30
+    },
+    {
+      "id": "r059",
+      "k_int": 21,
+      "frac": -0.0584,
+      "snr_db": 20
+    },
+    {
+      "id": "r060",
+      "k_int": -13,
+      "frac": -0.1408,
+      "snr_db": 20
+    },
+    {
+      "id": "r061",
+      "k_int": 22,
+      "frac": 0.0705,
+      "snr_db": 20
+    },
+    {
+      "id": "r062",
+      "k_int": 23,
+      "frac": 0.0093,
+      "snr_db": 30
+    },
+    {
+      "id": "r063",
+      "k_int": -16,
+      "frac": -0.0676,
+      "snr_db": 20
+    },
+    {
+      "id": "r064",
+      "k_int": -30,
+      "frac": -0.1505,
+      "snr_db": 20
+    },
+    {
+      "id": "r065",
+      "k_int": 0,
+      "frac": 0.0583,
+      "snr_db": 20
+    },
+    {
+      "id": "r066",
+      "k_int": 27,
+      "frac": -0.2703,
+      "snr_db": 20
+    },
+    {
+      "id": "r067",
+      "k_int": -27,
+      "frac": -0.2679,
+      "snr_db": null
+    },
+    {
+      "id": "r068",
+      "k_int": -5,
+      "frac": -0.1557,
+      "snr_db": 10
+    },
+    {
+      "id": "r069",
+      "k_int": -16,
+      "frac": 0.3566,
+      "snr_db": null
+    },
+    {
+      "id": "r070",
+      "k_int": 19,
+      "frac": -0.2465,
+      "snr_db": 30
+    },
+    {
+      "id": "r071",
+      "k_int": -2,
+      "frac": -0.4808,
+      "snr_db": 30
+    },
+    {
+      "id": "r072",
+      "k_int": 20,
+      "frac": -0.2453,
+      "snr_db": 30
+    },
+    {
+      "id": "r073",
+      "k_int": -13,
+      "frac": 0.3345,
+      "snr_db": 10
+    },
+    {
+      "id": "r074",
+      "k_int": -8,
+      "frac": -0.3734,
+      "snr_db": null
+    },
+    {
+      "id": "r075",
+      "k_int": 6,
+      "frac": -0.297,
+      "snr_db": 30
+    },
+    {
+      "id": "r076",
+      "k_int": 14,
+      "frac": 0.1453,
+      "snr_db": 10
+    },
+    {
+      "id": "r077",
+      "k_int": -28,
+      "frac": 0.1111,
+      "snr_db": null
+    },
+    {
+      "id": "r078",
+      "k_int": 23,
+      "frac": -0.2801,
+      "snr_db": null
+    },
+    {
+      "id": "r079",
+      "k_int": -21,
+      "frac": 0.4593,
+      "snr_db": null
+    },
+    {
+      "id": "r080",
+      "k_int": 20,
+      "frac": -0.0734,
+      "snr_db": null
+    },
+    {
+      "id": "r081",
+      "k_int": 11,
+      "frac": 0.3215,
+      "snr_db": 20
+    },
+    {
+      "id": "r082",
+      "k_int": 18,
+      "frac": -0.4286,
+      "snr_db": null
+    },
+    {
+      "id": "r083",
+      "k_int": 11,
+      "frac": -0.3838,
+      "snr_db": null
+    },
+    {
+      "id": "r084",
+      "k_int": 30,
+      "frac": 0.3436,
+      "snr_db": 20
+    },
+    {
+      "id": "r085",
+      "k_int": 23,
+      "frac": -0.2146,
+      "snr_db": null
+    },
+    {
+      "id": "r086",
+      "k_int": -1,
+      "frac": 0.3016,
+      "snr_db": 30
+    },
+    {
+      "id": "r087",
+      "k_int": 20,
+      "frac": -0.318,
+      "snr_db": null
+    },
+    {
+      "id": "r088",
+      "k_int": -13,
+      "frac": 0.1734,
+      "snr_db": 30
+    },
+    {
+      "id": "r089",
+      "k_int": 24,
+      "frac": 0.3375,
+      "snr_db": 30
+    },
+    {
+      "id": "r090",
+      "k_int": 1,
+      "frac": 0.2563,
+      "snr_db": 20
+    },
+    {
+      "id": "r091",
+      "k_int": -19,
+      "frac": 0.1871,
+      "snr_db": 10
+    },
+    {
+      "id": "r092",
+      "k_int": -30,
+      "frac": -0.0729,
+      "snr_db": 30
+    },
+    {
+      "id": "r093",
+      "k_int": 3,
+      "frac": 0.2927,
+      "snr_db": 10
+    },
+    {
+      "id": "r094",
+      "k_int": -15,
+      "frac": -0.1732,
+      "snr_db": 20
+    },
+    {
+      "id": "r095",
+      "k_int": -1,
+      "frac": -0.061,
+      "snr_db": 20
+    },
+    {
+      "id": "r096",
+      "k_int": 28,
+      "frac": -0.2685,
+      "snr_db": 20
+    },
+    {
+      "id": "r097",
+      "k_int": -10,
+      "frac": 0.3723,
+      "snr_db": 20
+    },
+    {
+      "id": "r098",
+      "k_int": -7,
+      "frac": -0.1877,
+      "snr_db": 20
+    },
+    {
+      "id": "r099",
+      "k_int": -3,
+      "frac": -0.1626,
+      "snr_db": 30
+    }
+  ]
+}

@@ -1,0 +1,190 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<title>RTL verification coverage (reset 2026-06-19)</title>
+<style>
+  :root {
+    --green-soft:#86efac; --yellow:#fbbf24; --red:#ef4444; --gray:#9ca3af; --purple:#c084fc;
+    --bg:#0f172a; --bg-soft:#1e293b; --bg-soft2:#0b1224;
+    --fg:#e2e8f0; --fg-mute:#94a3b8; --border:#334155;
+  }
+  html,body{margin:0;padding:0;background:var(--bg);color:var(--fg);font:14px/1.5 -apple-system,"Segoe UI",system-ui,sans-serif;}
+  header{padding:24px 36px 12px;border-bottom:1px solid var(--border);}
+  h1{margin:0 0 4px;font-size:22px;}
+  h2{margin:32px 0 8px;font-size:17px;color:var(--fg);display:flex;align-items:center;gap:10px;}
+  h2::after{content:"";flex:1;height:1px;background:var(--border);}
+  .subtitle{color:var(--fg-mute);font-size:13px;}
+  main{padding:24px 36px 80px;max-width:1280px;margin:0 auto;}
+  .toc{font-size:12px;color:var(--fg-mute);margin:8px 0 16px;}
+  .toc a{color:var(--green-soft);text-decoration:none;margin-right:12px;}
+  table{border-collapse:collapse;width:100%;margin:8px 0 16px;background:var(--bg-soft);border:1px solid var(--border);border-radius:6px;overflow:hidden;}
+  th,td{padding:8px 12px;text-align:left;vertical-align:top;border-bottom:1px solid var(--border);font-size:13px;}
+  th{background:var(--bg-soft2);color:var(--fg-mute);font-weight:600;}
+  tr:last-child td{border-bottom:none;}
+  .mute{color:var(--fg-mute);}
+  .center{text-align:center;}
+  code{font:12px/1.4 ui-monospace,"JetBrains Mono",Consolas,monospace;background:var(--bg-soft2);padding:1px 6px;border-radius:4px;color:#cbd5e1;}
+  td.cov-pending{background:rgba(148,163,184,0.08);color:var(--fg-mute);text-align:center;}
+  td.cov-na{background:rgba(148,163,184,0.12);color:var(--fg-mute);text-align:center;}
+  .callout{border-left:3px solid var(--yellow);background:rgba(251,191,36,0.08);padding:10px 14px;margin:12px 0;border-radius:0 6px 6px 0;}
+  .callout b{color:var(--yellow);}
+  .callout a{color:var(--yellow);}
+</style>
+</head>
+<body>
+
+<header>
+  <h1>RTL verification — coverage matrix</h1>
+  <div class="subtitle">Snapshot: 2026-06-24 &middot; <strong style="color:var(--green-soft)">L0–L2 green (L0 ZCU216 synth+impl timing MET), L3/L4 full-chain green + continuous data-correct (xsim); L5 bit-exact pending.</strong> Sim PC scope — L0 Lint through L5 Regression. L6 HW coverage lives in <code><a href="../fpga_dashboard/fpga_test_coverage.html" style="color:var(--green-soft);text-decoration:none">fpga_dashboard/fpga_test_coverage.html</a></code>.</div>
+  <div class="toc">
+    <a href="#levels">① Level 정의 (L0–L5)</a>
+    <a href="#modules">② Module × Level 매트릭스</a>
+    <a href="#paths">③ Data path × Level 매트릭스</a>
+  </div>
+</header>
+
+<main>
+
+<!-- ===================== TRANSCEIVER COVERAGE (added 2026-06-29) ===================== -->
+<section id="xcvr">
+  <h2 style="border-left:3px solid var(--green-soft);padding-left:8px;">★ OFDM transceiver — module verification coverage (sim)</h2>
+  <div class="callout" style="border-left-color:var(--green-soft);background:rgba(134,239,172,.07)">
+    <b style="color:var(--green-soft)">Snapshot 2026-06-29:</b> the design has grown from the RX-sync DUT below into a
+    <b style="color:var(--green-soft)">complete mode-selectable OFDM transceiver</b> (<code>ofdm_transceiver_top</code>:
+    <code>mode[1:0]</code> = TX / RX / LOOPBACK, <code>mod_sel[1:0]</code> = QPSK / 16-QAM / 64-QAM / 256-QAM).
+    Verified under <b>xsim with the real Xilinx xfft 9.1 IP</b> (locked part <code>xczu9eg-ffvb1156-2-e</code>),
+    proven against C (<code>ref/receiver.c</code>, <code>ref/transmitter.c</code>) → NumPy golden
+    (<code>scripts/rx_downstream_ref.py</code>). <b style="color:var(--green-soft)">All 3 modes BER = 0 · all 4 modulations clean-loopback BER = 0.</b>
+    The detailed sync-DUT L0–L5 matrix below remains valid as the synchronizer sub-view.
+  </div>
+
+  <h2>Module × testbench/gate × result</h2>
+  <table>
+    <thead><tr>
+      <th>Block</th><th>Module(s)</th><th>Testbench / gate</th>
+      <th class="center">Real xfft IP</th><th class="center">Status</th><th>Result</th>
+    </tr></thead>
+    <tbody>
+      <tr><td>TX map</td><td><code>tx_subcarrier_map</code></td><td>tx_rx_loop_tb (allmods)</td><td class="center">✓</td><td class="center" style="background:rgba(134,239,172,.16);color:#86efac">PASS</td><td class="mute">QAM map + QPSK pilots + fftshift, golden-exact</td></tr>
+      <tr><td>TX IFFT</td><td><code>tx_ifft_frontend</code></td><td>tx_rx_loop_tb</td><td class="center">✓</td><td class="center" style="background:rgba(134,239,172,.16);color:#86efac">PASS</td><td class="mute">256-pt IDFT (xfft) + cyclic prefix (CP=32)</td></tr>
+      <tr><td>TX top</td><td><code>tx_ofdm_top</code></td><td>tx_rx_full_loopback_tb</td><td class="center">✓</td><td class="center" style="background:rgba(134,239,172,.16);color:#86efac">PASS</td><td class="mute">PSS/SSS + 12 data symbols → 4032 slot</td></tr>
+      <tr><td>Sync</td><td><code>frame_detector</code>, <code>frac_cfo_*</code>, <code>meyr_cfo_top</code></td><td>P5-CONT-SMOKE/NIGHTLY/ROBUST, P5-EQUIV</td><td class="center">✓</td><td class="center" style="background:rgba(134,239,172,.16);color:#86efac">PASS</td><td class="mute">frame-detect + timing + frac/int CFO (see L0–L5 matrix below)</td></tr>
+      <tr><td>RX FFT</td><td><code>rx_fft_frontend</code></td><td>rx_full_chain_tb</td><td class="center">✓</td><td class="center" style="background:rgba(134,239,172,.16);color:#86efac">PASS</td><td class="mute">256-pt FFT, golden-verified</td></tr>
+      <tr><td>RX CE</td><td><code>rx_ch_est</code></td><td>rx_full_chain_tb</td><td class="center">✓</td><td class="center" style="background:rgba(134,239,172,.16);color:#86efac">PASS</td><td class="mute">pilot-based channel estimation (precomputed reciprocal)</td></tr>
+      <tr><td>RX EQ</td><td><code>rx_equalizer</code></td><td>rx_full_chain_tb</td><td class="center">✓</td><td class="center" style="background:rgba(134,239,172,.16);color:#86efac">PASS</td><td class="mute">zero-forcing equalizer</td></tr>
+      <tr><td>RX demod</td><td><code>rx_demod_qam</code></td><td>tx_rx_loop_tb (allmods)</td><td class="center">✓</td><td class="center" style="background:rgba(134,239,172,.16);color:#86efac">PASS</td><td class="mute">QAM slicer, all 4 modulations</td></tr>
+      <tr><td>RX full</td><td><code>rx_full_chain_top</code></td><td>rx_full_chain_tb</td><td class="center">✓</td><td class="center" style="background:rgba(134,239,172,.16);color:#86efac">PASS</td><td class="mute">sync→FFT→CE→EQ→demod end-to-end, BER 0/10608</td></tr>
+      <tr><td>BER check</td><td><code>rx_ber_checker</code></td><td>on-chip + tb</td><td class="center">✓</td><td class="center" style="background:rgba(134,239,172,.16);color:#86efac">PASS</td><td class="mute">on-chip BER counter, sim-proven</td></tr>
+      <tr><td>Transceiver</td><td><code>ofdm_transceiver_top</code></td><td>run_xcvr_3mode (TX/RX/LOOPBACK)</td><td class="center">✓</td><td class="center" style="background:rgba(134,239,172,.16);color:#86efac">PASS</td><td class="mute">all 3 modes BER = 0</td></tr>
+      <tr><td>Board adapter</td><td><code>ofdm_xcvr_board_top</code></td><td>board integration</td><td class="center">✓</td><td class="center" style="background:rgba(134,239,172,.16);color:#86efac">PASS</td><td class="mute">GPIO/AXI-Lite control wrap (see fpga_dashboard for silicon)</td></tr>
+    </tbody>
+  </table>
+
+  <h2>Clean-loopback BER matrix — all 4 modulations (sim, real xfft IP)</h2>
+  <table>
+    <thead><tr><th><code>mod_sel</code></th><th>Modulation</th><th class="center">Gate</th><th class="center">BER</th><th class="center">Status</th></tr></thead>
+    <tbody>
+      <tr><td>0</td><td>QPSK</td><td class="center">run_tx_rx_loop_allmods (+MOD=0)</td><td class="center" style="color:#86efac;font-weight:600">0</td><td class="center" style="background:rgba(134,239,172,.16);color:#86efac">PASS</td></tr>
+      <tr><td>1</td><td>16-QAM</td><td class="center">run_tx_rx_loop_allmods (+MOD=1)</td><td class="center" style="color:#86efac;font-weight:600">0</td><td class="center" style="background:rgba(134,239,172,.16);color:#86efac">PASS</td></tr>
+      <tr><td>2</td><td>64-QAM</td><td class="center">run_tx_rx_loop_allmods (+MOD=2)</td><td class="center" style="color:#86efac;font-weight:600">0</td><td class="center" style="background:rgba(134,239,172,.16);color:#86efac">PASS</td></tr>
+      <tr><td>3</td><td>256-QAM</td><td class="center">run_tx_rx_loop_allmods (+MOD=3)</td><td class="center" style="color:#86efac;font-weight:600">0</td><td class="center" style="background:rgba(134,239,172,.16);color:#86efac">PASS</td></tr>
+    </tbody>
+  </table>
+  <p class="mute" style="font-size:12px;">Silicon (ZCU216) results: see <a href="../fpga_dashboard/fpga_test_coverage.html" style="color:var(--green-soft);">fpga_dashboard/fpga_test_coverage.html</a>. Full transceiver block diagram: <a href="../docs/transceiver_block_diagram.html" style="color:var(--green-soft);">docs/transceiver_block_diagram.html</a>.</p>
+</section>
+
+<hr style="border:none;border-top:1px solid var(--border);margin:36px 0;">
+<h2 style="color:var(--fg-mute)">▼ Synchronizer DUT — detailed L0–L5 matrix (sub-view)</h2>
+
+<div class="callout" style="border-left-color:var(--green-soft);background:rgba(134,239,172,.07)">
+  <b style="color:var(--green-soft)">Progress 2026-06-24 (sim PC, Vivado xsim window):</b> <b style="color:var(--green-soft)">L0 lint ✓ + ZCU216 synth+impl timing MET ✓</b> (xvlog 42/42 parse + elab of all xfft-free modules; the ZCU216 digital-loopback bitstream ran full synth + implementation on xczu49dr-ffvf1760-2-e with "All user specified timing constraints are met" — synthesizability proven, not just parse) · <b style="color:var(--green-soft)">L1 unit ✓</b> (34 leaf/unit iverilog gates + 5 sub-int gates) · <b style="color:var(--green-soft)">L2 chain ✓</b> (Stage-1 chain regression 63/63) · <b style="color:var(--green-soft)">P5-EQUIV 17/17 k_int bit-exact ✓ (xsim)</b>. <b style="color:var(--green-soft)">Full-chain now UNBLOCKED:</b> the xfft 9.1 IP gates ran under xsim — <b style="color:var(--green-soft)">P5-CONT-SMOKE (4032 identity), P5-CONT-NIGHTLY (k_int=+4 rot applied 100%), P5-AXI-COV, P5-D1-3WAY all PASS</b>, giving phase3_sync_top (L3) and phase3_sync_axis_dma_wrapper (L4) real end-to-end evidence. <b style="color:var(--green-soft)">L3/L4 continuous DATA-correctness ✓ (2026-06-24):</b> P5-D continuous gate now <b>5/5 data-correct per case</b> (was 0/5) + STAGE1 63/63 + P5-CONT-SMOKE bit-exact (D_rot=0) — this caught+fixed a real RTL bug: <code>moving_avg_optimized.v</code> sliding-window RAM was not cleared on reset, so the CP-autocorr carried a constant offset that corrupted fractional CFO on continuous slot 2+. The previous SMOKE/NIGHTLY count-only check (sample COUNT, not data) MISSED it; the window-fill guard fix makes all 5 cases bit-exact. <b>L5 bit-exact M_AXIS regression still open:</b> P5-CORRECTED FAILs at 60% bit-exact — but the RTL CFO rotation is <b>proven correct</b> (mout is a magnitude-exact k=4 NCO rotation of frac, |ratio|=1.000, +5.625°/sample); the residual is a frac/mout capture beat-gap alignment limit in the python comparator, <b>not an RTL bug</b>. RTL bugs: <a href="rtl_issues.html">rtl_issues.html</a> (18 open) · KPI: <a href="rtl_status.html">rtl_status.html</a>
+</div>
+
+<!-- ===================== ① ===================== -->
+<section id="levels">
+  <h2>① 검증 Level 정의 (RTL 시뮬레이션 범위)</h2>
+  <table>
+    <thead><tr>
+      <th style="width:4%;">L</th><th style="width:18%;">이름</th>
+      <th style="width:32%;">검증 대상</th>
+      <th style="width:28%;">입력 / 검증 방식</th>
+      <th>현재 상태</th>
+    </tr></thead>
+    <tbody>
+      <tr><td>L0</td><td>Lint / Compile</td><td>RTL 문법, 포트 매칭, 합성 가능성</td><td><code>xvlog</code> + Vivado synth</td><td style="color:#86efac">xvlog 42/42 ✓ + ZCU216 synth+impl timing MET ✓ (xczu49dr-ffvf1760-2-e digital-loopback bitstream)</td></tr>
+      <tr><td>L1</td><td>Unit (per module)</td><td>단일 RTL 모듈의 기능</td><td>idealized 직접 inject, 출력 == 알고리즘 ref</td><td style="color:#86efac">34 leaf/unit iverilog gates ✓ (bit-exact, TOL=0)</td></tr>
+      <tr><td>L2</td><td>Sub-integration</td><td>인접 모듈 2~3개 묶음</td><td>chain의 첫 단에 inject, 마지막 단 출력 일치</td><td style="color:#86efac">✓ Stage-1 chain regression 63/63 + 5 sub-int gates</td></tr>
+      <tr><td>L3</td><td>Full algorithm DUT</td><td><code>phase3_sync_top</code> (wrapper 빼고)</td><td>algorithm boundary에서 inject</td><td style="color:#86efac">✓ P5-CONT-SMOKE / CONT-NIGHTLY (xsim 2026-06-22)</td></tr>
+      <tr><td>L4</td><td>Full DUT (wrapper)</td><td><code>phase3_sync_axis_dma_wrapper</code> 전체</td><td>AXI-S / AXI-Lite / DMA boundary inject</td><td style="color:#86efac">✓ P5-CONT-SMOKE/NIGHTLY (full-chain) + P5-AXI-COV (xsim 2026-06-22)</td></tr>
+      <tr><td>L5</td><td>Multi-vector / Reference compare</td><td>regression suite — 다양한 입력 + C/Python ref</td><td>sweep 벡터, bit-exact OR tolerance</td><td class="mute">— pending</td></tr>
+    </tbody>
+  </table>
+</section>
+
+<!-- ===================== ② ===================== -->
+<section id="modules">
+  <h2>② Module × Level 커버리지 매트릭스 (sim)</h2>
+  <p class="mute">모든 셀 <code>—</code> = Not Verified.</p>
+  <table>
+    <thead><tr>
+      <th>모듈</th>
+      <th class="center">L0 Lint</th><th class="center">L1 Unit</th><th class="center">L2 Sub-int</th>
+      <th class="center">L3 Algo DUT</th><th class="center">L4 Full DUT</th><th class="center">L5 Regression</th>
+      <th>비고</th>
+    </tr></thead>
+    <tbody>
+      <!--AUTO:row_frame_detector--><tr><td><code>frame_detector</code></td><td class="center" style="background:rgba(134,239,172,.16);color:#86efac">✓</td><td class="center" style="background:rgba(134,239,172,.16);color:#86efac">✓</td><td class="center" style="background:rgba(134,239,172,.16);color:#86efac">✓</td><td class="center" style="background:rgba(134,239,172,.16);color:#86efac">✓</td><td class="center" style="background:rgba(134,239,172,.16);color:#86efac">✓</td><td class="cov-pending">—</td><td class="mute">CP autocorr + timing metric · L3/L4 via CONT-SMOKE/NIGHTLY</td></tr><!--/AUTO:row_frame_detector-->
+      <!--AUTO:row_frac_cfo_*--><tr><td><code>frac_cfo_*</code></td><td class="center" style="background:rgba(134,239,172,.16);color:#86efac">✓</td><td class="center" style="background:rgba(134,239,172,.16);color:#86efac">✓</td><td class="center" style="background:rgba(134,239,172,.16);color:#86efac">✓</td><td class="center" style="background:rgba(134,239,172,.16);color:#86efac">✓</td><td class="center" style="background:rgba(134,239,172,.16);color:#86efac">✓</td><td class="cov-pending">—</td><td class="mute">CORDIC fractional CFO · L3/L4 via CONT-SMOKE/NIGHTLY</td></tr><!--/AUTO:row_frac_cfo_*-->
+      <!--AUTO:row_slot_start_controller--><tr><td><code>slot_start_controller</code></td><td class="center" style="background:rgba(134,239,172,.16);color:#86efac">✓</td><td class="center" style="background:rgba(134,239,172,.16);color:#86efac">✓</td><td class="cov-pending">—</td><td class="center" style="background:rgba(134,239,172,.16);color:#86efac">✓</td><td class="center" style="background:rgba(134,239,172,.16);color:#86efac">✓</td><td class="cov-pending">—</td><td class="mute">drives ssc_slot_valid · L3/L4 via CONT-SMOKE/NIGHTLY</td></tr><!--/AUTO:row_slot_start_controller-->
+      <!--AUTO:row_meyr_slot_frontend--><tr><td><code>meyr_slot_frontend</code></td><td class="center" style="background:rgba(134,239,172,.16);color:#86efac">✓</td><td class="center" style="background:rgba(134,239,172,.16);color:#86efac">✓</td><td class="cov-pending">—</td><td class="center" style="background:rgba(134,239,172,.16);color:#86efac">✓</td><td class="center" style="background:rgba(134,239,172,.16);color:#86efac">✓</td><td class="cov-pending">—</td><td class="mute">L3/L4 via CONT-SMOKE/NIGHTLY</td></tr><!--/AUTO:row_meyr_slot_frontend-->
+      <!--AUTO:row_meyr_sync_capture--><tr><td><code>meyr_sync_capture</code></td><td class="center" style="background:rgba(134,239,172,.16);color:#86efac">✓</td><td class="center" style="background:rgba(134,239,172,.16);color:#86efac">✓</td><td class="cov-pending">—</td><td class="center" style="background:rgba(134,239,172,.16);color:#86efac">✓</td><td class="center" style="background:rgba(134,239,172,.16);color:#86efac">✓</td><td class="cov-pending">—</td><td class="mute">strobe → AXIS bridge · L3/L4 via CONT-SMOKE/NIGHTLY</td></tr><!--/AUTO:row_meyr_sync_capture-->
+      <!--AUTO:row_meyr_cfo_top--><tr><td><code>meyr_cfo_top</code></td><td class="center" style="background:rgba(134,239,172,.16);color:#86efac">✓</td><td class="center" style="background:rgba(134,239,172,.16);color:#86efac">✓</td><td class="cov-pending">—</td><td class="center" style="background:rgba(134,239,172,.16);color:#86efac">✓</td><td class="center" style="background:rgba(134,239,172,.16);color:#86efac">✓</td><td class="cov-pending">—</td><td class="mute">FFT-corr integer CFO core · L3 via P5-CONT-NIGHTLY (k_int=+4 in full chain) · L4 via CONT-SMOKE/NIGHTLY · L2 via P5-EQUIV (sub-int of feeder+FFT_ak+ifft_peak+Rm, 17/17 bit-exact)</td></tr><!--/AUTO:row_meyr_cfo_top-->
+      <!--AUTO:row_meyr_Rm_dut--><tr><td><code>meyr_Rm_dut</code> (B[k] ROM)</td><td class="center" style="background:rgba(134,239,172,.16);color:#86efac">✓</td><td class="center" style="background:rgba(134,239,172,.16);color:#86efac">✓</td><td class="cov-pending">—</td><td class="center" style="background:rgba(134,239,172,.16);color:#86efac">✓</td><td class="center" style="background:rgba(134,239,172,.16);color:#86efac">✓</td><td class="cov-pending">—</td><td class="mute">B[k] conj-FFT ROM · L3/L4 via CONT-SMOKE/NIGHTLY · L2 via P5-EQUIV (exercised inside meyr_cfo_top sub-int)</td></tr><!--/AUTO:row_meyr_Rm_dut-->
+      <!--AUTO:row_meyr_FFT_ak--><tr><td><code>meyr_FFT_ak</code>, <code>ifft_peak</code></td><td class="center" style="background:rgba(134,239,172,.16);color:#86efac">✓</td><td class="center" style="background:rgba(134,239,172,.16);color:#86efac">✓</td><td class="cov-pending">—</td><td class="center" style="background:rgba(134,239,172,.16);color:#86efac">✓</td><td class="center" style="background:rgba(134,239,172,.16);color:#86efac">✓</td><td class="cov-pending">—</td><td class="mute">xfft 9.1 IP wrap · L3/L4 via CONT-SMOKE/NIGHTLY · L2 via P5-EQUIV (exercised inside meyr_cfo_top sub-int)</td></tr><!--/AUTO:row_meyr_FFT_ak-->
+      <!--AUTO:row_rotator--><tr><td><code>rotator</code> (NCO mixer)</td><td class="center" style="background:rgba(134,239,172,.16);color:#86efac">✓</td><td class="center" style="background:rgba(134,239,172,.16);color:#86efac">✓</td><td class="cov-pending">—</td><td class="center" style="background:rgba(134,239,172,.16);color:#86efac">✓</td><td class="center" style="background:rgba(134,239,172,.16);color:#86efac">✓</td><td class="cov-pending">—</td><td class="mute">L3/L4 via CONT-SMOKE/NIGHTLY</td></tr><!--/AUTO:row_rotator-->
+      <!--AUTO:row_phase3_axi_lite_regs--><tr><td><code>phase3_axi_lite_regs</code></td><td class="center" style="background:rgba(134,239,172,.16);color:#86efac">✓</td><td class="center" style="background:rgba(134,239,172,.16);color:#86efac">✓</td><td class="cov-pending">—</td><td class="cov-pending">—</td><td class="center" style="background:rgba(134,239,172,.16);color:#86efac">✓</td><td class="cov-pending">—</td><td class="mute">AXI-Lite control/status · L4 via P5-AXI-COV</td></tr><!--/AUTO:row_phase3_axi_lite_regs-->
+      <!--AUTO:row_phase3_sync_top--><tr><td><code>phase3_sync_top</code> (algorithm DUT)</td><td class="center" style="background:rgba(134,239,172,.16);color:#86efac">✓</td><td class="cov-pending">—</td><td class="cov-pending">—</td><td class="center" style="background:rgba(134,239,172,.16);color:#86efac">✓</td><td class="cov-pending">—</td><td class="cov-pending">—</td><td class="mute">L3 via P5-CONT-SMOKE (4032 identity) / CONT-NIGHTLY (k_int=+4 rot 100%)</td></tr><!--/AUTO:row_phase3_sync_top-->
+      <!--AUTO:row_phase3_sync_axis_dma_wrapper--><tr><td><code>phase3_sync_axis_dma_wrapper</code> (top)</td><td class="center" style="background:rgba(134,239,172,.16);color:#86efac">✓</td><td class="cov-pending">—</td><td class="cov-pending">—</td><td class="cov-pending">—</td><td class="center" style="background:rgba(134,239,172,.16);color:#86efac">✓</td><td class="cov-pending">—</td><td class="mute">L4 via P5-CONT-SMOKE/NIGHTLY (full-chain end-to-end) + P5-AXI-COV (AXI-Lite). L5 bit-exact pending P5-CORRECTED.</td></tr><!--/AUTO:row_phase3_sync_axis_dma_wrapper-->
+    </tbody>
+  </table>
+</section>
+
+<div class="callout" style="border-left-color:var(--green-soft);background:rgba(134,239,172,.07)">
+  <b style="color:var(--green-soft)">Leaf-module L1 unit gates (iverilog, bit-exact TOL=0):</b><!--AUTO:leaf_callout-->9 unit/equiv gate(s) RUN-VERIFIED PASS (bit-exact). Modules: <code>frame_detect_fsm</code>, <code>streaming_cp_autocorr</code>, <code>frac_cfo_estimator</code>, <code>frame_detector</code>, <code>nco_phase_gen</code>, <code>complex_rotator</code>, <code>timing_metric_core</code>, <code>meyr_d1_3way</code>, <code>meyr_cfo_top</code>.<!--/AUTO:leaf_callout--></div>
+
+<!-- ===================== ③ ===================== -->
+<section id="paths">
+  <h2>③ Data path × Level 커버리지 (top-down, sim)</h2>
+  <table>
+    <thead><tr>
+      <th>#</th><th>Path</th>
+      <th class="center">L1</th><th class="center">L2</th><th class="center">L3</th><th class="center">L4</th><th class="center">L5</th>
+      <th>현 상태</th>
+    </tr></thead>
+    <tbody>
+      <tr><td>1</td><td>AXI-Lite → regs → ctrl/status</td><td class="center" style="background:rgba(134,239,172,.16);color:#86efac">✓</td><td class="cov-pending">—</td><td class="cov-pending">—</td><td class="center" style="background:rgba(134,239,172,.16);color:#86efac">✓</td><td class="cov-pending">—</td><td class="mute">L4 via P5-AXI-COV</td></tr>
+      <tr><td>2</td><td>S_AXIS → frame_detector → frac_cfo</td><td class="cov-pending">—</td><td class="cov-pending">—</td><td class="center" style="background:rgba(134,239,172,.16);color:#86efac">✓</td><td class="center" style="background:rgba(134,239,172,.16);color:#86efac">✓</td><td class="cov-pending">—</td><td class="mute">L3/L4 via full-chain CONT-SMOKE/NIGHTLY (frame_start=41)</td></tr>
+      <tr><td>3</td><td>frac_cfo → slot_start_controller → meyr_slot_frontend → sync_capture</td><td class="cov-pending">—</td><td class="cov-pending">—</td><td class="center" style="background:rgba(134,239,172,.16);color:#86efac">✓</td><td class="center" style="background:rgba(134,239,172,.16);color:#86efac">✓</td><td class="cov-pending">—</td><td class="mute">L3/L4 via full-chain (14-sym 4032 slot)</td></tr>
+      <tr><td>4</td><td>sync_capture → meyr_cfo_top (+ B[k] ROM)</td><td class="cov-pending">—</td><td class="cov-pending">—</td><td class="center" style="background:rgba(134,239,172,.16);color:#86efac">✓</td><td class="center" style="background:rgba(134,239,172,.16);color:#86efac">✓</td><td class="cov-pending">—</td><td class="mute">L3/L4 via CONT-NIGHTLY (k_int=+4)</td></tr>
+      <tr><td>5</td><td>meyr → wrapper int_cfo latch → rotator step_word</td><td class="cov-pending">—</td><td class="cov-pending">—</td><td class="center" style="background:rgba(134,239,172,.16);color:#86efac">✓</td><td class="center" style="background:rgba(134,239,172,.16);color:#86efac">✓</td><td class="cov-pending">—</td><td class="mute">L3/L4 via CONT-NIGHTLY (rot applied 100%)</td></tr>
+      <tr><td>6</td><td>rotator → M_AXIS counter → S2MM → Host</td><td class="cov-pending">—</td><td class="cov-pending">—</td><td class="cov-pending">—</td><td class="center" style="background:rgba(134,239,172,.16);color:#86efac">✓</td><td class="cov-pending">—</td><td class="mute">L4 via CONT-SMOKE (4032 identity); L5 bit-exact M_AXIS pending P5-CORRECTED (RTL-correct, comparator-limited)</td></tr>
+    </tbody>
+  </table>
+</section>
+
+<section>
+  <h2>참고 — 관련 dashboards</h2>
+  <ul style="font-size:13px;line-height:1.8;">
+    <li><a href="../zcu216_project_management_hub.html" style="color:var(--green-soft);">../zcu216_project_management_hub.html</a> &mdash; project hub</li>
+    <li><a href="../current_status.html" style="color:var(--green-soft);">../current_status.html</a> &mdash; landing</li>
+    <li><a href="rtl_status.html" style="color:var(--green-soft);">rtl_status.html</a> &mdash; sim KPIs</li>
+    <li><a href="rtl_issues.html" style="color:var(--green-soft);">rtl_issues.html</a> &mdash; RTL bugs (18 open)</li>
+    <li><a href="../fpga_dashboard/fpga_test_coverage.html" style="color:var(--green-soft);">../fpga_dashboard/fpga_test_coverage.html</a> &mdash; HW (L6) coverage</li>
+    <li><a href="../Verification_plan_zcu216.html" style="color:var(--green-soft);">../Verification_plan_zcu216.html</a> &mdash; frozen plan</li>
+  </ul>
+</section>
+
+</main>
+</body>
+</html>

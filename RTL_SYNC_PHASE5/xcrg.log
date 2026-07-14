@@ -1,0 +1,34 @@
+
+ Options Set are : 
+
+   Command Line               : xcrg -cc_dir reports/p5_coverage/cov_db -cc_db p5_cov -cc_report reports/p5_coverage/cc_report
+   Report Format              : html
+   Log File                   : xcrg.log
+   Code Coverage DB Path      : p5_cov
+   Code Coverage Dir Path     : reports/p5_coverage/cov_db
+   Code Coverage Report Path  : reports/p5_coverage/cc_report
+
+
+                  Code Coverage Report 
+
+ INFO-RESTORE : Code Coverage Database found at reports/p5_coverage/cov_db/xsim.codeCov/p5_cov/xsim.CCInfo
+
+ INFO-RESTORE : Code Coverage Info Restored Succesfull
+
+ VIVADO Installation used from         : /home/zealatan/Downloads/Vivado/2022.2
+
+ Created Code Coverage Report Directory    : reports/p5_coverage/cc_report
+
+  Generating Code Coverage Report 
+
+                      HTML Report 
+
+  Code Coverage HTML Report dir : reports/p5_coverage/cc_report
+
+  Line Coverage Score 96.7359
+  Branch Coverage Score 94.1176
+  Condition Coverage Score 72
+  Toggle Coverage Score 50.61
+
+  Code Coverage Report Generation done 
+

@@ -1,0 +1,33 @@
+{
+  "generator": "scripts/gen_p5_bk_conj_fft512_rom.py",
+  "derivation": "Python mirror of C m_seq/gold_seq + term2 + FFT_2N conj",
+  "parameters": {
+    "NSC": 256,
+    "CP_LEN": 32,
+    "SEQ_LEN": 127,
+    "SYNC_START": 55,
+    "NID_1": 170,
+    "NID_2": 2,
+    "FFT_2N": 512
+  },
+  "rom_word_format": "{Im[31:0], Re[31:0]} - matches meyr_Rm_dut (complex_mult_32: b_i=rom_q[31:0], b_q=rom_q[63:32])",
+  "q_format": "Signed Q31, full-scale anchor = max(|Re|,|Im|) of B[k]",
+  "scale": 52520646.77483014,
+  "max_abs_unscaled": 40.88837017195977,
+  "rom_path": "/home/dsp-mikro7/FPGA_Based_OFDM_Transceiver/RTL_SYNC_PHASE5/vectors/bk_conj_fft512_rom.txt",
+  "term2_nonzero_range": [
+    55,
+    181
+  ],
+  "first_words": [
+    "00000000064f6c66",
+    "0379c3cdf082a607",
+    "e7d47be404b7c1d4"
+  ],
+  "last_words": [
+    "eebc83c516074cc7",
+    "182b841c04b7c1d4",
+    "fc863c33f082a607"
+  ],
+  "method_note": "PYTHON_MIRROR. The C m_seq/gold_seq generators are LFSR + BPSK with deterministic outputs; the Python here is a line-for-line mirror. If a future regen requires bit-identity with FFTW float rounding, switch to instrumented-C dump (script docstring)."
+}

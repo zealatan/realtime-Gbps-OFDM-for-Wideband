@@ -1,0 +1,80 @@
+# =============================================================
+# RTL_SYNC_PHASE5 .gitignore
+# =============================================================
+
+# ---- Vivado / xsim build artifacts (regeneratable) ----
+.Xil/
+.cache/
+*.jou
+*.pb
+*.wdb
+*.str
+*.bak
+
+# Vivado run-time logs at repo root
+vivado*.log
+vivado*.jou
+xvhdl.log
+xvhdl.pb
+xvlog.log
+xvlog.pb
+xelab.log
+xelab.pb
+xsim.log
+xsim.dir/
+
+# Backup files
+*.backup.log
+*.backup.jou
+
+# ---- Vivado/xsim generated trees ----
+vivado_xsim/logs/
+vivado_xsim/DSP_Rx.gen/
+vivado_xsim/xsim_work/
+vivado_xsim/.Xil/
+vivado_xsim/reports/*.txt
+vivado_xsim/reports/*.html
+vivado_xsim/reports/*.csv
+# Keep tcl scripts + windows runner + a couple of reference reports:
+!vivado_xsim/tcl/
+!vivado_xsim/windows/
+!vivado_xsim/scripts/
+!vivado_xsim/config/
+!vivado_xsim/README.md
+
+# ---- Simulation output (regeneratable) ----
+sim_out/
+*.vvp
+*.vcd
+*.fst
+
+# ---- Pre-compiled simulation libraries ----
+xsim_simlib/
+
+# ---- Generated dashboards (recreated by scripts/gen_dashboards.py) ----
+p5_status_kpi_dashboard.html
+p5_issue_tracker.html
+
+# ---- HIL agent state (CI / runtime data) ----
+hil/agent_fsm/latest/
+hil/agent_fsm/archive/
+
+# ---- Zone.Identifier (Windows ADS) ----
+*:Zone.Identifier
+
+# ---- Vitis (optional, often huge) ----
+vitis/
+
+# ---- Editor / OS ----
+.DS_Store
+Thumbs.db
+*.swp
+*~
+.vscode/
+.idea/
+
+# ---- Python ----
+__pycache__/
+*.pyc
+*.pyo
+.pytest_cache/

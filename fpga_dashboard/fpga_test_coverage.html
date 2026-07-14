@@ -1,0 +1,168 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<title>FPGA test coverage — HW (L6) &amp; RFDC bring-up (reset 2026-06-19)</title>
+<style>
+  :root {
+    --green-soft:#86efac; --yellow:#fbbf24; --red:#ef4444; --gray:#9ca3af; --purple:#c084fc;
+    --bg:#0f172a; --bg-soft:#1e293b; --bg-soft2:#0b1224;
+    --fg:#e2e8f0; --fg-mute:#94a3b8; --border:#334155;
+  }
+  html,body{margin:0;padding:0;background:var(--bg);color:var(--fg);font:14px/1.5 -apple-system,"Segoe UI",system-ui,sans-serif;}
+  header{padding:24px 36px 12px;border-bottom:1px solid var(--border);}
+  h1{margin:0 0 4px;font-size:22px;}
+  h2{margin:32px 0 8px;font-size:17px;color:var(--fg);display:flex;align-items:center;gap:10px;}
+  h2::after{content:"";flex:1;height:1px;background:var(--border);}
+  .subtitle{color:var(--fg-mute);font-size:13px;}
+  main{padding:24px 36px 80px;max-width:1280px;margin:0 auto;}
+  .toc{font-size:12px;color:var(--fg-mute);margin:8px 0 16px;}
+  .toc a{color:var(--purple);text-decoration:none;margin-right:12px;}
+  table{border-collapse:collapse;width:100%;margin:8px 0 16px;background:var(--bg-soft);border:1px solid var(--border);border-radius:6px;overflow:hidden;}
+  th,td{padding:8px 12px;text-align:left;vertical-align:top;border-bottom:1px solid var(--border);font-size:13px;}
+  th{background:var(--bg-soft2);color:var(--fg-mute);font-weight:600;}
+  tr:last-child td{border-bottom:none;}
+  .mute{color:var(--fg-mute);}
+  .center{text-align:center;}
+  code{font:12px/1.4 ui-monospace,"JetBrains Mono",Consolas,monospace;background:var(--bg-soft2);padding:1px 6px;border-radius:4px;color:#cbd5e1;}
+  td.cov-pending{background:rgba(148,163,184,0.08);color:var(--fg-mute);text-align:center;}
+  .callout{border-left:3px solid var(--yellow);background:rgba(251,191,36,0.08);padding:10px 14px;margin:12px 0;border-radius:0 6px 6px 0;}
+  .callout b{color:var(--yellow);}
+  .callout a{color:var(--yellow);}
+  .stage-num{font-family:ui-monospace,Consolas,monospace;font-size:11px;color:var(--purple);font-weight:600;}
+</style>
+</head>
+<body>
+
+<header>
+  <h1>FPGA test — HW (L6) coverage &amp; RFDC bring-up gates</h1>
+  <div class="subtitle">Snapshot: 2026-06-19 &middot; <strong style="color:var(--yellow)">All cells reset to Not Verified.</strong> HW PC scope — bitstream deployment, RFDC bring-up, HIL, RF loopback. Sim coverage (L0–L5) lives in <code><a href="../rtl_dashboard/rtl_coverage.html" style="color:var(--purple);text-decoration:none">rtl_dashboard/rtl_coverage.html</a></code>.</div>
+  <div class="toc">
+    <a href="#stages">① RFDC bring-up stages</a>
+    <a href="#modules">② Module × HW gate</a>
+    <a href="#paths">③ Data path × HW</a>
+  </div>
+</header>
+
+<main>
+
+<!-- =========== TRANSCEIVER SILICON RESULTS (added 2026-06-29; scoped, non-destructive) =========== -->
+<section id="xcvr-silicon">
+  <h2 style="color:var(--green-soft)">★ OFDM transceiver — ZCU216 silicon results (digital)</h2>
+  <div class="callout" style="border-left-color:var(--green-soft);background:rgba(134,239,172,0.08);">
+    <b style="color:var(--green-soft)">Scoped status section (2026-06-29).</b> Added without clobbering the HW-owned
+    RFDC bring-up matrix below. Records what the <b>complete mode-selectable OFDM transceiver</b>
+    (<code>ofdm_transceiver_top</code> / <code>ofdm_xcvr_board_top</code>) has achieved on
+    <b style="color:var(--green-soft)">ZCU216 silicon</b> over the digital (DDR/loopback) datapath.
+    Mode <code>mode[1:0]</code> = TX/RX/LOOPBACK · <code>mod_sel[1:0]</code> = QPSK/16/64/256-QAM.
+  </div>
+  <table>
+    <thead><tr>
+      <th>What was verified</th><th class="center">Where</th><th class="center">Metric</th><th class="center">Result</th>
+    </tr></thead>
+    <tbody>
+      <tr><td>Full RX chain at full rate (sync→FFT→CE→EQ→demod)</td><td class="center">ZCU216 silicon</td><td class="center">BER @ 187.5 MHz</td><td class="center" style="background:rgba(134,239,172,.16);color:#86efac;font-weight:600">0</td></tr>
+      <tr><td>Mode-selectable transceiver, 3 modes (TX / RX / LOOPBACK)</td><td class="center">ZCU216 silicon</td><td class="center">BER</td><td class="center" style="background:rgba(134,239,172,.16);color:#86efac;font-weight:600">0 (all 3)</td></tr>
+      <tr><td>Multi-frame streaming</td><td class="center">ZCU216 silicon</td><td class="center">frames BER=0</td><td class="center" style="background:rgba(134,239,172,.16);color:#86efac;font-weight:600">5 / 5</td></tr>
+      <tr><td>Timing closure</td><td class="center">impl (locked part)</td><td class="center">@ 187.5 MHz</td><td class="center" style="background:rgba(134,239,172,.16);color:#86efac;font-weight:600">MET</td></tr>
+      <tr><td>On-chip BER counter readout</td><td class="center">Vitis firmware</td><td class="center">long-run</td><td class="center" style="background:rgba(134,239,172,.16);color:#86efac;font-weight:600">0 errors</td></tr>
+      <tr><td>RF DAC→ADC analog loopback (C2R mixer bug)</td><td class="center">ZCU216 RF</td><td class="center">demod</td><td class="center" style="background:rgba(251,191,36,.14);color:var(--yellow)">FIXED on silicon</td></tr>
+      <tr><td>RF analog loopback residual</td><td class="center">ZCU216 RF</td><td class="center">root cause</td><td class="center" style="background:rgba(251,191,36,.14);color:var(--yellow)">degraded SMA cable — physical debug</td></tr>
+    </tbody>
+  </table>
+  <p class="mute" style="font-size:12px;">Sim (L0–L5) coverage + 4-modulation BER=0 matrix: <a href="../rtl_dashboard/rtl_coverage.html" style="color:var(--green-soft);">rtl_dashboard/rtl_coverage.html</a>. Block diagram: <a href="../docs/transceiver_block_diagram.html" style="color:var(--green-soft);">docs/transceiver_block_diagram.html</a>.</p>
+</section>
+
+<hr style="border:none;border-top:1px solid var(--border);margin:30px 0;">
+
+<div class="callout">
+  <b>Reset notice:</b> 이전 PHASE3/4/5 HW 결과 모두 무효화. 모든 셀 <code>—</code> (pending). HW 버그 목록: <a href="fpga_issues.html">fpga_issues.html</a> · HW KPI: <a href="fpga_status.html">fpga_status.html</a>
+</div>
+
+<!-- ===================== ① ===================== -->
+<section id="stages">
+  <h2>① RFDC bring-up gate sequence (hub Rule 3 순서)</h2>
+  <p class="mute">"매 단계가 통과해야 다음으로 넘어간다" 규칙. 한 단계라도 깨지면 그 단계로 돌아감.</p>
+  <table>
+    <thead><tr>
+      <th style="width:5%;">#</th>
+      <th style="width:25%;">Stage</th>
+      <th style="width:40%;">검증 내용</th>
+      <th style="width:15%;">Gate name</th>
+      <th>상태</th>
+    </tr></thead>
+    <tbody>
+      <tr><td class="stage-num">S0</td><td>PS-only RFDC</td><td>RFDC ADC/DAC tile init. PS-only loopback (no PL). IQ sample capture sanity check.</td><td><code>HW-RFDC-PS</code></td><td class="mute">— pending</td></tr>
+      <tr><td class="stage-num">S1</td><td>IQ sign / bin check</td><td>Known tone in, expected I/Q polarity + FFT bin position. Confirms DC offset, gain, mixer NCO.</td><td><code>HW-IQ-BIN</code></td><td class="mute">— pending</td></tr>
+      <tr><td class="stage-num">S2</td><td>PL BYPASS</td><td>RFDC AXI-S → PL passthrough → S2MM DDR. No DUT. Confirms BD wiring, clock domains, DMA path.</td><td><code>HW-PL-BYPASS</code></td><td class="mute">— pending</td></tr>
+      <tr><td class="stage-num">S3</td><td>DDR TX / RX</td><td>Host → DDR → DAC playback; ADC → DDR → host capture. drop=0 over N seconds.</td><td><code>HW-DDR-TXRX</code></td><td class="mute">— pending</td></tr>
+      <tr><td class="stage-num">S4</td><td>SYNC DUT insertion</td><td>BYPASS swap → real synchronizer DUT. Same DDR-driven stim, host compares output to sim golden.</td><td><code>HW-SYNC-DUT</code></td><td class="mute">— pending</td></tr>
+      <tr><td class="stage-num">S5</td><td>RF loopback stability</td><td>Long run (hours), drop=0, frame-found rate consistent with sim. Power/thermal stable.</td><td><code>HW-RF-LOOP</code></td><td class="mute">— pending</td></tr>
+    </tbody>
+  </table>
+</section>
+
+<!-- ===================== ② ===================== -->
+<section id="modules">
+  <h2>② Module × HW gate 매트릭스 (L6)</h2>
+  <p class="mute">RTL 모듈이 실제 board 에서 동작 확인된 단계. L0–L5 시뮬은 <a href="../rtl_dashboard/rtl_coverage.html" style="color:var(--purple);text-decoration:none">rtl_coverage.html</a> 참조.</p>
+  <table>
+    <thead><tr>
+      <th>모듈</th>
+      <th class="center">S0 PS</th>
+      <th class="center">S1 IQ</th>
+      <th class="center">S2 BYPASS</th>
+      <th class="center">S3 DDR</th>
+      <th class="center">S4 DUT</th>
+      <th class="center">S5 RF</th>
+      <th>비고</th>
+    </tr></thead>
+    <tbody>
+      <tr><td><code>RFDC tile + clocking</code></td><td class="cov-pending">—</td><td class="cov-pending">—</td><td class="cov-pending">—</td><td class="cov-pending">—</td><td class="cov-pending">—</td><td class="cov-pending">—</td><td class="mute">PS init, mixer NCO</td></tr>
+      <tr><td><code>AXI DMA (MM2S + S2MM)</code></td><td class="cov-pending">—</td><td class="cov-pending">—</td><td class="cov-pending">—</td><td class="cov-pending">—</td><td class="cov-pending">—</td><td class="cov-pending">—</td><td class="mute">DDR &harr; PL bridge</td></tr>
+      <tr><td><code>phase3_axi_lite_regs</code></td><td class="cov-pending">—</td><td class="cov-pending">—</td><td class="cov-pending">—</td><td class="cov-pending">—</td><td class="cov-pending">—</td><td class="cov-pending">—</td><td class="mute">AXI-Lite ctrl/status</td></tr>
+      <tr><td><code>phase3_sync_axis_dma_wrapper</code> (top)</td><td class="cov-pending">—</td><td class="cov-pending">—</td><td class="cov-pending">—</td><td class="cov-pending">—</td><td class="cov-pending">—</td><td class="cov-pending">—</td><td class="mute"></td></tr>
+      <tr><td><code>phase3_sync_top</code> (algorithm DUT)</td><td class="cov-pending">—</td><td class="cov-pending">—</td><td class="cov-pending">—</td><td class="cov-pending">—</td><td class="cov-pending">—</td><td class="cov-pending">—</td><td class="mute"></td></tr>
+      <tr><td><code>frame_detector + frac_cfo</code></td><td class="cov-pending">—</td><td class="cov-pending">—</td><td class="cov-pending">—</td><td class="cov-pending">—</td><td class="cov-pending">—</td><td class="cov-pending">—</td><td class="mute">front-end chain</td></tr>
+      <tr><td><code>meyr_cfo_top + B[k] ROM</code></td><td class="cov-pending">—</td><td class="cov-pending">—</td><td class="cov-pending">—</td><td class="cov-pending">—</td><td class="cov-pending">—</td><td class="cov-pending">—</td><td class="mute">integer CFO back-end</td></tr>
+      <tr><td><code>rotator (NCO mixer)</code></td><td class="cov-pending">—</td><td class="cov-pending">—</td><td class="cov-pending">—</td><td class="cov-pending">—</td><td class="cov-pending">—</td><td class="cov-pending">—</td><td class="mute">int CFO applied</td></tr>
+    </tbody>
+  </table>
+</section>
+
+<!-- ===================== ③ ===================== -->
+<section id="paths">
+  <h2>③ Data path × HW gate (top-down)</h2>
+  <table>
+    <thead><tr>
+      <th>#</th><th>Path</th>
+      <th class="center">S0</th><th class="center">S1</th><th class="center">S2</th>
+      <th class="center">S3</th><th class="center">S4</th><th class="center">S5</th>
+      <th>현 상태</th>
+    </tr></thead>
+    <tbody>
+      <tr><td>1</td><td>RFDC ADC → AXI-S → DDR (capture)</td><td class="cov-pending">—</td><td class="cov-pending">—</td><td class="cov-pending">—</td><td class="cov-pending">—</td><td class="cov-pending">—</td><td class="cov-pending">—</td><td class="mute">pending</td></tr>
+      <tr><td>2</td><td>DDR → AXI-S → RFDC DAC (playback)</td><td class="cov-pending">—</td><td class="cov-pending">—</td><td class="cov-pending">—</td><td class="cov-pending">—</td><td class="cov-pending">—</td><td class="cov-pending">—</td><td class="mute">pending</td></tr>
+      <tr><td>3</td><td>Host → AXI-Lite → regs → ctrl/status</td><td class="cov-pending">—</td><td class="cov-pending">—</td><td class="cov-pending">—</td><td class="cov-pending">—</td><td class="cov-pending">—</td><td class="cov-pending">—</td><td class="mute">pending</td></tr>
+      <tr><td>4</td><td>S_AXIS → wrapper → frame_detector → frac_cfo</td><td class="cov-pending">—</td><td class="cov-pending">—</td><td class="cov-pending">—</td><td class="cov-pending">—</td><td class="cov-pending">—</td><td class="cov-pending">—</td><td class="mute">pending</td></tr>
+      <tr><td>5</td><td>frac → meyr_cfo_top → int_cfo latch → rotator</td><td class="cov-pending">—</td><td class="cov-pending">—</td><td class="cov-pending">—</td><td class="cov-pending">—</td><td class="cov-pending">—</td><td class="cov-pending">—</td><td class="mute">pending</td></tr>
+      <tr><td>6</td><td>rotator → M_AXIS → S2MM → host capture</td><td class="cov-pending">—</td><td class="cov-pending">—</td><td class="cov-pending">—</td><td class="cov-pending">—</td><td class="cov-pending">—</td><td class="cov-pending">—</td><td class="mute">pending</td></tr>
+    </tbody>
+  </table>
+</section>
+
+<section>
+  <h2>참고 — 관련 dashboards</h2>
+  <ul style="font-size:13px;line-height:1.8;">
+    <li><a href="../zcu216_project_management_hub.html" style="color:var(--purple);">../zcu216_project_management_hub.html</a> &mdash; project hub</li>
+    <li><a href="../current_status.html" style="color:var(--purple);">../current_status.html</a> &mdash; landing</li>
+    <li><a href="fpga_status.html" style="color:var(--purple);">fpga_status.html</a> &mdash; HW KPIs</li>
+    <li><a href="fpga_issues.html" style="color:var(--purple);">fpga_issues.html</a> &mdash; HW bugs (8 open)</li>
+    <li><a href="../rtl_dashboard/rtl_coverage.html" style="color:var(--purple);">../rtl_dashboard/rtl_coverage.html</a> &mdash; sim (L0–L5) coverage</li>
+    <li><a href="../Verification_plan_zcu216.html" style="color:var(--purple);">../Verification_plan_zcu216.html</a> &mdash; frozen plan</li>
+  </ul>
+</section>
+
+</main>
+</body>
+</html>

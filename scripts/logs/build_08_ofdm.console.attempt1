@@ -1,0 +1,131 @@
+
+****** Vivado v2021.1_AR76780 (64-bit)
+  **** SW Build 3247384 on Thu Jun 10 19:36:07 MDT 2021
+  **** IP Build 3246043 on Fri Jun 11 00:30:35 MDT 2021
+    ** Copyright 1986-2021 Xilinx, Inc. All Rights Reserved.
+
+source scripts/build_08_ofdm.tcl
+# set REPO        /home/dsp-mikro7/FPGA_Based_OFDM_Transceiver
+# set XPR         $REPO/hardware/generated/08_rfdc_capture/zcu216_rfdc_capture.xpr
+# set HEX_SRC     $REPO/RTL_SYNC_PHASE5/golden/rf_loopback/ofdm_dac_fckp0.hex
+# set RTL_DIR     $REPO/hardware/rtl
+# set RTL_V       $RTL_DIR/zcu216_dac_tone_axis.v
+# set HEX_NAME    ofdm_dac_fckp0.hex
+# set OOC_RUN     system_dac_tone_0_synth_1
+# set OOC_RUN_DIR $REPO/hardware/generated/08_rfdc_capture/zcu216_rfdc_capture.runs/$OOC_RUN
+# proc fail {msg} {
+#     puts "BUILD08_OFDM: FAIL"
+#     puts "BUILD08_OFDM: $msg"
+#     exit 1
+# }
+# if {![file exists $HEX_SRC]} { fail "hex source not found: $HEX_SRC" }
+# if {![file exists $XPR]}     { fail "project not found: $XPR" }
+# if {![file exists $RTL_V]}   { fail "rtl not found: $RTL_V" }
+# set HEX_IN_RTL $RTL_DIR/$HEX_NAME
+# file copy -force $HEX_SRC $HEX_IN_RTL
+# puts "BUILD08_OFDM: copied hex -> $HEX_IN_RTL"
+BUILD08_OFDM: copied hex -> /home/dsp-mikro7/FPGA_Based_OFDM_Transceiver/hardware/rtl/ofdm_dac_fckp0.hex
+# open_project $XPR
+Scanning sources...
+Finished scanning sources
+INFO: [IP_Flow 19-234] Refreshing IP repositories
+INFO: [IP_Flow 19-1704] No user IP repositories specified
+INFO: [IP_Flow 19-2313] Loaded Vivado IP repository '/opt/Xilinx/Vivado/2021.1/patches/AR76780_Vivado_2021_1_preliminary_rev1/vivado/data/ip'.
+INFO: [IP_Flow 19-2313] Loaded Vivado IP repository '/opt/Xilinx/Vivado/2021.1/data/ip'.
+# set v_files [get_files -quiet -all *zcu216_dac_tone_axis.v]
+# puts "BUILD08_OFDM: dac_tone .v files seen by project: $v_files"
+BUILD08_OFDM: dac_tone .v files seen by project: /home/dsp-mikro7/FPGA_Based_OFDM_Transceiver/hardware/rtl/zcu216_dac_tone_axis.v
+# set uses_rtl_v 0
+# foreach f $v_files {
+#     if {[string match *hardware/rtl/zcu216_dac_tone_axis.v $f]} { set uses_rtl_v 1 }
+# }
+# if {!$uses_rtl_v} {
+#     puts "BUILD08_OFDM: WARNING dac_tone source is not the rtl/ file; re-adding."
+# }
+# if {[llength [get_files -quiet $HEX_NAME]] == 0 && \
+#     [llength [get_files -quiet $HEX_IN_RTL]] == 0} {
+#     catch { add_files -norecurse -fileset sources_1 $HEX_IN_RTL }
+# }
+# catch {
+#     set hexf [get_files -quiet $HEX_IN_RTL]
+#     if {[llength $hexf]} {
+#         set_property file_type {Memory Initialization Files} $hexf
+#         set_property used_in_synthesis true  $hexf
+#         set_property used_in_simulation true $hexf
+#         puts "BUILD08_OFDM: registered hex as Memory Init source: $hexf"
+#     }
+# }
+BUILD08_OFDM: registered hex as Memory Init source: /home/dsp-mikro7/FPGA_Based_OFDM_Transceiver/hardware/rtl/ofdm_dac_fckp0.hex
+# catch {
+#     set inc [get_property include_dirs [get_filesets sources_1]]
+#     if {[lsearch -exact $inc $RTL_DIR] < 0} {
+#         lappend inc $RTL_DIR
+#         set_property include_dirs $inc [get_filesets sources_1]
+#         puts "BUILD08_OFDM: added include_dir $RTL_DIR to sources_1"
+#     }
+# }
+BUILD08_OFDM: added include_dir /home/dsp-mikro7/FPGA_Based_OFDM_Transceiver/hardware/rtl to sources_1
+# catch { reset_run $OOC_RUN }
+# puts "BUILD08_OFDM: reset OOC run $OOC_RUN"
+BUILD08_OFDM: reset OOC run system_dac_tone_0_synth_1
+# file mkdir $OOC_RUN_DIR
+# file copy -force $HEX_SRC $OOC_RUN_DIR/$HEX_NAME
+# puts "BUILD08_OFDM: copied hex -> $OOC_RUN_DIR/$HEX_NAME"
+BUILD08_OFDM: copied hex -> /home/dsp-mikro7/FPGA_Based_OFDM_Transceiver/hardware/generated/08_rfdc_capture/zcu216_rfdc_capture.runs/system_dac_tone_0_synth_1/ofdm_dac_fckp0.hex
+# catch { reset_run synth_1 }
+# catch { reset_run impl_1 }
+# launch_runs $OOC_RUN -jobs 8
+[Wed Jun 24 15:42:08 2026] Launched system_dac_tone_0_synth_1...
+Run output will be captured here: /home/dsp-mikro7/FPGA_Based_OFDM_Transceiver/hardware/generated/08_rfdc_capture/zcu216_rfdc_capture.runs/system_dac_tone_0_synth_1/runme.log
+# wait_on_run $OOC_RUN
+[Wed Jun 24 15:42:08 2026] Waiting for system_dac_tone_0_synth_1 to finish...
+
+*** Running vivado
+    with args -log system_dac_tone_0.vds -m64 -product Vivado -mode batch -messageDb vivado.pb -notrace -source system_dac_tone_0.tcl
+
+
+****** Vivado v2021.1_AR76780 (64-bit)
+  **** SW Build 3247384 on Thu Jun 10 19:36:07 MDT 2021
+  **** IP Build 3246043 on Fri Jun 11 00:30:35 MDT 2021
+    ** Copyright 1986-2021 Xilinx, Inc. All Rights Reserved.
+
+source system_dac_tone_0.tcl -notrace
+INFO: [IP_Flow 19-234] Refreshing IP repositories
+INFO: [IP_Flow 19-1704] No user IP repositories specified
+INFO: [IP_Flow 19-2313] Loaded Vivado IP repository '/opt/Xilinx/Vivado/2021.1/patches/AR76780_Vivado_2021_1_preliminary_rev1/vivado/data/ip'.
+INFO: [IP_Flow 19-2313] Loaded Vivado IP repository '/opt/Xilinx/Vivado/2021.1/data/ip'.
+INFO: [IP_Flow 19-4838] Using cached IP synthesis design for IP system_dac_tone_0, cache-ID = 7802f64bf3e47d09.
+INFO: [Common 17-206] Exiting Vivado at Wed Jun 24 15:42:16 2026...
+[Wed Jun 24 15:42:26 2026] system_dac_tone_0_synth_1 finished
+wait_on_run: Time (s): cpu = 00:00:09 ; elapsed = 00:00:18 . Memory (MB): peak = 2901.781 ; gain = 0.000 ; free physical = 17082 ; free virtual = 28188
+# set ooc_status [get_property STATUS  [get_runs $OOC_RUN]]
+# set ooc_prog   [get_property PROGRESS [get_runs $OOC_RUN]]
+# puts "BUILD08_OFDM: OOC run status=$ooc_status progress=$ooc_prog"
+BUILD08_OFDM: OOC run status=synth_design Complete! progress=100%
+# if {$ooc_prog ne "100%"} { fail "OOC dac_tone synth did not complete ($ooc_status)" }
+# catch { file copy -force $HEX_SRC $OOC_RUN_DIR/$HEX_NAME }
+# launch_runs synth_1 -jobs 8
+[Wed Jun 24 15:42:28 2026] Launched synth_1...
+Run output will be captured here: /home/dsp-mikro7/FPGA_Based_OFDM_Transceiver/hardware/generated/08_rfdc_capture/zcu216_rfdc_capture.runs/synth_1/runme.log
+# wait_on_run synth_1
+[Wed Jun 24 15:42:28 2026] Waiting for synth_1 to finish...
+
+*** Running vivado
+    with args -log system_wrapper.vds -m64 -product Vivado -mode batch -messageDb vivado.pb -notrace -source system_wrapper.tcl
+
+
+****** Vivado v2021.1_AR76780 (64-bit)
+  **** SW Build 3247384 on Thu Jun 10 19:36:07 MDT 2021
+  **** IP Build 3246043 on Fri Jun 11 00:30:35 MDT 2021
+    ** Copyright 1986-2021 Xilinx, Inc. All Rights Reserved.
+
+source system_wrapper.tcl -notrace
+INFO: [IP_Flow 19-234] Refreshing IP repositories
+INFO: [IP_Flow 19-1704] No user IP repositories specified
+INFO: [IP_Flow 19-2313] Loaded Vivado IP repository '/opt/Xilinx/Vivado/2021.1/patches/AR76780_Vivado_2021_1_preliminary_rev1/vivado/data/ip'.
+INFO: [IP_Flow 19-2313] Loaded Vivado IP repository '/opt/Xilinx/Vivado/2021.1/data/ip'.
+Command: synth_design -top system_wrapper -part xczu49dr-ffvf1760-2-e
+Starting synth_design
+Attempting to get a license for feature 'Synthesis' and/or device 'xczu49dr'
+INFO: [Common 17-349] Got license for feature 'Synthesis' and/or device 'xczu49dr'
+INFO: [Device 21-403] Loading part xczu49dr-ffvf1760-2-e

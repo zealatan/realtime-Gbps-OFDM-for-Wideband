@@ -1,0 +1,29 @@
+INFO: [VRFC 10-2263] Analyzing Verilog file "/home/zealatan/FPGA_Based_OFDM_Transceiver/SIM_VIVADO/common_defs.v" into library work
+INFO: [VRFC 10-2263] Analyzing Verilog file "/home/zealatan/FPGA_Based_OFDM_Transceiver/SIM_VIVADO/complex_mult.v" into library work
+INFO: [VRFC 10-311] analyzing module complex_mult
+INFO: [VRFC 10-2263] Analyzing Verilog file "/home/zealatan/FPGA_Based_OFDM_Transceiver/SIM_VIVADO/complex_to_mag_sq.v" into library work
+INFO: [VRFC 10-311] analyzing module complex_to_mag_sq
+INFO: [VRFC 10-2263] Analyzing Verilog file "/home/zealatan/FPGA_Based_OFDM_Transceiver/SIM_VIVADO/complex_to_mag.v" into library work
+INFO: [VRFC 10-311] analyzing module complex_to_mag
+INFO: [VRFC 10-2263] Analyzing Verilog file "/home/zealatan/FPGA_Based_OFDM_Transceiver/SIM_VIVADO/complex_multiplier.v" into library work
+INFO: [VRFC 10-311] analyzing module complex_multiplier
+INFO: [VRFC 10-2263] Analyzing Verilog file "/home/zealatan/FPGA_Based_OFDM_Transceiver/SIM_VIVADO/delay_sample.v" into library work
+INFO: [VRFC 10-311] analyzing module delay_sample
+INFO: [VRFC 10-2263] Analyzing Verilog file "/home/zealatan/FPGA_Based_OFDM_Transceiver/SIM_VIVADO/delayT.v" into library work
+INFO: [VRFC 10-311] analyzing module delayT
+INFO: [VRFC 10-2263] Analyzing Verilog file "/home/zealatan/FPGA_Based_OFDM_Transceiver/SIM_VIVADO/sample_power_sq.v" into library work
+INFO: [VRFC 10-311] analyzing module sample_power_sq
+INFO: [VRFC 10-2263] Analyzing Verilog file "/home/zealatan/FPGA_Based_OFDM_Transceiver/SIM_VIVADO/moving_avg_optimized.v" into library work
+INFO: [VRFC 10-311] analyzing module moving_avg_optimized
+INFO: [VRFC 10-2263] Analyzing Verilog file "/home/zealatan/FPGA_Based_OFDM_Transceiver/SIM_VIVADO/stage_mult.v" into library work
+INFO: [VRFC 10-311] analyzing module stage_mult
+INFO: [VRFC 10-2263] Analyzing Verilog file "/home/zealatan/FPGA_Based_OFDM_Transceiver/SIM_VIVADO/auto_corr.v" into library work
+INFO: [VRFC 10-311] analyzing module auto_corr
+INFO: [VRFC 10-2263] Analyzing Verilog file "/home/zealatan/FPGA_Based_OFDM_Transceiver/SIM_VIVADO/dma_wrapper.v" into library work
+INFO: [VRFC 10-311] analyzing module dma_wrapper
+INFO: [VRFC 10-2263] Analyzing Verilog file "/home/zealatan/FPGA_Based_OFDM_Transceiver/SIM_VIVADO/tb_dma_wrapper.v" into library work
+INFO: [VRFC 10-311] analyzing module tb_dma_wrapper
+INFO: [VRFC 10-2263] Analyzing Verilog file "/home/zealatan/FPGA_Based_OFDM_Transceiver/SIM_VIVADO/usrp2/ram_2port.v" into library work
+INFO: [VRFC 10-311] analyzing module ram_2port
+INFO: [VRFC 10-2263] Analyzing Verilog file "/home/zealatan/FPGA_Based_OFDM_Transceiver/SIM_VIVADO/usrp2/setting_reg.v" into library work
+INFO: [VRFC 10-311] analyzing module setting_reg

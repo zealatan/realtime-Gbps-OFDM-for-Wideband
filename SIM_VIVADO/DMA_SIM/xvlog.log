@@ -1,0 +1,58 @@
+INFO: [VRFC 10-2263] Analyzing SystemVerilog file "/home/zealatan/FPGA_Based_OFDM_Transceiver/SIM_VIVADO/DMA_SIM/dma_ip/dut.v" into library work
+INFO: [VRFC 10-311] analyzing module dut
+INFO: [VRFC 10-2263] Analyzing SystemVerilog file "/home/zealatan/FPGA_Based_OFDM_Transceiver/SIM_VIVADO/DMA_SIM/dma_ip/dma_ip_control_s_axi.v" into library work
+INFO: [VRFC 10-311] analyzing module dma_ip_control_s_axi
+INFO: [VRFC 10-2263] Analyzing SystemVerilog file "/home/zealatan/FPGA_Based_OFDM_Transceiver/SIM_VIVADO/DMA_SIM/dma_ip/dma_ip_top.v" into library work
+INFO: [VRFC 10-311] analyzing module dma_ip_top
+INFO: [VRFC 10-2263] Analyzing SystemVerilog file "/home/zealatan/FPGA_Based_OFDM_Transceiver/SIM_VIVADO/DMA_SIM/dma_ip/dma_wrapper.v" into library work
+INFO: [VRFC 10-311] analyzing module dma_wrapper
+INFO: [VRFC 10-2263] Analyzing SystemVerilog file "/home/zealatan/FPGA_Based_OFDM_Transceiver/SIM_VIVADO/DMA_SIM/dma_ip/RDMA/hls_rdma.v" into library work
+INFO: [VRFC 10-311] analyzing module hls_rdma
+INFO: [VRFC 10-2263] Analyzing SystemVerilog file "/home/zealatan/FPGA_Based_OFDM_Transceiver/SIM_VIVADO/DMA_SIM/dma_ip/RDMA/hls_rdma_flow_control_loop_pipe_sequential_init.v" into library work
+INFO: [VRFC 10-311] analyzing module hls_rdma_flow_control_loop_pipe_sequential_init
+INFO: [VRFC 10-2263] Analyzing SystemVerilog file "/home/zealatan/FPGA_Based_OFDM_Transceiver/SIM_VIVADO/DMA_SIM/dma_ip/RDMA/hls_rdma_gmem_m_axi.v" into library work
+INFO: [VRFC 10-311] analyzing module hls_rdma_gmem_m_axi
+INFO: [VRFC 10-311] analyzing module hls_rdma_gmem_m_axi_load
+INFO: [VRFC 10-311] analyzing module hls_rdma_gmem_m_axi_store
+INFO: [VRFC 10-311] analyzing module hls_rdma_gmem_m_axi_flushManager
+INFO: [VRFC 10-311] analyzing module hls_rdma_gmem_m_axi_read
+INFO: [VRFC 10-311] analyzing module hls_rdma_gmem_m_axi_write
+INFO: [VRFC 10-311] analyzing module hls_rdma_gmem_m_axi_throttle
+INFO: [VRFC 10-311] analyzing module hls_rdma_gmem_m_axi_reg_slice
+INFO: [VRFC 10-311] analyzing module hls_rdma_gmem_m_axi_fifo
+INFO: [VRFC 10-311] analyzing module hls_rdma_gmem_m_axi_srl
+INFO: [VRFC 10-311] analyzing module hls_rdma_gmem_m_axi_mem
+INFO: [VRFC 10-2263] Analyzing SystemVerilog file "/home/zealatan/FPGA_Based_OFDM_Transceiver/SIM_VIVADO/DMA_SIM/dma_ip/RDMA/hls_rdma_hls_rdma_Pipeline_VITIS_LOOP_11_1.v" into library work
+INFO: [VRFC 10-311] analyzing module hls_rdma_hls_rdma_Pipeline_VITIS_LOOP_11_1
+INFO: [VRFC 10-2263] Analyzing SystemVerilog file "/home/zealatan/FPGA_Based_OFDM_Transceiver/SIM_VIVADO/DMA_SIM/dma_ip/WDMA/hls_wdma.v" into library work
+INFO: [VRFC 10-311] analyzing module hls_wdma
+INFO: [VRFC 10-2263] Analyzing SystemVerilog file "/home/zealatan/FPGA_Based_OFDM_Transceiver/SIM_VIVADO/DMA_SIM/dma_ip/WDMA/hls_wdma_flow_control_loop_pipe_sequential_init.v" into library work
+INFO: [VRFC 10-311] analyzing module hls_wdma_flow_control_loop_pipe_sequential_init
+INFO: [VRFC 10-2263] Analyzing SystemVerilog file "/home/zealatan/FPGA_Based_OFDM_Transceiver/SIM_VIVADO/DMA_SIM/dma_ip/WDMA/hls_wdma_gmem_m_axi.v" into library work
+INFO: [VRFC 10-311] analyzing module hls_wdma_gmem_m_axi
+INFO: [VRFC 10-311] analyzing module hls_wdma_gmem_m_axi_load
+INFO: [VRFC 10-311] analyzing module hls_wdma_gmem_m_axi_store
+INFO: [VRFC 10-311] analyzing module hls_wdma_gmem_m_axi_flushManager
+INFO: [VRFC 10-311] analyzing module hls_wdma_gmem_m_axi_read
+INFO: [VRFC 10-311] analyzing module hls_wdma_gmem_m_axi_write
+INFO: [VRFC 10-311] analyzing module hls_wdma_gmem_m_axi_throttle
+INFO: [VRFC 10-311] analyzing module hls_wdma_gmem_m_axi_reg_slice
+INFO: [VRFC 10-311] analyzing module hls_wdma_gmem_m_axi_fifo
+INFO: [VRFC 10-311] analyzing module hls_wdma_gmem_m_axi_srl
+INFO: [VRFC 10-311] analyzing module hls_wdma_gmem_m_axi_mem
+INFO: [VRFC 10-2263] Analyzing SystemVerilog file "/home/zealatan/FPGA_Based_OFDM_Transceiver/SIM_VIVADO/DMA_SIM/dma_ip/WDMA/hls_wdma_hls_wdma_Pipeline_VITIS_LOOP_11_1.v" into library work
+INFO: [VRFC 10-311] analyzing module hls_wdma_hls_wdma_Pipeline_VITIS_LOOP_11_1
+INFO: [VRFC 10-2263] Analyzing SystemVerilog file "/home/zealatan/FPGA_Based_OFDM_Transceiver/SIM_VIVADO/DMA_SIM/peripheral/skid_buffer.v" into library work
+INFO: [VRFC 10-311] analyzing module skid_buffer
+INFO: [VRFC 10-2263] Analyzing SystemVerilog file "/home/zealatan/FPGA_Based_OFDM_Transceiver/SIM_VIVADO/DMA_SIM/peripheral/sync_fifo.v" into library work
+INFO: [VRFC 10-311] analyzing module sync_fifo
+INFO: [VRFC 10-2263] Analyzing SystemVerilog file "/home/zealatan/FPGA_Based_OFDM_Transceiver/SIM_VIVADO/DMA_SIM/testbench/axi_vip_v1_1/hdl/axi_vip_v1_1_vl_rfs.sv" into library work
+INFO: [VRFC 10-311] analyzing module axi_vip_v1_1_11_top
+INFO: [VRFC 10-2263] Analyzing SystemVerilog file "/home/zealatan/FPGA_Based_OFDM_Transceiver/SIM_VIVADO/DMA_SIM/testbench/control_dma_ip_vip.sv" into library work
+INFO: [VRFC 10-311] analyzing module control_dma_ip_vip
+INFO: [VRFC 10-2263] Analyzing SystemVerilog file "/home/zealatan/FPGA_Based_OFDM_Transceiver/SIM_VIVADO/DMA_SIM/testbench/control_dma_ip_vip_pkg.sv" into library work
+INFO: [VRFC 10-2263] Analyzing SystemVerilog file "/home/zealatan/FPGA_Based_OFDM_Transceiver/SIM_VIVADO/DMA_SIM/testbench/slv_m00_axi_vip.sv" into library work
+INFO: [VRFC 10-311] analyzing module slv_m00_axi_vip
+INFO: [VRFC 10-2263] Analyzing SystemVerilog file "/home/zealatan/FPGA_Based_OFDM_Transceiver/SIM_VIVADO/DMA_SIM/testbench/slv_m00_axi_vip_pkg.sv" into library work
+INFO: [VRFC 10-2263] Analyzing SystemVerilog file "/home/zealatan/FPGA_Based_OFDM_Transceiver/SIM_VIVADO/DMA_SIM/testbench/dma_ip_tb.sv" into library work
+INFO: [VRFC 10-311] analyzing module dma_ip_tb

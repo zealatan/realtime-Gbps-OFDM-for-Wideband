@@ -1,0 +1,4 @@
+timestamp=[2026-06-19 11:19:55], mode=PLATFORM_REPOSITORY_INIT, duration=0:00:00.016, duration_ms=16, data={}
+timestamp=[2026-06-19 11:20:25], mode=APP_CREATION, duration=0:00:01.969, duration_ms=1969, data={name=rfdc_capture, project_type=sdk, os=standalone, processor=cortex-a53, runtime=C/C++, platform=zcu216_rfdc_capture, application_type=application}
+timestamp=[2026-06-19 11:20:37], mode=PLATFORM_GENERATION, duration=0:00:11.035, duration_ms=11035, data={name=zcu216_rfdc_capture}
+timestamp=[2026-06-19 11:20:42], mode=BUILD, duration=0:00:00.423, duration_ms=423, data={name=rfdc_capture, configuration=Debug, clean_build=false}

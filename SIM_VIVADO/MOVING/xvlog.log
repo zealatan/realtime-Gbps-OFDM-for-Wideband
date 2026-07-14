@@ -1,0 +1,8 @@
+INFO: [VRFC 10-2263] Analyzing Verilog file "/home/zealatan/FPGA_Based_OFDM_Transceiver/SIM_VIVADO/MOVING/moving_avg_optimized.v" into library work
+INFO: [VRFC 10-311] analyzing module moving_avg_optimized
+INFO: [VRFC 10-2263] Analyzing Verilog file "/home/zealatan/FPGA_Based_OFDM_Transceiver/SIM_VIVADO/MOVING/tb_moving_avg.v" into library work
+INFO: [VRFC 10-311] analyzing module tb_moving_avg
+INFO: [VRFC 10-2263] Analyzing Verilog file "/home/zealatan/FPGA_Based_OFDM_Transceiver/SIM_VIVADO/MOVING/usrp2/ram_2port.v" into library work
+INFO: [VRFC 10-311] analyzing module ram_2port
+INFO: [VRFC 10-2263] Analyzing Verilog file "/home/zealatan/FPGA_Based_OFDM_Transceiver/SIM_VIVADO/MOVING/usrp2/setting_reg.v" into library work
+INFO: [VRFC 10-311] analyzing module setting_reg

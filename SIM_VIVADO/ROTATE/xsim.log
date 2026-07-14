@@ -1,0 +1,142 @@
+#-----------------------------------------------------------
+# xsim v2022.2 (64-bit)
+# SW Build 3671981 on Fri Oct 14 04:59:54 MDT 2022
+# IP Build 3669848 on Fri Oct 14 08:30:02 MDT 2022
+# Start of session at: Fri Apr 17 14:37:09 2026
+# Process ID: 35018
+# Current directory: /home/zealatan/FPGA_Based_OFDM_Transceiver/SIM_VIVADO/ROTATE
+# Command line: xsim -mode tcl -source {xsim.dir/tb_phase_rotator_9b/xsim_script.tcl}
+# Log file: /home/zealatan/FPGA_Based_OFDM_Transceiver/SIM_VIVADO/ROTATE/xsim.log
+# Journal file: /home/zealatan/FPGA_Based_OFDM_Transceiver/SIM_VIVADO/ROTATE/xsim.jou
+# Running On: DESKTOP-FAIRVEG, OS: Linux, CPU Frequency: 2495.999 MHz, CPU Physical cores: 6, Host memory: 8134 MB
+#-----------------------------------------------------------
+source xsim.dir/tb_phase_rotator_9b/xsim_script.tcl
+# xsim {tb_phase_rotator_9b} -autoloadwcfg -runall
+Time resolution is 1 ps
+run -all
+=== Case 1: constant complex input, small phase increment ===
+[OUT] t=175000, outI=2048000, outQ=4000
+[OUT] t=185000, outI=2048000, outQ=8000
+[OUT] t=195000, outI=2048000, outQ=12000
+[OUT] t=205000, outI=2048000, outQ=16000
+[OUT] t=215000, outI=2048000, outQ=20000
+[OUT] t=225000, outI=2048000, outQ=24000
+[OUT] t=235000, outI=2048000, outQ=28000
+[OUT] t=245000, outI=2048000, outQ=32000
+[OUT] t=255000, outI=2048000, outQ=36000
+[OUT] t=265000, outI=2048000, outQ=40000
+[OUT] t=275000, outI=2048000, outQ=44000
+[OUT] t=285000, outI=2047000, outQ=48000
+[OUT] t=295000, outI=2047000, outQ=52000
+[OUT] t=305000, outI=2047000, outQ=56000
+[OUT] t=315000, outI=2047000, outQ=60000
+[OUT] t=325000, outI=2047000, outQ=64000
+[OUT] t=335000, outI=2047000, outQ=68000
+[OUT] t=345000, outI=2047000, outQ=72000
+[OUT] t=355000, outI=2047000, outQ=76000
+[OUT] t=365000, outI=2046000, outQ=80000
+[OUT] t=375000, outI=2046000, outQ=84000
+[OUT] t=385000, outI=2046000, outQ=88000
+[OUT] t=395000, outI=2046000, outQ=92000
+[OUT] t=405000, outI=2046000, outQ=96000
+[OUT] t=415000, outI=2046000, outQ=100000
+[OUT] t=425000, outI=2045000, outQ=104000
+[OUT] t=435000, outI=2045000, outQ=108000
+[OUT] t=445000, outI=2045000, outQ=112000
+[OUT] t=455000, outI=2045000, outQ=116000
+[OUT] t=465000, outI=2044000, outQ=120000
+[OUT] t=475000, outI=2044000, outQ=124000
+[OUT] t=485000, outI=2044000, outQ=128000
+[OUT] t=495000, outI=2044000, outQ=132000
+[OUT] t=505000, outI=2043000, outQ=136000
+[OUT] t=515000, outI=2043000, outQ=140000
+[OUT] t=525000, outI=2043000, outQ=144000
+[OUT] t=535000, outI=2043000, outQ=148000
+[OUT] t=545000, outI=2042000, outQ=152000
+[OUT] t=555000, outI=2042000, outQ=156000
+[OUT] t=565000, outI=2042000, outQ=160000
+=== Case 2: constant complex input, larger phase increment ===
+[OUT] t=685000, outI=1952000, outQ=1196000
+[OUT] t=695000, outI=1943000, outQ=1211500
+[OUT] t=705000, outI=1933000, outQ=1226500
+[OUT] t=715000, outI=1924000, outQ=1242000
+[OUT] t=725000, outI=1914000, outQ=1257000
+[OUT] t=735000, outI=1904500, outQ=1271000
+[OUT] t=745000, outI=1894500, outQ=1286000
+[OUT] t=755000, outI=1884500, outQ=1301000
+[OUT] t=765000, outI=1873500, outQ=1315500
+[OUT] t=775000, outI=1863500, outQ=1330500
+[OUT] t=785000, outI=1852500, outQ=1345000
+[OUT] t=795000, outI=1843000, outQ=1359000
+[OUT] t=805000, outI=1832000, outQ=1373500
+[OUT] t=815000, outI=1821000, outQ=1388000
+[OUT] t=825000, outI=1810000, outQ=1402500
+[OUT] t=835000, outI=1799500, outQ=1416000
+[OUT] t=845000, outI=1788500, outQ=1430500
+[OUT] t=855000, outI=1776500, outQ=1444500
+[OUT] t=865000, outI=1766000, outQ=1458000
+[OUT] t=875000, outI=1754000, outQ=1472000
+[OUT] t=885000, outI=1742500, outQ=1485000
+[OUT] t=895000, outI=1730500, outQ=1499000
+[OUT] t=905000, outI=1719000, outQ=1512000
+[OUT] t=915000, outI=1707000, outQ=1526000
+[OUT] t=925000, outI=1695500, outQ=1539000
+[OUT] t=935000, outI=1682500, outQ=1552500
+[OUT] t=945000, outI=1671000, outQ=1565500
+[OUT] t=955000, outI=1658500, outQ=1578000
+[OUT] t=965000, outI=1646500, outQ=1592000
+[OUT] t=975000, outI=1634000, outQ=1604500
+[OUT] t=985000, outI=1621500, outQ=1617000
+[OUT] t=995000, outI=1609000, outQ=1629500
+[OUT] t=1005000, outI=1595500, outQ=1641500
+[OUT] t=1015000, outI=1583000, outQ=1654000
+[OUT] t=1025000, outI=1570500, outQ=1666500
+[OUT] t=1035000, outI=1557000, outQ=1678500
+[OUT] t=1045000, outI=1543500, outQ=1690500
+[OUT] t=1055000, outI=1531000, outQ=1703000
+[OUT] t=1065000, outI=1517500, outQ=1715000
+[OUT] t=1075000, outI=1504000, outQ=1727000
+=== Case 3: negative phase increment ===
+[OUT] t=1195000, outI=2506800, outQ=362700
+[OUT] t=1205000, outI=2508300, outQ=358500
+[OUT] t=1215000, outI=2508300, outQ=353400
+[OUT] t=1225000, outI=2509500, outQ=348000
+[OUT] t=1235000, outI=2509800, outQ=344100
+[OUT] t=1245000, outI=2511000, outQ=338700
+[OUT] t=1255000, outI=2511000, outQ=333600
+[OUT] t=1265000, outI=2512200, outQ=328200
+[OUT] t=1275000, outI=2512500, outQ=324300
+[OUT] t=1285000, outI=2513700, outQ=318900
+[OUT] t=1295000, outI=2513700, outQ=313800
+[OUT] t=1305000, outI=2513700, outQ=308700
+[OUT] t=1315000, outI=2515200, outQ=304500
+[OUT] t=1325000, outI=2515200, outQ=299400
+[OUT] t=1335000, outI=2516400, outQ=294000
+[OUT] t=1345000, outI=2516400, outQ=288900
+[OUT] t=1355000, outI=2516700, outQ=285000
+[OUT] t=1365000, outI=2517900, outQ=279600
+[OUT] t=1375000, outI=2517900, outQ=274500
+[OUT] t=1385000, outI=2519100, outQ=269100
+[OUT] t=1395000, outI=2519400, outQ=265200
+[OUT] t=1405000, outI=2519400, outQ=260100
+[OUT] t=1415000, outI=2520600, outQ=254700
+[OUT] t=1425000, outI=2520600, outQ=249600
+[OUT] t=1435000, outI=2520900, outQ=245700
+[OUT] t=1445000, outI=2522100, outQ=240300
+[OUT] t=1455000, outI=2522100, outQ=235200
+[OUT] t=1465000, outI=2522100, outQ=230100
+[OUT] t=1475000, outI=2523600, outQ=225900
+[OUT] t=1485000, outI=2523600, outQ=220800
+[OUT] t=1495000, outI=2523600, outQ=215700
+[OUT] t=1505000, outI=2524800, outQ=210300
+[OUT] t=1515000, outI=2524800, outQ=205200
+[OUT] t=1525000, outI=2525100, outQ=201300
+[OUT] t=1535000, outI=2526300, outQ=195900
+[OUT] t=1545000, outI=2526300, outQ=190800
+[OUT] t=1555000, outI=2526300, outQ=185700
+[OUT] t=1565000, outI=2526300, outQ=180600
+[OUT] t=1575000, outI=2527800, outQ=176400
+[OUT] t=1585000, outI=2527800, outQ=171300
+$finish called at time : 1745 ns : File "/home/zealatan/FPGA_Based_OFDM_Transceiver/SIM_VIVADO/ROTATE/tb_phase_rotator_9b.v" Line 141
+exit
+INFO: [Common 17-206] Exiting xsim at Fri Apr 17 14:37:15 2026...

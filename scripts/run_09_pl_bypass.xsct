@@ -1,0 +1,52 @@
+# S2 PL BYPASS: program the 09 bitstream + capture ELF, run, then JTAG-dump the
+# AXI DMA S2MM buffer (DDR 0x10000000) for offline FFT. Watch UART0 for
+# ZCU216_DMA: PASS S2MM markers.
+# Run: scripts/xsct_2021_compat.sh scripts/run_09_pl_bypass.xsct <label>
+
+set repo_root [file normalize [file join [file dirname [info script]] ..]]
+set label "run"
+if {[info exists argv] && [llength $argv] >= 1} { set label [lindex $argv 0] }
+
+set hw_dir   [file join $repo_root hardware generated 09_pl_bypass]
+set ws       [file join $repo_root software generated rfdc_capture_ws]
+set bit      [file join $hw_dir zcu216_rfdc_capture.runs impl_1 system_wrapper.bit]
+# Use the 09 project's psu_init (it configures AFIFM2 @ 0xFD380000 = the HP0
+# fabric port that the DMA writes through). The 08 ws psu_init lacks this, which
+# leaves HP0 unconfigured and hangs the S2MM MM-write.
+set psu_init [file join $hw_dir zcu216_rfdc_capture.gen sources_1 bd system ip system_zynq_ultra_ps_e_0_0 psu_init.tcl]
+set elf      [file join $ws rfdc_capture Debug rfdc_capture.elf]
+set tests_dir [file join $repo_root tests 08_rfdc_capture]
+file mkdir $tests_dir
+set dump [file join $tests_dir dma_$label.bin]
+
+foreach f [list $bit $psu_init $elf] {
+    if {![file exists $f]} { error "Missing prerequisite: $f" }
+}
+
+connect
+targets -set -nocase -filter {name =~ "*PSU*"}
+rst -system
+after 1000
+source $psu_init
+psu_init
+after 500
+fpga -file $bit
+after 500
+psu_ps_pl_isolation_removal
+psu_ps_pl_reset_config
+after 500
+
+targets -set -nocase -filter {name =~ "*A53*#0"}
+rst -processor -clear-registers
+dow $elf
+con
+puts "ZCU216_PLBYPASS: running; inspect UART0 for ZCU216_DMA: PASS S2MM"
+
+# Allow CLK104 setup, adc_cap capture, and the DMA S2MM capture to finish.
+after 14000
+
+# Dump the DMA S2MM DDR buffer: 8192 beats x 16 B = 131072 B = 32768 x 32-bit.
+targets -set -nocase -filter {name =~ "*A53*#0"}
+mrd -force -bin -file $dump 0x10000000 32768
+puts "ZCU216_PLBYPASS: DMA buffer dumped 0x10000000 -> $dump"
+puts "ZCU216_PLBYPASS: DONE"

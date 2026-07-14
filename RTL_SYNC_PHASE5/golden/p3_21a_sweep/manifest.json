@@ -1,0 +1,342 @@
+{
+  "date": "2026-06-19",
+  "spec_change": "NUM_DATA_BLOCKS 5 -> 12: slot is now 2 sync + 12 data = 14 OFDM symbols. FRAME_LEN 576 -> 4032; per-file length 704 -> 4160. Sync-region landmarks unchanged (peak_lag, frame_start).",
+  "cases": {
+    "j1_kp0": {
+      "group": "J1_integer_cfo",
+      "k_int": 0,
+      "frac_cfo": 0.0,
+      "file": "j1_kp0.mem",
+      "checks": {
+        "meyr_peak_index": 255,
+        "int_cfo": 0,
+        "int_cfo_word (real-FFT mode)": 0
+      },
+      "note": "behavioral DFT mode gives correct peak for |k_int|<=255"
+    },
+    "j1_kp1": {
+      "group": "J1_integer_cfo",
+      "k_int": 1,
+      "frac_cfo": 0.0,
+      "file": "j1_kp1.mem",
+      "checks": {
+        "meyr_peak_index": 256,
+        "int_cfo": 1,
+        "int_cfo_word (real-FFT mode)": -16777216
+      },
+      "note": "behavioral DFT mode gives correct peak for |k_int|<=255"
+    },
+    "j1_km1": {
+      "group": "J1_integer_cfo",
+      "k_int": -1,
+      "frac_cfo": 0.0,
+      "file": "j1_km1.mem",
+      "checks": {
+        "meyr_peak_index": 254,
+        "int_cfo": -1,
+        "int_cfo_word (real-FFT mode)": 16777216
+      },
+      "note": "behavioral DFT mode gives correct peak for |k_int|<=255"
+    },
+    "j1_kp2": {
+      "group": "J1_integer_cfo",
+      "k_int": 2,
+      "frac_cfo": 0.0,
+      "file": "j1_kp2.mem",
+      "checks": {
+        "meyr_peak_index": 257,
+        "int_cfo": 2,
+        "int_cfo_word (real-FFT mode)": -33554432
+      },
+      "note": "behavioral DFT mode gives correct peak for |k_int|<=255"
+    },
+    "j1_km2": {
+      "group": "J1_integer_cfo",
+      "k_int": -2,
+      "frac_cfo": 0.0,
+      "file": "j1_km2.mem",
+      "checks": {
+        "meyr_peak_index": 253,
+        "int_cfo": -2,
+        "int_cfo_word (real-FFT mode)": 33554432
+      },
+      "note": "behavioral DFT mode gives correct peak for |k_int|<=255"
+    },
+    "j1_kp4": {
+      "group": "J1_integer_cfo",
+      "k_int": 4,
+      "frac_cfo": 0.0,
+      "file": "j1_kp4.mem",
+      "checks": {
+        "meyr_peak_index": 259,
+        "int_cfo": 4,
+        "int_cfo_word (real-FFT mode)": -67108864
+      },
+      "note": "behavioral DFT mode gives correct peak for |k_int|<=255"
+    },
+    "j1_km4": {
+      "group": "J1_integer_cfo",
+      "k_int": -4,
+      "frac_cfo": 0.0,
+      "file": "j1_km4.mem",
+      "checks": {
+        "meyr_peak_index": 251,
+        "int_cfo": -4,
+        "int_cfo_word (real-FFT mode)": 67108864
+      },
+      "note": "behavioral DFT mode gives correct peak for |k_int|<=255"
+    },
+    "j1_kp8": {
+      "group": "J1_integer_cfo",
+      "k_int": 8,
+      "frac_cfo": 0.0,
+      "file": "j1_kp8.mem",
+      "checks": {
+        "meyr_peak_index": 263,
+        "int_cfo": 8,
+        "int_cfo_word (real-FFT mode)": -134217728
+      },
+      "note": "behavioral DFT mode gives correct peak for |k_int|<=255"
+    },
+    "j1_km8": {
+      "group": "J1_integer_cfo",
+      "k_int": -8,
+      "frac_cfo": 0.0,
+      "file": "j1_km8.mem",
+      "checks": {
+        "meyr_peak_index": 247,
+        "int_cfo": -8,
+        "int_cfo_word (real-FFT mode)": 134217728
+      },
+      "note": "behavioral DFT mode gives correct peak for |k_int|<=255"
+    },
+    "j1_kp12": {
+      "group": "J1_integer_cfo",
+      "k_int": 12,
+      "frac_cfo": 0.0,
+      "file": "j1_kp12.mem",
+      "checks": {
+        "meyr_peak_index": 267,
+        "int_cfo": 12,
+        "int_cfo_word (real-FFT mode)": -201326592
+      },
+      "note": "behavioral DFT mode gives correct peak for |k_int|<=255"
+    },
+    "j1_km12": {
+      "group": "J1_integer_cfo",
+      "k_int": -12,
+      "frac_cfo": 0.0,
+      "file": "j1_km12.mem",
+      "checks": {
+        "meyr_peak_index": 243,
+        "int_cfo": -12,
+        "int_cfo_word (real-FFT mode)": 201326592
+      },
+      "note": "behavioral DFT mode gives correct peak for |k_int|<=255"
+    },
+    "j1_kp16": {
+      "group": "J1_integer_cfo",
+      "k_int": 16,
+      "frac_cfo": 0.0,
+      "file": "j1_kp16.mem",
+      "checks": {
+        "meyr_peak_index": 271,
+        "int_cfo": 16,
+        "int_cfo_word (real-FFT mode)": -268435456
+      },
+      "note": "behavioral DFT mode gives correct peak for |k_int|<=255"
+    },
+    "j1_km16": {
+      "group": "J1_integer_cfo",
+      "k_int": -16,
+      "frac_cfo": 0.0,
+      "file": "j1_km16.mem",
+      "checks": {
+        "meyr_peak_index": 239,
+        "int_cfo": -16,
+        "int_cfo_word (real-FFT mode)": 268435456
+      },
+      "note": "behavioral DFT mode gives correct peak for |k_int|<=255"
+    },
+    "j2_frac_m045": {
+      "group": "J2_frac_cfo",
+      "k_int": 0,
+      "frac_cfo": -0.45,
+      "file": "j2_frac_m045.mem",
+      "checks": {
+        "frame_found": true,
+        "frac_cfo_valid": true,
+        "output_count": 4032,
+        "tlast_beat": 4031,
+        "frac_cfo_word_approx": -29491
+      },
+      "note": "full wrapper check; bypass FFT gives int_cfo=0 (correct for k_int=0)"
+    },
+    "j2_frac_m030": {
+      "group": "J2_frac_cfo",
+      "k_int": 0,
+      "frac_cfo": -0.3,
+      "file": "j2_frac_m030.mem",
+      "checks": {
+        "frame_found": true,
+        "frac_cfo_valid": true,
+        "output_count": 4032,
+        "tlast_beat": 4031,
+        "frac_cfo_word_approx": -19661
+      },
+      "note": "full wrapper check; bypass FFT gives int_cfo=0 (correct for k_int=0)"
+    },
+    "j2_frac_m015": {
+      "group": "J2_frac_cfo",
+      "k_int": 0,
+      "frac_cfo": -0.15,
+      "file": "j2_frac_m015.mem",
+      "checks": {
+        "frame_found": true,
+        "frac_cfo_valid": true,
+        "output_count": 4032,
+        "tlast_beat": 4031,
+        "frac_cfo_word_approx": -9830
+      },
+      "note": "full wrapper check; bypass FFT gives int_cfo=0 (correct for k_int=0)"
+    },
+    "j2_frac_p000": {
+      "group": "J2_frac_cfo",
+      "k_int": 0,
+      "frac_cfo": 0.0,
+      "file": "j2_frac_p000.mem",
+      "checks": {
+        "frame_found": true,
+        "frac_cfo_valid": true,
+        "output_count": 4032,
+        "tlast_beat": 4031,
+        "frac_cfo_word_approx": 0
+      },
+      "note": "full wrapper check; bypass FFT gives int_cfo=0 (correct for k_int=0)"
+    },
+    "j2_frac_p015": {
+      "group": "J2_frac_cfo",
+      "k_int": 0,
+      "frac_cfo": 0.15,
+      "file": "j2_frac_p015.mem",
+      "checks": {
+        "frame_found": true,
+        "frac_cfo_valid": true,
+        "output_count": 4032,
+        "tlast_beat": 4031,
+        "frac_cfo_word_approx": 9830
+      },
+      "note": "full wrapper check; bypass FFT gives int_cfo=0 (correct for k_int=0)"
+    },
+    "j2_frac_p030": {
+      "group": "J2_frac_cfo",
+      "k_int": 0,
+      "frac_cfo": 0.3,
+      "file": "j2_frac_p030.mem",
+      "checks": {
+        "frame_found": true,
+        "frac_cfo_valid": true,
+        "output_count": 4032,
+        "tlast_beat": 4031,
+        "frac_cfo_word_approx": 19661
+      },
+      "note": "full wrapper check; bypass FFT gives int_cfo=0 (correct for k_int=0)"
+    },
+    "j2_frac_p045": {
+      "group": "J2_frac_cfo",
+      "k_int": 0,
+      "frac_cfo": 0.45,
+      "file": "j2_frac_p045.mem",
+      "checks": {
+        "frame_found": true,
+        "frac_cfo_valid": true,
+        "output_count": 4032,
+        "tlast_beat": 4031,
+        "frac_cfo_word_approx": 29491
+      },
+      "note": "full wrapper check; bypass FFT gives int_cfo=0 (correct for k_int=0)"
+    },
+    "j3_kp16_fp045": {
+      "group": "J3_combined",
+      "k_int": 16,
+      "frac_cfo": 0.45,
+      "file": "j3_kp16_fp045.mem",
+      "checks": {
+        "frame_found": true,
+        "frac_cfo_valid": true,
+        "output_count": 4032,
+        "tlast_beat": 4031,
+        "frac_cfo_word_approx": 29491
+      },
+      "bypass_fft_limitation": "bypass FFT gives int_cfo=0 regardless of k_int=16; replay completes but integer CFO correction is not applied"
+    },
+    "j3_km16_fm045": {
+      "group": "J3_combined",
+      "k_int": -16,
+      "frac_cfo": -0.45,
+      "file": "j3_km16_fm045.mem",
+      "checks": {
+        "frame_found": true,
+        "frac_cfo_valid": true,
+        "output_count": 4032,
+        "tlast_beat": 4031,
+        "frac_cfo_word_approx": -29491
+      },
+      "bypass_fft_limitation": "bypass FFT gives int_cfo=0 regardless of k_int=-16; replay completes but integer CFO correction is not applied"
+    },
+    "j3_kp12_fm030": {
+      "group": "J3_combined",
+      "k_int": 12,
+      "frac_cfo": -0.3,
+      "file": "j3_kp12_fm030.mem",
+      "checks": {
+        "frame_found": true,
+        "frac_cfo_valid": true,
+        "output_count": 4032,
+        "tlast_beat": 4031,
+        "frac_cfo_word_approx": -19661
+      },
+      "bypass_fft_limitation": "bypass FFT gives int_cfo=0 regardless of k_int=12; replay completes but integer CFO correction is not applied"
+    },
+    "j3_km12_fp030": {
+      "group": "J3_combined",
+      "k_int": -12,
+      "frac_cfo": 0.3,
+      "file": "j3_km12_fp030.mem",
+      "checks": {
+        "frame_found": true,
+        "frac_cfo_valid": true,
+        "output_count": 4032,
+        "tlast_beat": 4031,
+        "frac_cfo_word_approx": 19661
+      },
+      "bypass_fft_limitation": "bypass FFT gives int_cfo=0 regardless of k_int=-12; replay completes but integer CFO correction is not applied"
+    }
+  },
+  "summary": {
+    "j1_count": 13,
+    "j2_count": 7,
+    "j3_count": 4,
+    "total": 24
+  },
+  "parameters": {
+    "NSC": 256,
+    "CP_LEN": 32,
+    "SYM_LEN": 288,
+    "NUM_SYNC": 2,
+    "NUM_DATA": 12,
+    "NUM_SYMBOLS": 14,
+    "FRAME_LEN": 4032,
+    "PRE_ZEROS": 64,
+    "POST_ZEROS": 64,
+    "TOTAL_LEN": 4160,
+    "amplitude": 3000.0,
+    "SEED": 12648430,
+    "center_meyr": 255
+  },
+  "invariants": {
+    "timing_metric_vs_cfo": "|P| = sum(|s[n+k]|^2 * exp(-j*2pi*eps)) for CP lag \u2192 |P| magnitude is invariant to both frac and integer CFO; frame detection always works",
+    "j1_meyr_mode": "behavioral DFT (USE_BEHAVIORAL_STUB=3); exact 256-pt DFT",
+    "j2j3_fft_mode": "bypass fft256_dual_symbol_frontend; int_cfo=0 always"
+  }
+}

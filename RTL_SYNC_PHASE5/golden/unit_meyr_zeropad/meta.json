@@ -1,0 +1,10 @@
+{
+  "module": "meyr_zeropad",
+  "N_LOG2": 4,
+  "N": 16,
+  "TWON": 32,
+  "NFRAMES": 2,
+  "stim_cycles": 78,
+  "golden_beats": 64,
+  "expected_beats_per_frame": 32
+}

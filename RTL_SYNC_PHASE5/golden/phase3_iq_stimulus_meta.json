@@ -1,0 +1,28 @@
+{
+  "nsamples_total": 4160,
+  "pre_zeros": 64,
+  "post_zeros": 64,
+  "nsc": 256,
+  "cp_len": 32,
+  "frame_len": 4032,
+  "num_sync_blocks": 2,
+  "num_data_blocks": 12,
+  "num_blocks_per_slot": 14,
+  "expected_frame_start": 41,
+  "expected_peak_index_auto": 23,
+  "expected_pss_start": 64,
+  "expected_sss_start": 352,
+  "expected_slot_start_approx": 64,
+  "expected_frac_cfo_offset": 0.05000000055877062,
+  "eps_frac": 0.05,
+  "integer_cfo": 0,
+  "amplitude_peak_per_component": 3000.0,
+  "noise_snr": "off",
+  "seed": 12648430,
+  "detection_ok": true,
+  "file_format": {
+    "f32": "binary little-endian float32, interleaved: I0 Q0 I1 Q1 ...",
+    "mem": "ASCII hex, one 32-bit word per line: {Q[15:0], I[15:0]}, signed clamp to int16 (same packing as RTL s_axis_tdata)"
+  },
+  "notes": "frame_start=41: first of 10 consecutive windows above threshold=40000.0 (wnd=25). peakIndexAuto=23: lag of CP/tail alignment relative to frameStart. slotStartIndex=64=peakIndexAuto+frameStart=PRE_ZEROS. fracfreqOffset\u2248+eps_frac=0.05 (CP autocorr phase encodes CFO)."
+}

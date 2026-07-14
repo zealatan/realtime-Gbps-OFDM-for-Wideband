@@ -1,0 +1,81 @@
+# Program the 10_digital_loopback PL image (DMA-free: dut_player -> DUT ->
+# dut_capture), run the baremetal ELF (run_digital_loopback), then JTAG-dump
+# capture_buf for offline bit-exact compare vs the RTL golden. Watch UART0
+# for ZCU216_DLOOP: markers.
+#   Run: scripts/xsct_2021_compat.sh scripts/run_10_digital_loopback.xsct <label>
+set repo_root [file normalize [file join [file dirname [info script]] ..]]
+set label "run"
+if {[info exists argv] && [llength $argv] >= 1} { set label [lindex $argv 0] }
+
+set hw_dir   [file join $repo_root hardware generated 10_digital_loopback]
+set ws       [file join $repo_root software generated rfdc_capture_ws]
+set bit      [file join $hw_dir zcu216_loopback.runs impl_1 system_wrapper.bit]
+# Use 10_loopback's OWN psu_init (extracted from its XSA). The 08 psu_init sets
+# HPM0 AFI_FS data width to 128-bit (0xFD615000 field = 0x2) which MISMATCHES this
+# 32-bit BD -> only offset-0 of each PL slave worked (data-lane mismatch). The 10
+# psu_init sets it to 32-bit (0x0), matching the BD, so all register offsets work.
+set psu_init [file join $hw_dir psu_init.tcl]
+set elf      [file join $ws rfdc_capture Debug rfdc_capture.elf]
+set tests_dir [file join $repo_root tests 10_digital_loopback]
+file mkdir $tests_dir
+set dump [file join $tests_dir dloop_$label.bin]
+
+set nm ""
+foreach nm_glob [list \
+    $env(HOME)/xilinx/Vitis/Vitis/*/gnu/aarch64/lin/aarch64-none/bin/aarch64-none-elf-nm \
+    /tools/Xilinx/Vitis/*/gnu/aarch64/lin/aarch64-none/bin/aarch64-none-elf-nm] {
+    foreach c [lsort -decreasing [glob -nocomplain $nm_glob]] {
+        if {[file exists $c]} { set nm $c; break }
+    }
+    if {$nm ne ""} { break }
+}
+
+foreach f [list $bit $psu_init $elf] {
+    if {![file exists $f]} { error "Missing prerequisite: $f" }
+}
+
+connect
+targets -set -nocase -filter {name =~ "*PSU*"}
+rst -system
+after 1000
+
+source $psu_init
+psu_init
+# Force pl_clk0 = 187.5 MHz (PL0_REF_CTRL DIVISOR0=8, src ~1500MHz). The XSA's
+# psu_init ships DIVISOR0=15 -> 100 MHz, which under-clocks the design (timing is
+# closed at 187.5). This override gives the rated ~162 Msps (86% duty) vs ~86 Msps.
+# Survives rebuilds (psu_init.tcl regenerates to 100MHz otherwise). See task #10.
+mwr 0xFF5E00C0 0x01010800
+after 500
+fpga -file $bit
+after 500
+psu_ps_pl_isolation_removal
+psu_ps_pl_reset_config
+after 500
+
+targets -set -nocase -filter {name =~ "*A53*#0"}
+rst -processor -clear-registers
+dow $elf
+con
+puts "ZCU216_DLOOP_APP: running; inspect UART0 for ZCU216_DLOOP: markers"
+
+set addr 0
+if {$nm ne ""} {
+    catch {
+        foreach line [split [exec $nm $elf] "\n"] {
+            if {[string match "*capture_buf*" $line]} { set addr 0x[lindex $line 0] }
+        }
+    }
+}
+
+# digital loopback is fast (no RFDC) but the GPIO readback of ~4160 words takes
+# a few seconds; allow margin.
+after 15000
+
+if {$addr ne 0} {
+    targets -set -nocase -filter {name =~ "*A53*#0"}
+    mrd -force -bin -file $dump $addr 4160
+    puts "ZCU216_DLOOP_APP: capture_buf dumped addr=$addr file=$dump (4160 words)"
+} else {
+    puts "ZCU216_DLOOP_APP: WARN could not resolve capture_buf; skipped dump"
+}

@@ -1,0 +1,11 @@
+{
+  "module": "meyr_mult_FFT_ak_bk_dut",
+  "N_2N": 512,
+  "rom_source": "vectors/bk_conj_fft512_rom.txt",
+  "rom_word_format": "{conj_im[31:0], re[31:0]}",
+  "stim_cycles": 520,
+  "golden_beats": 512,
+  "tlast_beats": 1,
+  "truncation": ">>>31 (arithmetic), keep [31:0]",
+  "note": "R[m]=FFT_in*conj(FFT(B[k]))>>31; one full 512 frame"
+}

@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>10 Silicon Bring-Up M1–M3 — ZCU216 Synchronizer</title>
+<style>
+  :root {
+    --bg:#001219; --card:#012a33; --accent1:#005F73; --accent2:#0A9396;
+    --light:#94D2BD; --warn:#EE9B00; --error:#AE2012; --text:#E9D8A6; --border:#1a4a55;
+  }
+  * { box-sizing:border-box; margin:0; padding:0; }
+  body { background:var(--bg); color:var(--text); font-family:'Consolas','Courier New',monospace; font-size:13px; line-height:1.6; }
+  nav { background:var(--accent1); padding:8px 20px; display:flex; flex-wrap:wrap; gap:12px; align-items:center; border-bottom:2px solid var(--accent2); }
+  nav a { color:var(--light); text-decoration:none; font-weight:bold; font-size:11px; padding:3px 7px; border-radius:3px; }
+  nav a:hover { background:var(--accent2); color:#fff; }
+  nav a.here { background:var(--accent2); color:#fff; }
+  nav .brand { color:#fff; font-size:14px; font-weight:bold; margin-right:12px; }
+  .container { max-width:1300px; margin:0 auto; padding:24px; }
+  h1 { color:var(--accent2); font-size:22px; margin-bottom:4px; }
+  .subtitle { color:var(--light); font-size:12px; margin-bottom:6px; opacity:0.85; }
+  h2 { color:var(--light); font-size:15px; margin:30px 0 10px; border-bottom:2px solid var(--border); padding-bottom:6px; }
+  h3 { color:var(--accent2); font-size:13px; margin:16px 0 8px; }
+  table { width:100%; border-collapse:collapse; margin-bottom:20px; }
+  th { background:var(--accent1); color:var(--light); padding:7px 10px; text-align:left; font-size:11px; text-transform:uppercase; letter-spacing:0.05em; }
+  td { padding:6px 10px; border-bottom:1px solid var(--border); font-size:12px; vertical-align:top; }
+  tr:nth-child(even) td { background:#021820; }
+  .badge-pass { background:#1a3a1a; color:#3fb950; border:1px solid #3fb950; padding:2px 8px; border-radius:10px; font-size:11px; font-weight:bold; white-space:nowrap; display:inline-block; }
+  .badge-pending { background:#1e2830; color:#8b949e; border:1px solid #8b949e; padding:2px 8px; border-radius:10px; font-size:11px; white-space:nowrap; display:inline-block; }
+  .badge-warn { background:#3a2a00; color:#e3b341; border:1px solid #e3b341; padding:2px 8px; border-radius:10px; font-size:11px; font-weight:bold; display:inline-block; }
+  .badge-resolved { background:#0d2a4a; color:#58a6ff; border:1px solid #58a6ff; padding:2px 8px; border-radius:10px; font-size:11px; font-weight:bold; display:inline-block; }
+  .badge-info { background:#1a2a3a; color:#79c0ff; border:1px solid #79c0ff; padding:2px 8px; border-radius:10px; font-size:11px; display:inline-block; }
+  .card { background:var(--card); border:1px solid var(--border); border-radius:6px; padding:18px; margin-bottom:16px; }
+  code { background:#021820; color:var(--accent2); padding:1px 6px; border-radius:3px; font-size:12px; }
+  .note { background:#021f2a; border-left:3px solid var(--warn); padding:9px 14px; margin:10px 0; font-size:12px; color:var(--warn); border-radius:0 4px 4px 0; }
+  .ok { background:#0a1f0a; border-left:3px solid #3fb950; padding:9px 14px; margin:10px 0; font-size:12px; color:#3fb950; border-radius:0 4px 4px 0; }
+  .err { background:#1f0a0a; border-left:3px solid var(--error); padding:9px 14px; margin:10px 0; font-size:12px; color:#ff7b72; border-radius:0 4px 4px 0; }
+  p { margin:6px 0; }
+  ul, ol { margin:8px 0 8px 24px; }
+  li { margin:3px 0; }
+  .blk { display:inline-block; border:1px solid var(--accent2); border-radius:4px; padding:7px 12px; font-size:11px; background:#012a33; color:var(--text); text-align:center; min-width:110px; }
+  .blk-top { display:inline-block; border:2px solid var(--accent2); border-radius:5px; padding:10px 18px; font-size:12px; background:var(--accent1); color:#fff; font-weight:bold; text-align:center; }
+  .blk-ext { display:inline-block; border:1px dashed #1a4a55; border-radius:4px; padding:7px 12px; font-size:11px; background:#001a22; color:#8b949e; text-align:center; min-width:90px; }
+  .hrow { display:flex; align-items:center; justify-content:center; flex-wrap:wrap; gap:10px; margin:6px 0; }
+  .harrow { color:var(--accent2); font-size:18px; flex-shrink:0; }
+  .hero-stats { display:flex; flex-wrap:wrap; gap:12px; margin:10px 0; }
+  .stat-box { background:var(--card); border:1px solid var(--border); border-radius:5px; padding:8px 14px; min-width:120px; }
+  .stat-val { color:var(--accent2); font-size:18px; font-weight:bold; }
+  .stat-lbl { color:#8b949e; font-size:10px; }
+  .section-num { color:#CA6702; font-size:13px; font-weight:bold; margin-right:6px; }
+  .prov { color:#8b949e; font-size:11px; }
+  .prov code { color:var(--light); }
+</style>
+</head>
+<body>
+<nav>
+  <span class="brand">ZCU216 Synchronizer</span>
+  <a href="index.html">&#8592; Index</a>
+  <a href="01_phase3_sync_axis_dma_wrapper.html">01 DMA Wrapper</a>
+  <a href="02_phase3_sync_top.html">02 Sync Top</a>
+  <a href="03_frac_cfo_frame_corrector_top.html">03 Frac CFO</a>
+  <a href="04_pss_sss_symbol_extractor.html">04 PSS/SSS Extr</a>
+  <a href="05_fft256_dual_symbol_frontend.html">05 FFT Frontend</a>
+  <a href="06_meyr_integer_cfo_fft_frontend_top.html">06 Meyr FFT Top</a>
+  <a href="07_meyr_integer_cfo_core.html">07 Meyr Core</a>
+  <a href="08_iq_replay_buffer_576.html">08 Replay Buf</a>
+  <a href="09_low_level_datapath_blocks.html">09 Datapath</a>
+  <a href="10_silicon_bringup_m1_m3.html" class="here">10 Silicon M1&ndash;M3</a>
+</nav>
+<div class="container">
+
+  <!-- ===== SECTION 1: HEADER / HERO ===== -->
+  <h2 style="margin-top:0; border-bottom:2px solid var(--accent2);"><span class="section-num">10</span> Silicon Bring-Up &mdash; RX PHY-Rate Results (M1 &rarr; M3)</h2>
+  <div class="subtitle">
+    Vehicle: <code>rx_full_board_top</code> live TX&rarr;RX digital loopback on <strong>ZCU216</strong> &nbsp;|&nbsp;
+    Firmware: <code>software/generated/rfdc_capture_ws/rfdc_capture/src/main.c</code> &nbsp;|&nbsp;
+    Branch: <code>RX_SYNC</code>
+  </div>
+  <div style="display:flex; flex-wrap:wrap; gap:8px; margin:10px 0 18px;">
+    <span class="badge-pass">M1 &mdash; PHY-rate S2MM sink BER=0</span>
+    <span class="badge-pass">M2-full &mdash; multi-frame streaming, pixel-perfect</span>
+    <span class="badge-pass">M3 &mdash; hardware-paced continuous BER=0</span>
+    <span class="badge-info">on-silicon, real Xilinx IP</span>
+  </div>
+  <div class="hero-stats">
+    <div class="stat-box"><div class="stat-val">BER = 0</div><div class="stat-lbl">continuous, on silicon</div></div>
+    <div class="stat-box"><div class="stat-val">870 Mbps</div><div class="stat-lbl">M3a burst (11 frames)</div></div>
+    <div class="stat-box"><div class="stat-val">412 Mbps</div><div class="stat-lbl">M3 sustained goodput</div></div>
+    <div class="stat-box"><div class="stat-val">48 / 48</div><div class="stat-lbl">M2-full frames pixel-perfect</div></div>
+    <div class="stat-box"><div class="stat-val">96 fps</div><div class="stat-lbl">M2-full stream (150&times; speed-up)</div></div>
+    <div class="stat-box"><div class="stat-val">10608 b</div><div class="stat-lbl">payload / frame (16-QAM)</div></div>
+  </div>
+
+  <div class="ok"><strong>What this chapter pins.</strong> Chapters 01&ndash;09 documented the P5 synchronizer <em>modules</em> at the 2026-06-19 verification reset (all still <span class="badge-pending">Not Verified</span> on hardware at that time). This chapter records the subsequent on-silicon result: the full receiver datapath, run as a live TX&rarr;RX digital loopback on the ZCU216, streams demodulated bits at PHY rate with <strong>zero bit errors</strong> over multiple frames.</div>
+
+  <!-- ===== SECTION 2: MILESTONE LADDER ===== -->
+  <h2><span class="section-num">2</span> Milestone Ladder</h2>
+  <div class="card">
+    <table>
+      <thead><tr><th>M</th><th>Claim</th><th>Method</th><th>Result</th><th>Status</th></tr></thead>
+      <tbody>
+        <tr>
+          <td><strong>M1</strong></td>
+          <td>RX demod stream sinks to DDR at PHY rate</td>
+          <td>Live loopback &rarr; <code>rx_full_board_top</code> demod &rarr; AXI-Stream <strong>S2MM DMA</strong> &rarr; DDR (replaces per-frame BRAM + JTAG readback). NF=4 frames, <code>dut_capture</code> CIRCULAR (no back-pressure).</td>
+          <td>4 frames captured, demod nibbles verify to sent frame &mdash; <strong>BER=0</strong>. Proves the PHY-rate sink.</td>
+          <td><span class="badge-pass">PASS</span></td>
+        </tr>
+        <tr>
+          <td><strong>M2-full</strong></td>
+          <td>Multi-frame streaming stays pixel-perfect</td>
+          <td>Ping-pong loopback with seamless payload swap; arbitrary payload from <strong>MM2S DMA</strong> (real color-video clip). Per-frame BER vs golden bits.</td>
+          <td><strong>48/48 frames pixel-perfect</strong>, BER=0; throughput raised <strong>0.64 &rarr; 96 fps (150&times;)</strong> with the same 48/48 result.</td>
+          <td><span class="badge-pass">PASS</span></td>
+        </tr>
+        <tr>
+          <td><strong>M3</strong></td>
+          <td>True PHY frame rate under continuous streaming</td>
+          <td>(a) On-chip throughput counters over a 100&nbsp;ms window; (b) hardware-paced burst: one S2MM transfer drains the FIFO so the demod never stalls.</td>
+          <td>(a) sustained payload goodput <strong>412 Mbps</strong> confirmed; (b) <strong>11 frames @ 870 Mbps, BER=0</strong>.</td>
+          <td><span class="badge-pass">PASS</span></td>
+        </tr>
+      </tbody>
+    </table>
+    <p class="prov">Commits: M1 <code>69883e1</code> &middot; M2-full <code>f1e9ea2 &rarr; fce49ab &rarr; 950f143</code> &middot; M3 <code>5a90bf8 &rarr; 82b0722</code>.</p>
+  </div>
+
+  <!-- ===== SECTION 3: DATAPATH ===== -->
+  <h2><span class="section-num">3</span> Measurement Datapath</h2>
+  <div class="card">
+    <div class="hrow">
+      <div class="blk-ext">DDR<br><span style="font-size:10px;">TX payload</span></div>
+      <span class="harrow">&#8594;</span>
+      <div class="blk">MM2S DMA<br><span style="font-size:10px;">arbitrary frame</span></div>
+      <span class="harrow">&#8594;</span>
+      <div class="blk-top">rx_full_board_top<br><span style="font-size:10px; font-weight:normal;">TX &rarr; loopback &rarr; sync/FFT/CE/EQ/demod</span></div>
+      <span class="harrow">&#8594;</span>
+      <div class="blk">S2MM DMA<br><span style="font-size:10px;">demod nibbles</span></div>
+      <span class="harrow">&#8594;</span>
+      <div class="blk-ext">DDR<br><span style="font-size:10px;">RX sink @0x30000000</span></div>
+    </div>
+    <p>The PS builds a frame in DDR, MM2S DMA streams it into the transceiver, the loopback carries it through the full RX chain, and the demodulated 4-bit nibbles land back in DDR through the S2MM DMA at the PHY sample rate. An on-chip <code>rx_ber_checker</code> (2652-nibble golden anchor) provides scalable long-run BER; the firmware also re-derives per-frame BER from the DDR capture. Control is packed into the shared <code>ber_ctrl</code> GPIO (<code>[31:30]</code> mode, <code>[29]</code> start, <code>[28]</code> continuous re-emit, <code>[27]</code> MM2S payload).</p>
+  </div>
+
+  <!-- ===== SECTION 4: M1 ===== -->
+  <h2><span class="section-num">4</span> M1 &mdash; PHY-Rate S2MM Sink</h2>
+  <div class="card">
+    <p><code>run_s2mm_test()</code> runs the continuous live-TX loopback with <code>dut_capture</code> in <strong>CIRCULAR</strong> mode (so the broadcaster's second leg never back-pressures), arms the S2MM DMA to write <code>NF&times;2652&times;4</code> bytes to DDR, then verifies the captured nibbles demodulate to the sent frame.</p>
+    <ul>
+      <li>Replaces the old per-frame <code>dut_capture</code> BRAM + JTAG <code>mrd</code> readback with a real PHY-rate hardware sink.</li>
+      <li>NF = 4 frames &rarr; all nibbles match golden &rarr; <strong>BER = 0</strong>.</li>
+      <li>Establishes the plumbing every later milestone reuses (S2MM arm &rarr; RS &rarr; dest &rarr; LENGTH).</li>
+    </ul>
+  </div>
+
+  <!-- ===== SECTION 5: M2 ===== -->
+  <h2><span class="section-num">5</span> M2-full &mdash; Multi-Frame Streaming, Pixel-Perfect</h2>
+  <div class="card">
+    <p>M2-full proves the <em>content</em> survives multi-frame streaming, not just one golden slot:</p>
+    <ul>
+      <li><strong>Ping-pong loopback</strong> with a seamless payload swap &mdash; the TX source can change frames without dropping the stream (sim-proven, silicon datapath BER=0).</li>
+      <li>Arbitrary payload driven from the <strong>MM2S DMA</strong> bank (a real color-video clip), demodulated and compared frame-by-frame.</li>
+      <li><strong>48 / 48 frames pixel-perfect</strong> on silicon &mdash; every pixel of every frame reconstructed exactly.</li>
+      <li>Throughput lifted from <strong>0.64 fps to 96 fps (150&times;)</strong> by removing per-frame firmware overhead, while the 48/48 pixel-perfect result held.</li>
+    </ul>
+    <div class="ok">This is the qualitative headline: full-motion imagery crosses the OFDM link and comes out bit-for-bit identical.</div>
+  </div>
+
+  <!-- ===== SECTION 6: M3 ===== -->
+  <h2><span class="section-num">6</span> M3 &mdash; True PHY Rate Under Continuous Streaming</h2>
+  <div class="card">
+    <h3>6.1 &nbsp; Sustained goodput &mdash; 412 Mbps</h3>
+    <p><code>run_xcvr_throughput()</code> holds the loopback in continuous re-emit and samples two on-chip counters over a fixed 100&nbsp;ms window:</p>
+    <ul>
+      <li><code>TLAST_COUNT</code> &rarr; frames/s &rarr; payload goodput = <code>frames &times; 10608 bits / window</code>.</li>
+      <li><code>CYC_TOTAL</code> &rarr; effective sample rate (samples/frame = 4160).</li>
+    </ul>
+    <p>Measured <strong>sustained payload goodput = 412 Mbps</strong> &mdash; the steady-state PHY rate the receiver holds indefinitely with the FIFO in equilibrium.</p>
+
+    <h3>6.2 &nbsp; Hardware-paced burst &mdash; 11 frames @ 870 Mbps, BER=0</h3>
+    <p><code>run_m3_continuous()</code> brings the loopback up <strong>once</strong> and lets the free-running demod stream NF=11 frames into DDR in a <strong>single</strong> S2MM transfer (<code>HAS_TLAST=0</code>, LENGTH-based &mdash; no per-frame firmware in the loop). The S2MM drains the FIFO continuously, so the demod never stalls and the RX never loses lock. It times the whole burst to a completion sentinel and re-derives BER frame-by-frame with a &plusmn;192-nibble alignment search.</p>
+    <ul>
+      <li><strong>11 / 11 frames clean, BER = 0</strong> across the burst.</li>
+      <li>Burst rate = <code>11 &times; 10608 bits / wall-clock</code> &rarr; <strong>870 Mbps</strong>.</li>
+      <li><code>errflags</code> clear (bit3 = STALL_TIMEOUT not set); <code>in_cnt / out_cnt / tlast</code> counters consistent.</li>
+    </ul>
+    <div class="note"><strong>Why two numbers (412 vs 870 Mbps).</strong> They measure different things and are both real. 412 Mbps is the <em>sustained</em> goodput over a 100&nbsp;ms window at FIFO equilibrium (&sect;6.1). 870 Mbps is the <em>burst</em> rate while the S2MM drains a pre-filled FIFO faster than steady state (&sect;6.2). The burst is deliberately bounded to NF=11 frames &mdash; inside the <code>s2mm_fifo</code> (32768-deep, &asymp;12 frames) clean window, so no back-pressure occurs yet.</div>
+  </div>
+
+  <!-- ===== SECTION 7: FRAME PARAMS ===== -->
+  <h2><span class="section-num">7</span> Frame Parameters (as measured)</h2>
+  <div class="card">
+    <table>
+      <thead><tr><th>Quantity</th><th>Value</th><th>Derivation</th></tr></thead>
+      <tbody>
+        <tr><td>Payload bits / frame</td><td><strong>10608</strong></td><td>12 symbols &times; 221 subcarriers &times; 4 bit (16-QAM)</td></tr>
+        <tr><td>Demod nibbles / frame</td><td>2652</td><td>12 &times; 221 (one nibble per data subcarrier)</td></tr>
+        <tr><td>Samples / frame (INPUT_PERIOD)</td><td>4160</td><td>used for effective-Fs from cycle counter</td></tr>
+        <tr><td>TX payload words / frame</td><td>332 (1328 B)</td><td>10608 bits = 331&times;32 + 16 &rarr; 332 beats</td></tr>
+        <tr><td>On-chip BER golden</td><td>2652-nibble anchor</td><td><code>rx_ber_checker</code>, 12 rotations (1 / OFDM symbol)</td></tr>
+        <tr><td>S2MM FIFO depth</td><td>32768 (&asymp;12 frames)</td><td>bounds the M3a clean burst to NF=11</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- ===== SECTION 8: SCOPE / CAVEATS ===== -->
+  <h2><span class="section-num">8</span> Scope &amp; Honest Caveats</h2>
+  <div class="card">
+    <ul>
+      <li><strong>Datapath, not the P5 sync wrapper.</strong> These results are on <code>rx_full_board_top</code> (full-chain loopback). They do <em>not</em> retire the open multi-frame findings against <code>phase3_sync_axis_dma_wrapper</code> in <code>reports/rx_multiframe_streaming_signoff.md</code> (per-slot int-CFO phase-origin and multi-slot re-arm stall). Those are a different integration path.</li>
+      <li><strong>No back-pressure exercised yet.</strong> M3a stays inside the FIFO clean window (11 &lt; &asymp;12 frames). Sustained streaming <em>past</em> the FIFO (with real back-pressure) is the next thing to prove; 412 Mbps (&sect;6.1) is the current sustained figure.</li>
+      <li><strong>Same payload every frame.</strong> BER is measured against one golden frame looped (M1/M3) or a known video clip (M2-full) &mdash; not random per-frame data.</li>
+      <li><strong>Digital loopback</strong> (TX&rarr;RX in the PL). This is the PHY datapath over silicon, not yet an over-the-air / RF-front-end measurement.</li>
+    </ul>
+  </div>
+
+  <!-- ===== SECTION 9: PROVENANCE ===== -->
+  <h2><span class="section-num">9</span> Provenance</h2>
+  <div class="card prov">
+    <p>Source firmware: <code>software/generated/rfdc_capture_ws/rfdc_capture/src/main.c</code> &mdash; <code>run_s2mm_test()</code> (M1), <code>run_xcvr_throughput()</code> (M3 sustained), <code>run_m3_continuous()</code> (M3a burst).</p>
+    <p>RTL / BD: <code>RTL_SYNC_PHASE5/rtl/ofdm_transceiver_top.v</code>, <code>scripts/xcvr_loopback_bd.tcl</code>.</p>
+    <p>Board: ZCU216 &middot; Branch: <code>RX_SYNC</code> &middot; Chapter added 2026-07-07, post-dating the 2026-06-19 verification reset in chapters 01&ndash;09.</p>
+  </div>
+
+</div>
+</body>
+</html>

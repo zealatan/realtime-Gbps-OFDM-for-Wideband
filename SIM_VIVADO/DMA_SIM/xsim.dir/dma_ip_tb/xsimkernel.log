@@ -1,0 +1,7 @@
+Running: xsim.dir/dma_ip_tb/xsimk -wdb simulate_xsim_dma_ip_tb.wdb -simmode gui -simrunnum 0 -socket 40221
+Design successfully loaded
+Design Loading Memory Usage: 36280 KB (Peak: 36288 KB)
+Design Loading CPU Usage: 140 ms
+Simulation completed
+Simulation Memory Usage: 132140 KB (Peak: 175548 KB)
+Simulation CPU Usage: 6470 ms

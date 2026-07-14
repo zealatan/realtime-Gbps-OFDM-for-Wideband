@@ -1,0 +1,35 @@
+{
+  "source": "scripts/gen_timing_metric_golden.py",
+  "uut_primary": "rtl/streaming_cp_autocorr.v",
+  "uut_metric": "rtl/timing_metric_core.v (metric formula)",
+  "stimulus": "golden/phase3_iq_stimulus_q15.hex",
+  "params": {
+    "SAMPLE_W": 16,
+    "NSC": 256,
+    "CP_LEN": 32,
+    "ACC_W": 48
+  },
+  "nsamples": 4160,
+  "valid_beats": 3896,
+  "first_valid_sample_index": 264,
+  "files": {
+    "corr_real": "golden/timing_metric/corr_real.hex (48-bit, two's complement)",
+    "corr_imag": "golden/timing_metric/corr_imag.hex (48-bit, two's complement)",
+    "power_acc": "golden/timing_metric/power_acc.hex (48-bit unsigned)",
+    "metric": "golden/timing_metric/metric.hex (32-bit unsigned, ~(sq_neg[58:27]))",
+    "valid": "golden/timing_metric/valid.hex (1=fresh strobe beat)"
+  },
+  "metric_formula": "metric_out = ~( (E^2 - 4*(I^2+Q^2)) [58:27] ); I,Q,E = (acc>>8)",
+  "peak": {
+    "sample_index": 3527,
+    "corr_real": 42334778,
+    "corr_imag": 13756576,
+    "power_acc": 44513569,
+    "metric": 675,
+    "mag2": 1981476811553060,
+    "derived_peak_lag": 22,
+    "peak_lag_plausible": true
+  },
+  "pipeline_latency": 8,
+  "symbol_period": 288
+}

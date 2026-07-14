@@ -1,0 +1,14 @@
+#-----------------------------------------------------------
+# xsim v2022.2 (64-bit)
+# SW Build 3671981 on Fri Oct 14 04:59:54 MDT 2022
+# IP Build 3669848 on Fri Oct 14 08:30:02 MDT 2022
+# Start of session at: Fri Apr 17 14:37:09 2026
+# Process ID: 35018
+# Current directory: /home/zealatan/FPGA_Based_OFDM_Transceiver/SIM_VIVADO/ROTATE
+# Command line: xsim -mode tcl -source {xsim.dir/tb_phase_rotator_9b/xsim_script.tcl}
+# Log file: /home/zealatan/FPGA_Based_OFDM_Transceiver/SIM_VIVADO/ROTATE/xsim.log
+# Journal file: /home/zealatan/FPGA_Based_OFDM_Transceiver/SIM_VIVADO/ROTATE/xsim.jou
+# Running On: DESKTOP-FAIRVEG, OS: Linux, CPU Frequency: 2495.999 MHz, CPU Physical cores: 6, Host memory: 8134 MB
+#-----------------------------------------------------------
+source xsim.dir/tb_phase_rotator_9b/xsim_script.tcl
+run -all

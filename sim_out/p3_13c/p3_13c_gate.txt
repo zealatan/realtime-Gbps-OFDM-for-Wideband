@@ -1,1 +1,0 @@
-OFFICIAL_GATE: PASS — all 9 k_int sweep cases passed (real Xilinx FFT IP, xsim, 2026-05-28)

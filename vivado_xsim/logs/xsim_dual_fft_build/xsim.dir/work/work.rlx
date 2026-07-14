@@ -1,7 +1,0 @@
-0.7
-2020.2
-Oct 14 2022
-05:07:14
-/home/zealatan/RTL_SYNC_PHASE4/rtl/fft256_dual_symbol_frontend.v,1780409604,systemVerilog,,/home/zealatan/RTL_SYNC_PHASE4/vivado_xsim/tb/xsim_dual_symbol_fft_real_ip_tb.sv,,fft256_dual_symbol_frontend,,,,,,,,
-/home/zealatan/RTL_SYNC_PHASE4/rtl/fft256_xilinx_wrapper.v,1780409604,systemVerilog,,/home/zealatan/RTL_SYNC_PHASE4/rtl/fft256_dual_symbol_frontend.v,,fft256_xilinx_wrapper,,,,,,,,
-/home/zealatan/RTL_SYNC_PHASE4/vivado_xsim/tb/xsim_dual_symbol_fft_real_ip_tb.sv,1780515880,systemVerilog,,,,xsim_dual_symbol_fft_real_ip_tb,,,,,,,,

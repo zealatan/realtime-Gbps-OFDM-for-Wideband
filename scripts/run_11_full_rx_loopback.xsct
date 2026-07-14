@@ -1,0 +1,87 @@
+# Program the 10_digital_loopback PL image (DMA-free: dut_player -> DUT ->
+# dut_capture), run the baremetal ELF (run_digital_loopback), then JTAG-dump
+# capture_buf for offline bit-exact compare vs the RTL golden. Watch UART0
+# for ZCU216_DLOOP: markers.
+#   Run: scripts/xsct_2021_compat.sh scripts/run_10_digital_loopback.xsct <label>
+set repo_root [file normalize [file join [file dirname [info script]] ..]]
+set label "run"
+if {[info exists argv] && [llength $argv] >= 1} { set label [lindex $argv 0] }
+
+set hw_dir   [file join $repo_root hardware generated 11_full_rx_loopback]
+set ws       [file join $repo_root software generated rfdc_capture_ws]
+set bit      [file join $hw_dir zcu216_fullrx.runs impl_1 system_wrapper.bit]
+# Use 10_loopback's OWN psu_init (extracted from its XSA). The 08 psu_init sets
+# HPM0 AFI_FS data width to 128-bit (0xFD615000 field = 0x2) which MISMATCHES this
+# 32-bit BD -> only offset-0 of each PL slave worked (data-lane mismatch). The 10
+# psu_init sets it to 32-bit (0x0), matching the BD, so all register offsets work.
+set psu_init [file join $hw_dir psu_init.tcl]
+set elf      [file join $ws rfdc_capture Debug rfdc_capture.elf]
+set tests_dir [file join $repo_root tests 11_full_rx_loopback]
+file mkdir $tests_dir
+set dump [file join $tests_dir frxbits_$label.bin]
+
+set nm ""
+foreach nm_glob [list \
+    $env(HOME)/xilinx/Vitis/Vitis/*/gnu/aarch64/lin/aarch64-none/bin/aarch64-none-elf-nm \
+    /tools/Xilinx/Vitis/*/gnu/aarch64/lin/aarch64-none/bin/aarch64-none-elf-nm] {
+    foreach c [lsort -decreasing [glob -nocomplain $nm_glob]] {
+        if {[file exists $c]} { set nm $c; break }
+    }
+    if {$nm ne ""} { break }
+}
+
+foreach f [list $bit $psu_init $elf] {
+    if {![file exists $f]} { error "Missing prerequisite: $f" }
+}
+
+connect
+targets -set -nocase -filter {name =~ "*PSU*"}
+rst -system
+after 1000
+
+source $psu_init
+psu_init
+# FULL-RX at FULL RATE: force pl_clk0 = 187.5 MHz (PL0_REF_CTRL DIVISOR0=8,
+# DIVISOR1=1, src ~1500MHz: 1500/(8*1)=187.5MHz, period 5.333ns).  The old demo
+# clocked this at 8.33MHz because rx_ch_est's single-cycle 64-bit complex DIVIDE
+# could not close timing (impl WNS=-71.7ns @187.5MHz).  That divide was REPLACED
+# (commit 3d88019) by a precomputed-constant ROM MULTIPLY (ce_pilot_recip.hex):
+# math-identical, OOC WNS +0.573ns @250MHz, Fmax ~292MHz.  The design now closes
+# at the rated pl_clk0, so run at FULL rate.  CLKACT bit24=1 preserved.
+# Value = 0x01000000|(1<<16)|(8<<8) = 0x01010800  (matches run_10 187.5MHz).
+mwr 0xFF5E00C0 0x01010800
+after 500
+fpga -file $bit
+after 500
+psu_ps_pl_isolation_removal
+psu_ps_pl_reset_config
+after 500
+
+targets -set -nocase -filter {name =~ "*A53*#0"}
+rst -processor -clear-registers
+dow $elf
+con
+puts "ZCU216_FRX_APP: running; inspect UART0 for ZCU216_DLOOP: markers"
+
+set addr 0
+if {$nm ne ""} {
+    catch {
+        foreach line [split [exec $nm $elf] "\n"] {
+            if {[lindex $line 2] eq "capture_buf"} { set addr 0x[lindex $line 0] }
+        }
+    }
+}
+
+# MULTI-FRAME digital loopback: the GPIO readback of 13260 words (5 frames x 2652
+# nibbles) takes longer than the single-frame 4160-word case; allow more margin.
+after 30000
+
+if {$addr ne 0} {
+    targets -set -nocase -filter {name =~ "*A53*#0"}
+    # 13260 = 5 frames x 2652 nibbles. Dump 16384 (full DEPTH) so the per-frame
+    # BER script (scripts/ber_demod_bits.py --frames 5) has all N frames + slack.
+    mrd -force -bin -file $dump $addr 16384
+    puts "ZCU216_FRX_APP: capture_buf dumped addr=$addr file=$dump (16384 words, 5 frames)"
+} else {
+    puts "ZCU216_FRX_APP: WARN could not resolve capture_buf; skipped dump"
+}

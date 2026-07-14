@@ -1,9 +1,0 @@
-[INFO] fft256_xilinx_wrapper: USE_BEHAVIORAL_STUB=3 (behavioral DFT)
-[INFO]   Exact 256-pt DFT, real arithmetic, simulation-only.
-[INFO]   Enables k_int sweep validation without Xilinx IP.
-=== [C2] Replay Correction Hardening — Session C2 / P3-14D ===
-  Cycle start: 33
-
---- C2-1: Replay Backpressure ---
-WDG: TIMEOUT at 3000000 cycles — REPLAY_HARDENING_GATE: FAIL
-REPLAY_HARDENING_GATE: FAIL

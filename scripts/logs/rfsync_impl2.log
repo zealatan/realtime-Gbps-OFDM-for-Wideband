@@ -1,0 +1,762 @@
+
+****** Vivado v2021.1_AR76780 (64-bit)
+  **** SW Build 3247384 on Thu Jun 10 19:36:07 MDT 2021
+  **** IP Build 3246043 on Fri Jun 11 00:30:35 MDT 2021
+    ** Copyright 1986-2021 Xilinx, Inc. All Rights Reserved.
+
+source scripts/rfsync_addxdc_impl.tcl
+# set REPO /home/dsp-mikro7/FPGA_Based_OFDM_Transceiver
+# set XPR  $REPO/hardware/generated/08_rfdc_capture/zcu216_rfdc_capture.xpr
+# set XDC  $REPO/hardware/rtl/rfsync_clocks.xdc
+# proc fail {m} { puts "RFSYNC_XDC: FAIL $m"; exit 1 }
+# open_project $XPR
+Scanning sources...
+Finished scanning sources
+INFO: [IP_Flow 19-234] Refreshing IP repositories
+INFO: [IP_Flow 19-1700] Loaded user IP repository '/home/dsp-mikro7/FPGA_Based_OFDM_Transceiver/hardware/ip_repo/dut_sync'.
+INFO: [IP_Flow 19-2313] Loaded Vivado IP repository '/opt/Xilinx/Vivado/2021.1/patches/AR76780_Vivado_2021_1_preliminary_rev1/vivado/data/ip'.
+INFO: [IP_Flow 19-2313] Loaded Vivado IP repository '/opt/Xilinx/Vivado/2021.1/data/ip'.
+# if {[get_files -quiet $XDC] eq ""} {
+#     add_files -fileset constrs_1 -norecurse $XDC
+#     puts "RFSYNC_XDC: added $XDC to constrs_1"
+# }
+RFSYNC_XDC: added /home/dsp-mikro7/FPGA_Based_OFDM_Transceiver/hardware/rtl/rfsync_clocks.xdc to constrs_1
+# set_property used_in_synthesis false [get_files $XDC]
+# set_property used_in_implementation true [get_files $XDC]
+# reset_run impl_1
+# launch_runs impl_1 -to_step write_bitstream -jobs 8
+[Wed Jun 24 17:53:37 2026] Launched impl_1...
+Run output will be captured here: /home/dsp-mikro7/FPGA_Based_OFDM_Transceiver/hardware/generated/08_rfdc_capture/zcu216_rfdc_capture.runs/impl_1/runme.log
+launch_runs: Time (s): cpu = 00:00:23 ; elapsed = 00:00:10 . Memory (MB): peak = 3038.879 ; gain = 472.234 ; free physical = 16981 ; free virtual = 27852
+# wait_on_run impl_1
+[Wed Jun 24 17:53:37 2026] Waiting for impl_1 to finish...
+
+*** Running vivado
+    with args -log system_wrapper.vdi -applog -m64 -product Vivado -messageDb vivado.pb -mode batch -source system_wrapper.tcl -notrace
+
+
+****** Vivado v2021.1_AR76780 (64-bit)
+  **** SW Build 3247384 on Thu Jun 10 19:36:07 MDT 2021
+  **** IP Build 3246043 on Fri Jun 11 00:30:35 MDT 2021
+    ** Copyright 1986-2021 Xilinx, Inc. All Rights Reserved.
+
+source system_wrapper.tcl -notrace
+INFO: [IP_Flow 19-234] Refreshing IP repositories
+INFO: [IP_Flow 19-1700] Loaded user IP repository '/home/dsp-mikro7/FPGA_Based_OFDM_Transceiver/hardware/ip_repo/dut_sync'.
+INFO: [IP_Flow 19-2313] Loaded Vivado IP repository '/opt/Xilinx/Vivado/2021.1/patches/AR76780_Vivado_2021_1_preliminary_rev1/vivado/data/ip'.
+INFO: [IP_Flow 19-2313] Loaded Vivado IP repository '/opt/Xilinx/Vivado/2021.1/data/ip'.
+Command: link_design -top system_wrapper -part xczu49dr-ffvf1760-2-e
+Design is defaulting to srcset: sources_1
+Design is defaulting to constrset: constrs_1
+INFO: [Device 21-403] Loading part xczu49dr-ffvf1760-2-e
+INFO: [Project 1-454] Reading design checkpoint '/home/dsp-mikro7/FPGA_Based_OFDM_Transceiver/hardware/generated/08_rfdc_capture/zcu216_rfdc_capture.gen/sources_1/bd/system/ip/system_adc_cap_0/system_adc_cap_0.dcp' for cell 'system_i/adc_cap'
+INFO: [Project 1-454] Reading design checkpoint '/home/dsp-mikro7/FPGA_Based_OFDM_Transceiver/hardware/generated/08_rfdc_capture/zcu216_rfdc_capture.gen/sources_1/bd/system/ip/system_capture_gpio_0/system_capture_gpio_0.dcp' for cell 'system_i/capture_gpio'
+INFO: [Project 1-454] Reading design checkpoint '/home/dsp-mikro7/FPGA_Based_OFDM_Transceiver/hardware/generated/08_rfdc_capture/zcu216_rfdc_capture.gen/sources_1/bd/system/ip/system_clk104_gpio_0/system_clk104_gpio_0.dcp' for cell 'system_i/clk104_gpio'
+INFO: [Project 1-454] Reading design checkpoint '/home/dsp-mikro7/FPGA_Based_OFDM_Transceiver/hardware/generated/08_rfdc_capture/zcu216_rfdc_capture.gen/sources_1/bd/system/ip/system_dac_tone_0/system_dac_tone_0.dcp' for cell 'system_i/dac_tone'
+INFO: [Project 1-454] Reading design checkpoint '/home/dsp-mikro7/FPGA_Based_OFDM_Transceiver/hardware/generated/08_rfdc_capture/zcu216_rfdc_capture.gen/sources_1/bd/system/ip/system_dut_0_1/system_dut_0_1.dcp' for cell 'system_i/dut_0'
+INFO: [Project 1-454] Reading design checkpoint '/home/dsp-mikro7/FPGA_Based_OFDM_Transceiver/hardware/generated/08_rfdc_capture/zcu216_rfdc_capture.gen/sources_1/bd/system/ip/system_loop_ctrl_gpio_0/system_loop_ctrl_gpio_0.dcp' for cell 'system_i/loop_ctrl_gpio'
+INFO: [Project 1-454] Reading design checkpoint '/home/dsp-mikro7/FPGA_Based_OFDM_Transceiver/hardware/generated/08_rfdc_capture/zcu216_rfdc_capture.gen/sources_1/bd/system/ip/system_loop_status2_gpio_0/system_loop_status2_gpio_0.dcp' for cell 'system_i/loop_status2_gpio'
+INFO: [Project 1-454] Reading design checkpoint '/home/dsp-mikro7/FPGA_Based_OFDM_Transceiver/hardware/generated/08_rfdc_capture/zcu216_rfdc_capture.gen/sources_1/bd/system/ip/system_loop_status_gpio_0/system_loop_status_gpio_0.dcp' for cell 'system_i/loop_status_gpio'
+INFO: [Project 1-454] Reading design checkpoint '/home/dsp-mikro7/FPGA_Based_OFDM_Transceiver/hardware/generated/08_rfdc_capture/zcu216_rfdc_capture.gen/sources_1/bd/system/ip/system_reset_inverter_0/system_reset_inverter_0.dcp' for cell 'system_i/reset_inverter'
+INFO: [Project 1-454] Reading design checkpoint '/home/dsp-mikro7/FPGA_Based_OFDM_Transceiver/hardware/generated/08_rfdc_capture/zcu216_rfdc_capture.gen/sources_1/bd/system/ip/system_rfsync_cap_1/system_rfsync_cap_1.dcp' for cell 'system_i/rfsync_cap'
+INFO: [Project 1-454] Reading design checkpoint '/home/dsp-mikro7/FPGA_Based_OFDM_Transceiver/hardware/generated/08_rfdc_capture/zcu216_rfdc_capture.gen/sources_1/bd/system/ip/system_rfsync_capdata_gpio_1/system_rfsync_capdata_gpio_1.dcp' for cell 'system_i/rfsync_capdata_gpio'
+INFO: [Project 1-454] Reading design checkpoint '/home/dsp-mikro7/FPGA_Based_OFDM_Transceiver/hardware/generated/08_rfdc_capture/zcu216_rfdc_capture.gen/sources_1/bd/system/ip/system_rfsync_deser_1/system_rfsync_deser_1.dcp' for cell 'system_i/rfsync_deser'
+INFO: [Project 1-454] Reading design checkpoint '/home/dsp-mikro7/FPGA_Based_OFDM_Transceiver/hardware/generated/08_rfdc_capture/zcu216_rfdc_capture.gen/sources_1/bd/system/ip/system_rfsync_fifo_1/system_rfsync_fifo_1.dcp' for cell 'system_i/rfsync_fifo'
+INFO: [Project 1-454] Reading design checkpoint '/home/dsp-mikro7/FPGA_Based_OFDM_Transceiver/hardware/generated/08_rfdc_capture/zcu216_rfdc_capture.gen/sources_1/bd/system/ip/system_rfsync_stat_gpio_1/system_rfsync_stat_gpio_1.dcp' for cell 'system_i/rfsync_stat_gpio'
+INFO: [Project 1-454] Reading design checkpoint '/home/dsp-mikro7/FPGA_Based_OFDM_Transceiver/hardware/generated/08_rfdc_capture/zcu216_rfdc_capture.gen/sources_1/bd/system/ip/system_rst_adc2_0/system_rst_adc2_0.dcp' for cell 'system_i/rst_adc2'
+INFO: [Project 1-454] Reading design checkpoint '/home/dsp-mikro7/FPGA_Based_OFDM_Transceiver/hardware/generated/08_rfdc_capture/zcu216_rfdc_capture.gen/sources_1/bd/system/ip/system_rst_dac2_0/system_rst_dac2_0.dcp' for cell 'system_i/rst_dac2'
+INFO: [Project 1-454] Reading design checkpoint '/home/dsp-mikro7/FPGA_Based_OFDM_Transceiver/hardware/generated/08_rfdc_capture/zcu216_rfdc_capture.gen/sources_1/bd/system/ip/system_rst_dac3_0/system_rst_dac3_0.dcp' for cell 'system_i/rst_dac3'
+INFO: [Project 1-454] Reading design checkpoint '/home/dsp-mikro7/FPGA_Based_OFDM_Transceiver/hardware/generated/08_rfdc_capture/zcu216_rfdc_capture.gen/sources_1/bd/system/ip/system_rst_ps8_0_153M_1/system_rst_ps8_0_153M_1.dcp' for cell 'system_i/rst_ps8_0_153M'
+INFO: [Project 1-454] Reading design checkpoint '/home/dsp-mikro7/FPGA_Based_OFDM_Transceiver/hardware/generated/08_rfdc_capture/zcu216_rfdc_capture.gen/sources_1/bd/system/ip/system_rst_ps8_0_99M_0/system_rst_ps8_0_99M_0.dcp' for cell 'system_i/rst_ps8_0_99M'
+INFO: [Project 1-454] Reading design checkpoint '/home/dsp-mikro7/FPGA_Based_OFDM_Transceiver/hardware/generated/08_rfdc_capture/zcu216_rfdc_capture.gen/sources_1/bd/system/ip/system_usp_rf_data_converter_0_0/system_usp_rf_data_converter_0_0.dcp' for cell 'system_i/usp_rf_data_converter_0'
+INFO: [Project 1-454] Reading design checkpoint '/home/dsp-mikro7/FPGA_Based_OFDM_Transceiver/hardware/generated/08_rfdc_capture/zcu216_rfdc_capture.gen/sources_1/bd/system/ip/system_zynq_ultra_ps_e_0_0/system_zynq_ultra_ps_e_0_0.dcp' for cell 'system_i/zynq_ultra_ps_e_0'
+INFO: [Project 1-454] Reading design checkpoint '/home/dsp-mikro7/FPGA_Based_OFDM_Transceiver/hardware/generated/08_rfdc_capture/zcu216_rfdc_capture.gen/sources_1/bd/system/ip/system_xbar_0/system_xbar_0.dcp' for cell 'system_i/ps8_0_axi_periph/xbar'
+INFO: [Project 1-454] Reading design checkpoint '/home/dsp-mikro7/FPGA_Based_OFDM_Transceiver/hardware/generated/08_rfdc_capture/zcu216_rfdc_capture.gen/sources_1/bd/system/ip/system_auto_cc_0/system_auto_cc_0.dcp' for cell 'system_i/ps8_0_axi_periph/m07_couplers/auto_cc'
+INFO: [Project 1-454] Reading design checkpoint '/home/dsp-mikro7/FPGA_Based_OFDM_Transceiver/hardware/generated/08_rfdc_capture/zcu216_rfdc_capture.gen/sources_1/bd/system/ip/system_auto_ds_0/system_auto_ds_0.dcp' for cell 'system_i/ps8_0_axi_periph/s00_couplers/auto_ds'
+INFO: [Project 1-454] Reading design checkpoint '/home/dsp-mikro7/FPGA_Based_OFDM_Transceiver/hardware/generated/08_rfdc_capture/zcu216_rfdc_capture.gen/sources_1/bd/system/ip/system_auto_pc_0/system_auto_pc_0.dcp' for cell 'system_i/ps8_0_axi_periph/s00_couplers/auto_pc'
+Netlist sorting complete. Time (s): cpu = 00:00:00.53 ; elapsed = 00:00:00.52 . Memory (MB): peak = 3029.574 ; gain = 0.000 ; free physical = 15644 ; free virtual = 26515
+INFO: [Netlist 29-17] Analyzing 5113 Unisim elements for replacement
+INFO: [Netlist 29-28] Unisim Transformation completed in 0 CPU seconds
+INFO: [Project 1-479] Netlist was created with Vivado 2021.1_AR76780
+INFO: [Project 1-570] Preparing netlist for logic optimization
+Parsing XDC File [/home/dsp-mikro7/FPGA_Based_OFDM_Transceiver/hardware/generated/08_rfdc_capture/zcu216_rfdc_capture.gen/sources_1/bd/system/ip/system_capture_gpio_0/system_capture_gpio_0.xdc] for cell 'system_i/capture_gpio/U0'
+Finished Parsing XDC File [/home/dsp-mikro7/FPGA_Based_OFDM_Transceiver/hardware/generated/08_rfdc_capture/zcu216_rfdc_capture.gen/sources_1/bd/system/ip/system_capture_gpio_0/system_capture_gpio_0.xdc] for cell 'system_i/capture_gpio/U0'
+Parsing XDC File [/home/dsp-mikro7/FPGA_Based_OFDM_Transceiver/hardware/generated/08_rfdc_capture/zcu216_rfdc_capture.gen/sources_1/bd/system/ip/system_rfsync_capdata_gpio_1/system_rfsync_capdata_gpio_1.xdc] for cell 'system_i/rfsync_capdata_gpio/U0'
+Finished Parsing XDC File [/home/dsp-mikro7/FPGA_Based_OFDM_Transceiver/hardware/generated/08_rfdc_capture/zcu216_rfdc_capture.gen/sources_1/bd/system/ip/system_rfsync_capdata_gpio_1/system_rfsync_capdata_gpio_1.xdc] for cell 'system_i/rfsync_capdata_gpio/U0'
+Parsing XDC File [/home/dsp-mikro7/FPGA_Based_OFDM_Transceiver/hardware/generated/08_rfdc_capture/zcu216_rfdc_capture.gen/sources_1/bd/system/ip/system_rfsync_capdata_gpio_1/system_rfsync_capdata_gpio_1_board.xdc] for cell 'system_i/rfsync_capdata_gpio/U0'
+Finished Parsing XDC File [/home/dsp-mikro7/FPGA_Based_OFDM_Transceiver/hardware/generated/08_rfdc_capture/zcu216_rfdc_capture.gen/sources_1/bd/system/ip/system_rfsync_capdata_gpio_1/system_rfsync_capdata_gpio_1_board.xdc] for cell 'system_i/rfsync_capdata_gpio/U0'
+Parsing XDC File [/home/dsp-mikro7/FPGA_Based_OFDM_Transceiver/hardware/generated/08_rfdc_capture/zcu216_rfdc_capture.gen/sources_1/bd/system/ip/system_rfsync_stat_gpio_1/system_rfsync_stat_gpio_1.xdc] for cell 'system_i/rfsync_stat_gpio/U0'
+Finished Parsing XDC File [/home/dsp-mikro7/FPGA_Based_OFDM_Transceiver/hardware/generated/08_rfdc_capture/zcu216_rfdc_capture.gen/sources_1/bd/system/ip/system_rfsync_stat_gpio_1/system_rfsync_stat_gpio_1.xdc] for cell 'system_i/rfsync_stat_gpio/U0'
+Parsing XDC File [/home/dsp-mikro7/FPGA_Based_OFDM_Transceiver/hardware/generated/08_rfdc_capture/zcu216_rfdc_capture.gen/sources_1/bd/system/ip/system_rfsync_stat_gpio_1/system_rfsync_stat_gpio_1_board.xdc] for cell 'system_i/rfsync_stat_gpio/U0'
+Finished Parsing XDC File [/home/dsp-mikro7/FPGA_Based_OFDM_Transceiver/hardware/generated/08_rfdc_capture/zcu216_rfdc_capture.gen/sources_1/bd/system/ip/system_rfsync_stat_gpio_1/system_rfsync_stat_gpio_1_board.xdc] for cell 'system_i/rfsync_stat_gpio/U0'
+Parsing XDC File [/home/dsp-mikro7/FPGA_Based_OFDM_Transceiver/hardware/generated/08_rfdc_capture/zcu216_rfdc_capture.gen/sources_1/bd/system/ip/system_rst_ps8_0_153M_1/system_rst_ps8_0_153M_1.xdc] for cell 'system_i/rst_ps8_0_153M/U0'
+Finished Parsing XDC File [/home/dsp-mikro7/FPGA_Based_OFDM_Transceiver/hardware/generated/08_rfdc_capture/zcu216_rfdc_capture.gen/sources_1/bd/system/ip/system_rst_ps8_0_153M_1/system_rst_ps8_0_153M_1.xdc] for cell 'system_i/rst_ps8_0_153M/U0'
+Parsing XDC File [/home/dsp-mikro7/FPGA_Based_OFDM_Transceiver/hardware/generated/08_rfdc_capture/zcu216_rfdc_capture.gen/sources_1/bd/system/ip/system_rst_ps8_0_153M_1/system_rst_ps8_0_153M_1_board.xdc] for cell 'system_i/rst_ps8_0_153M/U0'
+Finished Parsing XDC File [/home/dsp-mikro7/FPGA_Based_OFDM_Transceiver/hardware/generated/08_rfdc_capture/zcu216_rfdc_capture.gen/sources_1/bd/system/ip/system_rst_ps8_0_153M_1/system_rst_ps8_0_153M_1_board.xdc] for cell 'system_i/rst_ps8_0_153M/U0'
+Parsing XDC File [/home/dsp-mikro7/FPGA_Based_OFDM_Transceiver/hardware/generated/08_rfdc_capture/zcu216_rfdc_capture.gen/sources_1/bd/system/ip/system_rst_dac3_0/system_rst_dac3_0.xdc] for cell 'system_i/rst_dac3/U0'
+Finished Parsing XDC File [/home/dsp-mikro7/FPGA_Based_OFDM_Transceiver/hardware/generated/08_rfdc_capture/zcu216_rfdc_capture.gen/sources_1/bd/system/ip/system_rst_dac3_0/system_rst_dac3_0.xdc] for cell 'system_i/rst_dac3/U0'
+Parsing XDC File [/home/dsp-mikro7/FPGA_Based_OFDM_Transceiver/hardware/generated/08_rfdc_capture/zcu216_rfdc_capture.gen/sources_1/bd/system/ip/system_rst_dac3_0/system_rst_dac3_0_board.xdc] for cell 'system_i/rst_dac3/U0'
+Finished Parsing XDC File [/home/dsp-mikro7/FPGA_Based_OFDM_Transceiver/hardware/generated/08_rfdc_capture/zcu216_rfdc_capture.gen/sources_1/bd/system/ip/system_rst_dac3_0/system_rst_dac3_0_board.xdc] for cell 'system_i/rst_dac3/U0'
+Parsing XDC File [/home/dsp-mikro7/FPGA_Based_OFDM_Transceiver/hardware/generated/08_rfdc_capture/zcu216_rfdc_capture.gen/sources_1/bd/system/ip/system_rst_dac2_0/system_rst_dac2_0.xdc] for cell 'system_i/rst_dac2/U0'
+Finished Parsing XDC File [/home/dsp-mikro7/FPGA_Based_OFDM_Transceiver/hardware/generated/08_rfdc_capture/zcu216_rfdc_capture.gen/sources_1/bd/system/ip/system_rst_dac2_0/system_rst_dac2_0.xdc] for cell 'system_i/rst_dac2/U0'
+Parsing XDC File [/home/dsp-mikro7/FPGA_Based_OFDM_Transceiver/hardware/generated/08_rfdc_capture/zcu216_rfdc_capture.gen/sources_1/bd/system/ip/system_rst_dac2_0/system_rst_dac2_0_board.xdc] for cell 'system_i/rst_dac2/U0'
+Finished Parsing XDC File [/home/dsp-mikro7/FPGA_Based_OFDM_Transceiver/hardware/generated/08_rfdc_capture/zcu216_rfdc_capture.gen/sources_1/bd/system/ip/system_rst_dac2_0/system_rst_dac2_0_board.xdc] for cell 'system_i/rst_dac2/U0'
+Parsing XDC File [/home/dsp-mikro7/FPGA_Based_OFDM_Transceiver/hardware/generated/08_rfdc_capture/zcu216_rfdc_capture.gen/sources_1/bd/system/ip/system_rst_adc2_0/system_rst_adc2_0.xdc] for cell 'system_i/rst_adc2/U0'
+Finished Parsing XDC File [/home/dsp-mikro7/FPGA_Based_OFDM_Transceiver/hardware/generated/08_rfdc_capture/zcu216_rfdc_capture.gen/sources_1/bd/system/ip/system_rst_adc2_0/system_rst_adc2_0.xdc] for cell 'system_i/rst_adc2/U0'
+Parsing XDC File [/home/dsp-mikro7/FPGA_Based_OFDM_Transceiver/hardware/generated/08_rfdc_capture/zcu216_rfdc_capture.gen/sources_1/bd/system/ip/system_rst_adc2_0/system_rst_adc2_0_board.xdc] for cell 'system_i/rst_adc2/U0'
+Finished Parsing XDC File [/home/dsp-mikro7/FPGA_Based_OFDM_Transceiver/hardware/generated/08_rfdc_capture/zcu216_rfdc_capture.gen/sources_1/bd/system/ip/system_rst_adc2_0/system_rst_adc2_0_board.xdc] for cell 'system_i/rst_adc2/U0'
+Parsing XDC File [/home/dsp-mikro7/FPGA_Based_OFDM_Transceiver/hardware/generated/08_rfdc_capture/zcu216_rfdc_capture.gen/sources_1/bd/system/ip/system_zynq_ultra_ps_e_0_0/system_zynq_ultra_ps_e_0_0.xdc] for cell 'system_i/zynq_ultra_ps_e_0/inst'
+Finished Parsing XDC File [/home/dsp-mikro7/FPGA_Based_OFDM_Transceiver/hardware/generated/08_rfdc_capture/zcu216_rfdc_capture.gen/sources_1/bd/system/ip/system_zynq_ultra_ps_e_0_0/system_zynq_ultra_ps_e_0_0.xdc] for cell 'system_i/zynq_ultra_ps_e_0/inst'
+Parsing XDC File [/home/dsp-mikro7/FPGA_Based_OFDM_Transceiver/hardware/generated/08_rfdc_capture/zcu216_rfdc_capture.gen/sources_1/bd/system/ip/system_capture_gpio_0/system_capture_gpio_0_board.xdc] for cell 'system_i/capture_gpio/U0'
+Finished Parsing XDC File [/home/dsp-mikro7/FPGA_Based_OFDM_Transceiver/hardware/generated/08_rfdc_capture/zcu216_rfdc_capture.gen/sources_1/bd/system/ip/system_capture_gpio_0/system_capture_gpio_0_board.xdc] for cell 'system_i/capture_gpio/U0'
+Parsing XDC File [/home/dsp-mikro7/FPGA_Based_OFDM_Transceiver/hardware/generated/08_rfdc_capture/zcu216_rfdc_capture.gen/sources_1/bd/system/ip/system_loop_status2_gpio_0/system_loop_status2_gpio_0.xdc] for cell 'system_i/loop_status2_gpio/U0'
+Finished Parsing XDC File [/home/dsp-mikro7/FPGA_Based_OFDM_Transceiver/hardware/generated/08_rfdc_capture/zcu216_rfdc_capture.gen/sources_1/bd/system/ip/system_loop_status2_gpio_0/system_loop_status2_gpio_0.xdc] for cell 'system_i/loop_status2_gpio/U0'
+Parsing XDC File [/home/dsp-mikro7/FPGA_Based_OFDM_Transceiver/hardware/generated/08_rfdc_capture/zcu216_rfdc_capture.gen/sources_1/bd/system/ip/system_loop_status2_gpio_0/system_loop_status2_gpio_0_board.xdc] for cell 'system_i/loop_status2_gpio/U0'
+Finished Parsing XDC File [/home/dsp-mikro7/FPGA_Based_OFDM_Transceiver/hardware/generated/08_rfdc_capture/zcu216_rfdc_capture.gen/sources_1/bd/system/ip/system_loop_status2_gpio_0/system_loop_status2_gpio_0_board.xdc] for cell 'system_i/loop_status2_gpio/U0'
+Parsing XDC File [/home/dsp-mikro7/FPGA_Based_OFDM_Transceiver/hardware/generated/08_rfdc_capture/zcu216_rfdc_capture.gen/sources_1/bd/system/ip/system_loop_status_gpio_0/system_loop_status_gpio_0.xdc] for cell 'system_i/loop_status_gpio/U0'
+Finished Parsing XDC File [/home/dsp-mikro7/FPGA_Based_OFDM_Transceiver/hardware/generated/08_rfdc_capture/zcu216_rfdc_capture.gen/sources_1/bd/system/ip/system_loop_status_gpio_0/system_loop_status_gpio_0.xdc] for cell 'system_i/loop_status_gpio/U0'
+Parsing XDC File [/home/dsp-mikro7/FPGA_Based_OFDM_Transceiver/hardware/generated/08_rfdc_capture/zcu216_rfdc_capture.gen/sources_1/bd/system/ip/system_loop_status_gpio_0/system_loop_status_gpio_0_board.xdc] for cell 'system_i/loop_status_gpio/U0'
+Finished Parsing XDC File [/home/dsp-mikro7/FPGA_Based_OFDM_Transceiver/hardware/generated/08_rfdc_capture/zcu216_rfdc_capture.gen/sources_1/bd/system/ip/system_loop_status_gpio_0/system_loop_status_gpio_0_board.xdc] for cell 'system_i/loop_status_gpio/U0'
+Parsing XDC File [/home/dsp-mikro7/FPGA_Based_OFDM_Transceiver/hardware/generated/08_rfdc_capture/zcu216_rfdc_capture.gen/sources_1/bd/system/ip/system_loop_ctrl_gpio_0/system_loop_ctrl_gpio_0.xdc] for cell 'system_i/loop_ctrl_gpio/U0'
+Finished Parsing XDC File [/home/dsp-mikro7/FPGA_Based_OFDM_Transceiver/hardware/generated/08_rfdc_capture/zcu216_rfdc_capture.gen/sources_1/bd/system/ip/system_loop_ctrl_gpio_0/system_loop_ctrl_gpio_0.xdc] for cell 'system_i/loop_ctrl_gpio/U0'
+Parsing XDC File [/home/dsp-mikro7/FPGA_Based_OFDM_Transceiver/hardware/generated/08_rfdc_capture/zcu216_rfdc_capture.gen/sources_1/bd/system/ip/system_loop_ctrl_gpio_0/system_loop_ctrl_gpio_0_board.xdc] for cell 'system_i/loop_ctrl_gpio/U0'
+Finished Parsing XDC File [/home/dsp-mikro7/FPGA_Based_OFDM_Transceiver/hardware/generated/08_rfdc_capture/zcu216_rfdc_capture.gen/sources_1/bd/system/ip/system_loop_ctrl_gpio_0/system_loop_ctrl_gpio_0_board.xdc] for cell 'system_i/loop_ctrl_gpio/U0'
+Parsing XDC File [/home/dsp-mikro7/FPGA_Based_OFDM_Transceiver/hardware/generated/08_rfdc_capture/zcu216_rfdc_capture.gen/sources_1/bd/system/ip/system_clk104_gpio_0/system_clk104_gpio_0.xdc] for cell 'system_i/clk104_gpio/U0'
+Finished Parsing XDC File [/home/dsp-mikro7/FPGA_Based_OFDM_Transceiver/hardware/generated/08_rfdc_capture/zcu216_rfdc_capture.gen/sources_1/bd/system/ip/system_clk104_gpio_0/system_clk104_gpio_0.xdc] for cell 'system_i/clk104_gpio/U0'
+Parsing XDC File [/home/dsp-mikro7/FPGA_Based_OFDM_Transceiver/hardware/generated/08_rfdc_capture/zcu216_rfdc_capture.gen/sources_1/bd/system/ip/system_clk104_gpio_0/system_clk104_gpio_0_board.xdc] for cell 'system_i/clk104_gpio/U0'
+Finished Parsing XDC File [/home/dsp-mikro7/FPGA_Based_OFDM_Transceiver/hardware/generated/08_rfdc_capture/zcu216_rfdc_capture.gen/sources_1/bd/system/ip/system_clk104_gpio_0/system_clk104_gpio_0_board.xdc] for cell 'system_i/clk104_gpio/U0'
+Parsing XDC File [/home/dsp-mikro7/FPGA_Based_OFDM_Transceiver/hardware/generated/08_rfdc_capture/zcu216_rfdc_capture.gen/sources_1/bd/system/ip/system_rst_ps8_0_99M_0/system_rst_ps8_0_99M_0.xdc] for cell 'system_i/rst_ps8_0_99M/U0'
+Finished Parsing XDC File [/home/dsp-mikro7/FPGA_Based_OFDM_Transceiver/hardware/generated/08_rfdc_capture/zcu216_rfdc_capture.gen/sources_1/bd/system/ip/system_rst_ps8_0_99M_0/system_rst_ps8_0_99M_0.xdc] for cell 'system_i/rst_ps8_0_99M/U0'
+Parsing XDC File [/home/dsp-mikro7/FPGA_Based_OFDM_Transceiver/hardware/generated/08_rfdc_capture/zcu216_rfdc_capture.gen/sources_1/bd/system/ip/system_rst_ps8_0_99M_0/system_rst_ps8_0_99M_0_board.xdc] for cell 'system_i/rst_ps8_0_99M/U0'
+Finished Parsing XDC File [/home/dsp-mikro7/FPGA_Based_OFDM_Transceiver/hardware/generated/08_rfdc_capture/zcu216_rfdc_capture.gen/sources_1/bd/system/ip/system_rst_ps8_0_99M_0/system_rst_ps8_0_99M_0_board.xdc] for cell 'system_i/rst_ps8_0_99M/U0'
+Parsing XDC File [/home/dsp-mikro7/FPGA_Based_OFDM_Transceiver/hardware/generated/08_rfdc_capture/zcu216_rfdc_capture.gen/sources_1/bd/system/ip/system_usp_rf_data_converter_0_0/synth/system_usp_rf_data_converter_0_0_clocks.xdc] for cell 'system_i/usp_rf_data_converter_0/inst'
+INFO: [Timing 38-35] Done setting XDC timing constraints. [/home/dsp-mikro7/FPGA_Based_OFDM_Transceiver/hardware/generated/08_rfdc_capture/zcu216_rfdc_capture.gen/sources_1/bd/system/ip/system_usp_rf_data_converter_0_0/synth/system_usp_rf_data_converter_0_0_clocks.xdc:55]
+Finished Parsing XDC File [/home/dsp-mikro7/FPGA_Based_OFDM_Transceiver/hardware/generated/08_rfdc_capture/zcu216_rfdc_capture.gen/sources_1/bd/system/ip/system_usp_rf_data_converter_0_0/synth/system_usp_rf_data_converter_0_0_clocks.xdc] for cell 'system_i/usp_rf_data_converter_0/inst'
+Parsing XDC File [/home/dsp-mikro7/FPGA_Based_OFDM_Transceiver/hardware/constraints/clk104_mux.xdc]
+Finished Parsing XDC File [/home/dsp-mikro7/FPGA_Based_OFDM_Transceiver/hardware/constraints/clk104_mux.xdc]
+Parsing XDC File [/home/dsp-mikro7/FPGA_Based_OFDM_Transceiver/hardware/constraints/capture_cdc.xdc]
+WARNING: [Constraints 18-402] set_false_path: 'system_i/adc_cap/GND' is not a valid startpoint. [/home/dsp-mikro7/FPGA_Based_OFDM_Transceiver/hardware/constraints/capture_cdc.xdc:12]
+Resolution: A valid start point is a main or generated clock pin or port, a clock pin of a sequential cell, or a primary input or inout port. Please validate that all the objects returned by your query belong to this list.
+WARNING: [Constraints 18-402] set_false_path: 'system_i/adc_cap/inst' is not a valid startpoint. [/home/dsp-mikro7/FPGA_Based_OFDM_Transceiver/hardware/constraints/capture_cdc.xdc:12]
+Resolution: A valid start point is a main or generated clock pin or port, a clock pin of a sequential cell, or a primary input or inout port. Please validate that all the objects returned by your query belong to this list.
+WARNING: [Constraints 18-402] set_false_path: 'system_i/adc_cap/inst/GND' is not a valid startpoint. [/home/dsp-mikro7/FPGA_Based_OFDM_Transceiver/hardware/constraints/capture_cdc.xdc:12]
+Resolution: A valid start point is a main or generated clock pin or port, a clock pin of a sequential cell, or a primary input or inout port. Please validate that all the objects returned by your query belong to this list.
+WARNING: [Constraints 18-402] set_false_path: 'system_i/adc_cap/inst/GND_1' is not a valid startpoint. [/home/dsp-mikro7/FPGA_Based_OFDM_Transceiver/hardware/constraints/capture_cdc.xdc:12]
+Resolution: A valid start point is a main or generated clock pin or port, a clock pin of a sequential cell, or a primary input or inout port. Please validate that all the objects returned by your query belong to this list.
+WARNING: [Constraints 18-402] set_false_path: 'system_i/adc_cap/inst/VCC' is not a valid startpoint. [/home/dsp-mikro7/FPGA_Based_OFDM_Transceiver/hardware/constraints/capture_cdc.xdc:12]
+Resolution: A valid start point is a main or generated clock pin or port, a clock pin of a sequential cell, or a primary input or inout port. Please validate that all the objects returned by your query belong to this list.
+WARNING: [Constraints 18-402] set_false_path: 'system_i/adc_cap/inst/VCC_1' is not a valid startpoint. [/home/dsp-mikro7/FPGA_Based_OFDM_Transceiver/hardware/constraints/capture_cdc.xdc:12]
+Resolution: A valid start point is a main or generated clock pin or port, a clock pin of a sequential cell, or a primary input or inout port. Please validate that all the objects returned by your query belong to this list.
+WARNING: [Constraints 18-402] set_false_path: 'system_i/adc_cap/inst/active_i_1' is not a valid startpoint. [/home/dsp-mikro7/FPGA_Based_OFDM_Transceiver/hardware/constraints/capture_cdc.xdc:12]
+Resolution: A valid start point is a main or generated clock pin or port, a clock pin of a sequential cell, or a primary input or inout port. Please validate that all the objects returned by your query belong to this list.
+WARNING: [Constraints 18-402] set_false_path: 'system_i/adc_cap/inst/active_i_2' is not a valid startpoint. [/home/dsp-mikro7/FPGA_Based_OFDM_Transceiver/hardware/constraints/capture_cdc.xdc:12]
+Resolution: A valid start point is a main or generated clock pin or port, a clock pin of a sequential cell, or a primary input or inout port. Please validate that all the objects returned by your query belong to this list.
+WARNING: [Constraints 18-402] set_false_path: 'system_i/adc_cap/inst/active_i_3' is not a valid startpoint. [/home/dsp-mikro7/FPGA_Based_OFDM_Transceiver/hardware/constraints/capture_cdc.xdc:12]
+Resolution: A valid start point is a main or generated clock pin or port, a clock pin of a sequential cell, or a primary input or inout port. Please validate that all the objects returned by your query belong to this list.
+WARNING: [Constraints 18-402] set_false_path: 'system_i/adc_cap/inst/active_i_4' is not a valid startpoint. [/home/dsp-mikro7/FPGA_Based_OFDM_Transceiver/hardware/constraints/capture_cdc.xdc:12]
+Resolution: A valid start point is a main or generated clock pin or port, a clock pin of a sequential cell, or a primary input or inout port. Please validate that all the objects returned by your query belong to this list.
+WARNING: [Constraints 18-402] set_false_path: 'system_i/adc_cap/inst/bank4_reg_bram_0_i_1' is not a valid startpoint. [/home/dsp-mikro7/FPGA_Based_OFDM_Transceiver/hardware/constraints/capture_cdc.xdc:12]
+Resolution: A valid start point is a main or generated clock pin or port, a clock pin of a sequential cell, or a primary input or inout port. Please validate that all the objects returned by your query belong to this list.
+WARNING: [Constraints 18-402] set_false_path: 'system_i/adc_cap/inst/bank4_reg_bram_0_i_2' is not a valid startpoint. [/home/dsp-mikro7/FPGA_Based_OFDM_Transceiver/hardware/constraints/capture_cdc.xdc:12]
+Resolution: A valid start point is a main or generated clock pin or port, a clock pin of a sequential cell, or a primary input or inout port. Please validate that all the objects returned by your query belong to this list.
+WARNING: [Constraints 18-402] set_false_path: 'system_i/adc_cap/inst/bank4_reg_bram_0_i_3' is not a valid startpoint. [/home/dsp-mikro7/FPGA_Based_OFDM_Transceiver/hardware/constraints/capture_cdc.xdc:12]
+Resolution: A valid start point is a main or generated clock pin or port, a clock pin of a sequential cell, or a primary input or inout port. Please validate that all the objects returned by your query belong to this list.
+WARNING: [Constraints 18-402] set_false_path: 'system_i/adc_cap/inst/bank4_reg_bram_0_i_4' is not a valid startpoint. [/home/dsp-mikro7/FPGA_Based_OFDM_Transceiver/hardware/constraints/capture_cdc.xdc:12]
+Resolution: A valid start point is a main or generated clock pin or port, a clock pin of a sequential cell, or a primary input or inout port. Please validate that all the objects returned by your query belong to this list.
+WARNING: [Constraints 18-402] set_false_path: 'system_i/adc_cap/inst/bank4_reg_bram_0_i_5' is not a valid startpoint. [/home/dsp-mikro7/FPGA_Based_OFDM_Transceiver/hardware/constraints/capture_cdc.xdc:12]
+Resolution: A valid start point is a main or generated clock pin or port, a clock pin of a sequential cell, or a primary input or inout port. Please validate that all the objects returned by your query belong to this list.
+WARNING: [Constraints 18-402] set_false_path: 'system_i/adc_cap/inst/bank4_reg_bram_0_i_6' is not a valid startpoint. [/home/dsp-mikro7/FPGA_Based_OFDM_Transceiver/hardware/constraints/capture_cdc.xdc:12]
+Resolution: A valid start point is a main or generated clock pin or port, a clock pin of a sequential cell, or a primary input or inout port. Please validate that all the objects returned by your query belong to this list.
+WARNING: [Constraints 18-402] set_false_path: 'system_i/adc_cap/inst/clipping_i_1' is not a valid startpoint. [/home/dsp-mikro7/FPGA_Based_OFDM_Transceiver/hardware/constraints/capture_cdc.xdc:12]
+Resolution: A valid start point is a main or generated clock pin or port, a clock pin of a sequential cell, or a primary input or inout port. Please validate that all the objects returned by your query belong to this list.
+WARNING: [Constraints 18-402] set_false_path: 'system_i/adc_cap/inst/clipping_i_2' is not a valid startpoint. [/home/dsp-mikro7/FPGA_Based_OFDM_Transceiver/hardware/constraints/capture_cdc.xdc:12]
+Resolution: A valid start point is a main or generated clock pin or port, a clock pin of a sequential cell, or a primary input or inout port. Please validate that all the objects returned by your query belong to this list.
+WARNING: [Constraints 18-402] set_false_path: 'system_i/adc_cap/inst/clipping_i_3' is not a valid startpoint. [/home/dsp-mikro7/FPGA_Based_OFDM_Transceiver/hardware/constraints/capture_cdc.xdc:12]
+Resolution: A valid start point is a main or generated clock pin or port, a clock pin of a sequential cell, or a primary input or inout port. Please validate that all the objects returned by your query belong to this list.
+WARNING: [Constraints 18-402] set_false_path: 'system_i/adc_cap/inst/clipping_i_4' is not a valid startpoint. [/home/dsp-mikro7/FPGA_Based_OFDM_Transceiver/hardware/constraints/capture_cdc.xdc:12]
+Resolution: A valid start point is a main or generated clock pin or port, a clock pin of a sequential cell, or a primary input or inout port. Please validate that all the objects returned by your query belong to this list.
+WARNING: [Constraints 18-402] set_false_path: 'system_i/adc_cap/inst/clipping_i_5' is not a valid startpoint. [/home/dsp-mikro7/FPGA_Based_OFDM_Transceiver/hardware/constraints/capture_cdc.xdc:12]
+Resolution: A valid start point is a main or generated clock pin or port, a clock pin of a sequential cell, or a primary input or inout port. Please validate that all the objects returned by your query belong to this list.
+WARNING: [Constraints 18-402] set_false_path: 'system_i/adc_cap/inst/clipping_i_6' is not a valid startpoint. [/home/dsp-mikro7/FPGA_Based_OFDM_Transceiver/hardware/constraints/capture_cdc.xdc:12]
+Resolution: A valid start point is a main or generated clock pin or port, a clock pin of a sequential cell, or a primary input or inout port. Please validate that all the objects returned by your query belong to this list.
+WARNING: [Constraints 18-402] set_false_path: 'system_i/adc_cap/inst/clipping_i_7' is not a valid startpoint. [/home/dsp-mikro7/FPGA_Based_OFDM_Transceiver/hardware/constraints/capture_cdc.xdc:12]
+Resolution: A valid start point is a main or generated clock pin or port, a clock pin of a sequential cell, or a primary input or inout port. Please validate that all the objects returned by your query belong to this list.
+WARNING: [Constraints 18-402] set_false_path: 'system_i/adc_cap/inst/count[15]_i_1' is not a valid startpoint. [/home/dsp-mikro7/FPGA_Based_OFDM_Transceiver/hardware/constraints/capture_cdc.xdc:12]
+Resolution: A valid start point is a main or generated clock pin or port, a clock pin of a sequential cell, or a primary input or inout port. Please validate that all the objects returned by your query belong to this list.
+WARNING: [Constraints 18-402] set_false_path: 'system_i/adc_cap/inst/count[7]_i_2' is not a valid startpoint. [/home/dsp-mikro7/FPGA_Based_OFDM_Transceiver/hardware/constraints/capture_cdc.xdc:12]
+Resolution: A valid start point is a main or generated clock pin or port, a clock pin of a sequential cell, or a primary input or inout port. Please validate that all the objects returned by your query belong to this list.
+WARNING: [Constraints 18-402] set_false_path: 'system_i/adc_cap/inst/count_reg[15]_i_2' is not a valid startpoint. [/home/dsp-mikro7/FPGA_Based_OFDM_Transceiver/hardware/constraints/capture_cdc.xdc:12]
+Resolution: A valid start point is a main or generated clock pin or port, a clock pin of a sequential cell, or a primary input or inout port. Please validate that all the objects returned by your query belong to this list.
+WARNING: [Constraints 18-402] set_false_path: 'system_i/adc_cap/inst/count_reg[16]_i_1' is not a valid startpoint. [/home/dsp-mikro7/FPGA_Based_OFDM_Transceiver/hardware/constraints/capture_cdc.xdc:12]
+Resolution: A valid start point is a main or generated clock pin or port, a clock pin of a sequential cell, or a primary input or inout port. Please validate that all the objects returned by your query belong to this list.
+WARNING: [Constraints 18-402] set_false_path: 'system_i/adc_cap/inst/count_reg[24]_i_1' is not a valid startpoint. [/home/dsp-mikro7/FPGA_Based_OFDM_Transceiver/hardware/constraints/capture_cdc.xdc:12]
+Resolution: A valid start point is a main or generated clock pin or port, a clock pin of a sequential cell, or a primary input or inout port. Please validate that all the objects returned by your query belong to this list.
+WARNING: [Constraints 18-402] set_false_path: 'system_i/adc_cap/inst/count_reg[7]_i_1' is not a valid startpoint. [/home/dsp-mikro7/FPGA_Based_OFDM_Transceiver/hardware/constraints/capture_cdc.xdc:12]
+Resolution: A valid start point is a main or generated clock pin or port, a clock pin of a sequential cell, or a primary input or inout port. Please validate that all the objects returned by your query belong to this list.
+WARNING: [Constraints 18-402] set_false_path: 'system_i/adc_cap/inst/done_i_1' is not a valid startpoint. [/home/dsp-mikro7/FPGA_Based_OFDM_Transceiver/hardware/constraints/capture_cdc.xdc:12]
+Resolution: A valid start point is a main or generated clock pin or port, a clock pin of a sequential cell, or a primary input or inout port. Please validate that all the objects returned by your query belong to this list.
+WARNING: [Constraints 18-402] set_false_path: 'system_i/adc_cap/inst/done_i_2' is not a valid startpoint. [/home/dsp-mikro7/FPGA_Based_OFDM_Transceiver/hardware/constraints/capture_cdc.xdc:12]
+Resolution: A valid start point is a main or generated clock pin or port, a clock pin of a sequential cell, or a primary input or inout port. Please validate that all the objects returned by your query belong to this list.
+WARNING: [Constraints 18-402] set_false_path: 'system_i/adc_cap/inst/first_sample[15]_i_1' is not a valid startpoint. [/home/dsp-mikro7/FPGA_Based_OFDM_Transceiver/hardware/constraints/capture_cdc.xdc:12]
+Resolution: A valid start point is a main or generated clock pin or port, a clock pin of a sequential cell, or a primary input or inout port. Please validate that all the objects returned by your query belong to this list.
+WARNING: [Constraints 18-402] set_false_path: 'system_i/adc_cap/inst/first_sample[15]_i_2' is not a valid startpoint. [/home/dsp-mikro7/FPGA_Based_OFDM_Transceiver/hardware/constraints/capture_cdc.xdc:12]
+Resolution: A valid start point is a main or generated clock pin or port, a clock pin of a sequential cell, or a primary input or inout port. Please validate that all the objects returned by your query belong to this list.
+WARNING: [Constraints 18-402] set_false_path: 'system_i/adc_cap/inst/first_sample[15]_i_3' is not a valid startpoint. [/home/dsp-mikro7/FPGA_Based_OFDM_Transceiver/hardware/constraints/capture_cdc.xdc:12]
+Resolution: A valid start point is a main or generated clock pin or port, a clock pin of a sequential cell, or a primary input or inout port. Please validate that all the objects returned by your query belong to this list.
+WARNING: [Constraints 18-402] set_false_path: 'system_i/adc_cap/inst/last_sign_i_1' is not a valid startpoint. [/home/dsp-mikro7/FPGA_Based_OFDM_Transceiver/hardware/constraints/capture_cdc.xdc:12]
+Resolution: A valid start point is a main or generated clock pin or port, a clock pin of a sequential cell, or a primary input or inout port. Please validate that all the objects returned by your query belong to this list.
+WARNING: [Constraints 18-402] set_false_path: 'system_i/adc_cap/inst/max_abs0_carry' is not a valid startpoint. [/home/dsp-mikro7/FPGA_Based_OFDM_Transceiver/hardware/constraints/capture_cdc.xdc:12]
+Resolution: A valid start point is a main or generated clock pin or port, a clock pin of a sequential cell, or a primary input or inout port. Please validate that all the objects returned by your query belong to this list.
+WARNING: [Constraints 18-402] set_false_path: 'system_i/adc_cap/inst/max_abs0_carry_i_1' is not a valid startpoint. [/home/dsp-mikro7/FPGA_Based_OFDM_Transceiver/hardware/constraints/capture_cdc.xdc:12]
+Resolution: A valid start point is a main or generated clock pin or port, a clock pin of a sequential cell, or a primary input or inout port. Please validate that all the objects returned by your query belong to this list.
+WARNING: [Constraints 18-402] set_false_path: 'system_i/adc_cap/inst/max_abs0_carry_i_10' is not a valid startpoint. [/home/dsp-mikro7/FPGA_Based_OFDM_Transceiver/hardware/constraints/capture_cdc.xdc:12]
+Resolution: A valid start point is a main or generated clock pin or port, a clock pin of a sequential cell, or a primary input or inout port. Please validate that all the objects returned by your query belong to this list.
+WARNING: [Constraints 18-402] set_false_path: 'system_i/adc_cap/inst/max_abs0_carry_i_11' is not a valid startpoint. [/home/dsp-mikro7/FPGA_Based_OFDM_Transceiver/hardware/constraints/capture_cdc.xdc:12]
+Resolution: A valid start point is a main or generated clock pin or port, a clock pin of a sequential cell, or a primary input or inout port. Please validate that all the objects returned by your query belong to this list.
+WARNING: [Constraints 18-402] set_false_path: 'system_i/adc_cap/inst/max_abs0_carry_i_12' is not a valid startpoint. [/home/dsp-mikro7/FPGA_Based_OFDM_Transceiver/hardware/constraints/capture_cdc.xdc:12]
+Resolution: A valid start point is a main or generated clock pin or port, a clock pin of a sequential cell, or a primary input or inout port. Please validate that all the objects returned by your query belong to this list.
+WARNING: [Constraints 18-402] set_false_path: 'system_i/adc_cap/inst/max_abs0_carry_i_13' is not a valid startpoint. [/home/dsp-mikro7/FPGA_Based_OFDM_Transceiver/hardware/constraints/capture_cdc.xdc:12]
+Resolution: A valid start point is a main or generated clock pin or port, a clock pin of a sequential cell, or a primary input or inout port. Please validate that all the objects returned by your query belong to this list.
+WARNING: [Constraints 18-402] set_false_path: 'system_i/adc_cap/inst/max_abs0_carry_i_14' is not a valid startpoint. [/home/dsp-mikro7/FPGA_Based_OFDM_Transceiver/hardware/constraints/capture_cdc.xdc:12]
+Resolution: A valid start point is a main or generated clock pin or port, a clock pin of a sequential cell, or a primary input or inout port. Please validate that all the objects returned by your query belong to this list.
+WARNING: [Constraints 18-402] set_false_path: 'system_i/adc_cap/inst/max_abs0_carry_i_15' is not a valid startpoint. [/home/dsp-mikro7/FPGA_Based_OFDM_Transceiver/hardware/constraints/capture_cdc.xdc:12]
+Resolution: A valid start point is a main or generated clock pin or port, a clock pin of a sequential cell, or a primary input or inout port. Please validate that all the objects returned by your query belong to this list.
+WARNING: [Constraints 18-402] set_false_path: 'system_i/adc_cap/inst/max_abs0_carry_i_16' is not a valid startpoint. [/home/dsp-mikro7/FPGA_Based_OFDM_Transceiver/hardware/constraints/capture_cdc.xdc:12]
+Resolution: A valid start point is a main or generated clock pin or port, a clock pin of a sequential cell, or a primary input or inout port. Please validate that all the objects returned by your query belong to this list.
+WARNING: [Constraints 18-402] set_false_path: 'system_i/adc_cap/inst/max_abs0_carry_i_17' is not a valid startpoint. [/home/dsp-mikro7/FPGA_Based_OFDM_Transceiver/hardware/constraints/capture_cdc.xdc:12]
+Resolution: A valid start point is a main or generated clock pin or port, a clock pin of a sequential cell, or a primary input or inout port. Please validate that all the objects returned by your query belong to this list.
+WARNING: [Constraints 18-402] set_false_path: 'system_i/adc_cap/inst/max_abs0_carry_i_18' is not a valid startpoint. [/home/dsp-mikro7/FPGA_Based_OFDM_Transceiver/hardware/constraints/capture_cdc.xdc:12]
+Resolution: A valid start point is a main or generated clock pin or port, a clock pin of a sequential cell, or a primary input or inout port. Please validate that all the objects returned by your query belong to this list.
+WARNING: [Constraints 18-402] set_false_path: 'system_i/adc_cap/inst/max_abs0_carry_i_2' is not a valid startpoint. [/home/dsp-mikro7/FPGA_Based_OFDM_Transceiver/hardware/constraints/capture_cdc.xdc:12]
+Resolution: A valid start point is a main or generated clock pin or port, a clock pin of a sequential cell, or a primary input or inout port. Please validate that all the objects returned by your query belong to this list.
+WARNING: [Constraints 18-402] set_false_path: 'system_i/adc_cap/inst/max_abs0_carry_i_3' is not a valid startpoint. [/home/dsp-mikro7/FPGA_Based_OFDM_Transceiver/hardware/constraints/capture_cdc.xdc:12]
+Resolution: A valid start point is a main or generated clock pin or port, a clock pin of a sequential cell, or a primary input or inout port. Please validate that all the objects returned by your query belong to this list.
+WARNING: [Constraints 18-402] set_false_path: 'system_i/adc_cap/inst/max_abs0_carry_i_4' is not a valid startpoint. [/home/dsp-mikro7/FPGA_Based_OFDM_Transceiver/hardware/constraints/capture_cdc.xdc:12]
+Resolution: A valid start point is a main or generated clock pin or port, a clock pin of a sequential cell, or a primary input or inout port. Please validate that all the objects returned by your query belong to this list.
+WARNING: [Constraints 18-402] set_false_path: 'system_i/adc_cap/inst/max_abs0_carry_i_5' is not a valid startpoint. [/home/dsp-mikro7/FPGA_Based_OFDM_Transceiver/hardware/constraints/capture_cdc.xdc:12]
+Resolution: A valid start point is a main or generated clock pin or port, a clock pin of a sequential cell, or a primary input or inout port. Please validate that all the objects returned by your query belong to this list.
+WARNING: [Constraints 18-402] set_false_path: 'system_i/adc_cap/inst/max_abs0_carry_i_6' is not a valid startpoint. [/home/dsp-mikro7/FPGA_Based_OFDM_Transceiver/hardware/constraints/capture_cdc.xdc:12]
+Resolution: A valid start point is a main or generated clock pin or port, a clock pin of a sequential cell, or a primary input or inout port. Please validate that all the objects returned by your query belong to this list.
+WARNING: [Constraints 18-402] set_false_path: 'system_i/adc_cap/inst/max_abs0_carry_i_7' is not a valid startpoint. [/home/dsp-mikro7/FPGA_Based_OFDM_Transceiver/hardware/constraints/capture_cdc.xdc:12]
+Resolution: A valid start point is a main or generated clock pin or port, a clock pin of a sequential cell, or a primary input or inout port. Please validate that all the objects returned by your query belong to this list.
+WARNING: [Constraints 18-402] set_false_path: 'system_i/adc_cap/inst/max_abs0_carry_i_8' is not a valid startpoint. [/home/dsp-mikro7/FPGA_Based_OFDM_Transceiver/hardware/constraints/capture_cdc.xdc:12]
+Resolution: A valid start point is a main or generated clock pin or port, a clock pin of a sequential cell, or a primary input or inout port. Please validate that all the objects returned by your query belong to this list.
+WARNING: [Constraints 18-402] set_false_path: 'system_i/adc_cap/inst/max_abs0_carry_i_9' is not a valid startpoint. [/home/dsp-mikro7/FPGA_Based_OFDM_Transceiver/hardware/constraints/capture_cdc.xdc:12]
+Resolution: A valid start point is a main or generated clock pin or port, a clock pin of a sequential cell, or a primary input or inout port. Please validate that all the objects returned by your query belong to this list.
+WARNING: [Constraints 18-402] set_false_path: 'system_i/adc_cap/inst/max_abs[10]_i_1' is not a valid startpoint. [/home/dsp-mikro7/FPGA_Based_OFDM_Transceiver/hardware/constraints/capture_cdc.xdc:12]
+Resolution: A valid start point is a main or generated clock pin or port, a clock pin of a sequential cell, or a primary input or inout port. Please validate that all the objects returned by your query belong to this list.
+WARNING: [Constraints 18-402] set_false_path: 'system_i/adc_cap/inst/max_abs[11]_i_1' is not a valid startpoint. [/home/dsp-mikro7/FPGA_Based_OFDM_Transceiver/hardware/constraints/capture_cdc.xdc:12]
+Resolution: A valid start point is a main or generated clock pin or port, a clock pin of a sequential cell, or a primary input or inout port. Please validate that all the objects returned by your query belong to this list.
+WARNING: [Constraints 18-402] set_false_path: 'system_i/adc_cap/inst/max_abs[12]_i_1' is not a valid startpoint. [/home/dsp-mikro7/FPGA_Based_OFDM_Transceiver/hardware/constraints/capture_cdc.xdc:12]
+Resolution: A valid start point is a main or generated clock pin or port, a clock pin of a sequential cell, or a primary input or inout port. Please validate that all the objects returned by your query belong to this list.
+WARNING: [Constraints 18-402] set_false_path: 'system_i/adc_cap/inst/max_abs[13]_i_1' is not a valid startpoint. [/home/dsp-mikro7/FPGA_Based_OFDM_Transceiver/hardware/constraints/capture_cdc.xdc:12]
+Resolution: A valid start point is a main or generated clock pin or port, a clock pin of a sequential cell, or a primary input or inout port. Please validate that all the objects returned by your query belong to this list.
+WARNING: [Constraints 18-402] set_false_path: 'system_i/adc_cap/inst/max_abs[13]_i_2' is not a valid startpoint. [/home/dsp-mikro7/FPGA_Based_OFDM_Transceiver/hardware/constraints/capture_cdc.xdc:12]
+Resolution: A valid start point is a main or generated clock pin or port, a clock pin of a sequential cell, or a primary input or inout port. Please validate that all the objects returned by your query belong to this list.
+WARNING: [Constraints 18-402] set_false_path: 'system_i/adc_cap/inst/max_abs[14]_i_1' is not a valid startpoint. [/home/dsp-mikro7/FPGA_Based_OFDM_Transceiver/hardware/constraints/capture_cdc.xdc:12]
+Resolution: A valid start point is a main or generated clock pin or port, a clock pin of a sequential cell, or a primary input or inout port. Please validate that all the objects returned by your query belong to this list.
+WARNING: [Constraints 18-402] set_false_path: 'system_i/adc_cap/inst/max_abs[15]_i_1' is not a valid startpoint. [/home/dsp-mikro7/FPGA_Based_OFDM_Transceiver/hardware/constraints/capture_cdc.xdc:12]
+Resolution: A valid start point is a main or generated clock pin or port, a clock pin of a sequential cell, or a primary input or inout port. Please validate that all the objects returned by your query belong to this list.
+WARNING: [Constraints 18-402] set_false_path: 'system_i/adc_cap/inst/max_abs[15]_i_2' is not a valid startpoint. [/home/dsp-mikro7/FPGA_Based_OFDM_Transceiver/hardware/constraints/capture_cdc.xdc:12]
+Resolution: A valid start point is a main or generated clock pin or port, a clock pin of a sequential cell, or a primary input or inout port. Please validate that all the objects returned by your query belong to this list.
+WARNING: [Constraints 18-402] set_false_path: 'system_i/adc_cap/inst/max_abs[1]_i_1' is not a valid startpoint. [/home/dsp-mikro7/FPGA_Based_OFDM_Transceiver/hardware/constraints/capture_cdc.xdc:12]
+Resolution: A valid start point is a main or generated clock pin or port, a clock pin of a sequential cell, or a primary input or inout port. Please validate that all the objects returned by your query belong to this list.
+WARNING: [Constraints 18-402] set_false_path: 'system_i/adc_cap/inst/max_abs[2]_i_1' is not a valid startpoint. [/home/dsp-mikro7/FPGA_Based_OFDM_Transceiver/hardware/constraints/capture_cdc.xdc:12]
+Resolution: A valid start point is a main or generated clock pin or port, a clock pin of a sequential cell, or a primary input or inout port. Please validate that all the objects returned by your query belong to this list.
+WARNING: [Constraints 18-402] set_false_path: 'system_i/adc_cap/inst/max_abs[3]_i_1' is not a valid startpoint. [/home/dsp-mikro7/FPGA_Based_OFDM_Transceiver/hardware/constraints/capture_cdc.xdc:12]
+Resolution: A valid start point is a main or generated clock pin or port, a clock pin of a sequential cell, or a primary input or inout port. Please validate that all the objects returned by your query belong to this list.
+WARNING: [Constraints 18-402] set_false_path: 'system_i/adc_cap/inst/max_abs[4]_i_1' is not a valid startpoint. [/home/dsp-mikro7/FPGA_Based_OFDM_Transceiver/hardware/constraints/capture_cdc.xdc:12]
+Resolution: A valid start point is a main or generated clock pin or port, a clock pin of a sequential cell, or a primary input or inout port. Please validate that all the objects returned by your query belong to this list.
+WARNING: [Constraints 18-402] set_false_path: 'system_i/adc_cap/inst/max_abs[5]_i_1' is not a valid startpoint. [/home/dsp-mikro7/FPGA_Based_OFDM_Transceiver/hardware/constraints/capture_cdc.xdc:12]
+Resolution: A valid start point is a main or generated clock pin or port, a clock pin of a sequential cell, or a primary input or inout port. Please validate that all the objects returned by your query belong to this list.
+WARNING: [Constraints 18-402] set_false_path: 'system_i/adc_cap/inst/max_abs[5]_i_2' is not a valid startpoint. [/home/dsp-mikro7/FPGA_Based_OFDM_Transceiver/hardware/constraints/capture_cdc.xdc:12]
+Resolution: A valid start point is a main or generated clock pin or port, a clock pin of a sequential cell, or a primary input or inout port. Please validate that all the objects returned by your query belong to this list.
+WARNING: [Constraints 18-402] set_false_path: 'system_i/adc_cap/inst/max_abs[6]_i_1' is not a valid startpoint. [/home/dsp-mikro7/FPGA_Based_OFDM_Transceiver/hardware/constraints/capture_cdc.xdc:12]
+Resolution: A valid start point is a main or generated clock pin or port, a clock pin of a sequential cell, or a primary input or inout port. Please validate that all the objects returned by your query belong to this list.
+WARNING: [Constraints 18-402] set_false_path: 'system_i/adc_cap/inst/max_abs[7]_i_1' is not a valid startpoint. [/home/dsp-mikro7/FPGA_Based_OFDM_Transceiver/hardware/constraints/capture_cdc.xdc:12]
+Resolution: A valid start point is a main or generated clock pin or port, a clock pin of a sequential cell, or a primary input or inout port. Please validate that all the objects returned by your query belong to this list.
+WARNING: [Constraints 18-402] set_false_path: 'system_i/adc_cap/inst/max_abs[7]_i_2' is not a valid startpoint. [/home/dsp-mikro7/FPGA_Based_OFDM_Transceiver/hardware/constraints/capture_cdc.xdc:12]
+Resolution: A valid start point is a main or generated clock pin or port, a clock pin of a sequential cell, or a primary input or inout port. Please validate that all the objects returned by your query belong to this list.
+WARNING: [Constraints 18-402] set_false_path: 'system_i/adc_cap/inst/max_abs[8]_i_1' is not a valid startpoint. [/home/dsp-mikro7/FPGA_Based_OFDM_Transceiver/hardware/constraints/capture_cdc.xdc:12]
+Resolution: A valid start point is a main or generated clock pin or port, a clock pin of a sequential cell, or a primary input or inout port. Please validate that all the objects returned by your query belong to this list.
+WARNING: [Constraints 18-402] set_false_path: 'system_i/adc_cap/inst/max_abs[9]_i_1' is not a valid startpoint. [/home/dsp-mikro7/FPGA_Based_OFDM_Transceiver/hardware/constraints/capture_cdc.xdc:12]
+Resolution: A valid start point is a main or generated clock pin or port, a clock pin of a sequential cell, or a primary input or inout port. Please validate that all the objects returned by your query belong to this list.
+WARNING: [Constraints 18-402] set_false_path: 'system_i/adc_cap/inst/max_sample0_carry' is not a valid startpoint. [/home/dsp-mikro7/FPGA_Based_OFDM_Transceiver/hardware/constraints/capture_cdc.xdc:12]
+Resolution: A valid start point is a main or generated clock pin or port, a clock pin of a sequential cell, or a primary input or inout port. Please validate that all the objects returned by your query belong to this list.
+WARNING: [Constraints 18-402] set_false_path: 'system_i/adc_cap/inst/max_sample0_carry_i_1' is not a valid startpoint. [/home/dsp-mikro7/FPGA_Based_OFDM_Transceiver/hardware/constraints/capture_cdc.xdc:12]
+Resolution: A valid start point is a main or generated clock pin or port, a clock pin of a sequential cell, or a primary input or inout port. Please validate that all the objects returned by your query belong to this list.
+WARNING: [Constraints 18-402] set_false_path: 'system_i/adc_cap/inst/max_sample0_carry_i_10' is not a valid startpoint. [/home/dsp-mikro7/FPGA_Based_OFDM_Transceiver/hardware/constraints/capture_cdc.xdc:12]
+Resolution: A valid start point is a main or generated clock pin or port, a clock pin of a sequential cell, or a primary input or inout port. Please validate that all the objects returned by your query belong to this list.
+WARNING: [Constraints 18-402] set_false_path: 'system_i/adc_cap/inst/max_sample0_carry_i_11' is not a valid startpoint. [/home/dsp-mikro7/FPGA_Based_OFDM_Transceiver/hardware/constraints/capture_cdc.xdc:12]
+Resolution: A valid start point is a main or generated clock pin or port, a clock pin of a sequential cell, or a primary input or inout port. Please validate that all the objects returned by your query belong to this list.
+WARNING: [Constraints 18-402] set_false_path: 'system_i/adc_cap/inst/max_sample0_carry_i_12' is not a valid startpoint. [/home/dsp-mikro7/FPGA_Based_OFDM_Transceiver/hardware/constraints/capture_cdc.xdc:12]
+Resolution: A valid start point is a main or generated clock pin or port, a clock pin of a sequential cell, or a primary input or inout port. Please validate that all the objects returned by your query belong to this list.
+WARNING: [Constraints 18-402] set_false_path: 'system_i/adc_cap/inst/max_sample0_carry_i_13' is not a valid startpoint. [/home/dsp-mikro7/FPGA_Based_OFDM_Transceiver/hardware/constraints/capture_cdc.xdc:12]
+Resolution: A valid start point is a main or generated clock pin or port, a clock pin of a sequential cell, or a primary input or inout port. Please validate that all the objects returned by your query belong to this list.
+WARNING: [Constraints 18-402] set_false_path: 'system_i/adc_cap/inst/max_sample0_carry_i_14' is not a valid startpoint. [/home/dsp-mikro7/FPGA_Based_OFDM_Transceiver/hardware/constraints/capture_cdc.xdc:12]
+Resolution: A valid start point is a main or generated clock pin or port, a clock pin of a sequential cell, or a primary input or inout port. Please validate that all the objects returned by your query belong to this list.
+WARNING: [Constraints 18-402] set_false_path: 'system_i/adc_cap/inst/max_sample0_carry_i_15' is not a valid startpoint. [/home/dsp-mikro7/FPGA_Based_OFDM_Transceiver/hardware/constraints/capture_cdc.xdc:12]
+Resolution: A valid start point is a main or generated clock pin or port, a clock pin of a sequential cell, or a primary input or inout port. Please validate that all the objects returned by your query belong to this list.
+WARNING: [Constraints 18-402] set_false_path: 'system_i/adc_cap/inst/max_sample0_carry_i_16' is not a valid startpoint. [/home/dsp-mikro7/FPGA_Based_OFDM_Transceiver/hardware/constraints/capture_cdc.xdc:12]
+Resolution: A valid start point is a main or generated clock pin or port, a clock pin of a sequential cell, or a primary input or inout port. Please validate that all the objects returned by your query belong to this list.
+WARNING: [Constraints 18-402] set_false_path: 'system_i/adc_cap/inst/max_sample0_carry_i_2' is not a valid startpoint. [/home/dsp-mikro7/FPGA_Based_OFDM_Transceiver/hardware/constraints/capture_cdc.xdc:12]
+Resolution: A valid start point is a main or generated clock pin or port, a clock pin of a sequential cell, or a primary input or inout port. Please validate that all the objects returned by your query belong to this list.
+WARNING: [Constraints 18-402] set_false_path: 'system_i/adc_cap/inst/max_sample0_carry_i_3' is not a valid startpoint. [/home/dsp-mikro7/FPGA_Based_OFDM_Transceiver/hardware/constraints/capture_cdc.xdc:12]
+Resolution: A valid start point is a main or generated clock pin or port, a clock pin of a sequential cell, or a primary input or inout port. Please validate that all the objects returned by your query belong to this list.
+WARNING: [Constraints 18-402] set_false_path: 'system_i/adc_cap/inst/max_sample0_carry_i_4' is not a valid startpoint. [/home/dsp-mikro7/FPGA_Based_OFDM_Transceiver/hardware/constraints/capture_cdc.xdc:12]
+Resolution: A valid start point is a main or generated clock pin or port, a clock pin of a sequential cell, or a primary input or inout port. Please validate that all the objects returned by your query belong to this list.
+WARNING: [Constraints 18-402] set_false_path: 'system_i/adc_cap/inst/max_sample0_carry_i_5' is not a valid startpoint. [/home/dsp-mikro7/FPGA_Based_OFDM_Transceiver/hardware/constraints/capture_cdc.xdc:12]
+Resolution: A valid start point is a main or generated clock pin or port, a clock pin of a sequential cell, or a primary input or inout port. Please validate that all the objects returned by your query belong to this list.
+WARNING: [Constraints 18-402] set_false_path: 'system_i/adc_cap/inst/max_sample0_carry_i_6' is not a valid startpoint. [/home/dsp-mikro7/FPGA_Based_OFDM_Transceiver/hardware/constraints/capture_cdc.xdc:12]
+Resolution: A valid start point is a main or generated clock pin or port, a clock pin of a sequential cell, or a primary input or inout port. Please validate that all the objects returned by your query belong to this list.
+WARNING: [Constraints 18-402] set_false_path: 'system_i/adc_cap/inst/max_sample0_carry_i_7' is not a valid startpoint. [/home/dsp-mikro7/FPGA_Based_OFDM_Transceiver/hardware/constraints/capture_cdc.xdc:12]
+Resolution: A valid start point is a main or generated clock pin or port, a clock pin of a sequential cell, or a primary input or inout port. Please validate that all the objects returned by your query belong to this list.
+WARNING: [Constraints 18-402] set_false_path: 'system_i/adc_cap/inst/max_sample0_carry_i_8' is not a valid startpoint. [/home/dsp-mikro7/FPGA_Based_OFDM_Transceiver/hardware/constraints/capture_cdc.xdc:12]
+Resolution: A valid start point is a main or generated clock pin or port, a clock pin of a sequential cell, or a primary input or inout port. Please validate that all the objects returned by your query belong to this list.
+WARNING: [Constraints 18-402] set_false_path: 'system_i/adc_cap/inst/max_sample0_carry_i_9' is not a valid startpoint. [/home/dsp-mikro7/FPGA_Based_OFDM_Transceiver/hardware/constraints/capture_cdc.xdc:12]
+Resolution: A valid start point is a main or generated clock pin or port, a clock pin of a sequential cell, or a primary input or inout port. Please validate that all the objects returned by your query belong to this list.
+WARNING: [Constraints 18-402] set_false_path: 'system_i/adc_cap/inst/max_sample[15]_i_1' is not a valid startpoint. [/home/dsp-mikro7/FPGA_Based_OFDM_Transceiver/hardware/constraints/capture_cdc.xdc:12]
+Resolution: A valid start point is a main or generated clock pin or port, a clock pin of a sequential cell, or a primary input or inout port. Please validate that all the objects returned by your query belong to this list.
+WARNING: [Constraints 18-402] set_false_path: 'system_i/adc_cap/inst/min_sample0_carry' is not a valid startpoint. [/home/dsp-mikro7/FPGA_Based_OFDM_Transceiver/hardware/constraints/capture_cdc.xdc:12]
+Resolution: A valid start point is a main or generated clock pin or port, a clock pin of a sequential cell, or a primary input or inout port. Please validate that all the objects returned by your query belong to this list.
+WARNING: [Constraints 18-402] set_false_path: 'system_i/adc_cap/inst/min_sample0_carry_i_1' is not a valid startpoint. [/home/dsp-mikro7/FPGA_Based_OFDM_Transceiver/hardware/constraints/capture_cdc.xdc:12]
+Resolution: A valid start point is a main or generated clock pin or port, a clock pin of a sequential cell, or a primary input or inout port. Please validate that all the objects returned by your query belong to this list.
+WARNING: [Constraints 18-402] set_false_path: 'system_i/adc_cap/inst/min_sample0_carry_i_10' is not a valid startpoint. [/home/dsp-mikro7/FPGA_Based_OFDM_Transceiver/hardware/constraints/capture_cdc.xdc:12]
+Resolution: A valid start point is a main or generated clock pin or port, a clock pin of a sequential cell, or a primary input or inout port. Please validate that all the objects returned by your query belong to this list.
+WARNING: [Constraints 18-402] set_false_path: 'system_i/adc_cap/inst/min_sample0_carry_i_11' is not a valid startpoint. [/home/dsp-mikro7/FPGA_Based_OFDM_Transceiver/hardware/constraints/capture_cdc.xdc:12]
+Resolution: A valid start point is a main or generated clock pin or port, a clock pin of a sequential cell, or a primary input or inout port. Please validate that all the objects returned by your query belong to this list.
+WARNING: [Constraints 18-402] set_false_path: 'system_i/adc_cap/inst/min_sample0_carry_i_12' is not a valid startpoint. [/home/dsp-mikro7/FPGA_Based_OFDM_Transceiver/hardware/constraints/capture_cdc.xdc:12]
+Resolution: A valid start point is a main or generated clock pin or port, a clock pin of a sequential cell, or a primary input or inout port. Please validate that all the objects returned by your query belong to this list.
+WARNING: [Constraints 18-402] set_false_path: 'system_i/adc_cap/inst/min_sample0_carry_i_13' is not a valid startpoint. [/home/dsp-mikro7/FPGA_Based_OFDM_Transceiver/hardware/constraints/capture_cdc.xdc:12]
+Resolution: A valid start point is a main or generated clock pin or port, a clock pin of a sequential cell, or a primary input or inout port. Please validate that all the objects returned by your query belong to this list.
+WARNING: [Constraints 18-402] set_false_path: 'system_i/adc_cap/inst/min_sample0_carry_i_14' is not a valid startpoint. [/home/dsp-mikro7/FPGA_Based_OFDM_Transceiver/hardware/constraints/capture_cdc.xdc:12]
+Resolution: A valid start point is a main or generated clock pin or port, a clock pin of a sequential cell, or a primary input or inout port. Please validate that all the objects returned by your query belong to this list.
+WARNING: [Constraints 18-402] set_false_path: 'system_i/adc_cap/inst/min_sample0_carry_i_15' is not a valid startpoint. [/home/dsp-mikro7/FPGA_Based_OFDM_Transceiver/hardware/constraints/capture_cdc.xdc:12]
+Resolution: A valid start point is a main or generated clock pin or port, a clock pin of a sequential cell, or a primary input or inout port. Please validate that all the objects returned by your query belong to this list.
+WARNING: [Constraints 18-402] set_false_path: 'system_i/adc_cap/inst/min_sample0_carry_i_16' is not a valid startpoint. [/home/dsp-mikro7/FPGA_Based_OFDM_Transceiver/hardware/constraints/capture_cdc.xdc:12]
+Resolution: A valid start point is a main or generated clock pin or port, a clock pin of a sequential cell, or a primary input or inout port. Please validate that all the objects returned by your query belong to this list.
+INFO: [Common 17-14] Message 'Constraints 18-402' appears 100 times and further instances of the messages will be disabled. Use the Tcl command set_msg_config to change the current settings. [/home/dsp-mikro7/FPGA_Based_OFDM_Transceiver/hardware/constraints/capture_cdc.xdc:12]
+WARNING: [Constraints 18-401] set_false_path: 'system_i/loop_status_gpio/GND' is not a valid endpoint. [/home/dsp-mikro7/FPGA_Based_OFDM_Transceiver/hardware/constraints/capture_cdc.xdc:12]
+Resolution: A valid end point is a data pin of a sequential cell or a primary output or inout port. Please validate that all the objects returned by your query belong to this list.
+WARNING: [Constraints 18-401] set_false_path: 'system_i/loop_status_gpio/U0' is not a valid endpoint. [/home/dsp-mikro7/FPGA_Based_OFDM_Transceiver/hardware/constraints/capture_cdc.xdc:12]
+Resolution: A valid end point is a data pin of a sequential cell or a primary output or inout port. Please validate that all the objects returned by your query belong to this list.
+WARNING: [Constraints 18-401] set_false_path: 'system_i/loop_status_gpio/U0/AXI_LITE_IPIF_I' is not a valid endpoint. [/home/dsp-mikro7/FPGA_Based_OFDM_Transceiver/hardware/constraints/capture_cdc.xdc:12]
+Resolution: A valid end point is a data pin of a sequential cell or a primary output or inout port. Please validate that all the objects returned by your query belong to this list.
+WARNING: [Constraints 18-401] set_false_path: 'system_i/loop_status_gpio/U0/GND' is not a valid endpoint. [/home/dsp-mikro7/FPGA_Based_OFDM_Transceiver/hardware/constraints/capture_cdc.xdc:12]
+Resolution: A valid end point is a data pin of a sequential cell or a primary output or inout port. Please validate that all the objects returned by your query belong to this list.
+WARNING: [Constraints 18-401] set_false_path: 'system_i/loop_status_gpio/U0/VCC' is not a valid endpoint. [/home/dsp-mikro7/FPGA_Based_OFDM_Transceiver/hardware/constraints/capture_cdc.xdc:12]
+Resolution: A valid end point is a data pin of a sequential cell or a primary output or inout port. Please validate that all the objects returned by your query belong to this list.
+WARNING: [Constraints 18-401] set_false_path: 'system_i/loop_status_gpio/U0/gpio_core_1' is not a valid endpoint. [/home/dsp-mikro7/FPGA_Based_OFDM_Transceiver/hardware/constraints/capture_cdc.xdc:12]
+Resolution: A valid end point is a data pin of a sequential cell or a primary output or inout port. Please validate that all the objects returned by your query belong to this list.
+WARNING: [Constraints 18-401] set_false_path: 'system_i/loop_status_gpio/U0/AXI_LITE_IPIF_I/I_SLAVE_ATTACHMENT' is not a valid endpoint. [/home/dsp-mikro7/FPGA_Based_OFDM_Transceiver/hardware/constraints/capture_cdc.xdc:12]
+Resolution: A valid end point is a data pin of a sequential cell or a primary output or inout port. Please validate that all the objects returned by your query belong to this list.
+WARNING: [Constraints 18-401] set_false_path: 'system_i/loop_status_gpio/U0/AXI_LITE_IPIF_I/I_SLAVE_ATTACHMENT/FSM_onehot_state[0]_i_1' is not a valid endpoint. [/home/dsp-mikro7/FPGA_Based_OFDM_Transceiver/hardware/constraints/capture_cdc.xdc:12]
+Resolution: A valid end point is a data pin of a sequential cell or a primary output or inout port. Please validate that all the objects returned by your query belong to this list.
+WARNING: [Constraints 18-401] set_false_path: 'system_i/loop_status_gpio/U0/AXI_LITE_IPIF_I/I_SLAVE_ATTACHMENT/FSM_onehot_state[1]_i_1' is not a valid endpoint. [/home/dsp-mikro7/FPGA_Based_OFDM_Transceiver/hardware/constraints/capture_cdc.xdc:12]
+Resolution: A valid end point is a data pin of a sequential cell or a primary output or inout port. Please validate that all the objects returned by your query belong to this list.
+WARNING: [Constraints 18-401] set_false_path: 'system_i/loop_status_gpio/U0/AXI_LITE_IPIF_I/I_SLAVE_ATTACHMENT/FSM_onehot_state[2]_i_1' is not a valid endpoint. [/home/dsp-mikro7/FPGA_Based_OFDM_Transceiver/hardware/constraints/capture_cdc.xdc:12]
+Resolution: A valid end point is a data pin of a sequential cell or a primary output or inout port. Please validate that all the objects returned by your query belong to this list.
+WARNING: [Constraints 18-401] set_false_path: 'system_i/loop_status_gpio/U0/AXI_LITE_IPIF_I/I_SLAVE_ATTACHMENT/FSM_onehot_state[3]_i_1' is not a valid endpoint. [/home/dsp-mikro7/FPGA_Based_OFDM_Transceiver/hardware/constraints/capture_cdc.xdc:12]
+Resolution: A valid end point is a data pin of a sequential cell or a primary output or inout port. Please validate that all the objects returned by your query belong to this list.
+WARNING: [Constraints 18-401] set_false_path: 'system_i/loop_status_gpio/U0/AXI_LITE_IPIF_I/I_SLAVE_ATTACHMENT/FSM_onehot_state[3]_i_2' is not a valid endpoint. [/home/dsp-mikro7/FPGA_Based_OFDM_Transceiver/hardware/constraints/capture_cdc.xdc:12]
+Resolution: A valid end point is a data pin of a sequential cell or a primary output or inout port. Please validate that all the objects returned by your query belong to this list.
+WARNING: [Constraints 18-401] set_false_path: 'system_i/loop_status_gpio/U0/AXI_LITE_IPIF_I/I_SLAVE_ATTACHMENT/GND' is not a valid endpoint. [/home/dsp-mikro7/FPGA_Based_OFDM_Transceiver/hardware/constraints/capture_cdc.xdc:12]
+Resolution: A valid end point is a data pin of a sequential cell or a primary output or inout port. Please validate that all the objects returned by your query belong to this list.
+WARNING: [Constraints 18-401] set_false_path: 'system_i/loop_status_gpio/U0/AXI_LITE_IPIF_I/I_SLAVE_ATTACHMENT/INCLUDE_DPHASE_TIMER.dpto_cnt[0]_i_1' is not a valid endpoint. [/home/dsp-mikro7/FPGA_Based_OFDM_Transceiver/hardware/constraints/capture_cdc.xdc:12]
+Resolution: A valid end point is a data pin of a sequential cell or a primary output or inout port. Please validate that all the objects returned by your query belong to this list.
+WARNING: [Constraints 18-401] set_false_path: 'system_i/loop_status_gpio/U0/AXI_LITE_IPIF_I/I_SLAVE_ATTACHMENT/INCLUDE_DPHASE_TIMER.dpto_cnt[1]_i_1' is not a valid endpoint. [/home/dsp-mikro7/FPGA_Based_OFDM_Transceiver/hardware/constraints/capture_cdc.xdc:12]
+Resolution: A valid end point is a data pin of a sequential cell or a primary output or inout port. Please validate that all the objects returned by your query belong to this list.
+WARNING: [Constraints 18-401] set_false_path: 'system_i/loop_status_gpio/U0/AXI_LITE_IPIF_I/I_SLAVE_ATTACHMENT/INCLUDE_DPHASE_TIMER.dpto_cnt[2]_i_1' is not a valid endpoint. [/home/dsp-mikro7/FPGA_Based_OFDM_Transceiver/hardware/constraints/capture_cdc.xdc:12]
+Resolution: A valid end point is a data pin of a sequential cell or a primary output or inout port. Please validate that all the objects returned by your query belong to this list.
+WARNING: [Constraints 18-401] set_false_path: 'system_i/loop_status_gpio/U0/AXI_LITE_IPIF_I/I_SLAVE_ATTACHMENT/INCLUDE_DPHASE_TIMER.dpto_cnt[3]_i_1' is not a valid endpoint. [/home/dsp-mikro7/FPGA_Based_OFDM_Transceiver/hardware/constraints/capture_cdc.xdc:12]
+Resolution: A valid end point is a data pin of a sequential cell or a primary output or inout port. Please validate that all the objects returned by your query belong to this list.
+WARNING: [Constraints 18-401] set_false_path: 'system_i/loop_status_gpio/U0/AXI_LITE_IPIF_I/I_SLAVE_ATTACHMENT/INCLUDE_DPHASE_TIMER.dpto_cnt[3]_i_2' is not a valid endpoint. [/home/dsp-mikro7/FPGA_Based_OFDM_Transceiver/hardware/constraints/capture_cdc.xdc:12]
+Resolution: A valid end point is a data pin of a sequential cell or a primary output or inout port. Please validate that all the objects returned by your query belong to this list.
+WARNING: [Constraints 18-401] set_false_path: 'system_i/loop_status_gpio/U0/AXI_LITE_IPIF_I/I_SLAVE_ATTACHMENT/I_DECODER' is not a valid endpoint. [/home/dsp-mikro7/FPGA_Based_OFDM_Transceiver/hardware/constraints/capture_cdc.xdc:12]
+Resolution: A valid end point is a data pin of a sequential cell or a primary output or inout port. Please validate that all the objects returned by your query belong to this list.
+WARNING: [Constraints 18-401] set_false_path: 'system_i/loop_status_gpio/U0/AXI_LITE_IPIF_I/I_SLAVE_ATTACHMENT/VCC' is not a valid endpoint. [/home/dsp-mikro7/FPGA_Based_OFDM_Transceiver/hardware/constraints/capture_cdc.xdc:12]
+Resolution: A valid end point is a data pin of a sequential cell or a primary output or inout port. Please validate that all the objects returned by your query belong to this list.
+WARNING: [Constraints 18-401] set_false_path: 'system_i/loop_status_gpio/U0/AXI_LITE_IPIF_I/I_SLAVE_ATTACHMENT/bus2ip_addr_i[2]_i_1' is not a valid endpoint. [/home/dsp-mikro7/FPGA_Based_OFDM_Transceiver/hardware/constraints/capture_cdc.xdc:12]
+Resolution: A valid end point is a data pin of a sequential cell or a primary output or inout port. Please validate that all the objects returned by your query belong to this list.
+WARNING: [Constraints 18-401] set_false_path: 'system_i/loop_status_gpio/U0/AXI_LITE_IPIF_I/I_SLAVE_ATTACHMENT/bus2ip_addr_i[3]_i_1' is not a valid endpoint. [/home/dsp-mikro7/FPGA_Based_OFDM_Transceiver/hardware/constraints/capture_cdc.xdc:12]
+Resolution: A valid end point is a data pin of a sequential cell or a primary output or inout port. Please validate that all the objects returned by your query belong to this list.
+WARNING: [Constraints 18-401] set_false_path: 'system_i/loop_status_gpio/U0/AXI_LITE_IPIF_I/I_SLAVE_ATTACHMENT/bus2ip_addr_i[8]_i_1' is not a valid endpoint. [/home/dsp-mikro7/FPGA_Based_OFDM_Transceiver/hardware/constraints/capture_cdc.xdc:12]
+Resolution: A valid end point is a data pin of a sequential cell or a primary output or inout port. Please validate that all the objects returned by your query belong to this list.
+WARNING: [Constraints 18-401] set_false_path: 'system_i/loop_status_gpio/U0/AXI_LITE_IPIF_I/I_SLAVE_ATTACHMENT/bus2ip_addr_i[8]_i_2' is not a valid endpoint. [/home/dsp-mikro7/FPGA_Based_OFDM_Transceiver/hardware/constraints/capture_cdc.xdc:12]
+Resolution: A valid end point is a data pin of a sequential cell or a primary output or inout port. Please validate that all the objects returned by your query belong to this list.
+WARNING: [Constraints 18-401] set_false_path: 'system_i/loop_status_gpio/U0/AXI_LITE_IPIF_I/I_SLAVE_ATTACHMENT/is_read_i_1' is not a valid endpoint. [/home/dsp-mikro7/FPGA_Based_OFDM_Transceiver/hardware/constraints/capture_cdc.xdc:12]
+Resolution: A valid end point is a data pin of a sequential cell or a primary output or inout port. Please validate that all the objects returned by your query belong to this list.
+WARNING: [Constraints 18-401] set_false_path: 'system_i/loop_status_gpio/U0/AXI_LITE_IPIF_I/I_SLAVE_ATTACHMENT/is_read_i_2' is not a valid endpoint. [/home/dsp-mikro7/FPGA_Based_OFDM_Transceiver/hardware/constraints/capture_cdc.xdc:12]
+Resolution: A valid end point is a data pin of a sequential cell or a primary output or inout port. Please validate that all the objects returned by your query belong to this list.
+WARNING: [Constraints 18-401] set_false_path: 'system_i/loop_status_gpio/U0/AXI_LITE_IPIF_I/I_SLAVE_ATTACHMENT/is_write_i_1' is not a valid endpoint. [/home/dsp-mikro7/FPGA_Based_OFDM_Transceiver/hardware/constraints/capture_cdc.xdc:12]
+Resolution: A valid end point is a data pin of a sequential cell or a primary output or inout port. Please validate that all the objects returned by your query belong to this list.
+WARNING: [Constraints 18-401] set_false_path: 'system_i/loop_status_gpio/U0/AXI_LITE_IPIF_I/I_SLAVE_ATTACHMENT/rst_i_1' is not a valid endpoint. [/home/dsp-mikro7/FPGA_Based_OFDM_Transceiver/hardware/constraints/capture_cdc.xdc:12]
+Resolution: A valid end point is a data pin of a sequential cell or a primary output or inout port. Please validate that all the objects returned by your query belong to this list.
+WARNING: [Constraints 18-401] set_false_path: 'system_i/loop_status_gpio/U0/AXI_LITE_IPIF_I/I_SLAVE_ATTACHMENT/s_axi_bvalid_i_i_1' is not a valid endpoint. [/home/dsp-mikro7/FPGA_Based_OFDM_Transceiver/hardware/constraints/capture_cdc.xdc:12]
+Resolution: A valid end point is a data pin of a sequential cell or a primary output or inout port. Please validate that all the objects returned by your query belong to this list.
+WARNING: [Constraints 18-401] set_false_path: 'system_i/loop_status_gpio/U0/AXI_LITE_IPIF_I/I_SLAVE_ATTACHMENT/s_axi_rvalid_i_i_1' is not a valid endpoint. [/home/dsp-mikro7/FPGA_Based_OFDM_Transceiver/hardware/constraints/capture_cdc.xdc:12]
+Resolution: A valid end point is a data pin of a sequential cell or a primary output or inout port. Please validate that all the objects returned by your query belong to this list.
+WARNING: [Constraints 18-401] set_false_path: 'system_i/loop_status_gpio/U0/AXI_LITE_IPIF_I/I_SLAVE_ATTACHMENT/start2_i_1' is not a valid endpoint. [/home/dsp-mikro7/FPGA_Based_OFDM_Transceiver/hardware/constraints/capture_cdc.xdc:12]
+Resolution: A valid end point is a data pin of a sequential cell or a primary output or inout port. Please validate that all the objects returned by your query belong to this list.
+WARNING: [Constraints 18-401] set_false_path: 'system_i/loop_status_gpio/U0/AXI_LITE_IPIF_I/I_SLAVE_ATTACHMENT/state[0]_i_1' is not a valid endpoint. [/home/dsp-mikro7/FPGA_Based_OFDM_Transceiver/hardware/constraints/capture_cdc.xdc:12]
+Resolution: A valid end point is a data pin of a sequential cell or a primary output or inout port. Please validate that all the objects returned by your query belong to this list.
+WARNING: [Constraints 18-401] set_false_path: 'system_i/loop_status_gpio/U0/AXI_LITE_IPIF_I/I_SLAVE_ATTACHMENT/state[1]_i_1' is not a valid endpoint. [/home/dsp-mikro7/FPGA_Based_OFDM_Transceiver/hardware/constraints/capture_cdc.xdc:12]
+Resolution: A valid end point is a data pin of a sequential cell or a primary output or inout port. Please validate that all the objects returned by your query belong to this list.
+WARNING: [Constraints 18-401] set_false_path: 'system_i/loop_status_gpio/U0/AXI_LITE_IPIF_I/I_SLAVE_ATTACHMENT/state[1]_i_2' is not a valid endpoint. [/home/dsp-mikro7/FPGA_Based_OFDM_Transceiver/hardware/constraints/capture_cdc.xdc:12]
+Resolution: A valid end point is a data pin of a sequential cell or a primary output or inout port. Please validate that all the objects returned by your query belong to this list.
+WARNING: [Constraints 18-401] set_false_path: 'system_i/loop_status_gpio/U0/AXI_LITE_IPIF_I/I_SLAVE_ATTACHMENT/I_DECODER/Bus_RNW_reg_i_1' is not a valid endpoint. [/home/dsp-mikro7/FPGA_Based_OFDM_Transceiver/hardware/constraints/capture_cdc.xdc:12]
+Resolution: A valid end point is a data pin of a sequential cell or a primary output or inout port. Please validate that all the objects returned by your query belong to this list.
+WARNING: [Constraints 18-401] set_false_path: 'system_i/loop_status_gpio/U0/AXI_LITE_IPIF_I/I_SLAVE_ATTACHMENT/I_DECODER/Dual.ALLIN0_ND_G0.READ_REG_GEN[31].reg1[31]_i_1' is not a valid endpoint. [/home/dsp-mikro7/FPGA_Based_OFDM_Transceiver/hardware/constraints/capture_cdc.xdc:12]
+Resolution: A valid end point is a data pin of a sequential cell or a primary output or inout port. Please validate that all the objects returned by your query belong to this list.
+WARNING: [Constraints 18-401] set_false_path: 'system_i/loop_status_gpio/U0/AXI_LITE_IPIF_I/I_SLAVE_ATTACHMENT/I_DECODER/Dual.gpio2_OE[0]_i_1' is not a valid endpoint. [/home/dsp-mikro7/FPGA_Based_OFDM_Transceiver/hardware/constraints/capture_cdc.xdc:12]
+Resolution: A valid end point is a data pin of a sequential cell or a primary output or inout port. Please validate that all the objects returned by your query belong to this list.
+WARNING: [Constraints 18-401] set_false_path: 'system_i/loop_status_gpio/U0/AXI_LITE_IPIF_I/I_SLAVE_ATTACHMENT/I_DECODER/Dual.gpio_OE[0]_i_1' is not a valid endpoint. [/home/dsp-mikro7/FPGA_Based_OFDM_Transceiver/hardware/constraints/capture_cdc.xdc:12]
+Resolution: A valid end point is a data pin of a sequential cell or a primary output or inout port. Please validate that all the objects returned by your query belong to this list.
+WARNING: [Constraints 18-401] set_false_path: 'system_i/loop_status_gpio/U0/AXI_LITE_IPIF_I/I_SLAVE_ATTACHMENT/I_DECODER/GEN_BKEND_CE_REGISTERS[1].ce_out_i[1]_i_1' is not a valid endpoint. [/home/dsp-mikro7/FPGA_Based_OFDM_Transceiver/hardware/constraints/capture_cdc.xdc:12]
+Resolution: A valid end point is a data pin of a sequential cell or a primary output or inout port. Please validate that all the objects returned by your query belong to this list.
+WARNING: [Constraints 18-401] set_false_path: 'system_i/loop_status_gpio/U0/AXI_LITE_IPIF_I/I_SLAVE_ATTACHMENT/I_DECODER/GEN_BKEND_CE_REGISTERS[3].ce_out_i[3]_i_1' is not a valid endpoint. [/home/dsp-mikro7/FPGA_Based_OFDM_Transceiver/hardware/constraints/capture_cdc.xdc:12]
+Resolution: A valid end point is a data pin of a sequential cell or a primary output or inout port. Please validate that all the objects returned by your query belong to this list.
+WARNING: [Constraints 18-401] set_false_path: 'system_i/loop_status_gpio/U0/AXI_LITE_IPIF_I/I_SLAVE_ATTACHMENT/I_DECODER/GEN_BKEND_CE_REGISTERS[3].ce_out_i[3]_i_2' is not a valid endpoint. [/home/dsp-mikro7/FPGA_Based_OFDM_Transceiver/hardware/constraints/capture_cdc.xdc:12]
+Resolution: A valid end point is a data pin of a sequential cell or a primary output or inout port. Please validate that all the objects returned by your query belong to this list.
+WARNING: [Constraints 18-401] set_false_path: 'system_i/loop_status_gpio/U0/AXI_LITE_IPIF_I/I_SLAVE_ATTACHMENT/I_DECODER/GND' is not a valid endpoint. [/home/dsp-mikro7/FPGA_Based_OFDM_Transceiver/hardware/constraints/capture_cdc.xdc:12]
+Resolution: A valid end point is a data pin of a sequential cell or a primary output or inout port. Please validate that all the objects returned by your query belong to this list.
+WARNING: [Constraints 18-401] set_false_path: 'system_i/loop_status_gpio/U0/AXI_LITE_IPIF_I/I_SLAVE_ATTACHMENT/I_DECODER/MEM_DECODE_GEN[0].PER_CE_GEN[0].MULTIPLE_CES_THIS_CS_GEN.CE_I' is not a valid endpoint. [/home/dsp-mikro7/FPGA_Based_OFDM_Transceiver/hardware/constraints/capture_cdc.xdc:12]
+Resolution: A valid end point is a data pin of a sequential cell or a primary output or inout port. Please validate that all the objects returned by your query belong to this list.
+WARNING: [Constraints 18-401] set_false_path: 'system_i/loop_status_gpio/U0/AXI_LITE_IPIF_I/I_SLAVE_ATTACHMENT/I_DECODER/MEM_DECODE_GEN[0].PER_CE_GEN[2].MULTIPLE_CES_THIS_CS_GEN.CE_I' is not a valid endpoint. [/home/dsp-mikro7/FPGA_Based_OFDM_Transceiver/hardware/constraints/capture_cdc.xdc:12]
+Resolution: A valid end point is a data pin of a sequential cell or a primary output or inout port. Please validate that all the objects returned by your query belong to this list.
+WARNING: [Constraints 18-401] set_false_path: 'system_i/loop_status_gpio/U0/AXI_LITE_IPIF_I/I_SLAVE_ATTACHMENT/I_DECODER/MEM_DECODE_GEN[0].cs_out_i[0]_i_1' is not a valid endpoint. [/home/dsp-mikro7/FPGA_Based_OFDM_Transceiver/hardware/constraints/capture_cdc.xdc:12]
+Resolution: A valid end point is a data pin of a sequential cell or a primary output or inout port. Please validate that all the objects returned by your query belong to this list.
+WARNING: [Constraints 18-401] set_false_path: 'system_i/loop_status_gpio/U0/AXI_LITE_IPIF_I/I_SLAVE_ATTACHMENT/I_DECODER/VCC' is not a valid endpoint. [/home/dsp-mikro7/FPGA_Based_OFDM_Transceiver/hardware/constraints/capture_cdc.xdc:12]
+Resolution: A valid end point is a data pin of a sequential cell or a primary output or inout port. Please validate that all the objects returned by your query belong to this list.
+WARNING: [Constraints 18-401] set_false_path: 'system_i/loop_status_gpio/U0/AXI_LITE_IPIF_I/I_SLAVE_ATTACHMENT/I_DECODER/ip2bus_data_i_D1[0]_i_1' is not a valid endpoint. [/home/dsp-mikro7/FPGA_Based_OFDM_Transceiver/hardware/constraints/capture_cdc.xdc:12]
+Resolution: A valid end point is a data pin of a sequential cell or a primary output or inout port. Please validate that all the objects returned by your query belong to this list.
+WARNING: [Constraints 18-401] set_false_path: 'system_i/loop_status_gpio/U0/AXI_LITE_IPIF_I/I_SLAVE_ATTACHMENT/I_DECODER/ip2bus_data_i_D1[0]_i_2' is not a valid endpoint. [/home/dsp-mikro7/FPGA_Based_OFDM_Transceiver/hardware/constraints/capture_cdc.xdc:12]
+Resolution: A valid end point is a data pin of a sequential cell or a primary output or inout port. Please validate that all the objects returned by your query belong to this list.
+WARNING: [Constraints 18-401] set_false_path: 'system_i/loop_status_gpio/U0/AXI_LITE_IPIF_I/I_SLAVE_ATTACHMENT/I_DECODER/ip2bus_data_i_D1[0]_i_3' is not a valid endpoint. [/home/dsp-mikro7/FPGA_Based_OFDM_Transceiver/hardware/constraints/capture_cdc.xdc:12]
+Resolution: A valid end point is a data pin of a sequential cell or a primary output or inout port. Please validate that all the objects returned by your query belong to this list.
+WARNING: [Constraints 18-401] set_false_path: 'system_i/loop_status_gpio/U0/AXI_LITE_IPIF_I/I_SLAVE_ATTACHMENT/I_DECODER/ip2bus_data_i_D1[0]_i_4' is not a valid endpoint. [/home/dsp-mikro7/FPGA_Based_OFDM_Transceiver/hardware/constraints/capture_cdc.xdc:12]
+Resolution: A valid end point is a data pin of a sequential cell or a primary output or inout port. Please validate that all the objects returned by your query belong to this list.
+WARNING: [Constraints 18-401] set_false_path: 'system_i/loop_status_gpio/U0/AXI_LITE_IPIF_I/I_SLAVE_ATTACHMENT/I_DECODER/ip2bus_data_i_D1[10]_i_1' is not a valid endpoint. [/home/dsp-mikro7/FPGA_Based_OFDM_Transceiver/hardware/constraints/capture_cdc.xdc:12]
+Resolution: A valid end point is a data pin of a sequential cell or a primary output or inout port. Please validate that all the objects returned by your query belong to this list.
+WARNING: [Constraints 18-401] set_false_path: 'system_i/loop_status_gpio/U0/AXI_LITE_IPIF_I/I_SLAVE_ATTACHMENT/I_DECODER/ip2bus_data_i_D1[11]_i_1' is not a valid endpoint. [/home/dsp-mikro7/FPGA_Based_OFDM_Transceiver/hardware/constraints/capture_cdc.xdc:12]
+Resolution: A valid end point is a data pin of a sequential cell or a primary output or inout port. Please validate that all the objects returned by your query belong to this list.
+WARNING: [Constraints 18-401] set_false_path: 'system_i/loop_status_gpio/U0/AXI_LITE_IPIF_I/I_SLAVE_ATTACHMENT/I_DECODER/ip2bus_data_i_D1[12]_i_1' is not a valid endpoint. [/home/dsp-mikro7/FPGA_Based_OFDM_Transceiver/hardware/constraints/capture_cdc.xdc:12]
+Resolution: A valid end point is a data pin of a sequential cell or a primary output or inout port. Please validate that all the objects returned by your query belong to this list.
+WARNING: [Constraints 18-401] set_false_path: 'system_i/loop_status_gpio/U0/AXI_LITE_IPIF_I/I_SLAVE_ATTACHMENT/I_DECODER/ip2bus_data_i_D1[13]_i_1' is not a valid endpoint. [/home/dsp-mikro7/FPGA_Based_OFDM_Transceiver/hardware/constraints/capture_cdc.xdc:12]
+Resolution: A valid end point is a data pin of a sequential cell or a primary output or inout port. Please validate that all the objects returned by your query belong to this list.
+WARNING: [Constraints 18-401] set_false_path: 'system_i/loop_status_gpio/U0/AXI_LITE_IPIF_I/I_SLAVE_ATTACHMENT/I_DECODER/ip2bus_data_i_D1[14]_i_1' is not a valid endpoint. [/home/dsp-mikro7/FPGA_Based_OFDM_Transceiver/hardware/constraints/capture_cdc.xdc:12]
+Resolution: A valid end point is a data pin of a sequential cell or a primary output or inout port. Please validate that all the objects returned by your query belong to this list.
+WARNING: [Constraints 18-401] set_false_path: 'system_i/loop_status_gpio/U0/AXI_LITE_IPIF_I/I_SLAVE_ATTACHMENT/I_DECODER/ip2bus_data_i_D1[15]_i_1' is not a valid endpoint. [/home/dsp-mikro7/FPGA_Based_OFDM_Transceiver/hardware/constraints/capture_cdc.xdc:12]
+Resolution: A valid end point is a data pin of a sequential cell or a primary output or inout port. Please validate that all the objects returned by your query belong to this list.
+WARNING: [Constraints 18-401] set_false_path: 'system_i/loop_status_gpio/U0/AXI_LITE_IPIF_I/I_SLAVE_ATTACHMENT/I_DECODER/ip2bus_data_i_D1[16]_i_1' is not a valid endpoint. [/home/dsp-mikro7/FPGA_Based_OFDM_Transceiver/hardware/constraints/capture_cdc.xdc:12]
+Resolution: A valid end point is a data pin of a sequential cell or a primary output or inout port. Please validate that all the objects returned by your query belong to this list.
+WARNING: [Constraints 18-401] set_false_path: 'system_i/loop_status_gpio/U0/AXI_LITE_IPIF_I/I_SLAVE_ATTACHMENT/I_DECODER/ip2bus_data_i_D1[17]_i_1' is not a valid endpoint. [/home/dsp-mikro7/FPGA_Based_OFDM_Transceiver/hardware/constraints/capture_cdc.xdc:12]
+Resolution: A valid end point is a data pin of a sequential cell or a primary output or inout port. Please validate that all the objects returned by your query belong to this list.
+WARNING: [Constraints 18-401] set_false_path: 'system_i/loop_status_gpio/U0/AXI_LITE_IPIF_I/I_SLAVE_ATTACHMENT/I_DECODER/ip2bus_data_i_D1[18]_i_1' is not a valid endpoint. [/home/dsp-mikro7/FPGA_Based_OFDM_Transceiver/hardware/constraints/capture_cdc.xdc:12]
+Resolution: A valid end point is a data pin of a sequential cell or a primary output or inout port. Please validate that all the objects returned by your query belong to this list.
+WARNING: [Constraints 18-401] set_false_path: 'system_i/loop_status_gpio/U0/AXI_LITE_IPIF_I/I_SLAVE_ATTACHMENT/I_DECODER/ip2bus_data_i_D1[19]_i_1' is not a valid endpoint. [/home/dsp-mikro7/FPGA_Based_OFDM_Transceiver/hardware/constraints/capture_cdc.xdc:12]
+Resolution: A valid end point is a data pin of a sequential cell or a primary output or inout port. Please validate that all the objects returned by your query belong to this list.
+WARNING: [Constraints 18-401] set_false_path: 'system_i/loop_status_gpio/U0/AXI_LITE_IPIF_I/I_SLAVE_ATTACHMENT/I_DECODER/ip2bus_data_i_D1[1]_i_1' is not a valid endpoint. [/home/dsp-mikro7/FPGA_Based_OFDM_Transceiver/hardware/constraints/capture_cdc.xdc:12]
+Resolution: A valid end point is a data pin of a sequential cell or a primary output or inout port. Please validate that all the objects returned by your query belong to this list.
+WARNING: [Constraints 18-401] set_false_path: 'system_i/loop_status_gpio/U0/AXI_LITE_IPIF_I/I_SLAVE_ATTACHMENT/I_DECODER/ip2bus_data_i_D1[20]_i_1' is not a valid endpoint. [/home/dsp-mikro7/FPGA_Based_OFDM_Transceiver/hardware/constraints/capture_cdc.xdc:12]
+Resolution: A valid end point is a data pin of a sequential cell or a primary output or inout port. Please validate that all the objects returned by your query belong to this list.
+WARNING: [Constraints 18-401] set_false_path: 'system_i/loop_status_gpio/U0/AXI_LITE_IPIF_I/I_SLAVE_ATTACHMENT/I_DECODER/ip2bus_data_i_D1[21]_i_1' is not a valid endpoint. [/home/dsp-mikro7/FPGA_Based_OFDM_Transceiver/hardware/constraints/capture_cdc.xdc:12]
+Resolution: A valid end point is a data pin of a sequential cell or a primary output or inout port. Please validate that all the objects returned by your query belong to this list.
+WARNING: [Constraints 18-401] set_false_path: 'system_i/loop_status_gpio/U0/AXI_LITE_IPIF_I/I_SLAVE_ATTACHMENT/I_DECODER/ip2bus_data_i_D1[22]_i_1' is not a valid endpoint. [/home/dsp-mikro7/FPGA_Based_OFDM_Transceiver/hardware/constraints/capture_cdc.xdc:12]
+Resolution: A valid end point is a data pin of a sequential cell or a primary output or inout port. Please validate that all the objects returned by your query belong to this list.
+WARNING: [Constraints 18-401] set_false_path: 'system_i/loop_status_gpio/U0/AXI_LITE_IPIF_I/I_SLAVE_ATTACHMENT/I_DECODER/ip2bus_data_i_D1[23]_i_1' is not a valid endpoint. [/home/dsp-mikro7/FPGA_Based_OFDM_Transceiver/hardware/constraints/capture_cdc.xdc:12]
+Resolution: A valid end point is a data pin of a sequential cell or a primary output or inout port. Please validate that all the objects returned by your query belong to this list.
+WARNING: [Constraints 18-401] set_false_path: 'system_i/loop_status_gpio/U0/AXI_LITE_IPIF_I/I_SLAVE_ATTACHMENT/I_DECODER/ip2bus_data_i_D1[24]_i_1' is not a valid endpoint. [/home/dsp-mikro7/FPGA_Based_OFDM_Transceiver/hardware/constraints/capture_cdc.xdc:12]
+Resolution: A valid end point is a data pin of a sequential cell or a primary output or inout port. Please validate that all the objects returned by your query belong to this list.
+WARNING: [Constraints 18-401] set_false_path: 'system_i/loop_status_gpio/U0/AXI_LITE_IPIF_I/I_SLAVE_ATTACHMENT/I_DECODER/ip2bus_data_i_D1[25]_i_1' is not a valid endpoint. [/home/dsp-mikro7/FPGA_Based_OFDM_Transceiver/hardware/constraints/capture_cdc.xdc:12]
+Resolution: A valid end point is a data pin of a sequential cell or a primary output or inout port. Please validate that all the objects returned by your query belong to this list.
+WARNING: [Constraints 18-401] set_false_path: 'system_i/loop_status_gpio/U0/AXI_LITE_IPIF_I/I_SLAVE_ATTACHMENT/I_DECODER/ip2bus_data_i_D1[26]_i_1' is not a valid endpoint. [/home/dsp-mikro7/FPGA_Based_OFDM_Transceiver/hardware/constraints/capture_cdc.xdc:12]
+Resolution: A valid end point is a data pin of a sequential cell or a primary output or inout port. Please validate that all the objects returned by your query belong to this list.
+WARNING: [Constraints 18-401] set_false_path: 'system_i/loop_status_gpio/U0/AXI_LITE_IPIF_I/I_SLAVE_ATTACHMENT/I_DECODER/ip2bus_data_i_D1[27]_i_1' is not a valid endpoint. [/home/dsp-mikro7/FPGA_Based_OFDM_Transceiver/hardware/constraints/capture_cdc.xdc:12]
+Resolution: A valid end point is a data pin of a sequential cell or a primary output or inout port. Please validate that all the objects returned by your query belong to this list.
+WARNING: [Constraints 18-401] set_false_path: 'system_i/loop_status_gpio/U0/AXI_LITE_IPIF_I/I_SLAVE_ATTACHMENT/I_DECODER/ip2bus_data_i_D1[28]_i_1' is not a valid endpoint. [/home/dsp-mikro7/FPGA_Based_OFDM_Transceiver/hardware/constraints/capture_cdc.xdc:12]
+Resolution: A valid end point is a data pin of a sequential cell or a primary output or inout port. Please validate that all the objects returned by your query belong to this list.
+WARNING: [Constraints 18-401] set_false_path: 'system_i/loop_status_gpio/U0/AXI_LITE_IPIF_I/I_SLAVE_ATTACHMENT/I_DECODER/ip2bus_data_i_D1[29]_i_1' is not a valid endpoint. [/home/dsp-mikro7/FPGA_Based_OFDM_Transceiver/hardware/constraints/capture_cdc.xdc:12]
+Resolution: A valid end point is a data pin of a sequential cell or a primary output or inout port. Please validate that all the objects returned by your query belong to this list.
+WARNING: [Constraints 18-401] set_false_path: 'system_i/loop_status_gpio/U0/AXI_LITE_IPIF_I/I_SLAVE_ATTACHMENT/I_DECODER/ip2bus_data_i_D1[2]_i_1' is not a valid endpoint. [/home/dsp-mikro7/FPGA_Based_OFDM_Transceiver/hardware/constraints/capture_cdc.xdc:12]
+Resolution: A valid end point is a data pin of a sequential cell or a primary output or inout port. Please validate that all the objects returned by your query belong to this list.
+WARNING: [Constraints 18-401] set_false_path: 'system_i/loop_status_gpio/U0/AXI_LITE_IPIF_I/I_SLAVE_ATTACHMENT/I_DECODER/ip2bus_data_i_D1[30]_i_1' is not a valid endpoint. [/home/dsp-mikro7/FPGA_Based_OFDM_Transceiver/hardware/constraints/capture_cdc.xdc:12]
+Resolution: A valid end point is a data pin of a sequential cell or a primary output or inout port. Please validate that all the objects returned by your query belong to this list.
+WARNING: [Constraints 18-401] set_false_path: 'system_i/loop_status_gpio/U0/AXI_LITE_IPIF_I/I_SLAVE_ATTACHMENT/I_DECODER/ip2bus_data_i_D1[31]_i_1' is not a valid endpoint. [/home/dsp-mikro7/FPGA_Based_OFDM_Transceiver/hardware/constraints/capture_cdc.xdc:12]
+Resolution: A valid end point is a data pin of a sequential cell or a primary output or inout port. Please validate that all the objects returned by your query belong to this list.
+WARNING: [Constraints 18-401] set_false_path: 'system_i/loop_status_gpio/U0/AXI_LITE_IPIF_I/I_SLAVE_ATTACHMENT/I_DECODER/ip2bus_data_i_D1[3]_i_1' is not a valid endpoint. [/home/dsp-mikro7/FPGA_Based_OFDM_Transceiver/hardware/constraints/capture_cdc.xdc:12]
+Resolution: A valid end point is a data pin of a sequential cell or a primary output or inout port. Please validate that all the objects returned by your query belong to this list.
+WARNING: [Constraints 18-401] set_false_path: 'system_i/loop_status_gpio/U0/AXI_LITE_IPIF_I/I_SLAVE_ATTACHMENT/I_DECODER/ip2bus_data_i_D1[4]_i_1' is not a valid endpoint. [/home/dsp-mikro7/FPGA_Based_OFDM_Transceiver/hardware/constraints/capture_cdc.xdc:12]
+Resolution: A valid end point is a data pin of a sequential cell or a primary output or inout port. Please validate that all the objects returned by your query belong to this list.
+WARNING: [Constraints 18-401] set_false_path: 'system_i/loop_status_gpio/U0/AXI_LITE_IPIF_I/I_SLAVE_ATTACHMENT/I_DECODER/ip2bus_data_i_D1[5]_i_1' is not a valid endpoint. [/home/dsp-mikro7/FPGA_Based_OFDM_Transceiver/hardware/constraints/capture_cdc.xdc:12]
+Resolution: A valid end point is a data pin of a sequential cell or a primary output or inout port. Please validate that all the objects returned by your query belong to this list.
+WARNING: [Constraints 18-401] set_false_path: 'system_i/loop_status_gpio/U0/AXI_LITE_IPIF_I/I_SLAVE_ATTACHMENT/I_DECODER/ip2bus_data_i_D1[6]_i_1' is not a valid endpoint. [/home/dsp-mikro7/FPGA_Based_OFDM_Transceiver/hardware/constraints/capture_cdc.xdc:12]
+Resolution: A valid end point is a data pin of a sequential cell or a primary output or inout port. Please validate that all the objects returned by your query belong to this list.
+WARNING: [Constraints 18-401] set_false_path: 'system_i/loop_status_gpio/U0/AXI_LITE_IPIF_I/I_SLAVE_ATTACHMENT/I_DECODER/ip2bus_data_i_D1[7]_i_1' is not a valid endpoint. [/home/dsp-mikro7/FPGA_Based_OFDM_Transceiver/hardware/constraints/capture_cdc.xdc:12]
+Resolution: A valid end point is a data pin of a sequential cell or a primary output or inout port. Please validate that all the objects returned by your query belong to this list.
+WARNING: [Constraints 18-401] set_false_path: 'system_i/loop_status_gpio/U0/AXI_LITE_IPIF_I/I_SLAVE_ATTACHMENT/I_DECODER/ip2bus_data_i_D1[8]_i_1' is not a valid endpoint. [/home/dsp-mikro7/FPGA_Based_OFDM_Transceiver/hardware/constraints/capture_cdc.xdc:12]
+Resolution: A valid end point is a data pin of a sequential cell or a primary output or inout port. Please validate that all the objects returned by your query belong to this list.
+WARNING: [Constraints 18-401] set_false_path: 'system_i/loop_status_gpio/U0/AXI_LITE_IPIF_I/I_SLAVE_ATTACHMENT/I_DECODER/ip2bus_data_i_D1[9]_i_1' is not a valid endpoint. [/home/dsp-mikro7/FPGA_Based_OFDM_Transceiver/hardware/constraints/capture_cdc.xdc:12]
+Resolution: A valid end point is a data pin of a sequential cell or a primary output or inout port. Please validate that all the objects returned by your query belong to this list.
+WARNING: [Constraints 18-401] set_false_path: 'system_i/loop_status_gpio/U0/AXI_LITE_IPIF_I/I_SLAVE_ATTACHMENT/I_DECODER/s_axi_arready_INST_0' is not a valid endpoint. [/home/dsp-mikro7/FPGA_Based_OFDM_Transceiver/hardware/constraints/capture_cdc.xdc:12]
+Resolution: A valid end point is a data pin of a sequential cell or a primary output or inout port. Please validate that all the objects returned by your query belong to this list.
+WARNING: [Constraints 18-401] set_false_path: 'system_i/loop_status_gpio/U0/AXI_LITE_IPIF_I/I_SLAVE_ATTACHMENT/I_DECODER/s_axi_wready_INST_0' is not a valid endpoint. [/home/dsp-mikro7/FPGA_Based_OFDM_Transceiver/hardware/constraints/capture_cdc.xdc:12]
+Resolution: A valid end point is a data pin of a sequential cell or a primary output or inout port. Please validate that all the objects returned by your query belong to this list.
+WARNING: [Constraints 18-401] set_false_path: 'system_i/loop_status_gpio/U0/AXI_LITE_IPIF_I/I_SLAVE_ATTACHMENT/I_DECODER/MEM_DECODE_GEN[0].PER_CE_GEN[0].MULTIPLE_CES_THIS_CS_GEN.CE_I/CS' is not a valid endpoint. [/home/dsp-mikro7/FPGA_Based_OFDM_Transceiver/hardware/constraints/capture_cdc.xdc:12]
+Resolution: A valid end point is a data pin of a sequential cell or a primary output or inout port. Please validate that all the objects returned by your query belong to this list.
+WARNING: [Constraints 18-401] set_false_path: 'system_i/loop_status_gpio/U0/AXI_LITE_IPIF_I/I_SLAVE_ATTACHMENT/I_DECODER/MEM_DECODE_GEN[0].PER_CE_GEN[2].MULTIPLE_CES_THIS_CS_GEN.CE_I/CS' is not a valid endpoint. [/home/dsp-mikro7/FPGA_Based_OFDM_Transceiver/hardware/constraints/capture_cdc.xdc:12]
+Resolution: A valid end point is a data pin of a sequential cell or a primary output or inout port. Please validate that all the objects returned by your query belong to this list.
+WARNING: [Constraints 18-401] set_false_path: 'system_i/loop_status_gpio/U0/gpio_core_1//i_' is not a valid endpoint. [/home/dsp-mikro7/FPGA_Based_OFDM_Transceiver/hardware/constraints/capture_cdc.xdc:12]
+Resolution: A valid end point is a data pin of a sequential cell or a primary output or inout port. Please validate that all the objects returned by your query belong to this list.
+WARNING: [Constraints 18-401] set_false_path: 'system_i/loop_status_gpio/U0/gpio_core_1/Dual.ALLIN0_ND_G0.READ_REG_GEN[0].reg1[0]_i_1' is not a valid endpoint. [/home/dsp-mikro7/FPGA_Based_OFDM_Transceiver/hardware/constraints/capture_cdc.xdc:12]
+Resolution: A valid end point is a data pin of a sequential cell or a primary output or inout port. Please validate that all the objects returned by your query belong to this list.
+WARNING: [Constraints 18-401] set_false_path: 'system_i/loop_status_gpio/U0/gpio_core_1/Dual.ALLIN0_ND_G0.READ_REG_GEN[10].reg1[10]_i_1' is not a valid endpoint. [/home/dsp-mikro7/FPGA_Based_OFDM_Transceiver/hardware/constraints/capture_cdc.xdc:12]
+Resolution: A valid end point is a data pin of a sequential cell or a primary output or inout port. Please validate that all the objects returned by your query belong to this list.
+WARNING: [Constraints 18-401] set_false_path: 'system_i/loop_status_gpio/U0/gpio_core_1/Dual.ALLIN0_ND_G0.READ_REG_GEN[11].reg1[11]_i_1' is not a valid endpoint. [/home/dsp-mikro7/FPGA_Based_OFDM_Transceiver/hardware/constraints/capture_cdc.xdc:12]
+Resolution: A valid end point is a data pin of a sequential cell or a primary output or inout port. Please validate that all the objects returned by your query belong to this list.
+WARNING: [Constraints 18-401] set_false_path: 'system_i/loop_status_gpio/U0/gpio_core_1/Dual.ALLIN0_ND_G0.READ_REG_GEN[12].reg1[12]_i_1' is not a valid endpoint. [/home/dsp-mikro7/FPGA_Based_OFDM_Transceiver/hardware/constraints/capture_cdc.xdc:12]
+Resolution: A valid end point is a data pin of a sequential cell or a primary output or inout port. Please validate that all the objects returned by your query belong to this list.
+WARNING: [Constraints 18-401] set_false_path: 'system_i/loop_status_gpio/U0/gpio_core_1/Dual.ALLIN0_ND_G0.READ_REG_GEN[13].reg1[13]_i_1' is not a valid endpoint. [/home/dsp-mikro7/FPGA_Based_OFDM_Transceiver/hardware/constraints/capture_cdc.xdc:12]
+Resolution: A valid end point is a data pin of a sequential cell or a primary output or inout port. Please validate that all the objects returned by your query belong to this list.
+WARNING: [Constraints 18-401] set_false_path: 'system_i/loop_status_gpio/U0/gpio_core_1/Dual.ALLIN0_ND_G0.READ_REG_GEN[14].reg1[14]_i_1' is not a valid endpoint. [/home/dsp-mikro7/FPGA_Based_OFDM_Transceiver/hardware/constraints/capture_cdc.xdc:12]
+Resolution: A valid end point is a data pin of a sequential cell or a primary output or inout port. Please validate that all the objects returned by your query belong to this list.
+WARNING: [Constraints 18-401] set_false_path: 'system_i/loop_status_gpio/U0/gpio_core_1/Dual.ALLIN0_ND_G0.READ_REG_GEN[15].reg1[15]_i_1' is not a valid endpoint. [/home/dsp-mikro7/FPGA_Based_OFDM_Transceiver/hardware/constraints/capture_cdc.xdc:12]
+Resolution: A valid end point is a data pin of a sequential cell or a primary output or inout port. Please validate that all the objects returned by your query belong to this list.
+WARNING: [Constraints 18-401] set_false_path: 'system_i/loop_status_gpio/U0/gpio_core_1/Dual.ALLIN0_ND_G0.READ_REG_GEN[16].reg1[16]_i_1' is not a valid endpoint. [/home/dsp-mikro7/FPGA_Based_OFDM_Transceiver/hardware/constraints/capture_cdc.xdc:12]
+Resolution: A valid end point is a data pin of a sequential cell or a primary output or inout port. Please validate that all the objects returned by your query belong to this list.
+WARNING: [Constraints 18-401] set_false_path: 'system_i/loop_status_gpio/U0/gpio_core_1/Dual.ALLIN0_ND_G0.READ_REG_GEN[17].reg1[17]_i_1' is not a valid endpoint. [/home/dsp-mikro7/FPGA_Based_OFDM_Transceiver/hardware/constraints/capture_cdc.xdc:12]
+Resolution: A valid end point is a data pin of a sequential cell or a primary output or inout port. Please validate that all the objects returned by your query belong to this list.
+WARNING: [Constraints 18-401] set_false_path: 'system_i/loop_status_gpio/U0/gpio_core_1/Dual.ALLIN0_ND_G0.READ_REG_GEN[18].reg1[18]_i_1' is not a valid endpoint. [/home/dsp-mikro7/FPGA_Based_OFDM_Transceiver/hardware/constraints/capture_cdc.xdc:12]
+Resolution: A valid end point is a data pin of a sequential cell or a primary output or inout port. Please validate that all the objects returned by your query belong to this list.
+WARNING: [Constraints 18-401] set_false_path: 'system_i/loop_status_gpio/U0/gpio_core_1/Dual.ALLIN0_ND_G0.READ_REG_GEN[19].reg1[19]_i_1' is not a valid endpoint. [/home/dsp-mikro7/FPGA_Based_OFDM_Transceiver/hardware/constraints/capture_cdc.xdc:12]
+Resolution: A valid end point is a data pin of a sequential cell or a primary output or inout port. Please validate that all the objects returned by your query belong to this list.
+WARNING: [Constraints 18-401] set_false_path: 'system_i/loop_status_gpio/U0/gpio_core_1/Dual.ALLIN0_ND_G0.READ_REG_GEN[1].reg1[1]_i_1' is not a valid endpoint. [/home/dsp-mikro7/FPGA_Based_OFDM_Transceiver/hardware/constraints/capture_cdc.xdc:12]
+Resolution: A valid end point is a data pin of a sequential cell or a primary output or inout port. Please validate that all the objects returned by your query belong to this list.
+WARNING: [Constraints 18-401] set_false_path: 'system_i/loop_status_gpio/U0/gpio_core_1/Dual.ALLIN0_ND_G0.READ_REG_GEN[20].reg1[20]_i_1' is not a valid endpoint. [/home/dsp-mikro7/FPGA_Based_OFDM_Transceiver/hardware/constraints/capture_cdc.xdc:12]
+Resolution: A valid end point is a data pin of a sequential cell or a primary output or inout port. Please validate that all the objects returned by your query belong to this list.
+WARNING: [Constraints 18-401] set_false_path: 'system_i/loop_status_gpio/U0/gpio_core_1/Dual.ALLIN0_ND_G0.READ_REG_GEN[21].reg1[21]_i_1' is not a valid endpoint. [/home/dsp-mikro7/FPGA_Based_OFDM_Transceiver/hardware/constraints/capture_cdc.xdc:12]
+Resolution: A valid end point is a data pin of a sequential cell or a primary output or inout port. Please validate that all the objects returned by your query belong to this list.
+INFO: [Common 17-14] Message 'Constraints 18-401' appears 100 times and further instances of the messages will be disabled. Use the Tcl command set_msg_config to change the current settings. [/home/dsp-mikro7/FPGA_Based_OFDM_Transceiver/hardware/constraints/capture_cdc.xdc:12]
+Finished Parsing XDC File [/home/dsp-mikro7/FPGA_Based_OFDM_Transceiver/hardware/constraints/capture_cdc.xdc]
+Parsing XDC File [/home/dsp-mikro7/FPGA_Based_OFDM_Transceiver/hardware/rtl/rfsync_clocks.xdc]
+Finished Parsing XDC File [/home/dsp-mikro7/FPGA_Based_OFDM_Transceiver/hardware/rtl/rfsync_clocks.xdc]
+Parsing XDC File [/home/dsp-mikro7/FPGA_Based_OFDM_Transceiver/hardware/generated/08_rfdc_capture/zcu216_rfdc_capture.gen/sources_1/bd/system/ip/system_usp_rf_data_converter_0_0/synth/system_usp_rf_data_converter_0_0.xdc] for cell 'system_i/usp_rf_data_converter_0/inst'
+Finished Parsing XDC File [/home/dsp-mikro7/FPGA_Based_OFDM_Transceiver/hardware/generated/08_rfdc_capture/zcu216_rfdc_capture.gen/sources_1/bd/system/ip/system_usp_rf_data_converter_0_0/synth/system_usp_rf_data_converter_0_0.xdc] for cell 'system_i/usp_rf_data_converter_0/inst'
+Parsing XDC File [/home/dsp-mikro7/FPGA_Based_OFDM_Transceiver/hardware/generated/08_rfdc_capture/zcu216_rfdc_capture.gen/sources_1/bd/system/ip/system_auto_ds_0/system_auto_ds_0_clocks.xdc] for cell 'system_i/ps8_0_axi_periph/s00_couplers/auto_ds/inst'
+Finished Parsing XDC File [/home/dsp-mikro7/FPGA_Based_OFDM_Transceiver/hardware/generated/08_rfdc_capture/zcu216_rfdc_capture.gen/sources_1/bd/system/ip/system_auto_ds_0/system_auto_ds_0_clocks.xdc] for cell 'system_i/ps8_0_axi_periph/s00_couplers/auto_ds/inst'
+Parsing XDC File [/home/dsp-mikro7/FPGA_Based_OFDM_Transceiver/hardware/generated/08_rfdc_capture/zcu216_rfdc_capture.gen/sources_1/bd/system/ip/system_auto_cc_0/system_auto_cc_0_clocks.xdc] for cell 'system_i/ps8_0_axi_periph/m07_couplers/auto_cc/inst'
+WARNING: [Vivado_Tcl 4-921] Waiver ID 'CDC-10' -to list should not be empty. [/home/dsp-mikro7/FPGA_Based_OFDM_Transceiver/hardware/generated/08_rfdc_capture/zcu216_rfdc_capture.gen/sources_1/bd/system/ip/system_auto_cc_0/system_auto_cc_0_clocks.xdc:7]
+WARNING: [Vivado_Tcl 4-921] Waiver ID 'CDC-11' -to list should not be empty. [/home/dsp-mikro7/FPGA_Based_OFDM_Transceiver/hardware/generated/08_rfdc_capture/zcu216_rfdc_capture.gen/sources_1/bd/system/ip/system_auto_cc_0/system_auto_cc_0_clocks.xdc:10]
+WARNING: [Vivado_Tcl 4-921] Waiver ID 'CDC-15' -to list should not be empty. [/home/dsp-mikro7/FPGA_Based_OFDM_Transceiver/hardware/generated/08_rfdc_capture/zcu216_rfdc_capture.gen/sources_1/bd/system/ip/system_auto_cc_0/system_auto_cc_0_clocks.xdc:13]
+WARNING: [Vivado_Tcl 4-939] Waiver ID 'LUTAR-1' object list should not be empty (perhaps an invalid wildcard was used or only unsupported objects). [/home/dsp-mikro7/FPGA_Based_OFDM_Transceiver/hardware/generated/08_rfdc_capture/zcu216_rfdc_capture.gen/sources_1/bd/system/ip/system_auto_cc_0/system_auto_cc_0_clocks.xdc:17]
+Finished Parsing XDC File [/home/dsp-mikro7/FPGA_Based_OFDM_Transceiver/hardware/generated/08_rfdc_capture/zcu216_rfdc_capture.gen/sources_1/bd/system/ip/system_auto_cc_0/system_auto_cc_0_clocks.xdc] for cell 'system_i/ps8_0_axi_periph/m07_couplers/auto_cc/inst'
+INFO: [Project 1-1714] 197 XPM XDC files have been applied to the design.
+INFO: [Opt 31-138] Pushed 0 inverter(s) to 0 load pin(s).
+INFO: [Project 1-1687] 2 scoped IP constraints or related sub-commands were skipped due to synthesis logic optimizations usually triggered by constant connectivity or unconnected output pins. To review the skipped constraints and messages, run the command 'set_param netlist.IPMsgFiltering false' before opening the design.
+Netlist sorting complete. Time (s): cpu = 00:00:00.01 ; elapsed = 00:00:00 . Memory (MB): peak = 4154.102 ; gain = 0.000 ; free physical = 14839 ; free virtual = 25710
+INFO: [Project 1-111] Unisim Transformation Summary:
+  A total of 259 instances were transformed.
+  DSP48E => DSP48E2 (DSP_ALU, DSP_A_B_DATA, DSP_C_DATA, DSP_MULTIPLIER, DSP_M_DATA, DSP_OUTPUT, DSP_PREADD, DSP_PREADD_DATA): 70 instances
+  DSP48E2 => DSP48E2 (DSP_ALU, DSP_A_B_DATA, DSP_C_DATA, DSP_MULTIPLIER, DSP_M_DATA, DSP_OUTPUT, DSP_PREADD, DSP_PREADD_DATA): 126 instances
+  RAM32M => RAM32M (RAMD32(x6), RAMS32(x2)): 3 instances
+  RAM32M16 => RAM32M16 (RAMD32(x14), RAMS32(x2)): 11 instances
+  RAM32X1D => RAM32X1D (RAMD32(x2)): 2 instances
+  RAM64X1S => RAM64X1S (RAMS64E): 47 instances
+
+41 Infos, 204 Warnings, 0 Critical Warnings and 0 Errors encountered.
+link_design completed successfully
+link_design: Time (s): cpu = 00:00:51 ; elapsed = 00:00:32 . Memory (MB): peak = 4154.102 ; gain = 1309.320 ; free physical = 14839 ; free virtual = 25711
+Command: opt_design
+Attempting to get a license for feature 'Implementation' and/or device 'xczu49dr'
+INFO: [Common 17-349] Got license for feature 'Implementation' and/or device 'xczu49dr'
+Running DRC as a precondition to command opt_design
+
+Starting DRC Task
+INFO: [DRC 23-27] Running DRC with 8 threads
+INFO: [Project 1-461] DRC finished with 0 Errors
+INFO: [Project 1-462] Please refer to the DRC report (report_drc) for more information.
+
+Time (s): cpu = 00:00:02 ; elapsed = 00:00:00.53 . Memory (MB): peak = 4154.102 ; gain = 0.000 ; free physical = 14852 ; free virtual = 25724
+
+Starting Cache Timing Information Task
+INFO: [Timing 38-35] Done setting XDC timing constraints.
+Ending Cache Timing Information Task | Checksum: 2906cbc00
+
+Time (s): cpu = 00:00:12 ; elapsed = 00:00:03 . Memory (MB): peak = 4154.102 ; gain = 0.000 ; free physical = 14851 ; free virtual = 25722
+
+Starting Logic Optimization Task
+
+Phase 1 Retarget
+INFO: [Opt 31-138] Pushed 27 inverter(s) to 5798 load pin(s).
+INFO: [Opt 31-49] Retargeted 0 cell(s).
+Phase 1 Retarget | Checksum: 1c046c19b
+
+Time (s): cpu = 00:00:06 ; elapsed = 00:00:03 . Memory (MB): peak = 4154.102 ; gain = 0.000 ; free physical = 14825 ; free virtual = 25696
+INFO: [Opt 31-389] Phase Retarget created 587 cells and removed 938 cells
+INFO: [Opt 31-1021] In phase Retarget, 46 netlist objects are constrained preventing optimization. Please run opt_design with -debug_log to get more detail. 
+
+Phase 2 Constant propagation
+INFO: [Opt 31-138] Pushed 0 inverter(s) to 0 load pin(s).
+Phase 2 Constant propagation | Checksum: 248d19005
+
+Time (s): cpu = 00:00:07 ; elapsed = 00:00:03 . Memory (MB): peak = 4154.102 ; gain = 0.000 ; free physical = 14842 ; free virtual = 25714
+INFO: [Opt 31-389] Phase Constant propagation created 7 cells and removed 246 cells
+INFO: [Opt 31-1021] In phase Constant propagation, 166 netlist objects are constrained preventing optimization. Please run opt_design with -debug_log to get more detail. 
+
+Phase 3 Sweep
+Phase 3 Sweep | Checksum: 20e9a7d9b
+
+Time (s): cpu = 00:00:08 ; elapsed = 00:00:04 . Memory (MB): peak = 4154.102 ; gain = 0.000 ; free physical = 14859 ; free virtual = 25731
+INFO: [Opt 31-389] Phase Sweep created 2 cells and removed 663 cells
+INFO: [Opt 31-1021] In phase Sweep, 111 netlist objects are constrained preventing optimization. Please run opt_design with -debug_log to get more detail. 
+
+Phase 4 BUFG optimization
+INFO: [Opt 31-1077] Phase BUFG optimization inserted 0 global clock buffer(s) for CLOCK_LOW_FANOUT.
+Phase 4 BUFG optimization | Checksum: 20e9a7d9b
+
+Time (s): cpu = 00:00:09 ; elapsed = 00:00:05 . Memory (MB): peak = 4154.102 ; gain = 0.000 ; free physical = 14877 ; free virtual = 25748
+INFO: [Opt 31-662] Phase BUFG optimization created 0 cells of which 0 are BUFGs and removed 0 cells.
+
+Phase 5 Shift Register Optimization
+INFO: [Opt 31-1064] SRL Remap converted 0 SRLs to 0 registers and converted 0 registers of register chains to 0 SRLs
+Phase 5 Shift Register Optimization | Checksum: 1b1835c57
+
+Time (s): cpu = 00:00:09 ; elapsed = 00:00:06 . Memory (MB): peak = 4154.102 ; gain = 0.000 ; free physical = 14877 ; free virtual = 25748
+INFO: [Opt 31-389] Phase Shift Register Optimization created 9 cells and removed 29 cells
+
+Phase 6 Post Processing Netlist
+Phase 6 Post Processing Netlist | Checksum: 17dd186e6
+
+Time (s): cpu = 00:00:10 ; elapsed = 00:00:06 . Memory (MB): peak = 4154.102 ; gain = 0.000 ; free physical = 14890 ; free virtual = 25761
+INFO: [Opt 31-389] Phase Post Processing Netlist created 0 cells and removed 0 cells
+INFO: [Opt 31-1021] In phase Post Processing Netlist, 40 netlist objects are constrained preventing optimization. Please run opt_design with -debug_log to get more detail. 
+Opt_design Change Summary
+=========================
+
+
+-------------------------------------------------------------------------------------------------------------------------
+|  Phase                        |  #Cells created  |  #Cells Removed  |  #Constrained objects preventing optimizations  |
+-------------------------------------------------------------------------------------------------------------------------
+|  Retarget                     |             587  |             938  |                                             46  |
+|  Constant propagation         |               7  |             246  |                                            166  |
+|  Sweep                        |               2  |             663  |                                            111  |
+|  BUFG optimization            |               0  |               0  |                                              0  |
+|  Shift Register Optimization  |               9  |              29  |                                              0  |
+|  Post Processing Netlist      |               0  |               0  |                                             40  |
+-------------------------------------------------------------------------------------------------------------------------
+
+
+
+Starting Connectivity Check Task
+
+Time (s): cpu = 00:00:00.08 ; elapsed = 00:00:00.08 . Memory (MB): peak = 4154.102 ; gain = 0.000 ; free physical = 14890 ; free virtual = 25761
+Ending Logic Optimization Task | Checksum: 1040aee5e
+
+Time (s): cpu = 00:00:10 ; elapsed = 00:00:07 . Memory (MB): peak = 4154.102 ; gain = 0.000 ; free physical = 14890 ; free virtual = 25761
+
+Starting Power Optimization Task
+INFO: [Pwropt 34-132] Skipping clock gating for clocks with a period < 2.00 ns.
+INFO: [Timing 38-35] Done setting XDC timing constraints.
+INFO: [Pwropt 34-9] Applying IDT optimizations ...
+INFO: [Pwropt 34-10] Applying ODC optimizations ...
+Running Vector-less Activity Propagation...
+
+Finished Running Vector-less Activity Propagation
+
+
+Starting PowerOpt Patch Enables Task
+INFO: [Pwropt 34-162] WRITE_MODE attribute of 0 BRAM(s) out of a total of 203 has been updated to save power. Run report_power_opt to get a complete listing of the BRAMs updated.
+INFO: [Timing 38-35] Done setting XDC timing constraints.
+INFO: [Pwropt 34-201] Structural ODC has moved 23 WE to EN ports
+Number of BRAM Ports augmented: 19 newly gated: 157 Total Ports: 406
+Ending PowerOpt Patch Enables Task | Checksum: 2384bf0a8
+
+Time (s): cpu = 00:00:13 ; elapsed = 00:00:04 . Memory (MB): peak = 5191.887 ; gain = 0.000 ; free physical = 14618 ; free virtual = 25490
+Ending Power Optimization Task | Checksum: 2384bf0a8
+
+Time (s): cpu = 00:00:50 ; elapsed = 00:00:19 . Memory (MB): peak = 5191.887 ; gain = 1037.785 ; free physical = 14705 ; free virtual = 25576
+
+Starting Final Cleanup Task
+
+Starting Logic Optimization Task
+INFO: [Timing 38-35] Done setting XDC timing constraints.
+Ending Logic Optimization Task | Checksum: 1f174dd48
+
+Time (s): cpu = 00:00:17 ; elapsed = 00:00:05 . Memory (MB): peak = 5191.887 ; gain = 0.000 ; free physical = 14667 ; free virtual = 25538
+Ending Final Cleanup Task | Checksum: 1f174dd48
+
+Time (s): cpu = 00:00:18 ; elapsed = 00:00:06 . Memory (MB): peak = 5191.887 ; gain = 0.000 ; free physical = 14667 ; free virtual = 25538
+
+Starting Netlist Obfuscation Task
+Netlist sorting complete. Time (s): cpu = 00:00:00 ; elapsed = 00:00:00.01 . Memory (MB): peak = 5191.887 ; gain = 0.000 ; free physical = 14667 ; free virtual = 25538
+Ending Netlist Obfuscation Task | Checksum: 1f174dd48
+
+Time (s): cpu = 00:00:00.01 ; elapsed = 00:00:00.01 . Memory (MB): peak = 5191.887 ; gain = 0.000 ; free physical = 14667 ; free virtual = 25538
+INFO: [Common 17-83] Releasing license: Implementation
+70 Infos, 204 Warnings, 0 Critical Warnings and 0 Errors encountered.
+opt_design completed successfully
+opt_design: Time (s): cpu = 00:01:34 ; elapsed = 00:00:37 . Memory (MB): peak = 5191.887 ; gain = 1037.785 ; free physical = 14667 ; free virtual = 25538
+INFO: [Timing 38-35] Done setting XDC timing constraints.
+INFO: [Timing 38-480] Writing timing data to binary archive.
+Writing placer database...
+Writing XDEF routing.
+Writing XDEF routing logical nets.
+Writing XDEF routing special nets.
+Write XDEF Complete: Time (s): cpu = 00:00:00.21 ; elapsed = 00:00:00.05 . Memory (MB): peak = 5191.887 ; gain = 0.000 ; free physical = 14525 ; free virtual = 25403
+INFO: [Common 17-1381] The checkpoint '/home/dsp-mikro7/FPGA_Based_OFDM_Transceiver/hardware/generated/08_rfdc_capture/zcu216_rfdc_capture.runs/impl_1/system_wrapper_opt.dcp' has been generated.
+write_checkpoint: Time (s): cpu = 00:00:24 ; elapsed = 00:00:12 . Memory (MB): peak = 5191.887 ; gain = 0.000 ; free physical = 14426 ; free virtual = 25323
+INFO: [runtcl-4] Executing : report_drc -file system_wrapper_drc_opted.rpt -pb system_wrapper_drc_opted.pb -rpx system_wrapper_drc_opted.rpx
+Command: report_drc -file system_wrapper_drc_opted.rpt -pb system_wrapper_drc_opted.pb -rpx system_wrapper_drc_opted.rpx
+INFO: [IP_Flow 19-1839] IP Catalog is up to date.
+INFO: [DRC 23-27] Running DRC with 8 threads
+INFO: [Vivado_Tcl 2-168] The results of DRC are in file /home/dsp-mikro7/FPGA_Based_OFDM_Transceiver/hardware/generated/08_rfdc_capture/zcu216_rfdc_capture.runs/impl_1/system_wrapper_drc_opted.rpt.
+report_drc completed successfully
+report_drc: Time (s): cpu = 00:00:28 ; elapsed = 00:00:16 . Memory (MB): peak = 5525.492 ; gain = 333.605 ; free physical = 13479 ; free virtual = 24374
+Command: place_design
+Attempting to get a license for feature 'Implementation' and/or device 'xczu49dr'
+INFO: [Common 17-349] Got license for feature 'Implementation' and/or device 'xczu49dr'
+INFO: [DRC 23-27] Running DRC with 8 threads
+INFO: [Vivado_Tcl 4-198] DRC finished with 0 Errors
+INFO: [Vivado_Tcl 4-199] Please refer to the DRC report (report_drc) for more information.
+Running DRC as a precondition to command place_design
+INFO: [DRC 23-27] Running DRC with 8 threads
+INFO: [Vivado_Tcl 4-198] DRC finished with 0 Errors
+INFO: [Vivado_Tcl 4-199] Please refer to the DRC report (report_drc) for more information.
+
+Starting Placer Task
+INFO: [Place 30-611] Multithreading enabled for place_design using a maximum of 8 CPUs
+
+Phase 1 Placer Initialization
+
+Phase 1.1 Placer Initialization Netlist Sorting
+Netlist sorting complete. Time (s): cpu = 00:00:00.01 ; elapsed = 00:00:00.01 . Memory (MB): peak = 5525.492 ; gain = 0.000 ; free physical = 13484 ; free virtual = 24387
+Phase 1.1 Placer Initialization Netlist Sorting | Checksum: 11561fc15
+
+Time (s): cpu = 00:00:00.02 ; elapsed = 00:00:00.02 . Memory (MB): peak = 5525.492 ; gain = 0.000 ; free physical = 13484 ; free virtual = 24387
+Netlist sorting complete. Time (s): cpu = 00:00:00 ; elapsed = 00:00:00 . Memory (MB): peak = 5525.492 ; gain = 0.000 ; free physical = 13501 ; free virtual = 24404
+
+Phase 1.2 IO Placement/ Clock Placement/ Build Placer Device
+Phase 1.2 IO Placement/ Clock Placement/ Build Placer Device | Checksum: 150ef44fd
+
+Time (s): cpu = 00:00:05 ; elapsed = 00:00:03 . Memory (MB): peak = 5525.492 ; gain = 0.000 ; free physical = 13609 ; free virtual = 24503
+
+Phase 1.3 Build Placer Netlist Model
+Phase 1.3 Build Placer Netlist Model | Checksum: 19af89fb3
+
+Time (s): cpu = 00:00:27 ; elapsed = 00:00:12 . Memory (MB): peak = 5525.492 ; gain = 0.000 ; free physical = 13358 ; free virtual = 24252
+
+Phase 1.4 Constrain Clocks/Macros
+Phase 1.4 Constrain Clocks/Macros | Checksum: 19af89fb3
+
+Time (s): cpu = 00:00:27 ; elapsed = 00:00:12 . Memory (MB): peak = 5525.492 ; gain = 0.000 ; free physical = 13362 ; free virtual = 24250
+Phase 1 Placer Initialization | Checksum: 19af89fb3
+
+Time (s): cpu = 00:00:27 ; elapsed = 00:00:12 . Memory (MB): peak = 5525.492 ; gain = 0.000 ; free physical = 13362 ; free virtual = 24250
+
+Phase 2 Global Placement
+
+Phase 2.1 Floorplanning
+
+Phase 2.1.1 Partition Driven Placement
+
+Phase 2.1.1.1 PBP: Partition Driven Placement

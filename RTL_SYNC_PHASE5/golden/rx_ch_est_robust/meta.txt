@@ -1,0 +1,26 @@
+N=24
+Q15_SCALE=5090.697374
+0 flat_identity
+1 flat_scaled_0p6
+2 flat_scaled_1p8
+3 flat_phase_+45deg
+4 flat_phase_-120deg
+5 multipath_mild_0
+6 multipath_mild_1
+7 multipath_mild_2
+8 multipath_mild_3
+9 multipath_mod_0
+10 multipath_mod_1
+11 multipath_mod_2
+12 multipath_mod_3
+13 steep_0
+14 steep_1
+15 steep_2
+16 deep_null_c213_w8
+17 deep_null_c185_w6
+18 deep_null_c160_w7
+19 jitter_pilots_0
+20 jitter_pilots_1
+21 jitter_pilots_2
+22 two_ray_deep_0
+23 two_ray_deep_1

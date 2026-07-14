@@ -1,0 +1,141 @@
+{
+ "generator": "gen_p5_board_regression_stim.py",
+ "peak_lag": 23,
+ "q15_scale": 5045.882185761891,
+ "cases": [
+  {
+   "name": "base",
+   "file": "reg_base.mem",
+   "pre_zeros": 64,
+   "golden_slot": 128,
+   "golden_frame_start": 104,
+   "golden_peak": 23,
+   "amp": 1.0,
+   "awgn_snr_db": null,
+   "multipath": null,
+   "expect_detect": true,
+   "sim_frame_start": 40,
+   "sim_peak": 23,
+   "sim_frac_q15": 1
+  },
+  {
+   "name": "pos48",
+   "file": "reg_pos48.mem",
+   "pre_zeros": 48,
+   "golden_slot": 112,
+   "golden_frame_start": 88,
+   "golden_peak": 23,
+   "amp": 1.0,
+   "awgn_snr_db": null,
+   "multipath": null,
+   "expect_detect": true,
+   "sim_frame_start": 24,
+   "sim_peak": 23,
+   "sim_frac_q15": 1
+  },
+  {
+   "name": "pos96",
+   "file": "reg_pos96.mem",
+   "pre_zeros": 96,
+   "golden_slot": 160,
+   "golden_frame_start": 136,
+   "golden_peak": 23,
+   "amp": 1.0,
+   "awgn_snr_db": null,
+   "multipath": null,
+   "expect_detect": true,
+   "sim_frame_start": 72,
+   "sim_peak": 23,
+   "sim_frac_q15": 1
+  },
+  {
+   "name": "scl_half",
+   "file": "reg_scl_half.mem",
+   "pre_zeros": 64,
+   "golden_slot": 128,
+   "golden_frame_start": 104,
+   "golden_peak": 23,
+   "amp": 0.5,
+   "awgn_snr_db": null,
+   "multipath": null,
+   "expect_detect": true,
+   "sim_frame_start": 40,
+   "sim_peak": 23,
+   "sim_frac_q15": 1
+  },
+  {
+   "name": "scl_qtr",
+   "file": "reg_scl_qtr.mem",
+   "pre_zeros": 64,
+   "golden_slot": 128,
+   "golden_frame_start": 104,
+   "golden_peak": 23,
+   "amp": 0.25,
+   "awgn_snr_db": null,
+   "multipath": null,
+   "expect_detect": true,
+   "sim_frame_start": 40,
+   "sim_peak": 23,
+   "sim_frac_q15": 7
+  },
+  {
+   "name": "awgn20",
+   "file": "reg_awgn20.mem",
+   "pre_zeros": 64,
+   "golden_slot": 128,
+   "golden_frame_start": 104,
+   "golden_peak": 23,
+   "amp": 1.0,
+   "awgn_snr_db": 20,
+   "multipath": null,
+   "expect_detect": true,
+   "sim_frame_start": 40,
+   "sim_peak": 23,
+   "sim_frac_q15": 113
+  },
+  {
+   "name": "awgn10",
+   "file": "reg_awgn10.mem",
+   "pre_zeros": 64,
+   "golden_slot": 128,
+   "golden_frame_start": 104,
+   "golden_peak": 23,
+   "amp": 1.0,
+   "awgn_snr_db": 10,
+   "multipath": null,
+   "expect_detect": true,
+   "sim_frame_start": 40,
+   "sim_peak": 23,
+   "sim_frac_q15": 939
+  },
+  {
+   "name": "mpath",
+   "file": "reg_mpath.mem",
+   "pre_zeros": 64,
+   "golden_slot": 128,
+   "golden_frame_start": 104,
+   "golden_peak": 24,
+   "amp": 1.0,
+   "awgn_snr_db": null,
+   "multipath": [
+    [
+     0,
+     1.0
+    ],
+    [
+     4,
+     0.5
+    ],
+    [
+     9,
+     0.3
+    ]
+   ],
+   "expect_detect": true,
+   "sim_frame_start": 40,
+   "sim_peak": 24,
+   "sim_frac_q15": 371
+  }
+ ],
+ "lead_in": 64
+}

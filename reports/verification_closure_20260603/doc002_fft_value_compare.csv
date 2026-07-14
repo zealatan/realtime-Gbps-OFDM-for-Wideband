@@ -1,4 +1,0 @@
-vector,pass,max_abs_err,rms_err,mismatch_bins
-V0_impulse,PASS,0,0.000,0
-V1_tone_k7,PASS,1,0.234,0
-V2_pseudo_rng,PASS,1,0.699,0

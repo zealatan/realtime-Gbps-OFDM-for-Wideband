@@ -1,0 +1,19 @@
+0.7
+2020.2
+Oct 14 2022
+05:07:14
+/home/zealatan/FPGA_Based_OFDM_Transceiver/SIM_VIVADO/auto_corr.v,1776335906,verilog,,/home/zealatan/FPGA_Based_OFDM_Transceiver/SIM_VIVADO/dma_wrapper.v,,auto_corr,,,,,,,,
+/home/zealatan/FPGA_Based_OFDM_Transceiver/SIM_VIVADO/common_defs.v,1775891778,verilog,,/home/zealatan/FPGA_Based_OFDM_Transceiver/SIM_VIVADO/complex_mult.v,,,,,,,,,,
+/home/zealatan/FPGA_Based_OFDM_Transceiver/SIM_VIVADO/complex_mult.v,1775891778,verilog,,/home/zealatan/FPGA_Based_OFDM_Transceiver/SIM_VIVADO/complex_to_mag_sq.v,,complex_mult,,,,,,,,
+/home/zealatan/FPGA_Based_OFDM_Transceiver/SIM_VIVADO/complex_multiplier.v,1776342374,verilog,,/home/zealatan/FPGA_Based_OFDM_Transceiver/SIM_VIVADO/delay_sample.v,,complex_multiplier,,,,,,,,
+/home/zealatan/FPGA_Based_OFDM_Transceiver/SIM_VIVADO/complex_to_mag.v,1775891778,verilog,,/home/zealatan/FPGA_Based_OFDM_Transceiver/SIM_VIVADO/complex_multiplier.v,,complex_to_mag,,,,,,,,
+/home/zealatan/FPGA_Based_OFDM_Transceiver/SIM_VIVADO/complex_to_mag_sq.v,1775891778,verilog,,/home/zealatan/FPGA_Based_OFDM_Transceiver/SIM_VIVADO/complex_to_mag.v,,complex_to_mag_sq,,,,,,,,
+/home/zealatan/FPGA_Based_OFDM_Transceiver/SIM_VIVADO/delayT.v,1775891778,verilog,,/home/zealatan/FPGA_Based_OFDM_Transceiver/SIM_VIVADO/sample_power_sq.v,,delayT,,,,,,,,
+/home/zealatan/FPGA_Based_OFDM_Transceiver/SIM_VIVADO/delay_sample.v,1775891778,verilog,,/home/zealatan/FPGA_Based_OFDM_Transceiver/SIM_VIVADO/delayT.v,,delay_sample,,,,,,,,
+/home/zealatan/FPGA_Based_OFDM_Transceiver/SIM_VIVADO/dma_wrapper.v,1775891778,verilog,,/home/zealatan/FPGA_Based_OFDM_Transceiver/SIM_VIVADO/tb_dma_wrapper.v,,dma_wrapper,,,,,,,,
+/home/zealatan/FPGA_Based_OFDM_Transceiver/SIM_VIVADO/moving_avg_optimized.v,1775891778,verilog,,/home/zealatan/FPGA_Based_OFDM_Transceiver/SIM_VIVADO/stage_mult.v,,moving_avg_optimized,,,,,,,,
+/home/zealatan/FPGA_Based_OFDM_Transceiver/SIM_VIVADO/sample_power_sq.v,1775891778,verilog,,/home/zealatan/FPGA_Based_OFDM_Transceiver/SIM_VIVADO/moving_avg_optimized.v,,sample_power_sq,,,,,,,,
+/home/zealatan/FPGA_Based_OFDM_Transceiver/SIM_VIVADO/stage_mult.v,1775891778,verilog,,/home/zealatan/FPGA_Based_OFDM_Transceiver/SIM_VIVADO/auto_corr.v,,stage_mult,,,,,,,,
+/home/zealatan/FPGA_Based_OFDM_Transceiver/SIM_VIVADO/tb_dma_wrapper.v,1776415867,verilog,,/home/zealatan/FPGA_Based_OFDM_Transceiver/SIM_VIVADO/usrp2/ram_2port.v,,tb_dma_wrapper,,,,,,,,
+/home/zealatan/FPGA_Based_OFDM_Transceiver/SIM_VIVADO/usrp2/ram_2port.v,1776415436,verilog,,/home/zealatan/FPGA_Based_OFDM_Transceiver/SIM_VIVADO/usrp2/setting_reg.v,,ram_2port,,,,,,,,
+/home/zealatan/FPGA_Based_OFDM_Transceiver/SIM_VIVADO/usrp2/setting_reg.v,1776415436,verilog,,,,setting_reg,,,,,,,,

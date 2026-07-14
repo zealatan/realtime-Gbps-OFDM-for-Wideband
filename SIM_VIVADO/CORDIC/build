@@ -1,0 +1,16 @@
+source /home/zealatan/Downloads/Vivado/2022.2/settings64.sh
+export PATH=/home/zealatan/Downloads/Vivado/2022.2/bin:$PATH
+
+rm -rf xsim.dir *.log *.jou *.pb *.wdb
+
+GLBL=/home/zealatan/Downloads/Vivado/2022.2/data/verilog/src/glbl.v
+
+xvlog -work work "$GLBL"
+xvlog -work work tb_cordic_arctan_wrapper.v cordic_arctan_strobe_wrapper_full.v cordic_0_sim_netlist.v
+
+xelab -debug all \
+  -L unisims_ver -L unimacro_ver -L secureip \
+  work.tb_cordic_arctan_wrapper work.glbl \
+  -s tb_cordic_arctan_wrapper
+
+xsim tb_cordic_arctan_wrapper -gui

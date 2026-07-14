@@ -1,0 +1,577 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>02 phase3_sync_top — ZCU216 Synchronizer</title>
+<style>
+  :root {
+    --bg:#001219; --card:#012a33; --accent1:#005F73; --accent2:#0A9396;
+    --light:#94D2BD; --warn:#EE9B00; --error:#AE2012; --text:#E9D8A6; --border:#1a4a55;
+  }
+  * { box-sizing:border-box; margin:0; padding:0; }
+  body { background:var(--bg); color:var(--text); font-family:'Consolas','Courier New',monospace; font-size:13px; line-height:1.6; }
+  nav { background:var(--accent1); padding:8px 20px; display:flex; flex-wrap:wrap; gap:12px; align-items:center; border-bottom:2px solid var(--accent2); }
+  nav a { color:var(--light); text-decoration:none; font-weight:bold; font-size:11px; padding:3px 7px; border-radius:3px; }
+  nav a:hover { background:var(--accent2); color:#fff; }
+  nav .brand { color:#fff; font-size:14px; font-weight:bold; margin-right:12px; }
+  .container { max-width:1300px; margin:0 auto; padding:24px; }
+  h2 { color:var(--light); font-size:15px; margin:30px 0 10px; border-bottom:2px solid var(--border); padding-bottom:6px; }
+  h3 { color:var(--accent2); font-size:13px; margin:16px 0 8px; }
+  table { width:100%; border-collapse:collapse; margin-bottom:20px; }
+  th { background:var(--accent1); color:var(--light); padding:7px 10px; text-align:left; font-size:11px; text-transform:uppercase; letter-spacing:0.05em; }
+  td { padding:6px 10px; border-bottom:1px solid var(--border); font-size:12px; vertical-align:top; }
+  tr:nth-child(even) td { background:#021820; }
+  .badge-pass { background:#1a3a1a; color:#3fb950; border:1px solid #3fb950; padding:2px 8px; border-radius:10px; font-size:11px; font-weight:bold; white-space:nowrap; display:inline-block; }
+  .badge-pending { background:#1e2830; color:#8b949e; border:1px solid #8b949e; padding:2px 8px; border-radius:10px; font-size:11px; white-space:nowrap; display:inline-block; }
+  .badge-resolved { background:#0d2a4a; color:#58a6ff; border:1px solid #58a6ff; padding:2px 8px; border-radius:10px; font-size:11px; font-weight:bold; display:inline-block; }
+  .card { background:var(--card); border:1px solid var(--border); border-radius:6px; padding:18px; margin-bottom:16px; }
+  code { background:#021820; color:var(--accent2); padding:1px 6px; border-radius:3px; font-size:12px; }
+  .note { background:#021f2a; border-left:3px solid var(--warn); padding:9px 14px; margin:10px 0; font-size:12px; color:var(--warn); border-radius:0 4px 4px 0; }
+  .ok { background:#0a1f0a; border-left:3px solid #3fb950; padding:9px 14px; margin:10px 0; font-size:12px; color:#3fb950; border-radius:0 4px 4px 0; }
+  p { margin:6px 0; }
+  ul, ol { margin:8px 0 8px 24px; }
+  li { margin:3px 0; }
+  .blk { display:inline-block; border:1px solid var(--accent2); border-radius:4px; padding:7px 12px; font-size:11px; background:#012a33; color:var(--text); text-align:center; min-width:110px; }
+  .blk-top { display:inline-block; border:2px solid var(--accent2); border-radius:5px; padding:10px 18px; font-size:12px; background:var(--accent1); color:#fff; font-weight:bold; text-align:center; }
+  .blk-ext { display:inline-block; border:1px dashed #1a4a55; border-radius:4px; padding:7px 12px; font-size:11px; background:#001a22; color:#8b949e; text-align:center; min-width:90px; }
+  .hrow { display:flex; align-items:center; justify-content:center; flex-wrap:wrap; gap:10px; margin:6px 0; }
+  .harrow { color:var(--accent2); font-size:18px; flex-shrink:0; }
+  .wh { background:var(--accent2); height:10px; display:inline-block; }
+  .wl { background:#1a4a55; height:10px; display:inline-block; }
+  .wx { background:#CA6702; height:10px; display:inline-block; }
+  .ann { color:var(--warn); font-size:10px; }
+  .hero-stats { display:flex; flex-wrap:wrap; gap:12px; margin:10px 0; }
+  .stat-box { background:var(--card); border:1px solid var(--border); border-radius:5px; padding:8px 14px; min-width:130px; }
+  .stat-val { color:var(--accent2); font-size:18px; font-weight:bold; }
+  .stat-lbl { color:#8b949e; font-size:10px; }
+  .fsm-state { display:inline-block; border:2px solid var(--accent2); border-radius:50%; width:86px; height:86px; line-height:86px; text-align:center; font-size:11px; font-weight:bold; color:#fff; background:var(--accent1); }
+  .fsm-row { display:flex; align-items:center; justify-content:center; gap:18px; flex-wrap:wrap; margin:12px 0; }
+  .fsm-cond { font-size:10px; color:var(--warn); text-align:center; max-width:100px; }
+  .section-num { color:#CA6702; font-size:13px; font-weight:bold; margin-right:6px; }
+  .wave-label { color:var(--light); font-weight:bold; width:180px; text-align:right; padding-right:10px; display:inline-block; }
+  /* --- inline math (self-contained, no external libs) --- */
+  .eq { font-family:'Cambria Math','STIX Two Math','Times New Roman',Georgia,serif;
+        font-size:13.5px; color:var(--light); background:#021820; padding:1px 7px;
+        border-radius:3px; white-space:nowrap; letter-spacing:0.01em; }
+  .eq i, .eq var { font-style:italic; }
+  .eq .op { color:var(--accent2); font-style:normal; padding:0 2px; }   /* = Σ ∏ operators */
+  .eq sub { font-size:0.72em; vertical-align:-0.28em; font-style:italic; }
+  .eq sup { font-size:0.72em; vertical-align:0.5em; font-style:normal; }
+  .eq .conj { text-decoration:overline; text-decoration-thickness:1px; }
+  .eq .frac { display:inline-flex; flex-direction:column; vertical-align:middle;
+              text-align:center; font-size:0.82em; line-height:1.05; margin:0 2px; }
+  .eq .frac > span:first-child { border-bottom:1px solid var(--light); padding:0 4px; }
+  .eqd { display:block; margin:10px 0; text-align:center; }             /* display (block) equation */
+  .eqd .eq { font-size:14.5px; white-space:normal; }
+</style>
+</head>
+<body>
+<nav>
+  <span class="brand">ZCU216 Synchronizer</span>
+  <a href="index.html">&#8592; Index</a>
+  <a href="01_phase3_sync_axis_dma_wrapper.html">01 DMA Wrapper</a>
+  <a href="02_phase3_sync_top.html">02 Sync Top</a>
+  <a href="03_frac_cfo_frame_corrector_top.html">03 Frac CFO</a>
+  <a href="04_pss_sss_symbol_extractor.html">04 PSS/SSS Extr</a>
+  <a href="05_fft256_dual_symbol_frontend.html">05 FFT Frontend</a>
+  <a href="06_meyr_integer_cfo_fft_frontend_top.html">06 Meyr FFT Top</a>
+  <a href="07_meyr_integer_cfo_core.html">07 Meyr Core</a>
+  <a href="08_iq_replay_buffer_576.html">08 Replay Buf</a>
+  <a href="09_low_level_datapath_blocks.html">09 Datapath</a>
+</nav>
+<div class="container">
+
+  <!-- ===== SECTION 1: HEADER / HERO ===== -->
+  <h2 style="margin-top:0; border-bottom:2px solid var(--accent2);"><span class="section-num">02</span> phase3_sync_top</h2>
+  <div style="color:var(--light); font-size:12px; margin-bottom:6px; opacity:0.85;">
+    Source: <code>rtl/DUT/phase3_sync_top.v</code> &nbsp;|&nbsp;
+    Role: Algorithm orchestration — synchronization() top &nbsp;|&nbsp;
+    Pipeline Stage: <strong>2 (algorithm core)</strong>
+  </div>
+  <div style="display:flex; flex-wrap:wrap; gap:8px; margin:10px 0 18px;">
+    <span class="badge-pending">Not Verified</span>
+    <span class="badge-pending">Not Verified</span>
+    <span class="badge-pending">Not Verified</span>
+    <span class="badge-pending">Not Verified</span>
+    <span class="badge-pending">Not Verified</span>
+    <span class="badge-pending">Not Verified</span>
+    <span class="badge-pending">Not Verified</span>
+  </div>
+  <div class="hero-stats">
+    <div class="stat-box"><div class="stat-val">3-state</div><div class="stat-lbl">FSM: IDLE / RUN / DONE</div></div>
+    <div class="stat-box"><div class="stat-val">576</div><div class="stat-lbl">OUTPUT_SAMPLES (FRAME_LEN)</div></div>
+    <div class="stat-box"><div class="stat-val">32</div><div class="stat-lbl">PSS_OFFSET = CP_LEN</div></div>
+    <div class="stat-box"><div class="stat-val">320</div><div class="stat-lbl">SSS_OFFSET = 2*CP+NSC</div></div>
+    <div class="stat-box"><div class="stat-val">24</div><div class="stat-lbl">INT_CFO_SHIFT bits</div></div>
+    <div class="stat-box"><div class="stat-val">4</div><div class="stat-lbl">Sub-instances</div></div>
+  </div>
+
+  <!-- ===== SECTION 2: INTEGRATION CONTEXT ===== -->
+  <h2><span class="section-num">2</span> Integration Context</h2>
+  <div class="card">
+    <h3>Data Flow</h3>
+    <div class="hrow" style="margin-bottom:12px;">
+      <div class="blk-ext">phase3_sync_axis_<br>dma_wrapper<br><span style="font-size:10px;">(Stage 1)</span></div>
+      <span class="harrow">&#8594; s_axis &#8594;</span>
+      <div class="blk-top">phase3_sync_top<br><span style="font-size:10px; font-weight:normal;">Pipeline Stage 2</span></div>
+      <span class="harrow">&#8594; frac-corr IQ &#8594;</span>
+      <div class="blk-ext">pss_sss_symbol_<br>extractor (internal)<br>&amp; replay buffer tap</div>
+    </div>
+    <p>The wrapper's gated s_axis feed arrives at this module. <code>phase3_sync_top</code> implements the full C-reference <code>synchronization()</code> function as an RTL orchestration layer. It instantiates four sub-modules that run concurrently after a single <code>start</code> pulse, and waits for either the Meyr algorithm to complete (success path) or the frame detector to fail (error path).</p>
+
+    <h3>AXI-S Signals at Each Boundary</h3>
+    <table>
+      <thead><tr><th>Boundary</th><th>Signals</th><th>Notes</th></tr></thead>
+      <tbody>
+        <tr><td>s_axis (from wrapper)</td><td>tdata[31:0], tvalid, tready, tlast</td><td>Raw IQ; s_axis_tready = u_frac_corr internal tready</td></tr>
+        <tr><td>frac-corrected IQ (frac_m_*, internal)</td><td>tdata/tvalid/tready/tlast</td><td>Also exposed as dbg_frac_m_* for wrapper replay buffer feed</td></tr>
+        <tr><td>PSS/SSS symbols (ext_m_*, internal)</td><td>tdata/tvalid/tready, symbol_sel, symbol_index</td><td>symbol_sel=0: PSS; =1: SSS. Routed to u_meyr_fft.</td></tr>
+        <tr><td>Control output to wrapper</td><td>done, busy, error, error_code[3:0]</td><td>Registered; done=1 for exactly 1 cycle</td></tr>
+        <tr><td>Result outputs to wrapper AXI-Lite regs</td><td>dbg_integer_cfo_valid, dbg_integer_cfo_word[31:0], dbg_frac_cfo_valid, dbg_frac_cfo_word[15:0], frame_start/peak/slot outputs</td><td>Stable after respective valid pulses; read via AXI-Lite snapshot</td></tr>
+      </tbody>
+    </table>
+
+    <h3>Clock Domain and Reset</h3>
+    <p>Single clock domain: <code>aclk</code>. Reset input is <code>aresetn</code> (this module's aresetn is already the post-soft-reset version from the wrapper: <code>dut_aresetn = aresetn &amp;&amp; !soft_reset_r</code>). The FSM uses asynchronous reset (<code>negedge aresetn</code>) for reliable simulation behavior. Error recovery requires full aresetn toggle — no partial-reset mechanism exists inside this module.</p>
+  </div>
+
+  <!-- ===== SECTION 3: BLOCK DIAGRAM ===== -->
+  <h2><span class="section-num">3</span> Block Diagram</h2>
+  <div class="card" style="text-align:center; padding:24px;">
+    <div style="font-size:11px; color:#8b949e; margin-bottom:8px;">All sub-modules started simultaneously on start pulse; data-dependency ordering is implicit via AXI-S flow</div>
+    <div class="hrow" style="margin-bottom:10px;">
+      <div class="blk-ext">s_axis<br>(gated IQ in)</div>
+      <span class="harrow">&#8594;</span>
+      <div style="border:2px solid var(--accent2); border-radius:8px; padding:16px 20px; background:#001a24; min-width:680px;">
+        <div style="color:var(--accent2); font-weight:bold; font-size:12px; margin-bottom:12px;">phase3_sync_top — synchronization()</div>
+        <div class="hrow" style="margin-bottom:10px;">
+          <div class="blk" style="min-width:210px; border-color:#BB3E03; color:#BB3E03;">u_frac_corr<br>frac_cfo_frame_corrector_top<br><span style="font-size:10px; color:#8b949e;">Steps 1–4: frame_det + CP autocorr<br>+ CORDIC atan2 + frac correction<br>OUTPUT_SAMPLES = FRAME_LEN = 576</span></div>
+          <span class="harrow">&#8594;</span>
+          <div style="font-size:10px; color:#8b949e; text-align:left;">frac_m_*<br>576 corr. samples<br><br>dbg_frac_m_*<br>(replay buf tap)</div>
+          <span class="harrow">&#8594;</span>
+          <div class="blk" style="min-width:165px;">u_extractor<br>pss_sss_symbol_<br>extractor<br><span style="font-size:10px; color:#8b949e;">PSS[32..287]<br>SSS[320..575]</span></div>
+          <span class="harrow">&#8594;</span>
+          <div class="blk" style="min-width:150px;">u_meyr_fft<br>meyr_integer_cfo_<br>fft_frontend_top<br><span style="font-size:10px; color:#8b949e;">FFT+xcorr<br>meyr_int_cfo[15:0]</span></div>
+        </div>
+        <div class="hrow" style="margin-top:4px;">
+          <div style="font-size:10px; color:#8b949e;">u_frac_corr frac_done</div>
+          <span class="harrow" style="font-size:13px;">&#8594;</span>
+          <div class="blk" style="min-width:150px;">u_ssc<br>slot_start_controller<br><span style="font-size:10px; color:#8b949e;">slot_start = f + peak<br>PSS/SSS offsets (const)</span></div>
+          <span class="harrow" style="font-size:13px;">&#8594;</span>
+          <div style="font-size:10px; color:#8b949e;">pss_fft_start/sss_fft_start<br>to u_extractor</div>
+        </div>
+        <div style="font-size:10px; color:#8b949e; margin-top:8px; border-top:1px solid #1a4a55; padding-top:6px;">
+          int_cfo_step_word = (-int_cfo_ext) &lt;&lt; INT_CFO_SHIFT &nbsp;|&nbsp; latched to int_cfo_step_word_r on meyr_done
+        </div>
+      </div>
+      <span class="harrow">&#8594;</span>
+      <div style="font-size:11px; text-align:left; display:flex; flex-direction:column; gap:6px;">
+        <div class="blk-ext">done / busy<br>error / error_code</div>
+        <div class="blk-ext">dbg_integer_cfo_valid<br>dbg_integer_cfo_word<br>[31:0]</div>
+        <div class="blk-ext">dbg_frac_cfo_valid<br>dbg_frac_cfo_word<br>frame/peak/slot dbg</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== SECTION 4: INPUT INTERFACE ===== -->
+  <h2><span class="section-num">4</span> Input Interface</h2>
+  <table>
+    <thead><tr><th>Signal</th><th>Width</th><th>Dir</th><th>Type</th><th>Description</th><th>Valid/Ready Relation</th><th>Reset Behavior</th></tr></thead>
+    <tbody>
+      <tr><td><code>aclk</code></td><td>1</td><td>in</td><td>clock</td><td>System clock; FSM on posedge aclk with async reset</td><td>—</td><td>—</td></tr>
+      <tr><td><code>aresetn</code></td><td>1</td><td>in</td><td>async rst</td><td>Active-low reset; async clear on negedge aresetn in FSM always block</td><td>—</td><td>0 = reset all FSM state, frac/ext/meyr start regs, int_cfo registers</td></tr>
+      <tr><td><code>s_axis_tdata[31:0]</code></td><td>32</td><td>in</td><td>AXI-S</td><td>IQ packed: I=[15:0], Q=[31:16]</td><td>Accepted when tvalid &amp; tready; tready wired from u_frac_corr</td><td>Not consumed during reset</td></tr>
+      <tr><td><code>s_axis_tvalid</code></td><td>1</td><td>in</td><td>AXI-S</td><td>Input sample valid</td><td>Hold until tready asserts</td><td>—</td></tr>
+      <tr><td><code>s_axis_tlast</code></td><td>1</td><td>in</td><td>AXI-S</td><td>End of input frame</td><td>With tvalid on last beat of frame</td><td>—</td></tr>
+      <tr><td><code>threshold_in[ENERGY_WIDTH-1:0]</code></td><td>40</td><td>in</td><td>config</td><td>Frame detector energy threshold; passed to u_frac_corr; sampled at start</td><td>Static during run; set from wrapper parameter THRESHOLD_LP</td><td>—</td></tr>
+      <tr><td><code>window_len_in[6:0]</code></td><td>7</td><td>in</td><td>config</td><td>Frame detector sliding window length (default 25)</td><td>Static during run</td><td>—</td></tr>
+      <tr><td><code>hit_count_in[3:0]</code></td><td>4</td><td>in</td><td>config</td><td>Frame detector consecutive-hit threshold (default 10)</td><td>Static during run</td><td>—</td></tr>
+      <tr><td><code>start</code></td><td>1</td><td>in</td><td>control</td><td>One-cycle start pulse from wrapper; launches FSM from S_IDLE to S_RUN</td><td>Must be exactly 1 cycle; only sampled when !busy in S_IDLE</td><td>Ignored during reset</td></tr>
+    </tbody>
+  </table>
+
+  <!-- ===== SECTION 5: OUTPUT INTERFACE ===== -->
+  <h2><span class="section-num">5</span> Output Interface</h2>
+  <table>
+    <thead><tr><th>Signal</th><th>Width</th><th>Dir</th><th>Type</th><th>Description</th><th>Timing Relation</th><th>Valid/Ready Relation</th></tr></thead>
+    <tbody>
+      <tr><td><code>s_axis_tready</code></td><td>1</td><td>out</td><td>AXI-S</td><td>Backpressure to upstream; directly wired from u_frac_corr s_axis_tready</td><td>Combinatorial from frac corrector</td><td>Gates DMA input acceptance</td></tr>
+      <tr><td><code>done</code></td><td>1</td><td>out</td><td>control</td><td>Algorithm complete; pulses exactly 1 cycle (in S_DONE). Registered.</td><td>Registered; asserts for 1 clock in S_DONE only</td><td>—</td></tr>
+      <tr><td><code>busy</code></td><td>1</td><td>out</td><td>control</td><td>Algorithm in progress; set from start until done asserts</td><td>Registered; set in S_RUN, cleared in S_DONE</td><td>—</td></tr>
+      <tr><td><code>error</code></td><td>1</td><td>out</td><td>control</td><td>Error flag; set when frac_frame_error fires. Cleared at next start.</td><td>Registered; stable after done while in S_IDLE (error state)</td><td>—</td></tr>
+      <tr><td><code>error_code[3:0]</code></td><td>4</td><td>out</td><td>control</td><td>From frac_cfo_frame_corrector_top: 0=none, 6=INPUT_ACQ_TIMEOUT</td><td>Latched on frac_frame_error in S_RUN</td><td>—</td></tr>
+      <tr><td><code>dbg_frame_start_valid</code></td><td>1</td><td>out</td><td>debug</td><td>1-cycle pulse when frame_index and peak_lag valid (= frac_phase_valid)</td><td>Combinatorial from u_frac_corr frac_phase_valid</td><td>—</td></tr>
+      <tr><td><code>dbg_frame_start_index[BUF_AW-1:0]</code></td><td>12</td><td>out</td><td>debug</td><td>Frame start position in iq_frame_buffer; stable after frame_start_valid</td><td>Wire from u_frac_corr frame_index</td><td>—</td></tr>
+      <tr><td><code>dbg_peak_valid</code></td><td>1</td><td>out</td><td>debug</td><td>Same pulse as frame_start_valid (both driven by frac_phase_valid)</td><td>Same as frame_start_valid</td><td>—</td></tr>
+      <tr><td><code>dbg_peak_index[INDEX_WIDTH-1:0]</code></td><td>9</td><td>out</td><td>debug</td><td>CP autocorrelation peak lag (0..NSC-1); stable after peak_valid</td><td>Wire from u_frac_corr peak_lag</td><td>—</td></tr>
+      <tr><td><code>dbg_slot_start_valid</code></td><td>1</td><td>out</td><td>debug</td><td>1-cycle pulse: slot_start = frame_index + peak_lag valid</td><td>Wire from u_ssc slot_valid (fires on frac_done)</td><td>—</td></tr>
+      <tr><td><code>dbg_slot_start_index[BUF_AW-1:0]</code></td><td>12</td><td>out</td><td>debug</td><td>Slot start buffer index; start of corrected IQ playback region</td><td>Wire from u_ssc slot_start</td><td>—</td></tr>
+      <tr><td><code>dbg_frac_cfo_valid</code></td><td>1</td><td>out</td><td>debug</td><td>1-cycle pulse when fractional CFO estimate valid (= frac_phase_valid)</td><td>Combinatorial from frac_phase_valid</td><td>—</td></tr>
+      <tr><td><code>dbg_frac_cfo_word[PHASE_WIDTH-1:0]</code></td><td>16</td><td>out</td><td>debug</td><td>Q1.15 frac CFO phase word; correction step = <span class="eq">+<i>frac_phase</i> · 2<sup>8</sup></span> inside u_frac_corr</td><td>Wire from u_frac_corr frac_phase</td><td>—</td></tr>
+      <tr><td><code>dbg_pss_start[BUF_AW-1:0]</code></td><td>12</td><td>out</td><td>debug</td><td>PSS window offset = CP_LEN = 32. Constant wire from u_ssc pss_fft_start.</td><td>Constant combinatorial</td><td>—</td></tr>
+      <tr><td><code>dbg_sss_start[BUF_AW-1:0]</code></td><td>12</td><td>out</td><td>debug</td><td>SSS window offset = 2*CP_LEN+NSC = 320. Constant wire from u_ssc sss_fft_start.</td><td>Constant combinatorial</td><td>—</td></tr>
+      <tr><td><code>dbg_integer_cfo_valid</code></td><td>1</td><td>out</td><td>debug</td><td>1-cycle pulse on meyr_done (registered int_cfo_valid_r); triggers wrapper NCO load</td><td>Registered; exactly 1 cycle wide</td><td>—</td></tr>
+      <tr><td><code>dbg_integer_cfo_word[NCO_PHASE_WIDTH-1:0]</code></td><td>32</td><td>out</td><td>debug</td><td>NCO step word = (-int_cfo_ext) &lt;&lt; INT_CFO_SHIFT; latched to int_cfo_step_word_r on meyr_done</td><td>Registered; stable from valid pulse onward until reset</td><td>—</td></tr>
+      <tr><td><code>dbg_frac_m_tdata[31:0]</code></td><td>32</td><td>out</td><td>debug</td><td>Frac-corrected IQ stream tap for wrapper replay buffer</td><td>Wire from u_frac_corr m_axis_tdata</td><td>With dbg_frac_m_tvalid</td></tr>
+      <tr><td><code>dbg_frac_m_tvalid/tready/tlast</code></td><td>1 each</td><td>out</td><td>debug</td><td>Frac-corrected stream handshake (passthrough for wrapper replay buffer)</td><td>Wire from frac corrector / extractor</td><td>—</td></tr>
+      <tr><td><code>dbg_meyr_peak_index[INDEX_WIDTH-1:0]</code></td><td>9</td><td>out</td><td>debug</td><td>Meyr FFT correlation peak index (0..255); from u_meyr_fft peak_index</td><td>Wire; stable after meyr_done</td><td>—</td></tr>
+    </tbody>
+  </table>
+
+  <!-- ===== SECTION 6: PARAMETERS / LOCALPARAMS ===== -->
+  <h2><span class="section-num">6</span> Parameters / Localparams</h2>
+  <table>
+    <thead><tr><th>Name</th><th>Default</th><th>Meaning</th><th>Where Used</th><th>Dependency</th></tr></thead>
+    <tbody>
+      <tr><td><code>NSC</code></td><td>256</td><td>FFT size / subcarrier count</td><td>u_frac_corr, u_ssc, u_extractor, u_meyr_fft (FFT_LEN)</td><td>Must be power-of-2; drives NSC_LOG2 and INT_CFO_SHIFT</td></tr>
+      <tr><td><code>CP_LEN</code></td><td>32</td><td>Cyclic prefix length in samples</td><td>u_frac_corr, u_ssc, u_extractor; drives PSS_OFFSET, SSS_OFFSET, FRAME_LEN</td><td>PSS_OFFSET=32, SSS_OFFSET=320, FRAME_LEN=576</td></tr>
+      <tr><td><code>BUF_AW</code></td><td>12</td><td>Frame buffer address width (<span class="eq">2<sup>12</sup> <span class="op">=</span> 4096</span> entries in iq_frame_buffer)</td><td>u_frac_corr; all dbg_frame/slot/peak index port widths</td><td>Must exceed FRAME_LEN=576</td></tr>
+      <tr><td><code>INDEX_WIDTH</code></td><td>9</td><td>Peak lag and peak index width (0..NSC-1)</td><td>u_frac_corr peak_lag, u_meyr_fft peak_index</td><td>&ge; $clog2(NSC)=8; one guard bit at 9</td></tr>
+      <tr><td><code>PHASE_WIDTH</code></td><td>16</td><td>Q1.15 frac CFO phase word width</td><td>u_frac_corr frac_phase; dbg_frac_cfo_word</td><td>Q1.15: 1 sign + 15 fraction; per-symbol phase [-1,+1) cycles</td></tr>
+      <tr><td><code>NCO_PHASE_WIDTH</code></td><td>32</td><td>NCO step word and accumulator width</td><td>int_cfo_step_word computation; dbg_integer_cfo_word port width</td><td>Fixed at 32; <span class="eq"><i>step</i> <span class="op">=</span> <i>value</i> · <span class="frac"><span><i>f</i><sub>clk</sub></span><span>2<sup>32</sup></span></span></span></td></tr>
+      <tr><td><code>CORDIC_LATENCY</code></td><td>15</td><td>CORDIC pipeline stages in frac NCO</td><td>Passed to u_frac_corr as LATENCY parameter</td><td>Determines NCO warmup count inside frac corrector</td></tr>
+      <tr><td><code>ENERGY_WIDTH</code></td><td>40</td><td>Frame detector energy accumulator width</td><td>u_frac_corr, threshold_in port</td><td>40b needed for NSC=256 energy accumulation without overflow</td></tr>
+      <tr><td><code>PSS_OFFSET</code></td><td>32 (localparam)</td><td>= CP_LEN; PSS symbol buffer offset from slot start</td><td>Constant passed via u_ssc to u_extractor pss_fft_start</td><td>Hardcoded 5G NR structure: slot_start + CP = PSS</td></tr>
+      <tr><td><code>SSS_OFFSET</code></td><td>320 (localparam)</td><td>= 2*CP_LEN+NSC = 320; SSS symbol offset from frame_index</td><td>Constant via u_ssc sss_fft_start</td><td>CP + PSS(256) + CP + SSS: offset is 32+256+32=320</td></tr>
+      <tr><td><code>FRAME_LEN</code></td><td>576 (localparam)</td><td>= 2*(NSC+CP_LEN); passed as OUTPUT_SAMPLES to u_frac_corr</td><td>u_frac_corr OUTPUT_SAMPLES override (default would be 288)</td><td>Both PSS and SSS symbols must be in corrected output stream</td></tr>
+      <tr><td><code>NSC_LOG2</code></td><td>8 (localparam)</td><td>= $clog2(NSC); used to compute INT_CFO_SHIFT</td><td>INT_CFO_SHIFT = 32 - NSC_LOG2 = 24</td><td>Valid only for NSC a power of 2</td></tr>
+      <tr><td><code>INT_CFO_SHIFT</code></td><td>24 (localparam)</td><td>= 32 - NSC_LOG2; scales int CFO bin to 32-bit NCO step word</td><td>int_cfo_step_word = (-int_cfo_ext) &lt;&lt; INT_CFO_SHIFT</td><td>Each bin = <span class="eq">2<sup>(32−log₂NSC)</sup></span> phase increments per sample</td></tr>
+    </tbody>
+  </table>
+
+  <!-- ===== SECTION 7: OPERATION ===== -->
+  <h2><span class="section-num">7</span> Operation</h2>
+  <div class="card">
+    <h3>Reset</h3>
+    <p>FSM uses <code>negedge aresetn</code> for asynchronous clear. On reset: state=S_IDLE, done/busy/error=0, error_code=0, frac/ext/meyr start regs=0, int_cfo_step_word_r=0, int_cfo_valid_r=0. All sub-modules receive the same aresetn signal.</p>
+
+    <h3>S_IDLE — Waiting for Start</h3>
+    <p>FSM waits with busy=0. On <code>start &amp;&amp; !busy</code>: set busy=1, pulse <code>frac_start_r=1</code>, <code>ext_start_r=1</code>, <code>meyr_start_r=1</code> all simultaneously in the same clock cycle, clear error/error_code. Transition to S_RUN.</p>
+    <p>The simultaneous start of all three sub-modules is a deliberate design choice. The extractor and Meyr modules enter their wait states immediately and block on data that only becomes available thousands of cycles later (when the frac corrector finishes). This avoids a sequential start-confirmation handshake without risking first-sample loss.</p>
+
+    <h3>S_RUN — Concurrent Algorithm Execution</h3>
+    <p>Sub-module execution ordering driven by data dependencies:</p>
+    <ol>
+      <li><strong>u_frac_corr</strong>: fills iq_frame_buffer (576 samples minimum), runs frame_detector (sliding window scan), runs CP autocorrelation (VanDeBeek), estimates frac CFO via CORDIC atan2, then streams FRAME_LEN=576 frac-corrected samples on frac_m_*. Total: thousands of clock cycles.</li>
+      <li><strong>u_ssc</strong>: triggers on u_frac_corr's frac_done. Computes <code>slot_start = frame_index + peak_lag</code> and provides constant PSS/SSS window offsets (pss_fft_start=CP_LEN=32, sss_fft_start=2*CP_LEN+NSC=320) as wires to u_extractor.</li>
+      <li><strong>u_extractor</strong>: started with ext_start_r; enters streaming mode and waits for frac_m_tvalid. Counts through 576 samples on the frac_m_* bus. Extracts PSS window (samples 32..287 = NSC samples) and SSS window (samples 320..575 = NSC samples) and emits them sequentially to u_meyr_fft (symbol_sel=0 then 1).</li>
+      <li><strong>u_meyr_fft</strong>: started with meyr_start_r; waits for PSS then SSS symbol data from u_extractor. Applies dual-symbol FFT256, cross-correlates <span class="eq">PSS_FFT · <span class="conj">SSS_FFT</span></span> against synthetic Meyr reference, finds cross-correlation peak position = integer CFO in bins. Asserts meyr_done when complete.</li>
+    </ol>
+
+    <h3>S_RUN Terminal Conditions</h3>
+    <ul>
+      <li><strong>frac_frame_error</strong> (priority): frame_detector did not find a valid frame (or INPUT_ACQ_TIMEOUT watchdog). FSM sets error=1, error_code=frac_error_code, transitions to S_DONE. int_cfo_step_word is NOT latched. Extractor and Meyr remain in partially-completed states; full reset required before next run.</li>
+      <li><strong>meyr_done</strong>: Meyr algorithm completed successfully. FSM latches <code>int_cfo_step_word_r = (-int_cfo_ext) &lt;&lt; INT_CFO_SHIFT</code>, asserts <code>int_cfo_valid_r=1</code> for 1 cycle, transitions to S_DONE.</li>
+    </ul>
+
+    <h3>Integer CFO Step Word Computation</h3>
+    <p><code>meyr_int_cfo</code> is a signed 16-bit integer: estimated frequency offset in FFT bin units. The NCO step word is computed combinatorially:</p>
+    <ul>
+      <li><code>int_cfo_ext = sign_extend_32(meyr_int_cfo)</code></li>
+      <li><code>int_cfo_step_word = (-int_cfo_ext) &lt;&lt; INT_CFO_SHIFT</code></li>
+    </ul>
+    <p>The negation cancels the measured offset (positive CFO = NCO rotates negatively). The left shift by 24 scales from bins to 32-bit phase-accumulator increment per sample: <span class="eq">1 bin <span class="op">=</span> <i>f</i><sub>samp</sub>/NSC Hz <span class="op">=</span> (1/NSC) · <i>f</i><sub>samp</sub></span>; NCO step for <span class="eq"><i>f</i></span> Hz <span class="eq"><span class="op">=</span> (<i>f</i>/<i>f</i><sub>samp</sub>) · 2<sup>32</sup></span>. Combining:</p>
+    <div class="eqd"><span class="eq"><i>step</i> <span class="op">=</span> (1/NSC) · 2<sup>32</sup> <span class="op">=</span> 2<sup>(32−log₂NSC)</sup> <span class="op">=</span> 2<sup>24</sup> &nbsp;per bin</span></div>
+
+    <h3>S_DONE — Completion</h3>
+    <p>Asserts done=1, clears busy=0, transitions unconditionally to S_IDLE in the same clock cycle. The <code>done</code> pulse is registered and exactly 1 cycle wide. The wrapper start-arm logic detects this to trigger NCO warmup and replay.</p>
+  </div>
+
+  <!-- ===== SECTION 8: TIMING DIAGRAM ===== -->
+  <h2><span class="section-num">8</span> Timing Diagram</h2>
+  <div class="card">
+    <p style="font-size:11px; color:#8b949e; margin-bottom:10px;">Compressed time axis. Long inter-event gaps noted with cycle counts.</p>
+    <table style="width:100%; border-collapse:collapse; font-size:11px;">
+      <colgroup><col style="width:180px;"><col></colgroup>
+      <tbody>
+        <tr>
+          <td style="color:var(--light); font-weight:bold; text-align:right; padding-right:10px;">start (1 cycle)</td>
+          <td><div style="display:flex; height:12px; align-items:center;">
+            <span class="wl" style="width:28px;"></span><span class="wh" style="width:12px;"></span><span class="wl" style="width:600px;"></span>
+          </div><span class="ann" style="margin-left:22px;">start pulse</span></td>
+        </tr>
+        <tr>
+          <td style="color:var(--light); font-weight:bold; text-align:right; padding-right:10px;">frac/ext/meyr_start_r</td>
+          <td><div style="display:flex; height:12px; align-items:center;">
+            <span class="wl" style="width:40px;"></span><span class="wh" style="width:12px;"></span><span class="wl" style="width:588px;"></span>
+          </div><span class="ann" style="margin-left:34px;">all 3 fire same cycle</span></td>
+        </tr>
+        <tr>
+          <td style="color:var(--light); font-weight:bold; text-align:right; padding-right:10px;">busy</td>
+          <td><div style="display:flex; height:12px; align-items:center;">
+            <span class="wl" style="width:40px;"></span><span class="wh" style="width:460px;"></span><span class="wl" style="width:140px;"></span>
+          </div><span class="ann" style="margin-left:34px;">busy for duration of algorithm</span></td>
+        </tr>
+        <tr>
+          <td style="color:var(--light); font-weight:bold; text-align:right; padding-right:10px;">frac_m_tvalid</td>
+          <td><div style="display:flex; height:12px; align-items:center;">
+            <span class="wl" style="width:130px;"></span><span class="wh" style="width:180px;"></span><span class="wl" style="width:330px;"></span>
+          </div><span class="ann" style="margin-left:120px;">~576 corr. samples at 1/2 clk</span></td>
+        </tr>
+        <tr>
+          <td style="color:var(--light); font-weight:bold; text-align:right; padding-right:10px;">frac_frac_phase_valid</td>
+          <td><div style="display:flex; height:12px; align-items:center;">
+            <span class="wl" style="width:130px;"></span><span class="wh" style="width:12px;"></span><span class="wl" style="width:498px;"></span>
+          </div><span class="ann" style="margin-left:120px;">frame_index + peak_lag valid</span></td>
+        </tr>
+        <tr>
+          <td style="color:var(--light); font-weight:bold; text-align:right; padding-right:10px;">ext output (PSS+SSS)</td>
+          <td><div style="display:flex; height:12px; align-items:center;">
+            <span class="wl" style="width:200px;"></span><span class="wh" style="width:120px;"></span><span class="wl" style="width:320px;"></span>
+          </div><span class="ann" style="margin-left:190px;">512 samples total (256+256)</span></td>
+        </tr>
+        <tr>
+          <td style="color:var(--light); font-weight:bold; text-align:right; padding-right:10px;">meyr_done</td>
+          <td><div style="display:flex; height:12px; align-items:center;">
+            <span class="wl" style="width:450px;"></span><span class="wh" style="width:12px;"></span><span class="wl" style="width:178px;"></span>
+          </div><span class="ann" style="margin-left:440px;">after FFT + xcorr</span></td>
+        </tr>
+        <tr>
+          <td style="color:var(--light); font-weight:bold; text-align:right; padding-right:10px;">dbg_integer_cfo_valid</td>
+          <td><div style="display:flex; height:12px; align-items:center;">
+            <span class="wl" style="width:462px;"></span><span class="wh" style="width:12px;"></span><span class="wl" style="width:166px;"></span>
+          </div><span class="ann" style="margin-left:452px;">1 cycle; step latched same edge</span></td>
+        </tr>
+        <tr>
+          <td style="color:var(--light); font-weight:bold; text-align:right; padding-right:10px;">done (S_DONE)</td>
+          <td><div style="display:flex; height:12px; align-items:center;">
+            <span class="wl" style="width:474px;"></span><span class="wh" style="width:12px;"></span><span class="wl" style="width:154px;"></span>
+          </div><span class="ann" style="margin-left:464px;">1-cycle done pulse</span></td>
+        </tr>
+        <tr>
+          <td style="color:var(--light); font-weight:bold; text-align:right; padding-right:10px;">state</td>
+          <td>
+            <div style="display:flex; height:12px; align-items:center;">
+              <span class="wx" style="width:40px;"></span>
+              <span class="wl" style="width:12px; border-left:1px solid var(--accent2);"></span>
+              <span class="wh" style="width:422px;"></span>
+              <span class="wx" style="width:12px;"></span>
+              <span class="wl" style="width:154px; border-left:1px solid var(--accent2);"></span>
+            </div>
+            <span class="ann">IDLE&nbsp;</span>
+            <span class="ann" style="margin-left:46px;">S_RUN (thousands of cycles)</span>
+            <span class="ann" style="margin-left:200px;">DONE IDLE</span>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- ===== SECTION 9: INTERNAL FSM ===== -->
+  <h2><span class="section-num">9</span> Internal FSM</h2>
+  <div class="card">
+    <p>3-state Moore FSM. State register <code>state[1:0]</code>. Uses <code>negedge aresetn</code> for asynchronous clear.</p>
+
+    <div class="fsm-row">
+      <div style="text-align:center;">
+        <div class="fsm-state">S_IDLE<br><span style="font-size:10px;">2'd0</span></div>
+        <div style="font-size:10px; color:#8b949e; margin-top:4px;">busy=0 done=0</div>
+      </div>
+      <div style="text-align:center;">
+        <div class="fsm-cond">start &amp;&amp; !busy</div>
+        <div style="color:var(--accent2); font-size:18px;">&#8594;</div>
+      </div>
+      <div style="text-align:center;">
+        <div class="fsm-state" style="background:#1a3510; border-color:#3fb950;">S_RUN<br><span style="font-size:10px;">2'd1</span></div>
+        <div style="font-size:10px; color:#8b949e; margin-top:4px;">busy=1</div>
+      </div>
+      <div style="text-align:center;">
+        <div class="fsm-cond">meyr_done<br>or frac_frame_error</div>
+        <div style="color:var(--accent2); font-size:18px;">&#8594;</div>
+      </div>
+      <div style="text-align:center;">
+        <div class="fsm-state" style="background:#CA6702; border-color:#e3b341;">S_DONE<br><span style="font-size:10px;">2'd2</span></div>
+        <div style="font-size:10px; color:#8b949e; margin-top:4px;">done=1 (1 cycle)</div>
+      </div>
+      <div style="text-align:center;">
+        <div class="fsm-cond">always</div>
+        <div style="color:var(--accent2); font-size:18px;">&#8594;</div>
+      </div>
+      <div style="text-align:center;">
+        <div class="fsm-state">S_IDLE<br><span style="font-size:10px;">2'd0</span></div>
+      </div>
+    </div>
+
+    <table style="margin-top:16px;">
+      <thead><tr><th>From</th><th>Condition</th><th>To</th><th>Registered Actions (same clock)</th></tr></thead>
+      <tbody>
+        <tr><td>S_IDLE</td><td>aresetn=0 (async negedge)</td><td>S_IDLE</td><td>All FSM outputs and registers cleared to 0</td></tr>
+        <tr><td>S_IDLE</td><td>start &amp;&amp; !busy</td><td>S_RUN</td><td>busy=1; frac_start_r=1; ext_start_r=1; meyr_start_r=1; error=0; error_code=0</td></tr>
+        <tr><td>S_RUN</td><td>frac_frame_error (priority check first)</td><td>S_DONE</td><td>error=1; error_code=frac_error_code[3:0]</td></tr>
+        <tr><td>S_RUN</td><td>meyr_done (and !frac_frame_error)</td><td>S_DONE</td><td>int_cfo_step_word_r = int_cfo_step_word; int_cfo_valid_r=1</td></tr>
+        <tr><td>S_DONE</td><td>always (unconditional)</td><td>S_IDLE</td><td>done=1; busy=0 (cleared in same clock as transition)</td></tr>
+        <tr><td>default</td><td>any</td><td>S_IDLE</td><td>Safety fallback (for synthesis completeness)</td></tr>
+      </tbody>
+    </table>
+    <div class="note">The FSM always block also continuously clears one-cycle pulse registers: <code>done&lt;=0; frac_start_r&lt;=0; ext_start_r&lt;=0; meyr_start_r&lt;=0; int_cfo_valid_r&lt;=0</code> at the top of the begin/end block (default assigns). Specific states then set them as needed. This ensures all 1-cycle pulses are exactly 1 cycle wide regardless of state duration.</div>
+  </div>
+
+  <!-- ===== SECTION 10: ALGORITHM MAPPING ===== -->
+  <h2><span class="section-num">10</span> Algorithm Mapping</h2>
+  <div class="card">
+    <p>This module directly maps to the C reference function <code>synchronization()</code> (<code>ref/receiver.c:261</code>). The FSM sub-instance start/done sequence follows the <code>synchronization()</code> main call flow one-for-one; each row below cites the backing C function and its line number.</p>
+    <table>
+      <thead><tr><th>C Reference Step</th><th>C Reference (function @ file:line)</th><th>Formula</th><th>RTL Sub-module</th><th>Start Trigger</th><th>Done Signal</th></tr></thead>
+      <tbody>
+        <tr><td>1: Frame detection</td><td><code>frame_detector()</code> @ receiver.c:327 (called :271)</td><td><span class="eq"><i>E</i><sub>j</sub> <span class="op">=</span> <span class="frac"><span>1</span><span><i>W</i></span></span> <span class="op">∑</span><sub>i=0</sub><sup>W−1</sup> (<i>I</i><sup>2</sup><sub>i+j</sub> + <i>Q</i><sup>2</sup><sub>i+j</sub>) <span class="op">≥</span> <i>thr</i></span></td><td>u_frac_corr internal frame_detector</td><td>frac_start_r (via buf_capture_start)</td><td>fd_done inside u_frac_corr</td></tr>
+        <tr><td>2: CP autocorrelation</td><td><code>VanDeBeekAutoCorrelation()</code> @ receiver.c:556 (called :286); uses <code>auto_corr()</code> @ :571 + <code>find_max_index()</code> @ :585</td><td><span class="eq"><i>P</i><sub>m</sub> <span class="op">=</span> <span class="op">∑</span><sub>i=0</sub><sup>CP−1</sup> <i>r</i><sub>i+m</sub> · <span class="conj"><i>r</i><sub>i+m+NSC</sub></span></span></td><td>u_frac_corr internal frame_frac_cfo_top</td><td>After fd_done inside u_frac_corr</td><td>tfc_done inside u_frac_corr</td></tr>
+        <tr><td>3: Slot start index</td><td>inline in <code>synchronization()</code> @ receiver.c:291</td><td><span class="eq"><i>slot_start</i> <span class="op">=</span> <i>peak_lag</i> + <i>frame_index</i></span></td><td>u_ssc (slot_start_controller)</td><td>frac_done (u_frac_corr output)</td><td>ssc_slot_valid</td></tr>
+        <tr><td>4a: Frac CFO estimate</td><td>inline in <code>synchronization()</code> @ receiver.c:296 (C: <span class="eq">/2π</span>; RTL: Q1.15 <span class="eq">·2<sup>15</sup></span>)</td><td><span class="eq"><i>frac_phase</i> <span class="op">=</span> <span class="op">−</span>atan2(<i>P</i><sub>Q</sub>,&nbsp;<i>P</i><sub>I</sub>)/π · 2<sup>15</sup></span></td><td>u_frac_corr internal CORDIC</td><td>After CP autocorr</td><td>frac_frac_phase_valid</td></tr>
+        <tr><td>4b: Frac CFO correction</td><td><code>apply_carrier_freq_offset()</code> @ receiver.c:443 (called :298)</td><td><span class="eq"><i>corr</i>[n] <span class="op">=</span> <i>raw</i>[slot+n] · e<sup>&nbsp;−j2π·<i>frac_phase</i>·n/NSC</sup></span></td><td>u_frac_corr internal frac_cfo_corrector_top</td><td>NCO step = <span class="eq">+<i>frac_phase</i> · 2<sup>8</sup></span></td><td>frac_m_tvalid stream (576 beats)</td></tr>
+        <tr><td>5a: PSS/SSS windowing</td><td>inline in <code>carrierFreqOffsetEstMeyr()</code> @ receiver.c:516 (PSS: <span class="eq">+CP</span>), :519 (SSS: <span class="eq">+2·CP+NSC</span>)</td><td><span class="eq">PSS_OFFSET <span class="op">=</span> 32,&nbsp; SSS_OFFSET <span class="op">=</span> 320</span></td><td>u_extractor (pss_sss_symbol_extractor)</td><td>ext_start_r (simultaneous)</td><td>ext_m_tlast on last SSS sample</td></tr>
+        <tr><td>5b: Integer CFO estimate</td><td><code>carrierFreqOffsetEstMeyr()</code> @ receiver.c:498 (called :304); uses <code>fft_correlation_Meyr()</code> @ :458 + <code>find_peak_index()</code> @ :543</td><td><span class="eq"><i>int_cfo</i> <span class="op">=</span> <i>peak_idx</i> <span class="op">−</span> (NSC<span class="op">−</span>1)</span></td><td>u_meyr_fft</td><td>meyr_start_r (simultaneous)</td><td>meyr_done</td></tr>
+        <tr><td>5c: Int CFO NCO step</td><td>C applies via <code>apply_carrier_freq_offset()</code> @ receiver.c:443 (called :307)</td><td><span class="eq"><i>step</i> <span class="op">=</span> <span class="op">−</span><i>int_cfo</i> · 2<sup>(32−log₂NSC)</sup> <span class="op">=</span> <span class="op">−</span><i>int_cfo</i> · 2<sup>24</sup></span></td><td>FSM combinatorial (phase3_sync_top)</td><td>meyr_done</td><td>dbg_integer_cfo_valid (int_cfo_valid_r)</td></tr>
+      </tbody>
+    </table>
+    <div class="note">OUTPUT_SAMPLES = FRAME_LEN = 576 is passed to u_frac_corr (overriding the default NSC+CP_LEN=288). This is required because the PSS symbol at offset 32 and SSS symbol at offset 320 both need to be present in the corrected output stream for the extractor to function. The default 288-sample output would only cover the first OFDM symbol, missing the SSS completely.</div>
+  </div>
+
+  <!-- ===== SECTION 11: LATENCY ANALYSIS ===== -->
+  <h2><span class="section-num">11</span> Latency Analysis</h2>
+  <table>
+    <thead><tr><th>Path / Operation</th><th>Latency (cycles)</th><th>Measurement</th><th>Notes</th></tr></thead>
+    <tbody>
+      <tr><td>start → iq_frame_buffer fill complete</td><td>&ge;576 (at 1 smp/clk input)</td><td>iq_frame_buffer capture count</td><td>Min at full-rate input; longer if input has gaps</td></tr>
+      <tr><td>Buffer fill → frame_detector done</td><td>~1,000–4,096</td><td>frame_detector sliding window scan</td><td>BUF_AW=12 → up to 4096 search positions</td></tr>
+      <tr><td>frame_detector done → CORDIC atan2 valid</td><td>~300–600</td><td>CP autocorr scan (NSC lags) + CORDIC pipeline</td><td>LATENCY=15 CORDIC stages</td></tr>
+      <tr><td>CORDIC done → frac_m_tvalid first sample</td><td>NCO_WAIT+1 ≈ 17</td><td>S_LOAD_NCO counter (LATENCY+2 = 17)</td><td>NCO warmup inside frac_cfo_frame_corrector_top</td></tr>
+      <tr><td>frac_m_tvalid first → frac_m_tlast</td><td>576 × 2 ≈ 1,152</td><td>TOTAL_SAMPLES=576 at 0.5 smp/clk</td><td>BRAM pipeline limits to 1 sample per 2 clocks in S_CORRECT</td></tr>
+      <tr><td>PSS+SSS extraction through frac stream</td><td>Contained in frac stream latency</td><td>256 PSS (at offset 32) + 256 SSS (at offset 320)</td><td>Extractor counts sample positions; SSS last sample at position 575</td></tr>
+      <tr><td>Meyr FFT + cross-correlation → meyr_done</td><td>~500–1,000</td><td>2&times;FFT256 + 256-point xcorr + peak search</td><td>Behavioral stub: near-instant; real Xilinx IP: ~200–400 clk pipeline</td></tr>
+      <tr><td>Total: start → dbg_integer_cfo_valid</td><td>~3,000–8,000 typical</td><td>End-to-end P3-15D measurement over 100 frames</td><td>Dominated by frame detection scan and frac stream playback</td></tr>
+    </tbody>
+  </table>
+
+  <!-- ===== SECTION 12: THROUGHPUT ANALYSIS ===== -->
+  <h2><span class="section-num">12</span> Throughput Analysis</h2>
+  <table>
+    <thead><tr><th>Mode</th><th>Samples/Clock</th><th>Throughput</th><th>Bottleneck</th><th>Backpressure Impact</th></tr></thead>
+    <tbody>
+      <tr><td>s_axis input (raw IQ ingestion)</td><td>1</td><td>1 sample/cycle when tready=1</td><td>iq_frame_buffer write (s_axis_tready deasserts when full)</td><td>DMA stalls on tready=0; no sample loss</td></tr>
+      <tr><td>Frac-corrected output (frac_m_*)</td><td>0.5</td><td>1 sample per 2 clocks</td><td>BRAM read pipeline in S_CORRECT state (can_issue gating)</td><td>frac_m_tready from u_extractor; hold register absorbs 1 cycle stall</td></tr>
+      <tr><td>PSS extraction (to Meyr)</td><td>0.5 (windowed)</td><td>256 PSS samples at 1/2 clk peak rate</td><td>frac stream throughput</td><td>ext_m_tready backpressure from u_meyr_fft stalls extractor and frac stream</td></tr>
+      <tr><td>SSS extraction (to Meyr)</td><td>0.5 (windowed)</td><td>256 SSS samples at 1/2 clk peak rate</td><td>Same as PSS</td><td>Same</td></tr>
+      <tr><td>Meyr FFT processing</td><td>Burst</td><td>512 samples processed per synchronization run</td><td>Real Xilinx FFT IP pipeline depth</td><td>s_ready backpressure from u_meyr_fft stalls ext output</td></tr>
+    </tbody>
+  </table>
+
+  <!-- ===== SECTION 13: RESOURCE IMPACT ===== -->
+  <h2><span class="section-num">13</span> Resource Impact</h2>
+  <div class="note">REQUIRES_CONFIRMATION: Synthesis not run. Estimates are architectural assessments based on sub-module analysis.</div>
+  <table>
+    <thead><tr><th>Resource</th><th>Estimate</th><th>Dominant Source</th><th>Optimization Notes</th></tr></thead>
+    <tbody>
+      <tr><td>LUTs</td><td>~2,500–4,500</td><td>u_meyr_fft (FFT twiddle + correlator logic); u_frac_corr (CORDIC stages, frame detector)</td><td>Xilinx FFT IP replaces LUT FFT in XIP-004 flow, typically saving 30–50% of FFT LUTs</td></tr>
+      <tr><td>FFs</td><td>~1,500–3,000</td><td>CORDIC pipeline regs (15 stages &times; PHASE_WIDTH=16b each component); FSM and result latches</td><td>int_cfo_step_word_r adds 32 FFs; all result debug outputs add ~100 FFs total</td></tr>
+      <tr><td>BRAM (18K)</td><td>~4–6</td><td>iq_frame_buffer (BUF_AW=12 → 4K&times;32b = 4&times;BRAM18K); dual-symbol buffer in u_meyr_fft (2&times;256&times;32b)</td><td>BUF_AW=10 would save 3 BRAMs; dual-symbol buffer may be absorbed into single BRAM18K</td></tr>
+      <tr><td>DSP48</td><td>~6–12</td><td>frac_cfo_corrector_top complex_rotator (4 multipliers for I,Q rotation); Meyr accumulator (56-bit ACC_WIDTH)</td><td>56-bit accumulator likely uses 2 DSP48 in cascaded mode</td></tr>
+      <tr><td>Xilinx IP</td><td>XFft core (XIP-004 flow only)</td><td>u_meyr_fft → fft256_dual_symbol_frontend</td><td>Behavioral stub used in iverilog gates; real IP only needed for xsim / FPGA</td></tr>
+    </tbody>
+  </table>
+
+  <!-- ===== SECTION 14: RTL SIMULATION COVERAGE ===== -->
+  <h2><span class="section-num">14</span> RTL Simulation Coverage</h2>
+  <table>
+    <thead><tr><th>Gate ID</th><th>Simulator</th><th>IP Type</th><th>Cases</th><th>Status</th><th>Report Path</th><th>Notes</th></tr></thead>
+    <tbody>
+      <tr><td>P3-15A</td><td>iverilog</td><td>Behavioral stub</td><td>1 frame</td><td><span class="badge-pending">Not Verified</span></td><td>docs/session_C_p3_15a_phase3_sync_top.md</td><td>First full synchronization() RTL integration; dbg outputs vs C reference</td></tr>
+      <tr><td>P3-15C</td><td>iverilog</td><td>Behavioral stub</td><td>5/5</td><td><span class="badge-pending">Not Verified</span></td><td>docs/session_C2_p3_15c_multi_frame.md</td><td>Sequential frames; re-arm and restart; FSM state recycling verified</td></tr>
+      <tr><td>P3-15D</td><td>iverilog</td><td>Behavioral stub</td><td>100/100</td><td><span class="badge-pending">Not Verified</span></td><td>docs/session_C3_p3_15d_100frame.md</td><td>100 random frames; int_cfo_est accuracy; ISSUE-002 (TB race) first caught here</td></tr>
+      <tr><td>P3-16A</td><td>iverilog</td><td>Behavioral stub</td><td>8/8</td><td><span class="badge-pending">Not Verified</span></td><td>docs/session_E_p3_16a_full_end_to_end_phase3.md</td><td>With wrapper; start pulse routing, done/error propagation to AXI-Lite regs</td></tr>
+      <tr><td>XIP-004</td><td>Vivado xsim</td><td>Real Xilinx FFT IP</td><td>9/9</td><td><span class="badge-pending">Not Verified</span></td><td>docs/session_G_p3_18a_final_closure_summary.md</td><td>k_int = -4 to +4; int_cfo_step_word matches C reference for all cases</td></tr>
+    </tbody>
+  </table>
+
+  <!-- ===== SECTION 15: KNOWN ISSUES / LESSONS LEARNED ===== -->
+  <h2><span class="section-num">15</span> Known Issues / Lessons Learned</h2>
+  <div class="ok">ISSUE-001 RESOLVED (P3-16A): complex_mult_iq.v backpressure bug fixed. This module is affected indirectly through u_frac_corr (frac_cfo_corrector_top uses complex_mult_iq). The stalled frac_m_tvalid stream would have caused the extractor to wait indefinitely. Fix: <code>can_accept = !m_axis_tvalid || m_axis_tready</code>.</div>
+  <div class="ok">ISSUE-002 RESOLVED (P3-15D gate): 100-frame statistical test primary detection. TB AXI-S race: stimulus applied at same delta as posedge aclk, causing spurious starts. Fix: <code>#1</code> delay in TB after @(posedge aclk). The 100-frame gate was critical for detecting this intermittent failure.</div>
+  <div class="note">Concurrent start rationale: All three start pulses fire simultaneously. This is intentional. Sequential start (start frac, wait for frac_done, start extractor) would require additional FSM states and add dead cycles. The AXI-S interface guarantees no sample loss because ext and meyr wait for data that only arrives after thousands of cycles of frac corrector processing.</div>
+  <div class="note">Sign convention for int_cfo_step_word: The negation is critical. Verified exhaustively across k_int = -4, -3, -2, -1, 0, +1, +2, +3, +4 in XIP-004. A sign error would cause the integer correction to double the offset instead of canceling it — the symptom would be that output IQ after integer correction has a 2k CFO instead of 0.</div>
+
+  <!-- ===== SECTION 16: FPGA BRING-UP GUIDE ===== -->
+  <h2><span class="section-num">16</span> FPGA Bring-Up Guide</h2>
+  <div class="card">
+    <h3>ILA Probe List</h3>
+    <table>
+      <thead><tr><th>Signal</th><th>Width</th><th>Purpose</th></tr></thead>
+      <tbody>
+        <tr><td><code>state[1:0]</code></td><td>2</td><td>FSM monitoring; trigger on 0→1 (start) or 1→2 (algorithm complete)</td></tr>
+        <tr><td><code>frac_start_r, ext_start_r, meyr_start_r</code></td><td>1 each</td><td>Confirm simultaneous start; all three must be 1 in same ILA sample</td></tr>
+        <tr><td><code>frac_m_tvalid, frac_m_tready, frac_m_tlast</code></td><td>1 each</td><td>Frac-corrected stream; count valid beats and verify 576 total</td></tr>
+        <tr><td><code>frac_frac_phase_valid</code></td><td>1</td><td>Trigger: captures frame_index and frac_phase simultaneously</td></tr>
+        <tr><td><code>frac_frame_index[11:0]</code></td><td>12</td><td>Cross-check against C reference frame_detector() output</td></tr>
+        <tr><td><code>frac_peak_lag[8:0]</code></td><td>9</td><td>VanDeBeek peak; cross-check against C reference</td></tr>
+        <tr><td><code>frac_frac_phase[15:0]</code></td><td>16</td><td>Q1.15 frac CFO; compare to C reference atan2 result</td></tr>
+        <tr><td><code>meyr_done</code></td><td>1</td><td>Algorithm completion; measure total latency from start</td></tr>
+        <tr><td><code>meyr_int_cfo[15:0]</code></td><td>16</td><td>Raw Meyr output in bins; verify sign and magnitude</td></tr>
+        <tr><td><code>int_cfo_step_word_r[31:0]</code></td><td>32</td><td>Latched NCO word; compare to C reference: -k_int &lt;&lt; 24</td></tr>
+        <tr><td><code>int_cfo_valid_r</code></td><td>1</td><td>Exactly 1-cycle trigger</td></tr>
+      </tbody>
+    </table>
+
+    <h3>Expected Signals at Each Debug Point</h3>
+    <ul>
+      <li>At <code>frac_frac_phase_valid=1</code>: frame_index should be a valid buffer offset (0..4095); frac_phase should be a small Q1.15 value (|frac_phase| &lt; 0x0100 for low-CFO signals).</li>
+      <li>At <code>meyr_done=1</code>: meyr_int_cfo should equal k_int (known injected offset in bins); int_cfo_step_word_r should equal <code>(-k_int) &lt;&lt; 24</code>.</li>
+      <li>done pulse: should appear 1 cycle after int_cfo_valid_r; busy should deassert in the same cycle as done.</li>
+    </ul>
+
+    <h3>Reset Sequence</h3>
+    <ol>
+      <li>Apply aresetn=0 (&ge;8 cycles); verify ILA shows state=S_IDLE, busy=0, error=0.</li>
+      <li>Release aresetn=1; wrapper will deliver start pulse after enable is set.</li>
+      <li>Confirm all three start registers (frac/ext/meyr_start_r) pulse simultaneously.</li>
+      <li>Monitor frac_m_tvalid: expect first valid approximately 1,500–3,000 cycles after start_r.</li>
+      <li>After frac_frac_phase_valid: read via AXI-Lite registers 0x1C (frame_index), 0x20 (peak_lag), 0x2C (frac_phase). Compare to C reference.</li>
+      <li>After meyr_done: read 0x3C (INT_CFO_EST) via AXI-Lite. Compare to expected NCO step word.</li>
+    </ol>
+
+    <h3>Hardware Risks</h3>
+    <ul>
+      <li>CORDIC timing: 15-stage pipeline can be a critical path; verify positive timing slack on all CORDIC chain registers.</li>
+      <li>Xilinx FFT IP: must configure forward transform, correct scaling schedule, and s_axis_config handshake before data input. Incorrect IP configuration will produce wrong frequency-domain output and wrong meyr_int_cfo.</li>
+      <li>Error recovery: after frac_frame_error, sub-modules are in partial state. Always issue soft_reset before retrying after an error indication.</li>
+    </ul>
+  </div>
+
+  <!-- ===== SECTION 17: DEBUG CHECKLIST ===== -->
+  <h2><span class="section-num">17</span> Debug Checklist</h2>
+  <ol>
+    <li>Verify state=S_IDLE, busy=0, done=0, error=0 after reset.</li>
+    <li>Confirm start pulse is exactly 1 cycle from wrapper; not asserted while busy=1.</li>
+    <li>Verify frac_start_r, ext_start_r, meyr_start_r all asserted in the same ILA sample.</li>
+    <li>Confirm s_axis_tready reflects frac corrector internal state; no samples lost at input.</li>
+    <li>Count frac_m_tvalid beats: must equal 576 (FRAME_LEN) before frac_m_tlast.</li>
+    <li>Verify frac_frac_phase_valid is exactly 1 cycle wide; read frame_index and frac_phase values.</li>
+    <li>Compare frame_index, peak_lag, frac_phase to C reference <code>synchronization()</code> output for same input frame.</li>
+    <li>Test error path: inject all-zero frame; confirm error=1 after done; verify soft_reset required to restart.</li>
+    <li>Verify meyr_done is exactly 1 cycle; confirm int_cfo_valid_r fires 1 cycle after meyr_done (registered).</li>
+    <li>Cross-check int_cfo_step_word_r = (-k_int) &lt;&lt; 24 for all 9 k_int test cases.</li>
+    <li>Verify done is exactly 1 cycle; busy deasserts same cycle as done asserts.</li>
+    <li>Run XIP-004 gate (Vivado xsim) before FPGA programming to confirm real FFT IP integration is correct.</li>
+  </ol>
+
+  <!-- ===== SECTION 18: REVIEW NOTES ===== -->
+  <h2><span class="section-num">18</span> Review Notes</h2>
+  <div class="card">
+    <h3>Non-Obvious Design Decisions</h3>
+    <ul>
+      <li><strong>OUTPUT_SAMPLES = FRAME_LEN = 576 override</strong>: The default of <code>frac_cfo_frame_corrector_top</code> is NSC+CP_LEN=288. This module overrides it to 576 (two full OFDM symbols) so both PSS at offset 32 and SSS at offset 320 are in the output stream. Without this, the extractor would never see the SSS symbol. The parameter comment in the RTL says "both PSS and SSS symbols are included in the corrected output stream" for this exact reason.</li>
+      <li><strong>Simultaneous start design</strong>: All three starts fire in the same cycle. The extractor and Meyr modules enter wait states immediately. This avoids complex start-confirmation FSM states and dead cycles. The correctness guarantee is the AXI-S data dependency: extractor cannot consume samples until frac corrector produces them (thousands of cycles later).</li>
+      <li><strong>int_cfo_step_word = (-int_cfo_ext) &lt;&lt; 24</strong>: The formula encodes the complete integer CFO to NCO step conversion. Each FFT bin corresponds to <span class="eq">1/NSC</span> of the sample rate. The 32-bit NCO step for 1 bin = <span class="eq">2<sup>32</sup>/NSC <span class="op">=</span> 2<sup>24</sup></span>. Negation is required because the NCO must counter-rotate to cancel the measured offset.</li>
+      <li><strong>frac_frame_error priority over meyr_done</strong>: In the S_RUN case, frac_frame_error is checked first in the if/else chain. If the frame detector fails, the Meyr algorithm (which may complete later) is irrelevant and its result is discarded. This ordering prevents a race where both conditions are simultaneously true.</li>
+      <li><strong>negedge aresetn in FSM</strong>: Using negedge in simulation ensures asynchronous clear behavior matches synthesis intent. Some simulation tools have delta-cycle issues with posedge-triggered synchronous reset where the reset deasserts and a data transition occurs in the same simulation step.</li>
+    </ul>
+    <h3>Open Items for Future Engineers</h3>
+    <ul>
+      <li>busy outputs from u_frac_corr, u_extractor, u_meyr_fft are all unconnected (<code>()</code>). Consider routing these to additional debug outputs to allow finer pipeline stage monitoring on FPGA.</li>
+      <li>Error recovery: no partial reset mechanism. Consider adding per-sub-module start/reset capability to avoid requiring full aresetn toggle for error recovery.</li>
+      <li>The frac_frame_error + meyr_done simultaneous assertion edge case is handled by priority but never explicitly tested. Consider adding a test case for this scenario.</li>
+    </ul>
+  </div>
+
+</div>
+</body>
+</html>

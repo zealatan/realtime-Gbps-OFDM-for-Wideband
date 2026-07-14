@@ -1,0 +1,6 @@
+mod_sel=3
+mod_name=256qam
+bits_per_axis=4
+bits_per_sym=8
+data_bits_per_frame=21216
+scale=0.07669649888473704

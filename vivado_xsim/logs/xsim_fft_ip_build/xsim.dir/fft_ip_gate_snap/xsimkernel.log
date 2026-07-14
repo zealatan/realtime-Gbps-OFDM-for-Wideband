@@ -1,7 +1,0 @@
-Running: xsim.dir/fft_ip_gate_snap/xsimk -runall -simmode gui -wdb fft_ip_gate_snap.wdb -simrunnum 0 -socket 47471
-Design successfully loaded
-Design Loading Memory Usage: 41584 KB (Peak: 41584 KB)
-Design Loading CPU Usage: 100 ms
-Simulation completed
-Simulation Memory Usage: 132224 KB (Peak: 180852 KB)
-Simulation CPU Usage: 5310 ms

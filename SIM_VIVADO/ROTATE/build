@@ -1,0 +1,15 @@
+source /home/zealatan/Downloads/Vivado/2022.2/settings64.sh
+export PATH=/home/zealatan/Downloads/Vivado/2022.2/bin:$PATH
+
+
+rm -rf xsim.dir *.log *.jou *.pb *.wdb
+
+
+xvlog \
+  -f ./design_list.f \
+  -f ./testbench_list.f \
+
+
+xelab tb_phase_rotator_9b -debug all -s tb_phase_rotator_9b
+
+xsim tb_phase_rotator_9b -runall &

@@ -1,0 +1,4 @@
+INFO: [VRFC 10-2263] Analyzing Verilog file "/home/zealatan/FPGA_Based_OFDM_Transceiver/SIM_VIVADO/ROTATE/phase_rotator_9b.v" into library work
+INFO: [VRFC 10-311] analyzing module phase_rotator_9b
+INFO: [VRFC 10-2263] Analyzing Verilog file "/home/zealatan/FPGA_Based_OFDM_Transceiver/SIM_VIVADO/ROTATE/tb_phase_rotator_9b.v" into library work
+INFO: [VRFC 10-311] analyzing module tb_phase_rotator_9b

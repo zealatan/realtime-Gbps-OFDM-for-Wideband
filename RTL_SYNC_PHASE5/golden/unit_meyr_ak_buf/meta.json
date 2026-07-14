@@ -1,0 +1,8 @@
+{
+  "module": "meyr_ak_buf",
+  "N": 16,
+  "MAX_N": 4096,
+  "stim_cycles": 38,
+  "strobed_beats": 16,
+  "note": "outputs a_i/a_q=pss_stored, b_i/b_q=conj(sss_delayed); mult_strobe high for N beats during SSS phase"
+}

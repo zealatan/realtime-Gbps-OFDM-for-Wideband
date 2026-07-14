@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="ASCII"?>
+<sdkproject:SdkProject xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:sdkproject="http://www.xilinx.com/sdkproject" name="rfdc_capture" location="/home/dsp-mikro7/FPGA_Based_OFDM_Transceiver/software/generated/rfdc_capture_ws/rfdc_capture" platform="/home/dsp-mikro7/FPGA_Based_OFDM_Transceiver/software/generated/rfdc_capture_ws/zcu216_rfdc_capture/export/zcu216_rfdc_capture/zcu216_rfdc_capture.xpfm" platformUID="xilinx:zcu216::0.0(custom)" systemProject="rfdc_capture_system" sysConfig="zcu216_rfdc_capture" runtime="C/C++" cpu="standalone_domain" cpuInstance="psu_cortexa53_0" os="standalone" mssSignature="95e181684865050eb0cd9d3962ab75a1">
+  <configuration name="Debug" id="xilinx.gnu.arm.a53.exe.debug.87050781" dirty="true">
+    <configBuildOptions xsi:type="sdkproject:SdkOptions"/>
+    <lastBuildOptions xsi:type="sdkproject:SdkOptions"/>
+  </configuration>
+  <configuration name="Release" id="xilinx.gnu.arm.a53.exe.release.1986539509" dirty="true">
+    <configBuildOptions xsi:type="sdkproject:SdkOptions"/>
+  </configuration>
+  <template appTemplateName="empty_application"/>
+</sdkproject:SdkProject>

@@ -1,0 +1,93 @@
+# Program the 08_rfdc_capture PL image, run the baremetal capture ELF, then
+# dump the DDR sample buffer over JTAG for offline FFT. Watch UART0
+# (/dev/serial/by-id/usb-Xilinx_ZCU216_*-if01-port0) at 115200 for the
+# on-target Goertzel: DAC_OFF baseline vs DAC_ON.
+#
+# Run with: scripts/xsct_2021_compat.sh scripts/run_rfdc_capture.xsct <label>
+#   label e.g. "connected" or "removed" so dumps are per-condition.
+
+set repo_root [file normalize [file join [file dirname [info script]] ..]]
+set label "run"
+if {[info exists argv] && [llength $argv] >= 1} {
+    set label [lindex $argv 0]
+}
+set hw_dir   [file join $repo_root hardware generated 08_rfdc_capture]
+set ws       [file join $repo_root software generated rfdc_capture_ws]
+set bit      [file join $hw_dir zcu216_rfdc_capture.runs impl_1 system_wrapper.bit]
+set psu_init [file join $ws zcu216_rfdc_capture hw psu_init.tcl]
+set elf      [file join $ws rfdc_capture Debug rfdc_capture.elf]
+set tests_dir [file join $repo_root tests 08_rfdc_capture]
+file mkdir $tests_dir
+set dump [file join $tests_dir capture_$label.bin]
+
+# aarch64 nm differs per machine; resolve the capture_buf address from the ELF.
+set nm ""
+foreach nm_glob [list \
+    $env(HOME)/xilinx/Vitis/Vitis/*/gnu/aarch64/lin/aarch64-none/bin/aarch64-none-elf-nm \
+    /tools/Xilinx/Vitis/*/gnu/aarch64/lin/aarch64-none/bin/aarch64-none-elf-nm \
+    /tool/Xilinx/Vitis/*/gnu/aarch64/lin/aarch64-none/bin/aarch64-none-elf-nm \
+    /opt/Xilinx/Vitis/*/gnu/aarch64/lin/aarch64-none/bin/aarch64-none-elf-nm] {
+    foreach c [lsort -decreasing [glob -nocomplain $nm_glob]] {
+        if {[file exists $c]} { set nm $c; break }
+    }
+    if {$nm ne ""} { break }
+}
+
+foreach f [list $bit $psu_init $elf] {
+    if {![file exists $f]} {
+        error "Missing prerequisite: $f"
+    }
+}
+
+connect
+targets -set -nocase -filter {name =~ "*PSU*"}
+rst -system
+after 1000
+
+source $psu_init
+psu_init
+after 500
+fpga -file $bit
+after 500
+psu_ps_pl_isolation_removal
+psu_ps_pl_reset_config
+after 500
+
+targets -set -nocase -filter {name =~ "*A53*#0"}
+rst -processor -clear-registers
+dow $elf
+con
+
+puts "ZCU216_CAPTURE_APP: running; inspect UART0 for DAC_OFF/DAC_ON Goertzel"
+
+set addr 0
+set addr_off 0
+if {$nm ne ""} {
+    catch {
+        foreach line [split [exec $nm $elf] "\n"] {
+            set sym [lindex $line 2]
+            if {$sym eq "capture_buf"} {
+                set addr 0x[lindex $line 0]
+            } elseif {$sym eq "capture_buf_off"} {
+                set addr_off 0x[lindex $line 0]
+            }
+        }
+    }
+}
+
+# Allow CLK104 setup, both capture windows, and on-target readback to finish.
+after 12000
+
+set dump_off [file join $tests_dir capture_${label}_off.bin]
+if {$addr ne 0} {
+    targets -set -nocase -filter {name =~ "*A53*#0"}
+    mrd -force -bin -file $dump $addr 8192
+    puts "ZCU216_CAPTURE_APP: DAC_ON buffer dumped addr=$addr file=$dump"
+    if {$addr_off ne 0} {
+        mrd -force -bin -file $dump_off $addr_off 8192
+        puts "ZCU216_CAPTURE_APP: DAC_OFF buffer dumped addr=$addr_off file=$dump_off"
+    }
+    puts "ZCU216_CAPTURE_APP: offline FFT -> python3 scripts/fft_capture_ddc.py $dump --ref $dump_off"
+} else {
+    puts "ZCU216_CAPTURE_APP: WARN could not resolve capture_buf; skipped dump"
+}

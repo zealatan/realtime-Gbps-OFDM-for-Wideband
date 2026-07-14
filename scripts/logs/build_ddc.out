@@ -1,0 +1,397 @@
+
+****** Vivado v2021.1_AR76780 (64-bit)
+  **** SW Build 3247384 on Thu Jun 10 19:36:07 MDT 2021
+  **** IP Build 3246043 on Fri Jun 11 00:30:35 MDT 2021
+    ** Copyright 1986-2021 Xilinx, Inc. All Rights Reserved.
+
+source scripts/build_08_ofdm.tcl
+# set REPO        /home/dsp-mikro7/FPGA_Based_OFDM_Transceiver
+# set XPR         $REPO/hardware/generated/08_rfdc_capture/zcu216_rfdc_capture.xpr
+# set HEX_SRC     $REPO/RTL_SYNC_PHASE5/golden/rf_loopback/ofdm_dac_fckp0.hex
+# set RTL_DIR     $REPO/hardware/rtl
+# set RTL_V       $RTL_DIR/zcu216_dac_tone_axis.v
+# set HEX_NAME    ofdm_dac_fckp0.hex
+# set OOC_RUN     system_dac_tone_0_synth_1
+# set OOC_RUN_DIR $REPO/hardware/generated/08_rfdc_capture/zcu216_rfdc_capture.runs/$OOC_RUN
+# proc fail {msg} {
+#     puts "BUILD08_OFDM: FAIL"
+#     puts "BUILD08_OFDM: $msg"
+#     exit 1
+# }
+# if {![file exists $HEX_SRC]} { fail "hex source not found: $HEX_SRC" }
+# if {![file exists $XPR]}     { fail "project not found: $XPR" }
+# if {![file exists $RTL_V]}   { fail "rtl not found: $RTL_V" }
+# set HEX_IN_RTL $RTL_DIR/$HEX_NAME
+# file copy -force $HEX_SRC $HEX_IN_RTL
+# puts "BUILD08_OFDM: copied hex -> $HEX_IN_RTL"
+BUILD08_OFDM: copied hex -> /home/dsp-mikro7/FPGA_Based_OFDM_Transceiver/hardware/rtl/ofdm_dac_fckp0.hex
+# open_project $XPR
+Scanning sources...
+Finished scanning sources
+INFO: [IP_Flow 19-234] Refreshing IP repositories
+INFO: [IP_Flow 19-1704] No user IP repositories specified
+INFO: [IP_Flow 19-2313] Loaded Vivado IP repository '/opt/Xilinx/Vivado/2021.1/patches/AR76780_Vivado_2021_1_preliminary_rev1/vivado/data/ip'.
+INFO: [IP_Flow 19-2313] Loaded Vivado IP repository '/opt/Xilinx/Vivado/2021.1/data/ip'.
+# catch { config_ip_cache -disable_cache }
+# catch { config_ip_cache -clear_output_repo }
+# catch {
+#     set ip_obj [get_ips -quiet system_dac_tone_0]
+#     if {[llength $ip_obj]} { config_ip_cache -remove -ip $ip_obj }
+# }
+WARNING: [Coretcl 2-1487] No matching IP cache entry found
+# set CACHE_ROOT [get_property ip_output_repo [current_project]]
+# catch {
+#     foreach d [glob -nocomplain $CACHE_ROOT/*/7802f64bf3e47d09] {
+#         file delete -force $d
+#         puts "BUILD08_OFDM: purged stale IP cache entry $d"
+#     }
+# }
+# catch {
+#     foreach d [glob -nocomplain $CACHE_ROOT/*/*] {
+#         if {[file isdirectory $d] && \
+#             [llength [glob -nocomplain $d/*dac_tone*]] > 0} {
+#             file delete -force $d
+#             puts "BUILD08_OFDM: purged dac_tone IP cache entry $d"
+#         }
+#     }
+# }
+# catch { set_property ip_cache_permissions {} [current_project] }
+# set v_files [get_files -quiet -all *zcu216_dac_tone_axis.v]
+# puts "BUILD08_OFDM: dac_tone .v files seen by project: $v_files"
+BUILD08_OFDM: dac_tone .v files seen by project: /home/dsp-mikro7/FPGA_Based_OFDM_Transceiver/hardware/rtl/zcu216_dac_tone_axis.v
+# set uses_rtl_v 0
+# foreach f $v_files {
+#     if {[string match *hardware/rtl/zcu216_dac_tone_axis.v $f]} { set uses_rtl_v 1 }
+# }
+# if {!$uses_rtl_v} {
+#     puts "BUILD08_OFDM: WARNING dac_tone source is not the rtl/ file; re-adding."
+# }
+# if {[llength [get_files -quiet $HEX_NAME]] == 0 && \
+#     [llength [get_files -quiet $HEX_IN_RTL]] == 0} {
+#     catch { add_files -norecurse -fileset sources_1 $HEX_IN_RTL }
+# }
+# catch {
+#     set hexf [get_files -quiet $HEX_IN_RTL]
+#     if {[llength $hexf]} {
+#         set_property file_type {Memory Initialization Files} $hexf
+#         set_property used_in_synthesis true  $hexf
+#         set_property used_in_simulation true $hexf
+#         puts "BUILD08_OFDM: registered hex as Memory Init source: $hexf"
+#     }
+# }
+BUILD08_OFDM: registered hex as Memory Init source: /home/dsp-mikro7/FPGA_Based_OFDM_Transceiver/hardware/rtl/ofdm_dac_fckp0.hex
+# catch {
+#     set inc [get_property include_dirs [get_filesets sources_1]]
+#     if {[lsearch -exact $inc $RTL_DIR] < 0} {
+#         lappend inc $RTL_DIR
+#         set_property include_dirs $inc [get_filesets sources_1]
+#         puts "BUILD08_OFDM: added include_dir $RTL_DIR to sources_1"
+#     }
+# }
+# catch { reset_run $OOC_RUN }
+# puts "BUILD08_OFDM: reset OOC run $OOC_RUN"
+BUILD08_OFDM: reset OOC run system_dac_tone_0_synth_1
+# file mkdir $OOC_RUN_DIR
+# file copy -force $HEX_SRC $OOC_RUN_DIR/$HEX_NAME
+# puts "BUILD08_OFDM: copied hex -> $OOC_RUN_DIR/$HEX_NAME"
+BUILD08_OFDM: copied hex -> /home/dsp-mikro7/FPGA_Based_OFDM_Transceiver/hardware/generated/08_rfdc_capture/zcu216_rfdc_capture.runs/system_dac_tone_0_synth_1/ofdm_dac_fckp0.hex
+# catch { reset_run synth_1 }
+# catch { reset_run impl_1 }
+# launch_runs $OOC_RUN -jobs 8
+[Wed Jun 24 16:35:33 2026] Launched system_dac_tone_0_synth_1...
+Run output will be captured here: /home/dsp-mikro7/FPGA_Based_OFDM_Transceiver/hardware/generated/08_rfdc_capture/zcu216_rfdc_capture.runs/system_dac_tone_0_synth_1/runme.log
+# wait_on_run $OOC_RUN
+[Wed Jun 24 16:35:33 2026] Waiting for system_dac_tone_0_synth_1 to finish...
+
+*** Running vivado
+    with args -log system_dac_tone_0.vds -m64 -product Vivado -mode batch -messageDb vivado.pb -notrace -source system_dac_tone_0.tcl
+
+
+****** Vivado v2021.1_AR76780 (64-bit)
+  **** SW Build 3247384 on Thu Jun 10 19:36:07 MDT 2021
+  **** IP Build 3246043 on Fri Jun 11 00:30:35 MDT 2021
+    ** Copyright 1986-2021 Xilinx, Inc. All Rights Reserved.
+
+source system_dac_tone_0.tcl -notrace
+INFO: [IP_Flow 19-234] Refreshing IP repositories
+INFO: [IP_Flow 19-1704] No user IP repositories specified
+INFO: [IP_Flow 19-2313] Loaded Vivado IP repository '/opt/Xilinx/Vivado/2021.1/patches/AR76780_Vivado_2021_1_preliminary_rev1/vivado/data/ip'.
+INFO: [IP_Flow 19-2313] Loaded Vivado IP repository '/opt/Xilinx/Vivado/2021.1/data/ip'.
+Command: synth_design -top system_dac_tone_0 -part xczu49dr-ffvf1760-2-e -mode out_of_context
+Starting synth_design
+Attempting to get a license for feature 'Synthesis' and/or device 'xczu49dr'
+INFO: [Common 17-349] Got license for feature 'Synthesis' and/or device 'xczu49dr'
+INFO: [Device 21-403] Loading part xczu49dr-ffvf1760-2-e
+INFO: [Synth 8-7079] Multithreading enabled for synth_design using a maximum of 4 processes.
+INFO: [Synth 8-7078] Launching helper process for spawning children vivado processes
+INFO: [Synth 8-7075] Helper process launched with PID 1612311
+---------------------------------------------------------------------------------
+Starting RTL Elaboration : Time (s): cpu = 00:00:02 ; elapsed = 00:00:02 . Memory (MB): peak = 3018.617 ; gain = 205.688 ; free physical = 15357 ; free virtual = 26467
+---------------------------------------------------------------------------------
+INFO: [Synth 8-6157] synthesizing module 'system_dac_tone_0' [/home/dsp-mikro7/FPGA_Based_OFDM_Transceiver/hardware/generated/08_rfdc_capture/zcu216_rfdc_capture.gen/sources_1/bd/system/ip/system_dac_tone_0/synth/system_dac_tone_0.v:58]
+INFO: [Synth 8-6157] synthesizing module 'zcu216_dac_tone_axis' [/home/dsp-mikro7/FPGA_Based_OFDM_Transceiver/hardware/rtl/zcu216_dac_tone_axis.v:14]
+INFO: [Synth 8-3876] $readmem data file 'ofdm_dac_fckp0.hex' is read successfully [/home/dsp-mikro7/FPGA_Based_OFDM_Transceiver/hardware/rtl/zcu216_dac_tone_axis.v:50]
+INFO: [Synth 8-6155] done synthesizing module 'zcu216_dac_tone_axis' (1#1) [/home/dsp-mikro7/FPGA_Based_OFDM_Transceiver/hardware/rtl/zcu216_dac_tone_axis.v:14]
+INFO: [Synth 8-6155] done synthesizing module 'system_dac_tone_0' (2#1) [/home/dsp-mikro7/FPGA_Based_OFDM_Transceiver/hardware/generated/08_rfdc_capture/zcu216_rfdc_capture.gen/sources_1/bd/system/ip/system_dac_tone_0/synth/system_dac_tone_0.v:58]
+---------------------------------------------------------------------------------
+Finished RTL Elaboration : Time (s): cpu = 00:00:02 ; elapsed = 00:00:03 . Memory (MB): peak = 3074.852 ; gain = 261.922 ; free physical = 14464 ; free virtual = 25578
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Start Handling Custom Attributes
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Finished Handling Custom Attributes : Time (s): cpu = 00:00:03 ; elapsed = 00:00:03 . Memory (MB): peak = 3092.664 ; gain = 279.734 ; free physical = 14464 ; free virtual = 25578
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Finished RTL Optimization Phase 1 : Time (s): cpu = 00:00:03 ; elapsed = 00:00:03 . Memory (MB): peak = 3092.664 ; gain = 279.734 ; free physical = 14464 ; free virtual = 25578
+---------------------------------------------------------------------------------
+Netlist sorting complete. Time (s): cpu = 00:00:00.01 ; elapsed = 00:00:00 . Memory (MB): peak = 3092.664 ; gain = 0.000 ; free physical = 14464 ; free virtual = 25578
+INFO: [Project 1-570] Preparing netlist for logic optimization
+
+Processing XDC Constraints
+Initializing timing engine
+Completed Processing XDC Constraints
+
+Netlist sorting complete. Time (s): cpu = 00:00:00 ; elapsed = 00:00:00 . Memory (MB): peak = 3247.508 ; gain = 0.000 ; free physical = 15180 ; free virtual = 26293
+INFO: [Project 1-111] Unisim Transformation Summary:
+No Unisim elements were transformed.
+
+Constraint Validation Runtime : Time (s): cpu = 00:00:00.02 ; elapsed = 00:00:00.02 . Memory (MB): peak = 3268.320 ; gain = 20.812 ; free physical = 15180 ; free virtual = 26293
+---------------------------------------------------------------------------------
+Finished Constraint Validation : Time (s): cpu = 00:00:05 ; elapsed = 00:00:06 . Memory (MB): peak = 3268.320 ; gain = 455.391 ; free physical = 15210 ; free virtual = 26324
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Start Loading Part and Timing Information
+---------------------------------------------------------------------------------
+Loading part: xczu49dr-ffvf1760-2-e
+INFO: [Synth 8-6742] Reading net delay rules and data
+---------------------------------------------------------------------------------
+Finished Loading Part and Timing Information : Time (s): cpu = 00:00:05 ; elapsed = 00:00:06 . Memory (MB): peak = 3268.320 ; gain = 455.391 ; free physical = 15210 ; free virtual = 26324
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Start Applying 'set_property' XDC Constraints
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Finished applying 'set_property' XDC Constraints : Time (s): cpu = 00:00:05 ; elapsed = 00:00:06 . Memory (MB): peak = 3268.320 ; gain = 455.391 ; free physical = 15210 ; free virtual = 26324
+---------------------------------------------------------------------------------
+WARNING: [Synth 8-6040] Register ofdm_addr_reg_rep driving address of a ROM cannot be packed in BRAM/URAM because of presence of initial value.
+---------------------------------------------------------------------------------
+Finished RTL Optimization Phase 2 : Time (s): cpu = 00:00:06 ; elapsed = 00:00:06 . Memory (MB): peak = 3268.320 ; gain = 455.391 ; free physical = 15222 ; free virtual = 26339
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Start RTL Component Statistics 
+---------------------------------------------------------------------------------
+Detailed RTL Component Info : 
++---Adders : 
+	   2 Input   16 Bit       Adders := 2     
+	   2 Input   14 Bit       Adders := 1     
++---Registers : 
+	              256 Bit    Registers := 2     
+	               32 Bit    Registers := 2     
+	               16 Bit    Registers := 1     
+	               14 Bit    Registers := 2     
++---ROMs : 
+	                    ROMs := 1     
++---Muxes : 
+	   2 Input  256 Bit        Muxes := 1     
+	   2 Input   16 Bit        Muxes := 1     
+	   2 Input   14 Bit        Muxes := 1     
+	   2 Input    1 Bit        Muxes := 1     
+---------------------------------------------------------------------------------
+Finished RTL Component Statistics 
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Start Part Resource Summary
+---------------------------------------------------------------------------------
+Part Resources:
+DSPs: 4272 (col length:192)
+BRAMs: 2160 (col length: RAMB18 192 RAMB36 96)
+---------------------------------------------------------------------------------
+Finished Part Resource Summary
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Start Cross Boundary and Area Optimization
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Finished Cross Boundary and Area Optimization : Time (s): cpu = 00:00:07 ; elapsed = 00:00:08 . Memory (MB): peak = 3268.320 ; gain = 455.391 ; free physical = 15237 ; free virtual = 26362
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Start ROM, RAM, DSP, Shift Register and Retiming Reporting
+---------------------------------------------------------------------------------
+
+ROM: Preliminary Mapping Report
++---------------------+-------------+---------------+----------------+
+|Module Name          | RTL Object  | Depth x Width | Implemented As | 
++---------------------+-------------+---------------+----------------+
+|zcu216_dac_tone_axis | ofdm_rd_reg | 16384x256     | Block RAM      | 
+|system_dac_tone_0    | ofdm_rd_reg | 16384x256     | Block RAM      | 
++---------------------+-------------+---------------+----------------+
+
+---------------------------------------------------------------------------------
+Finished ROM, RAM, DSP, Shift Register and Retiming Reporting
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Start Applying XDC Timing Constraints
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Finished Applying XDC Timing Constraints : Time (s): cpu = 00:00:12 ; elapsed = 00:00:13 . Memory (MB): peak = 3737.570 ; gain = 924.641 ; free physical = 14668 ; free virtual = 25793
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Start Timing Optimization
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Finished Timing Optimization : Time (s): cpu = 00:00:12 ; elapsed = 00:00:13 . Memory (MB): peak = 3738.570 ; gain = 925.641 ; free physical = 14668 ; free virtual = 25793
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Start Technology Mapping
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Finished Technology Mapping : Time (s): cpu = 00:00:13 ; elapsed = 00:00:14 . Memory (MB): peak = 3928.602 ; gain = 1115.672 ; free physical = 14487 ; free virtual = 25612
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Start IO Insertion
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Start Flattening Before IO Insertion
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Finished Flattening Before IO Insertion
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Start Final Netlist Cleanup
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Finished Final Netlist Cleanup
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Finished IO Insertion : Time (s): cpu = 00:00:14 ; elapsed = 00:00:15 . Memory (MB): peak = 3955.414 ; gain = 1142.484 ; free physical = 14492 ; free virtual = 25617
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Start Renaming Generated Instances
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Finished Renaming Generated Instances : Time (s): cpu = 00:00:14 ; elapsed = 00:00:15 . Memory (MB): peak = 3955.414 ; gain = 1142.484 ; free physical = 14492 ; free virtual = 25617
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Start Rebuilding User Hierarchy
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Finished Rebuilding User Hierarchy : Time (s): cpu = 00:00:14 ; elapsed = 00:00:15 . Memory (MB): peak = 3955.414 ; gain = 1142.484 ; free physical = 14492 ; free virtual = 25617
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Start Renaming Generated Ports
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Finished Renaming Generated Ports : Time (s): cpu = 00:00:14 ; elapsed = 00:00:15 . Memory (MB): peak = 3955.414 ; gain = 1142.484 ; free physical = 14492 ; free virtual = 25617
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Start Handling Custom Attributes
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Finished Handling Custom Attributes : Time (s): cpu = 00:00:14 ; elapsed = 00:00:15 . Memory (MB): peak = 3955.414 ; gain = 1142.484 ; free physical = 14492 ; free virtual = 25617
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Start Renaming Generated Nets
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Finished Renaming Generated Nets : Time (s): cpu = 00:00:14 ; elapsed = 00:00:15 . Memory (MB): peak = 3955.414 ; gain = 1142.484 ; free physical = 14492 ; free virtual = 25617
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Start Writing Synthesis Report
+---------------------------------------------------------------------------------
+
+Report BlackBoxes: 
++-+--------------+----------+
+| |BlackBox name |Instances |
++-+--------------+----------+
++-+--------------+----------+
+
+Report Cell Usage: 
++------+---------+------+
+|      |Cell     |Count |
++------+---------+------+
+|1     |LUT1     |     9|
+|2     |LUT2     |    15|
+|3     |LUT3     |   101|
+|4     |LUT4     |    91|
+|5     |LUT5     |    50|
+|6     |LUT6     |   120|
+|7     |RAMB36E2 |   128|
+|135   |FDRE     |   162|
++------+---------+------+
+---------------------------------------------------------------------------------
+Finished Writing Synthesis Report : Time (s): cpu = 00:00:14 ; elapsed = 00:00:15 . Memory (MB): peak = 3955.414 ; gain = 1142.484 ; free physical = 14492 ; free virtual = 25617
+---------------------------------------------------------------------------------
+Synthesis finished with 0 errors, 0 critical warnings and 1 warnings.
+Synthesis Optimization Runtime : Time (s): cpu = 00:00:13 ; elapsed = 00:00:14 . Memory (MB): peak = 3955.414 ; gain = 966.828 ; free physical = 14492 ; free virtual = 25617
+Synthesis Optimization Complete : Time (s): cpu = 00:00:14 ; elapsed = 00:00:15 . Memory (MB): peak = 3955.422 ; gain = 1142.484 ; free physical = 14492 ; free virtual = 25617
+INFO: [Project 1-571] Translating synthesized netlist
+Netlist sorting complete. Time (s): cpu = 00:00:00.02 ; elapsed = 00:00:00.03 . Memory (MB): peak = 3966.383 ; gain = 0.000 ; free physical = 14594 ; free virtual = 25719
+INFO: [Project 1-570] Preparing netlist for logic optimization
+INFO: [Opt 31-138] Pushed 0 inverter(s) to 0 load pin(s).
+Netlist sorting complete. Time (s): cpu = 00:00:00 ; elapsed = 00:00:00 . Memory (MB): peak = 4035.148 ; gain = 0.000 ; free physical = 14548 ; free virtual = 25673
+INFO: [Project 1-111] Unisim Transformation Summary:
+No Unisim elements were transformed.
+
+Synth Design complete, checksum: 65579f11
+INFO: [Common 17-83] Releasing license: Synthesis
+22 Infos, 1 Warnings, 0 Critical Warnings and 0 Errors encountered.
+synth_design completed successfully
+synth_design: Time (s): cpu = 00:00:21 ; elapsed = 00:00:19 . Memory (MB): peak = 4035.148 ; gain = 1468.504 ; free physical = 14865 ; free virtual = 25990
+INFO: [Common 17-1381] The checkpoint '/home/dsp-mikro7/FPGA_Based_OFDM_Transceiver/hardware/generated/08_rfdc_capture/zcu216_rfdc_capture.runs/system_dac_tone_0_synth_1/system_dac_tone_0.dcp' has been generated.
+INFO: [Coretcl 2-1648] Added synthesis output to IP cache for IP system_dac_tone_0, cache-ID = 7802f64bf3e47d09
+INFO: [Common 17-1381] The checkpoint '/home/dsp-mikro7/FPGA_Based_OFDM_Transceiver/hardware/generated/08_rfdc_capture/zcu216_rfdc_capture.runs/system_dac_tone_0_synth_1/system_dac_tone_0.dcp' has been generated.
+INFO: [runtcl-4] Executing : report_utilization -file system_dac_tone_0_utilization_synth.rpt -pb system_dac_tone_0_utilization_synth.pb
+INFO: [Common 17-206] Exiting Vivado at Wed Jun 24 16:36:04 2026...
+[Wed Jun 24 16:36:14 2026] system_dac_tone_0_synth_1 finished
+wait_on_run: Time (s): cpu = 00:00:33 ; elapsed = 00:00:41 . Memory (MB): peak = 2877.793 ; gain = 0.000 ; free physical = 17048 ; free virtual = 28171
+# set ooc_status [get_property STATUS  [get_runs $OOC_RUN]]
+# set ooc_prog   [get_property PROGRESS [get_runs $OOC_RUN]]
+# puts "BUILD08_OFDM: OOC run status=$ooc_status progress=$ooc_prog"
+BUILD08_OFDM: OOC run status=synth_design Complete! progress=100%
+# if {$ooc_prog ne "100%"} { fail "OOC dac_tone synth did not complete ($ooc_status)" }
+# set ooc_log $OOC_RUN_DIR/runme.log
+# if {[file exists $ooc_log]} {
+#     set fh [open $ooc_log r]
+#     set txt [read $fh]
+#     close $fh
+#     if {[string match "*Using cached IP synthesis design*" $txt]} {
+#         fail "OOC run REUSED stale IP cache (OFDM RTL not synthesized) -- cache not disabled"
+#     }
+#     if {[regexp -line {.*\$readmem data file .*ofdm_dac_fckp0.hex.* is read successfully.*} $txt mline]} {
+#         puts "BUILD08_OFDM: READMEMH OK -> $mline"
+#     } elseif {[regexp -line {.*[Cc]annot open.*ofdm_dac_fckp0.hex.*} $txt mline]} {
+#         fail "READMEMH FAILED -> $mline"
+#     } elseif {[regexp -line {.*[Ff]ailed to open.*ofdm_dac_fckp0.hex.*} $txt mline]} {
+#         fail "READMEMH FAILED -> $mline"
+#     } else {
+#         puts "BUILD08_OFDM: WARNING no explicit readmemh line found in OOC log (check manually)"
+#     }
+#     if {[regexp -line {.*synthesizing module 'zcu216_dac_tone_axis'.*} $txt sline]} {
+#         puts "BUILD08_OFDM: OFDM RTL synthesized -> $sline"
+#     }
+# }
+BUILD08_OFDM: READMEMH OK -> INFO: [Synth 8-3876] $readmem data file 'ofdm_dac_fckp0.hex' is read successfully [/home/dsp-mikro7/FPGA_Based_OFDM_Transceiver/hardware/rtl/zcu216_dac_tone_axis.v:50]
+BUILD08_OFDM: OFDM RTL synthesized -> INFO: [Synth 8-6157] synthesizing module 'zcu216_dac_tone_axis' [/home/dsp-mikro7/FPGA_Based_OFDM_Transceiver/hardware/rtl/zcu216_dac_tone_axis.v:14]
+# catch { file copy -force $HEX_SRC $OOC_RUN_DIR/$HEX_NAME }
+# launch_runs synth_1 -jobs 8
+[Wed Jun 24 16:36:18 2026] Launched system_adc_cap_0_synth_1, system_usp_rf_data_converter_0_0_synth_1, system_auto_ds_0_synth_1, system_auto_pc_0_synth_1...
+Run output will be captured here:
+system_adc_cap_0_synth_1: /home/dsp-mikro7/FPGA_Based_OFDM_Transceiver/hardware/generated/08_rfdc_capture/zcu216_rfdc_capture.runs/system_adc_cap_0_synth_1/runme.log
+system_usp_rf_data_converter_0_0_synth_1: /home/dsp-mikro7/FPGA_Based_OFDM_Transceiver/hardware/generated/08_rfdc_capture/zcu216_rfdc_capture.runs/system_usp_rf_data_converter_0_0_synth_1/runme.log
+system_auto_ds_0_synth_1: /home/dsp-mikro7/FPGA_Based_OFDM_Transceiver/hardware/generated/08_rfdc_capture/zcu216_rfdc_capture.runs/system_auto_ds_0_synth_1/runme.log
+system_auto_pc_0_synth_1: /home/dsp-mikro7/FPGA_Based_OFDM_Transceiver/hardware/generated/08_rfdc_capture/zcu216_rfdc_capture.runs/system_auto_pc_0_synth_1/runme.log
+[Wed Jun 24 16:36:18 2026] Launched synth_1...
+Run output will be captured here: /home/dsp-mikro7/FPGA_Based_OFDM_Transceiver/hardware/generated/08_rfdc_capture/zcu216_rfdc_capture.runs/synth_1/runme.log
+# wait_on_run synth_1
+[Wed Jun 24 16:36:18 2026] Waiting for synth_1 to finish...
+[Wed Jun 24 16:36:38 2026] synth_1 finished
+WARNING: [Vivado 12-8222] Failed run(s) : 'system_adc_cap_0_synth_1'
+wait_on_run: Time (s): cpu = 00:00:00.03 ; elapsed = 00:00:20 . Memory (MB): peak = 2909.812 ; gain = 0.000 ; free physical = 10952 ; free virtual = 22070
+# set s_prog [get_property PROGRESS [get_runs synth_1]]
+# puts "BUILD08_OFDM: synth_1 progress=$s_prog"
+BUILD08_OFDM: synth_1 progress=0%
+# if {$s_prog ne "100%"} { fail "top synth_1 failed (progress=$s_prog)" }
+BUILD08_OFDM: FAIL
+BUILD08_OFDM: top synth_1 failed (progress=0%)
+INFO: [Common 17-206] Exiting Vivado at Wed Jun 24 16:36:38 2026...

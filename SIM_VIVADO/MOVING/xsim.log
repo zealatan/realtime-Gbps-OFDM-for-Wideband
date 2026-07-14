@@ -1,0 +1,267 @@
+#-----------------------------------------------------------
+# xsim v2022.2 (64-bit)
+# SW Build 3671981 on Fri Oct 14 04:59:54 MDT 2022
+# IP Build 3669848 on Fri Oct 14 08:30:02 MDT 2022
+# Start of session at: Fri Apr 17 13:23:23 2026
+# Process ID: 16295
+# Current directory: /home/zealatan/FPGA_Based_OFDM_Transceiver/SIM_VIVADO/MOVING
+# Command line: xsim -mode tcl -source {xsim.dir/tb_moving_avg/xsim_script.tcl}
+# Log file: /home/zealatan/FPGA_Based_OFDM_Transceiver/SIM_VIVADO/MOVING/xsim.log
+# Journal file: /home/zealatan/FPGA_Based_OFDM_Transceiver/SIM_VIVADO/MOVING/xsim.jou
+# Running On: DESKTOP-FAIRVEG, OS: Linux, CPU Frequency: 2495.999 MHz, CPU Physical cores: 6, Host memory: 8134 MB
+#-----------------------------------------------------------
+source xsim.dir/tb_moving_avg/xsim_script.tcl
+# xsim {tb_moving_avg} -autoloadwcfg -runall
+Time resolution is 1 ps
+run -all
+
+[TC1] Constant Input: 100
+[OK]  Time:              140000 | RTL:                    0 | Exp:                    0
+[OK]  Time:              153000 | RTL:                    0 | Exp:                    0
+[OK]  Time:              165000 | RTL:                    0 | Exp:                    0
+[OK]  Time:              177000 | RTL:                    0 | Exp:                    0
+[OK]  Time:              189000 | RTL:                    0 | Exp:                    0
+[OK]  Time:              201000 | RTL:                    0 | Exp:                    0
+[OK]  Time:              214000 | RTL:                    0 | Exp:                    0
+[OK]  Time:              226000 | RTL:                    0 | Exp:                    0
+[OK]  Time:              238000 | RTL:                    0 | Exp:                    0
+[OK]  Time:              250000 | RTL:                    0 | Exp:                    0
+[OK]  Time:              263000 | RTL:                    0 | Exp:                    0
+[OK]  Time:              275000 | RTL:                    0 | Exp:                    0
+[OK]  Time:              287000 | RTL:                    0 | Exp:                    0
+[OK]  Time:              299000 | RTL:                    0 | Exp:                    0
+[OK]  Time:              311000 | RTL:                    0 | Exp:                    0
+[OK]  Time:              324000 | RTL:                    0 | Exp:                    0
+[OK]  Time:              336000 | RTL:                    0 | Exp:                    0
+[OK]  Time:              348000 | RTL:                    0 | Exp:                    0
+[OK]  Time:              360000 | RTL:                    0 | Exp:                    0
+[OK]  Time:              372000 | RTL:                    0 | Exp:                    0
+[OK]  Time:              385000 | RTL:                    0 | Exp:                    0
+[OK]  Time:              397000 | RTL:                    0 | Exp:                    0
+[OK]  Time:              409000 | RTL:                    0 | Exp:                    0
+[OK]  Time:              421000 | RTL:                    0 | Exp:                    0
+[OK]  Time:              433000 | RTL:                    0 | Exp:                    0
+[OK]  Time:              446000 | RTL:                    0 | Exp:                    0
+[OK]  Time:              458000 | RTL:                    0 | Exp:                    0
+[OK]  Time:              470000 | RTL:                    0 | Exp:                    0
+[OK]  Time:              482000 | RTL:                    0 | Exp:                    0
+[OK]  Time:              495000 | RTL:                    0 | Exp:                    0
+[OK]  Time:              507000 | RTL:                    0 | Exp:                    0
+[OK]  Time:              519000 | RTL:                    0 | Exp:                    0
+[OK]  Time:              531000 | RTL:                    0 | Exp:                    0
+[OK]  Time:              543000 | RTL:                    0 | Exp:                    0
+[OK]  Time:              556000 | RTL:                    0 | Exp:                    0
+[OK]  Time:              568000 | RTL:                    0 | Exp:                    0
+[OK]  Time:              580000 | RTL:                    0 | Exp:                    0
+[OK]  Time:              592000 | RTL:                    0 | Exp:                    0
+[OK]  Time:              604000 | RTL:                    0 | Exp:                    0
+[OK]  Time:              617000 | RTL:                    0 | Exp:                    0
+[OK]  Time:              629000 | RTL:                    0 | Exp:                    0
+[OK]  Time:              641000 | RTL:                    0 | Exp:                    0
+[OK]  Time:              653000 | RTL:                    0 | Exp:                    0
+[OK]  Time:              665000 | RTL:                    0 | Exp:                    0
+[OK]  Time:              678000 | RTL:                    0 | Exp:                    0
+[OK]  Time:              690000 | RTL:                    0 | Exp:                    0
+[OK]  Time:              702000 | RTL:                    0 | Exp:                    0
+[OK]  Time:              714000 | RTL:                    0 | Exp:                    0
+[OK]  Time:              726000 | RTL:                    0 | Exp:                    0
+[OK]  Time:              739000 | RTL:                    0 | Exp:                    0
+[OK]  Time:              751000 | RTL:                    0 | Exp:                    0
+[OK]  Time:              763000 | RTL:                    0 | Exp:                    0
+[OK]  Time:              775000 | RTL:                    0 | Exp:                    0
+[OK]  Time:              788000 | RTL:                    0 | Exp:                    0
+[OK]  Time:              800000 | RTL:                    0 | Exp:                    0
+[OK]  Time:              812000 | RTL:                    0 | Exp:                    0
+[OK]  Time:              824000 | RTL:                    0 | Exp:                    0
+[OK]  Time:              836000 | RTL:                    0 | Exp:                    0
+[OK]  Time:              849000 | RTL:                    0 | Exp:                    0
+[OK]  Time:              861000 | RTL:                    0 | Exp:                    0
+[OK]  Time:              873000 | RTL:                    0 | Exp:                    0
+[OK]  Time:              885000 | RTL:                    0 | Exp:                    0
+[OK]  Time:              897000 | RTL:                    0 | Exp:                    0
+
+[TC2] Ramp Input: 10, 20, 30...
+[OK]  Time:              910000 | RTL:                    0 | Exp:                    0
+[OK]  Time:              922000 | RTL:                    0 | Exp:                    0
+[OK]  Time:              934000 | RTL:                    0 | Exp:                    0
+[OK]  Time:              946000 | RTL:                    0 | Exp:                    0
+[OK]  Time:              958000 | RTL:                    0 | Exp:                    0
+[OK]  Time:              971000 | RTL:                    0 | Exp:                    0
+[OK]  Time:              983000 | RTL:                    0 | Exp:                    0
+[OK]  Time:              995000 | RTL:                    0 | Exp:                    0
+[OK]  Time:             1007000 | RTL:                    0 | Exp:                    0
+[OK]  Time:             1020000 | RTL:                    0 | Exp:                    0
+[OK]  Time:             1032000 | RTL:                    0 | Exp:                    0
+[OK]  Time:             1044000 | RTL:                    0 | Exp:                    0
+[OK]  Time:             1056000 | RTL:                    0 | Exp:                    0
+[OK]  Time:             1068000 | RTL:                    0 | Exp:                    0
+[OK]  Time:             1081000 | RTL:                    0 | Exp:                    0
+[OK]  Time:             1093000 | RTL:                    0 | Exp:                    0
+[OK]  Time:             1105000 | RTL:                    0 | Exp:                    0
+[OK]  Time:             1117000 | RTL:                    0 | Exp:                    0
+[OK]  Time:             1129000 | RTL:                    0 | Exp:                    0
+[OK]  Time:             1142000 | RTL:                    0 | Exp:                    0
+[OK]  Time:             1154000 | RTL:                    0 | Exp:                    0
+[OK]  Time:             1166000 | RTL:                    0 | Exp:                    0
+[OK]  Time:             1178000 | RTL:                    0 | Exp:                    0
+[OK]  Time:             1190000 | RTL:                    0 | Exp:                    0
+[OK]  Time:             1203000 | RTL:                    0 | Exp:                    0
+[OK]  Time:             1215000 | RTL:                    0 | Exp:                    1
+[OK]  Time:             1227000 | RTL:                    0 | Exp:                    1
+[OK]  Time:             1239000 | RTL:                    1 | Exp:                    1
+[OK]  Time:             1252000 | RTL:                    1 | Exp:                    1
+[OK]  Time:             1264000 | RTL:                    1 | Exp:                    1
+[OK]  Time:             1276000 | RTL:                    1 | Exp:                    1
+[OK]  Time:             1288000 | RTL:                    1 | Exp:                    1
+[OK]  Time:             1300000 | RTL:                    1 | Exp:                    1
+[OK]  Time:             1313000 | RTL:                    1 | Exp:                    1
+[OK]  Time:             1325000 | RTL:                    1 | Exp:                    1
+[OK]  Time:             1337000 | RTL:                    1 | Exp:                    1
+[OK]  Time:             1349000 | RTL:                    1 | Exp:                    1
+[OK]  Time:             1361000 | RTL:                    1 | Exp:                    1
+[OK]  Time:             1374000 | RTL:                    1 | Exp:                    1
+[OK]  Time:             1386000 | RTL:                    1 | Exp:                    1
+
+[TC3] Random Signed Input
+[ERR] Time:             1398000 | RTL:                    1 | Exp:                74069 | Diff:               -74068
+[ERR] Time:             1410000 | RTL:                74069 | Exp:              -185877 | Diff:               259946
+[ERR] Time:             1422000 | RTL:              -185877 | Exp:              -691656 | Diff:               505779
+[ERR] Time:             1435000 | RTL:              -691656 | Exp:             -1011395 | Diff:               319739
+[ERR] Time:             1447000 | RTL:             -1011395 | Exp:              -983851 | Diff:               -27544
+[ERR] Time:             1459000 | RTL:              -983851 | Exp:              -693553 | Diff:              -290298
+[ERR] Time:             1471000 | RTL:              -693553 | Exp:             -1009929 | Diff:               316376
+[ERR] Time:             1484000 | RTL:             -1009929 | Exp:             -1496468 | Diff:               486539
+[ERR] Time:             1496000 | RTL:             -1496468 | Exp:             -1492566 | Diff:                -3902
+[ERR] Time:             1508000 | RTL:             -1492566 | Exp:             -1464537 | Diff:               -28029
+[ERR] Time:             1520000 | RTL:             -1464537 | Exp:             -1222298 | Diff:              -242239
+[ERR] Time:             1532000 | RTL:             -1222298 | Exp:             -1097149 | Diff:              -125149
+[ERR] Time:             1545000 | RTL:             -1097149 | Exp:              -610424 | Diff:              -486725
+[ERR] Time:             1557000 | RTL:              -610424 | Exp:              -322969 | Diff:              -287455
+[ERR] Time:             1569000 | RTL:              -322969 | Exp:               188998 | Diff:              -511967
+[ERR] Time:             1581000 | RTL:               188998 | Exp:                71096 | Diff:               117902
+[ERR] Time:             1593000 | RTL:                71096 | Exp:               -47823 | Diff:               118919
+[ERR] Time:             1606000 | RTL:               -47824 | Exp:              -223634 | Diff:               175810
+[ERR] Time:             1618000 | RTL:              -223634 | Exp:               246125 | Diff:              -469759
+[ERR] Time:             1630000 | RTL:               246125 | Exp:               -33132 | Diff:               279257
+[ERR] Time:             1642000 | RTL:               -33132 | Exp:              -519743 | Diff:               486611
+[ERR] Time:             1654000 | RTL:              -519743 | Exp:              -225137 | Diff:              -294606
+[ERR] Time:             1667000 | RTL:              -225137 | Exp:               271254 | Diff:              -496391
+[ERR] Time:             1679000 | RTL:               271254 | Exp:               170751 | Diff:               100503
+[ERR] Time:             1691000 | RTL:               170751 | Exp:               121607 | Diff:                49144
+[ERR] Time:             1703000 | RTL:               121606 | Exp:                 1963 | Diff:               119643
+[ERR] Time:             1716000 | RTL:                 1963 | Exp:               191792 | Diff:              -189829
+[ERR] Time:             1728000 | RTL:               191792 | Exp:                54802 | Diff:               136990
+[ERR] Time:             1740000 | RTL:                54802 | Exp:              -376632 | Diff:               431434
+[ERR] Time:             1752000 | RTL:              -376632 | Exp:              -693446 | Diff:               316814
+[ERR] Time:             1764000 | RTL:              -693446 | Exp:             -1013200 | Diff:               319754
+[ERR] Time:             1777000 | RTL:             -1013200 | Exp:              -990871 | Diff:               -22329
+[ERR] Time:             1789000 | RTL:             -1064939 | Exp:             -1326137 | Diff:               261198
+[ERR] Time:             1801000 | RTL:             -1066191 | Exp:              -999052 | Diff:               -67139
+[ERR] Time:             1813000 | RTL:              -493274 | Exp:              -143190 | Diff:              -350084
+[ERR] Time:             1825000 | RTL:               176549 | Exp:               -24974 | Diff:               201523
+[ERR] Time:             1838000 | RTL:               -52518 | Exp:              -269090 | Diff:               216572
+[ERR] Time:             1850000 | RTL:              -559388 | Exp:             -1044704 | Diff:               485316
+[ERR] Time:             1862000 | RTL:              -728328 | Exp:             -1225029 | Diff:               496701
+[ERR] Time:             1874000 | RTL:              -738490 | Exp:             -1092157 | Diff:               353667
+[ERR] Time:             1886000 | RTL:             -1096059 | Exp:              -876413 | Diff:              -219646
+[ERR] Time:             1899000 | RTL:              -904442 | Exp:              -991895 | Diff:                87453
+[ERR] Time:             1911000 | RTL:             -1234134 | Exp:             -1753953 | Diff:               519819
+[ERR] Time:             1923000 | RTL:             -1879102 | Exp:             -2045658 | Diff:               166556
+[ERR] Time:             1935000 | RTL:             -2532384 | Exp:             -2470945 | Diff:               -61439
+[ERR] Time:             1947000 | RTL:             -2758401 | Exp:             -2857642 | Diff:                99241
+[ERR] Time:             1960000 | RTL:             -3369608 | Exp:             -3297860 | Diff:               -71748
+[ERR] Time:             1972000 | RTL:             -3179958 | Exp:             -3159328 | Diff:               -20630
+[ERR] Time:             1984000 | RTL:             -3040408 | Exp:             -3149159 | Diff:               108751
+[ERR] Time:             1996000 | RTL:             -2973348 | Exp:             -3373968 | Diff:               400620
+[ERR] Time:             2009000 | RTL:             -3843727 | Exp:             -3346435 | Diff:              -497292
+[ERR] Time:             2021000 | RTL:             -3067178 | Exp:             -2783812 | Diff:              -283366
+[ERR] Time:             2033000 | RTL:             -2297202 | Exp:             -2162983 | Diff:              -134219
+[ERR] Time:             2045000 | RTL:             -2457588 | Exp:             -2538305 | Diff:                80717
+[ERR] Time:             2057000 | RTL:             -3034696 | Exp:             -2788408 | Diff:              -246288
+[ERR] Time:             2070000 | RTL:             -2687906 | Exp:             -2931457 | Diff:               243551
+[ERR] Time:             2082000 | RTL:             -2882312 | Exp:             -2399927 | Diff:              -482385
+[ERR] Time:             2094000 | RTL:             -2280284 | Exp:             -1907510 | Diff:              -372774
+[ERR] Time:             2106000 | RTL:             -2097339 | Exp:             -1690619 | Diff:              -406720
+[ERR] Time:             2118000 | RTL:             -1553630 | Exp:             -1196940 | Diff:              -356690
+[ERR] Time:             2131000 | RTL:              -765506 | Exp:              -902898 | Diff:               137392
+[ERR] Time:             2143000 | RTL:              -586084 | Exp:              -499814 | Diff:               -86270
+[ERR] Time:             2155000 | RTL:              -180060 | Exp:              -680419 | Diff:               500359
+[ERR] Time:             2167000 | RTL:              -702747 | Exp:              -995231 | Diff:               292484
+[ERR] Time:             2179000 | RTL:              -734033 | Exp:              -459821 | Diff:              -274212
+[ERR] Time:             2192000 | RTL:              -526959 | Exp:              -363338 | Diff:              -163621
+[ERR] Time:             2204000 | RTL:              -713422 | Exp:             -1115656 | Diff:               402234
+[ERR] Time:             2216000 | RTL:              -914133 | Exp:              -795250 | Diff:              -118883
+[ERR] Time:             2228000 | RTL:              -578678 | Exp:              -844355 | Diff:               265677
+[ERR] Time:             2241000 | RTL:              -359038 | Exp:              -315354 | Diff:               -43684
+[ERR] Time:             2253000 | RTL:               181347 | Exp:               676349 | Diff:              -495002
+[ERR] Time:             2265000 | RTL:              1030015 | Exp:              1474884 | Diff:              -444869
+[ERR] Time:             2277000 | RTL:              1255238 | Exp:              1456503 | Diff:              -201265
+[ERR] Time:             2289000 | RTL:              1543956 | Exp:              1700468 | Diff:              -156512
+[ERR] Time:             2302000 | RTL:              2220287 | Exp:              2546452 | Diff:              -326165
+[ERR] Time:             2314000 | RTL:              2713009 | Exp:              3006795 | Diff:              -293786
+[ERR] Time:             2326000 | RTL:              2945356 | Exp:              3455015 | Diff:              -509659
+[ERR] Time:             2338000 | RTL:              3554255 | Exp:              3405990 | Diff:               148265
+[ERR] Time:             2350000 | RTL:              3334241 | Exp:              3136678 | Diff:               197563
+[ERR] Time:             2363000 | RTL:              3116048 | Exp:              2782185 | Diff:               333863
+[ERR] Time:             2375000 | RTL:              2890937 | Exp:              2554229 | Diff:               336708
+[ERR] Time:             2387000 | RTL:              2954848 | Exp:              3236931 | Diff:              -282083
+[ERR] Time:             2399000 | RTL:              2739640 | Exp:              2365595 | Diff:               374045
+[ERR] Time:             2411000 | RTL:              2082229 | Exp:              1984488 | Diff:                97741
+[ERR] Time:             2424000 | RTL:              1850269 | Exp:              1768329 | Diff:                81940
+[ERR] Time:             2436000 | RTL:              1849046 | Exp:              1491798 | Diff:               357248
+[ERR] Time:             2448000 | RTL:              1245511 | Exp:              1553242 | Diff:              -307731
+[ERR] Time:             2460000 | RTL:              1796792 | Exp:              1821840 | Diff:               -25048
+[ERR] Time:             2473000 | RTL:              1339455 | Exp:              1213196 | Diff:               126259
+[ERR] Time:             2485000 | RTL:               840422 | Exp:              1251429 | Diff:              -411007
+[ERR] Time:             2497000 | RTL:               844709 | Exp:               564171 | Diff:               280538
+[ERR] Time:             2509000 | RTL:               207482 | Exp:               334249 | Diff:              -126767
+[ERR] Time:             2521000 | RTL:               471640 | Exp:               508710 | Diff:               -37070
+[ERR] Time:             2534000 | RTL:               422440 | Exp:               156280 | Diff:               266160
+[ERR] Time:             2546000 | RTL:               656639 | Exp:               881495 | Diff:              -224856
+[ERR] Time:             2558000 | RTL:              1173979 | Exp:              1292153 | Diff:              -118174
+[ERR] Time:             2570000 | RTL:              1017941 | Exp:              1082750 | Diff:               -64809
+[ERR] Time:             2582000 | RTL:               919129 | Exp:               828696 | Diff:                90433
+[ERR] Time:             2595000 | RTL:              1230930 | Exp:              1504741 | Diff:              -273811
+[ERR] Time:             2607000 | RTL:              1385858 | Exp:              1107659 | Diff:               278199
+
+[TC4] Large Negative Peak: -10000
+[ERR] Time:             2619000 | RTL:              1373335 | Exp:              1373333 | Diff:                    2
+[ERR] Time:             2631000 | RTL:              1329648 | Exp:              1329646 | Diff:                    2
+[ERR] Time:             2643000 | RTL:               834644 | Exp:               834642 | Diff:                    2
+[ERR] Time:             2656000 | RTL:               389773 | Exp:               389770 | Diff:                    3
+[ERR] Time:             2668000 | RTL:               188506 | Exp:               188503 | Diff:                    3
+[ERR] Time:             2680000 | RTL:                31992 | Exp:                31989 | Diff:                    3
+[ERR] Time:             2692000 | RTL:              -294176 | Exp:              -294178 | Diff:                    2
+[ERR] Time:             2705000 | RTL:              -587965 | Exp:              -587967 | Diff:                    2
+[ERR] Time:             2717000 | RTL:             -1097626 | Exp:             -1097628 | Diff:                    2
+[ERR] Time:             2729000 | RTL:              -949362 | Exp:              -949365 | Diff:                    3
+[ERR] Time:             2741000 | RTL:              -751802 | Exp:              -751804 | Diff:                    2
+[ERR] Time:             2753000 | RTL:              -417942 | Exp:              -417944 | Diff:                    2
+[ERR] Time:             2766000 | RTL:               -81236 | Exp:               -81239 | Diff:                    3
+[ERR] Time:             2778000 | RTL:              -363322 | Exp:              -363324 | Diff:                    2
+[ERR] Time:             2790000 | RTL:                10720 | Exp:                10718 | Diff:                    2
+[ERR] Time:             2802000 | RTL:               108458 | Exp:               108456 | Diff:                    2
+[ERR] Time:             2814000 | RTL:               190396 | Exp:               190393 | Diff:                    3
+[ERR] Time:             2827000 | RTL:               547641 | Exp:               547639 | Diff:                    2
+[ERR] Time:             2839000 | RTL:               239908 | Exp:               239905 | Diff:                    3
+[ERR] Time:             2851000 | RTL:               214858 | Exp:               214855 | Diff:                    3
+[ERR] Time:             2863000 | RTL:               341114 | Exp:               341112 | Diff:                    2
+[ERR] Time:             2875000 | RTL:               -69895 | Exp:               -69898 | Diff:                    3
+[ERR] Time:             2888000 | RTL:               210641 | Exp:               210638 | Diff:                    3
+[ERR] Time:             2900000 | RTL:                83871 | Exp:                83869 | Diff:                    2
+[ERR] Time:             2912000 | RTL:                46799 | Exp:                46797 | Diff:                    2
+[ERR] Time:             2924000 | RTL:               312957 | Exp:               312954 | Diff:                    3
+[ERR] Time:             2937000 | RTL:                88098 | Exp:                88096 | Diff:                    2
+[ERR] Time:             2949000 | RTL:               -30079 | Exp:               -30081 | Diff:                    2
+[ERR] Time:             2961000 | RTL:               -94890 | Exp:               -94892 | Diff:                    2
+[ERR] Time:             2973000 | RTL:                -4460 | Exp:                -4462 | Diff:                    2
+[ERR] Time:             2985000 | RTL:              -278273 | Exp:              -278276 | Diff:                    3
+[ERR] Time:             2998000 | RTL:                  -76 | Exp:                  -79 | Diff:                    3
+[ERR] Time:             3010000 | RTL:                  -76 | Exp:                  -79 | Diff:                    3
+
+**************************************
+   VERIFICATION FAILED! Errors:         133    
+**************************************
+$finish called at time : 3408625 ps : File "/home/zealatan/FPGA_Based_OFDM_Transceiver/SIM_VIVADO/MOVING/tb_moving_avg.v" Line 94
+exit
+INFO: [Common 17-206] Exiting xsim at Fri Apr 17 13:23:29 2026...

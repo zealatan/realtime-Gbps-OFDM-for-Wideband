@@ -1,0 +1,11 @@
+{
+  "module": "meyr_FFT_ak_dut",
+  "N_LOG2": 4,
+  "N": 16,
+  "TWON": 32,
+  "stim_cycles": 82,
+  "golden_beats": 32,
+  "ak_ref_count": 16,
+  "expected_beats": 32,
+  "note": "A[k]=PSS_stored*conj(SSS); chain=ak_buf+complex_mult+zeropad"
+}

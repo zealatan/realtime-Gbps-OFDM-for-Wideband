@@ -1,0 +1,68 @@
+<?xml version="1.0"?>
+<Runs Version="1" Minor="0">
+	<Run Id="system_dac_tone_0_synth_1" LaunchDir="/home/dsp-mikro7/FPGA_Based_OFDM_Transceiver/hardware/generated/08_rfdc_capture/zcu216_rfdc_capture.runs/system_dac_tone_0_synth_1" FlowId="Vivado_Synthesis" FromStepId="vivado" ToStepId="vivado"/>
+	<Run Id="system_adc_cap_0_synth_1" LaunchDir="/home/dsp-mikro7/FPGA_Based_OFDM_Transceiver/hardware/generated/08_rfdc_capture/zcu216_rfdc_capture.runs/system_adc_cap_0_synth_1" FlowId="Vivado_Synthesis" FromStepId="vivado" ToStepId="vivado"/>
+	<Run Id="system_auto_ds_0_synth_1" LaunchDir="/home/dsp-mikro7/FPGA_Based_OFDM_Transceiver/hardware/generated/08_rfdc_capture/zcu216_rfdc_capture.runs/system_auto_ds_0_synth_1" FlowId="Vivado_Synthesis" FromStepId="vivado" ToStepId="vivado"/>
+	<Run Id="system_xbar_0_synth_1" LaunchDir="/home/dsp-mikro7/FPGA_Based_OFDM_Transceiver/hardware/generated/08_rfdc_capture/zcu216_rfdc_capture.runs/system_xbar_0_synth_1" FlowId="Vivado_Synthesis" FromStepId="vivado" ToStepId="vivado"/>
+	<Run Id="system_auto_pc_0_synth_1" LaunchDir="/home/dsp-mikro7/FPGA_Based_OFDM_Transceiver/hardware/generated/08_rfdc_capture/zcu216_rfdc_capture.runs/system_auto_pc_0_synth_1" FlowId="Vivado_Synthesis" FromStepId="vivado" ToStepId="vivado"/>
+	<Run Id="system_rst_ps8_0_99M_0_synth_1" LaunchDir="/home/dsp-mikro7/FPGA_Based_OFDM_Transceiver/hardware/generated/08_rfdc_capture/zcu216_rfdc_capture.runs/system_rst_ps8_0_99M_0_synth_1" FlowId="Vivado_Synthesis" FromStepId="vivado" ToStepId="vivado"/>
+	<Run Id="system_loop_status_gpio_0_synth_1" LaunchDir="/home/dsp-mikro7/FPGA_Based_OFDM_Transceiver/hardware/generated/08_rfdc_capture/zcu216_rfdc_capture.runs/system_loop_status_gpio_0_synth_1" FlowId="Vivado_Synthesis" FromStepId="vivado" ToStepId="vivado"/>
+	<Run Id="system_loop_status2_gpio_0_synth_1" LaunchDir="/home/dsp-mikro7/FPGA_Based_OFDM_Transceiver/hardware/generated/08_rfdc_capture/zcu216_rfdc_capture.runs/system_loop_status2_gpio_0_synth_1" FlowId="Vivado_Synthesis" FromStepId="vivado" ToStepId="vivado" IsOrderedIPRun="true">
+		<Parent Id="system_loop_status_gpio_0_synth_1"/>
+	</Run>
+	<Run Id="system_usp_rf_data_converter_0_0_synth_1" LaunchDir="/home/dsp-mikro7/FPGA_Based_OFDM_Transceiver/hardware/generated/08_rfdc_capture/zcu216_rfdc_capture.runs/system_usp_rf_data_converter_0_0_synth_1" FlowId="Vivado_Synthesis" FromStepId="vivado" ToStepId="vivado"/>
+	<Run Id="system_loop_ctrl_gpio_0_synth_1" LaunchDir="/home/dsp-mikro7/FPGA_Based_OFDM_Transceiver/hardware/generated/08_rfdc_capture/zcu216_rfdc_capture.runs/system_loop_ctrl_gpio_0_synth_1" FlowId="Vivado_Synthesis" FromStepId="vivado" ToStepId="vivado"/>
+	<Run Id="system_clk104_gpio_0_synth_1" LaunchDir="/home/dsp-mikro7/FPGA_Based_OFDM_Transceiver/hardware/generated/08_rfdc_capture/zcu216_rfdc_capture.runs/system_clk104_gpio_0_synth_1" FlowId="Vivado_Synthesis" FromStepId="vivado" ToStepId="vivado"/>
+	<Run Id="system_reset_inverter_0_synth_1" LaunchDir="/home/dsp-mikro7/FPGA_Based_OFDM_Transceiver/hardware/generated/08_rfdc_capture/zcu216_rfdc_capture.runs/system_reset_inverter_0_synth_1" FlowId="Vivado_Synthesis" FromStepId="vivado" ToStepId="vivado"/>
+	<Run Id="system_rst_dac3_0_synth_1" LaunchDir="/home/dsp-mikro7/FPGA_Based_OFDM_Transceiver/hardware/generated/08_rfdc_capture/zcu216_rfdc_capture.runs/system_rst_dac3_0_synth_1" FlowId="Vivado_Synthesis" FromStepId="vivado" ToStepId="vivado"/>
+	<Run Id="system_rst_dac2_0_synth_1" LaunchDir="/home/dsp-mikro7/FPGA_Based_OFDM_Transceiver/hardware/generated/08_rfdc_capture/zcu216_rfdc_capture.runs/system_rst_dac2_0_synth_1" FlowId="Vivado_Synthesis" FromStepId="vivado" ToStepId="vivado" IsOrderedIPRun="true">
+		<Parent Id="system_rst_dac3_0_synth_1"/>
+	</Run>
+	<Run Id="system_rst_adc2_0_synth_1" LaunchDir="/home/dsp-mikro7/FPGA_Based_OFDM_Transceiver/hardware/generated/08_rfdc_capture/zcu216_rfdc_capture.runs/system_rst_adc2_0_synth_1" FlowId="Vivado_Synthesis" FromStepId="vivado" ToStepId="vivado"/>
+	<Run Id="system_capture_gpio_0_synth_1" LaunchDir="/home/dsp-mikro7/FPGA_Based_OFDM_Transceiver/hardware/generated/08_rfdc_capture/zcu216_rfdc_capture.runs/system_capture_gpio_0_synth_1" FlowId="Vivado_Synthesis" FromStepId="vivado" ToStepId="vivado"/>
+	<Run Id="system_zynq_ultra_ps_e_0_0_synth_1" LaunchDir="/home/dsp-mikro7/FPGA_Based_OFDM_Transceiver/hardware/generated/08_rfdc_capture/zcu216_rfdc_capture.runs/system_zynq_ultra_ps_e_0_0_synth_1" FlowId="Vivado_Synthesis" FromStepId="vivado" ToStepId="vivado"/>
+	<Run Id="synth_1" LaunchDir="/home/dsp-mikro7/FPGA_Based_OFDM_Transceiver/hardware/generated/08_rfdc_capture/zcu216_rfdc_capture.runs/synth_1" FlowId="Vivado_Synthesis" FromStepId="vivado" ToStepId="vivado">
+		<Parent Id="system_dac_tone_0_synth_1"/>
+		<Parent Id="system_adc_cap_0_synth_1"/>
+		<Parent Id="system_auto_ds_0_synth_1"/>
+		<Parent Id="system_xbar_0_synth_1"/>
+		<Parent Id="system_auto_pc_0_synth_1"/>
+		<Parent Id="system_rst_ps8_0_99M_0_synth_1"/>
+		<Parent Id="system_loop_status_gpio_0_synth_1"/>
+		<Parent Id="system_loop_status2_gpio_0_synth_1"/>
+		<Parent Id="system_usp_rf_data_converter_0_0_synth_1"/>
+		<Parent Id="system_loop_ctrl_gpio_0_synth_1"/>
+		<Parent Id="system_clk104_gpio_0_synth_1"/>
+		<Parent Id="system_reset_inverter_0_synth_1"/>
+		<Parent Id="system_rst_dac3_0_synth_1"/>
+		<Parent Id="system_rst_dac2_0_synth_1"/>
+		<Parent Id="system_rst_adc2_0_synth_1"/>
+		<Parent Id="system_capture_gpio_0_synth_1"/>
+		<Parent Id="system_zynq_ultra_ps_e_0_0_synth_1"/>
+	</Run>
+	<Run Id="impl_1" LaunchDir="/home/dsp-mikro7/FPGA_Based_OFDM_Transceiver/hardware/generated/08_rfdc_capture/zcu216_rfdc_capture.runs/impl_1" FlowId="Vivado_Implementation" FromStepId="init_design" ToStepId="write_bitstream">
+		<Parent Id="synth_1"/>
+		<Parent Id="system_dac_tone_0_synth_1"/>
+		<Parent Id="system_adc_cap_0_synth_1"/>
+		<Parent Id="system_auto_ds_0_synth_1"/>
+		<Parent Id="system_xbar_0_synth_1"/>
+		<Parent Id="system_auto_pc_0_synth_1"/>
+		<Parent Id="system_rst_ps8_0_99M_0_synth_1"/>
+		<Parent Id="system_loop_status_gpio_0_synth_1"/>
+		<Parent Id="system_loop_status2_gpio_0_synth_1"/>
+		<Parent Id="system_usp_rf_data_converter_0_0_synth_1"/>
+		<Parent Id="system_loop_ctrl_gpio_0_synth_1"/>
+		<Parent Id="system_clk104_gpio_0_synth_1"/>
+		<Parent Id="system_reset_inverter_0_synth_1"/>
+		<Parent Id="system_rst_dac3_0_synth_1"/>
+		<Parent Id="system_rst_dac2_0_synth_1"/>
+		<Parent Id="system_rst_adc2_0_synth_1"/>
+		<Parent Id="system_capture_gpio_0_synth_1"/>
+		<Parent Id="system_zynq_ultra_ps_e_0_0_synth_1"/>
+	</Run>
+	<Parameters>
+		<Parameter Name="runs.monitorLSFJobs" Val="true" Type="bool"/>
+		<Parameter Name="runs.enableClusterConf" Val="true" Type="bool"/>
+	</Parameters>
+</Runs>
+

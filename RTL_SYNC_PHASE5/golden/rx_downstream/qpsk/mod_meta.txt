@@ -1,0 +1,6 @@
+mod_sel=0
+mod_name=qpsk
+bits_per_axis=1
+bits_per_sym=2
+data_bits_per_frame=5304
+scale=0.7071067811865475

@@ -1,0 +1,646 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>03 frac_cfo_frame_corrector_top — ZCU216 Synchronizer</title>
+<style>
+  :root {
+    --bg:#001219; --card:#012a33; --accent1:#005F73; --accent2:#0A9396;
+    --light:#94D2BD; --warn:#EE9B00; --error:#AE2012; --text:#E9D8A6; --border:#1a4a55;
+  }
+  * { box-sizing:border-box; margin:0; padding:0; }
+  body { background:var(--bg); color:var(--text); font-family:'Consolas','Courier New',monospace; font-size:13px; line-height:1.6; }
+  nav { background:var(--accent1); padding:8px 20px; display:flex; flex-wrap:wrap; gap:12px; align-items:center; border-bottom:2px solid var(--accent2); }
+  nav a { color:var(--light); text-decoration:none; font-weight:bold; font-size:11px; padding:3px 7px; border-radius:3px; }
+  nav a:hover { background:var(--accent2); color:#fff; }
+  nav .brand { color:#fff; font-size:14px; font-weight:bold; margin-right:12px; }
+  .container { max-width:1300px; margin:0 auto; padding:24px; }
+  h2 { color:var(--light); font-size:15px; margin:30px 0 10px; border-bottom:2px solid var(--border); padding-bottom:6px; }
+  h3 { color:var(--accent2); font-size:13px; margin:16px 0 8px; }
+  table { width:100%; border-collapse:collapse; margin-bottom:20px; }
+  th { background:var(--accent1); color:var(--light); padding:7px 10px; text-align:left; font-size:11px; text-transform:uppercase; letter-spacing:0.05em; }
+  td { padding:6px 10px; border-bottom:1px solid var(--border); font-size:12px; vertical-align:top; }
+  tr:nth-child(even) td { background:#021820; }
+  .badge-pass { background:#1a3a1a; color:#3fb950; border:1px solid #3fb950; padding:2px 8px; border-radius:10px; font-size:11px; font-weight:bold; white-space:nowrap; display:inline-block; }
+  .badge-pending { background:#1e2830; color:#8b949e; border:1px solid #8b949e; padding:2px 8px; border-radius:10px; font-size:11px; white-space:nowrap; display:inline-block; }
+  .badge-resolved { background:#0d2a4a; color:#58a6ff; border:1px solid #58a6ff; padding:2px 8px; border-radius:10px; font-size:11px; font-weight:bold; display:inline-block; }
+  .card { background:var(--card); border:1px solid var(--border); border-radius:6px; padding:18px; margin-bottom:16px; }
+  code { background:#021820; color:var(--accent2); padding:1px 6px; border-radius:3px; font-size:12px; }
+  .note { background:#021f2a; border-left:3px solid var(--warn); padding:9px 14px; margin:10px 0; font-size:12px; color:var(--warn); border-radius:0 4px 4px 0; }
+  .ok { background:#0a1f0a; border-left:3px solid #3fb950; padding:9px 14px; margin:10px 0; font-size:12px; color:#3fb950; border-radius:0 4px 4px 0; }
+  p { margin:6px 0; }
+  ul, ol { margin:8px 0 8px 24px; }
+  li { margin:3px 0; }
+  .blk { display:inline-block; border:1px solid var(--accent2); border-radius:4px; padding:7px 12px; font-size:11px; background:#012a33; color:var(--text); text-align:center; min-width:110px; }
+  .blk-top { display:inline-block; border:2px solid var(--accent2); border-radius:5px; padding:10px 18px; font-size:12px; background:var(--accent1); color:#fff; font-weight:bold; text-align:center; }
+  .blk-ext { display:inline-block; border:1px dashed #1a4a55; border-radius:4px; padding:7px 12px; font-size:11px; background:#001a22; color:#8b949e; text-align:center; min-width:90px; }
+  .hrow { display:flex; align-items:center; justify-content:center; flex-wrap:wrap; gap:10px; margin:6px 0; }
+  .harrow { color:var(--accent2); font-size:18px; flex-shrink:0; }
+  .wh { background:var(--accent2); height:10px; display:inline-block; }
+  .wl { background:#1a4a55; height:10px; display:inline-block; }
+  .wx { background:#CA6702; height:10px; display:inline-block; }
+  .ann { color:var(--warn); font-size:10px; }
+  .hero-stats { display:flex; flex-wrap:wrap; gap:12px; margin:10px 0; }
+  .stat-box { background:var(--card); border:1px solid var(--border); border-radius:5px; padding:8px 14px; min-width:130px; }
+  .stat-val { color:var(--accent2); font-size:18px; font-weight:bold; }
+  .stat-lbl { color:#8b949e; font-size:10px; }
+  .fsm-state { display:inline-block; border:2px solid var(--accent2); border-radius:5px; width:100px; padding:8px 4px; text-align:center; font-size:11px; font-weight:bold; color:#fff; background:var(--accent1); }
+  .fsm-row { display:flex; align-items:center; justify-content:center; gap:8px; flex-wrap:wrap; margin:12px 0; }
+  .fsm-cond { font-size:10px; color:var(--warn); text-align:center; max-width:90px; }
+  .section-num { color:#CA6702; font-size:13px; font-weight:bold; margin-right:6px; }
+  /* --- inline math (self-contained, no external libs) --- */
+  .eq { font-family:'Cambria Math','STIX Two Math','Times New Roman',Georgia,serif;
+        font-size:13.5px; color:var(--light); background:#021820; padding:1px 7px;
+        border-radius:3px; white-space:nowrap; letter-spacing:0.01em; }
+  .eq i, .eq var { font-style:italic; }
+  .eq .op { color:var(--accent2); font-style:normal; padding:0 2px; }   /* = Σ ∏ operators */
+  .eq sub { font-size:0.72em; vertical-align:-0.28em; font-style:italic; }
+  .eq sup { font-size:0.72em; vertical-align:0.5em; font-style:normal; }
+  .eq .conj { text-decoration:overline; text-decoration-thickness:1px; }
+  .eq .frac { display:inline-flex; flex-direction:column; vertical-align:middle;
+              text-align:center; font-size:0.82em; line-height:1.05; margin:0 2px; }
+  .eq .frac > span:first-child { border-bottom:1px solid var(--light); padding:0 4px; }
+  .eqd { display:block; margin:10px 0; text-align:center; }             /* display (block) equation */
+  .eqd .eq { font-size:14.5px; white-space:normal; }
+</style>
+</head>
+<body>
+<nav>
+  <span class="brand">ZCU216 Synchronizer</span>
+  <a href="index.html">&#8592; Index</a>
+  <a href="01_phase3_sync_axis_dma_wrapper.html">01 DMA Wrapper</a>
+  <a href="02_phase3_sync_top.html">02 Sync Top</a>
+  <a href="03_frac_cfo_frame_corrector_top.html">03 Frac CFO</a>
+  <a href="04_pss_sss_symbol_extractor.html">04 PSS/SSS Extr</a>
+  <a href="05_fft256_dual_symbol_frontend.html">05 FFT Frontend</a>
+  <a href="06_meyr_integer_cfo_fft_frontend_top.html">06 Meyr FFT Top</a>
+  <a href="07_meyr_integer_cfo_core.html">07 Meyr Core</a>
+  <a href="08_iq_replay_buffer_576.html">08 Replay Buf</a>
+  <a href="09_low_level_datapath_blocks.html">09 Datapath</a>
+</nav>
+<div class="container">
+
+  <!-- ===== SECTION 1: HEADER / HERO ===== -->
+  <h2 style="margin-top:0; border-bottom:2px solid var(--accent2);"><span class="section-num">03</span> frac_cfo_frame_corrector_top</h2>
+  <div style="color:var(--light); font-size:12px; margin-bottom:6px; opacity:0.85;">
+    Source: <code>rtl/DUT/frac_cfo_frame_corrector_top.v</code> &nbsp;|&nbsp;
+    Role: Frame capture + detection + frac CFO estimation + correction &nbsp;|&nbsp;
+    Pipeline Stage: <strong>3 (algorithm inner loop)</strong>
+  </div>
+  <div style="display:flex; flex-wrap:wrap; gap:8px; margin:10px 0 18px;">
+    <span class="badge-pending">Not Verified</span>
+    <span class="badge-pending">Not Verified</span>
+    <span class="badge-pending">Not Verified</span>
+    <span class="badge-pending">Not Verified</span>
+    <span class="badge-pending">Not Verified</span>
+    <span class="badge-pending">Not Verified</span>
+    <span class="badge-pending">Not Verified</span>
+    <span class="badge-pending">Not Verified</span>
+  </div>
+  <div class="hero-stats">
+    <div class="stat-box"><div class="stat-val">7-state</div><div class="stat-lbl">FSM: IDLE/FILL/FRAME_DET/TIMING_CFO/LOAD_NCO/CORRECT/DONE</div></div>
+    <div class="stat-box"><div class="stat-val">4096</div><div class="stat-lbl">Buffer depth (BUF_AW=12)</div></div>
+    <div class="stat-box"><div class="stat-val">288</div><div class="stat-lbl">Default OUTPUT_SAMPLES (NSC+CP_LEN)</div></div>
+    <div class="stat-box"><div class="stat-val">576</div><div class="stat-lbl">Override OUTPUT_SAMPLES (from phase3_sync_top)</div></div>
+    <div class="stat-box"><div class="stat-val">17</div><div class="stat-lbl">NCO_WAIT cycles (LATENCY+2)</div></div>
+    <div class="stat-box"><div class="stat-val">0.5</div><div class="stat-lbl">smp/clk output throughput</div></div>
+  </div>
+
+  <!-- ===== SECTION 2: INTEGRATION CONTEXT ===== -->
+  <h2><span class="section-num">2</span> Integration Context</h2>
+  <div class="card">
+    <h3>Data Flow</h3>
+    <div class="hrow" style="margin-bottom:12px;">
+      <div class="blk-ext">phase3_sync_top<br>(Stage 2)</div>
+      <span class="harrow">&#8594; s_axis (raw IQ) &#8594;</span>
+      <div class="blk-top">frac_cfo_frame_corrector_top<br><span style="font-size:10px; font-weight:normal;">Pipeline Stage 3</span></div>
+      <span class="harrow">&#8594; m_axis (frac-corr IQ) &#8594;</span>
+      <div class="blk-ext">pss_sss_symbol_<br>extractor (u_extractor)</div>
+    </div>
+    <p>This module is the innermost algorithm engine. It accepts raw IQ from <code>phase3_sync_top</code>, internally manages a frame capture buffer, runs frame detection and CP timing, estimates the fractional CFO via CORDIC atan2, then streams TOTAL_SAMPLES of frac-corrected IQ on <code>m_axis</code>. The single <code>aresetn</code> and <code>start</code> interface from the parent FSM are the only control inputs.</p>
+
+    <h3>AXI-S Signals at Each Boundary</h3>
+    <table>
+      <thead><tr><th>Boundary</th><th>Signals</th><th>Width</th><th>Notes</th></tr></thead>
+      <tbody>
+        <tr><td>s_axis (AXI-S slave, raw IQ in)</td><td>tdata[31:0], tvalid, tready, tlast</td><td>32b data</td><td>tready asserted in S_FILL only; deasserted in all other states (buffer already full)</td></tr>
+        <tr><td>m_axis (AXI-S master, frac-corr IQ out)</td><td>tdata[31:0], tvalid, tready, tlast</td><td>32b data</td><td>Active only in S_CORRECT; tvalid from frac_cfo_corrector_top; tlast on sample TOTAL_SAMPLES-1</td></tr>
+        <tr><td>Control from parent (phase3_sync_top)</td><td>start, aresetn</td><td>1b each</td><td>start=1 pulse; aresetn = dut_aresetn from wrapper</td></tr>
+        <tr><td>Status to parent</td><td>done, busy, frame_error, error_code[3:0]</td><td>—</td><td>done: 1-cycle; busy: held during run; frame_error: sticky until next start</td></tr>
+        <tr><td>Result outputs to parent</td><td>frame_index[BUF_AW-1:0], frame_found, peak_lag[INDEX_WIDTH-1:0], peak_metric, frac_phase[PHASE_WIDTH-1:0], frac_phase_valid</td><td>—</td><td>Stable after frac_phase_valid; captured by phase3_sync_top debug outputs</td></tr>
+      </tbody>
+    </table>
+
+    <h3>Clock Domain and Reset</h3>
+    <p>Single clock domain: <code>aclk</code>. Reset <code>aresetn</code> is the wrapper's <code>dut_aresetn</code> (hard + soft reset combined). The FSM uses synchronous reset: <code>if (!aresetn)</code> inside a posedge-always block. All sub-modules share the same aresetn.</p>
+    <p>The <code>ACQ_WATCHDOG_CYCLES</code> parameter (default 0 = disabled) enables an inactivity watchdog during S_FILL. When non-zero, if ACQ_WATCHDOG_CYCLES consecutive clock cycles pass without an accepted IQ sample in S_FILL, the module asserts frame_error with error_code=6 (INPUT_ACQ_TIMEOUT) and exits to S_DONE.</p>
+  </div>
+
+  <!-- ===== SECTION 3: BLOCK DIAGRAM ===== -->
+  <h2><span class="section-num">3</span> Block Diagram</h2>
+  <div class="card" style="text-align:center; padding:24px;">
+    <div style="font-size:11px; color:#8b949e; margin-bottom:8px;">Shared buffer read port multiplexed by FSM state</div>
+    <div class="hrow">
+      <div class="blk-ext">s_axis<br>(raw IQ in)</div>
+      <span class="harrow">&#8594;</span>
+      <div style="border:2px solid var(--accent2); border-radius:8px; padding:16px 18px; background:#001a24; min-width:650px;">
+        <div style="color:var(--accent2); font-weight:bold; font-size:12px; margin-bottom:12px;">frac_cfo_frame_corrector_top</div>
+
+        <!-- Row 1: buffer -->
+        <div class="hrow" style="margin-bottom:8px;">
+          <div class="blk" style="min-width:170px; border-color:#9B2226; color:#9B2226;">u_buf<br>iq_frame_buffer<br><span style="font-size:10px; color:#8b949e;">BUF_AW=12 → 4K&times;32b<br>BRAM-backed; write-once capture<br>random-access read</span></div>
+          <div style="font-size:10px; color:#8b949e; text-align:left; margin:0 8px;">buf_rd_en<br>buf_rd_addr<br>&#8594;<br>buf_rd_data</div>
+          <div style="display:flex; flex-direction:column; gap:6px; align-items:center;">
+            <div class="blk" style="min-width:150px;">u_fd<br>frame_detector<br><span style="font-size:10px; color:#8b949e;">sliding window energy<br>→ frame_index</span></div>
+            <div class="blk" style="min-width:150px;">u_tfc<br>frame_frac_cfo_top<br><span style="font-size:10px; color:#8b949e;">CP autocorr + CORDIC atan2<br>→ peak_lag, frac_phase</span></div>
+          </div>
+        </div>
+
+        <!-- Row 2: FSM mux note -->
+        <div style="font-size:10px; color:#8b949e; border:1px dashed #1a4a55; padding:4px 8px; border-radius:3px; margin:6px 0; text-align:left;">
+          buf_rd_addr/en mux: S_FRAME_DET → fd_buf_rd_* &nbsp;|&nbsp; S_TIMING_CFO → tfc_buf_rd_* &nbsp;|&nbsp; S_CORRECT → slot_start_r + play_rd_ptr
+        </div>
+
+        <!-- Row 3: NCO + corrector -->
+        <div class="hrow" style="margin-top:8px;">
+          <div style="font-size:10px; color:#8b949e; text-align:right;">frac_phase_r<br>→ step_word_w<br>= {sign8,frac_phase,8'b0}</div>
+          <span class="harrow">&#8594;</span>
+          <div class="blk" style="min-width:180px;">u_corr<br>frac_cfo_corrector_top<br><span style="font-size:10px; color:#8b949e;">NCO + complex_rotator<br>LATENCY=15 CORDIC stages<br>→ m_axis (corr IQ)</span></div>
+          <span class="harrow">&#8594;</span>
+          <div class="blk-ext" style="min-width:60px;">m_axis<br>(frac-corr IQ<br>TOTAL_SAMPLES)</div>
+        </div>
+        <!-- play hold FIFO note -->
+        <div style="font-size:10px; color:#8b949e; margin-top:8px; padding:4px 8px; border-top:1px solid #1a4a55;">
+          1-deep hold register (play_hold_data/valid/last) + play_rd_pend pipeline: 1 smp per 2 clks max
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== SECTION 4: INPUT INTERFACE ===== -->
+  <h2><span class="section-num">4</span> Input Interface</h2>
+  <table>
+    <thead><tr><th>Signal</th><th>Width</th><th>Dir</th><th>Type</th><th>Description</th><th>Valid/Ready Relation</th><th>Reset Behavior</th></tr></thead>
+    <tbody>
+      <tr><td><code>aclk</code></td><td>1</td><td>in</td><td>clock</td><td>System clock; FSM on posedge aclk with synchronous reset</td><td>—</td><td>—</td></tr>
+      <tr><td><code>aresetn</code></td><td>1</td><td>in</td><td>sync rst</td><td>Active-low synchronous reset; checked at top of posedge-always block</td><td>—</td><td>0 = reset all state; buf_capture_start=0, state=S_IDLE, play regs cleared</td></tr>
+      <tr><td><code>s_axis_tdata[31:0]</code></td><td>32</td><td>in</td><td>AXI-S</td><td>Raw IQ: I=[15:0] signed, Q=[31:16] signed</td><td>Accepted only in S_FILL (s_axis_tready=1 while filling); not consumed in other states</td><td>Not consumed when buffer full or not in S_FILL</td></tr>
+      <tr><td><code>s_axis_tvalid</code></td><td>1</td><td>in</td><td>AXI-S</td><td>Input sample valid</td><td>Hold until tready asserts in S_FILL</td><td>—</td></tr>
+      <tr><td><code>s_axis_tlast</code></td><td>1</td><td>in</td><td>AXI-S</td><td>End-of-input-frame marker; forwarded to iq_frame_buffer</td><td>With tvalid on last beat</td><td>—</td></tr>
+      <tr><td><code>start</code></td><td>1</td><td>in</td><td>control</td><td>One-cycle start pulse; transitions S_IDLE → S_FILL; triggers buf_capture_start</td><td>1 cycle; only sampled in S_IDLE when !busy</td><td>Ignored during reset</td></tr>
+      <tr><td><code>threshold_in[ENERGY_WIDTH-1:0]</code></td><td>40</td><td>in</td><td>config</td><td>Frame detector energy threshold; passed to u_fd at start</td><td>Static during run</td><td>—</td></tr>
+      <tr><td><code>window_len_in[6:0]</code></td><td>7</td><td>in</td><td>config</td><td>Frame detector sliding window length (default 25)</td><td>Static during run</td><td>—</td></tr>
+      <tr><td><code>hit_count_in[3:0]</code></td><td>4</td><td>in</td><td>config</td><td>Consecutive hit count threshold for frame_detector (default 10)</td><td>Static during run</td><td>—</td></tr>
+    </tbody>
+  </table>
+
+  <!-- ===== SECTION 5: OUTPUT INTERFACE ===== -->
+  <h2><span class="section-num">5</span> Output Interface</h2>
+  <table>
+    <thead><tr><th>Signal</th><th>Width</th><th>Dir</th><th>Type</th><th>Description</th><th>Timing Relation</th><th>Valid/Ready Relation</th></tr></thead>
+    <tbody>
+      <tr><td><code>s_axis_tready</code></td><td>1</td><td>out</td><td>AXI-S</td><td>Input backpressure; from iq_frame_buffer s_axis_tready (asserted in S_FILL, deasserted once buffer full)</td><td>Combinatorial from u_buf</td><td>Gates upstream input; deasserts immediately when buffer full</td></tr>
+      <tr><td><code>done</code></td><td>1</td><td>out</td><td>control</td><td>Algorithm complete; pulses exactly 1 cycle in S_DONE state</td><td>Registered; 1-cycle wide</td><td>—</td></tr>
+      <tr><td><code>busy</code></td><td>1</td><td>out</td><td>control</td><td>Module active; set on start, cleared on done</td><td>Registered; holds from S_FILL through S_CORRECT</td><td>—</td></tr>
+      <tr><td><code>frame_error</code></td><td>1</td><td>out</td><td>control</td><td>Frame not found (fd_frame_found=0) or INPUT_ACQ_TIMEOUT watchdog. Sticky until next start.</td><td>Registered; set in S_FRAME_DET or S_FILL (watchdog)</td><td>—</td></tr>
+      <tr><td><code>error_code[3:0]</code></td><td>4</td><td>out</td><td>control</td><td>0=no error, 6=INPUT_ACQ_TIMEOUT (ACQ_WATCHDOG_CYCLES non-zero); stable after frame_error</td><td>Registered error_code_r; latched on error</td><td>—</td></tr>
+      <tr><td><code>frame_index[BUF_AW-1:0]</code></td><td>12</td><td>out</td><td>result</td><td>Buffer index of frame start found by frame_detector; wire from u_fd frame_index</td><td>Wire; stable after fd_done</td><td>—</td></tr>
+      <tr><td><code>frame_found</code></td><td>1</td><td>out</td><td>result</td><td>1 if frame_detector found valid frame; wire from u_fd</td><td>Wire; stable after fd_done</td><td>—</td></tr>
+      <tr><td><code>peak_lag[INDEX_WIDTH-1:0]</code></td><td>9</td><td>out</td><td>result</td><td>CP autocorrelation peak lag; wire from u_tfc peak_lag</td><td>Wire; stable after tfc_done</td><td>—</td></tr>
+      <tr><td><code>peak_metric[METRIC_WIDTH-1:0]</code></td><td>32</td><td>out</td><td>result</td><td>Peak autocorrelation metric value from u_tfc</td><td>Wire; stable after tfc_done</td><td>—</td></tr>
+      <tr><td><code>frac_phase[PHASE_WIDTH-1:0]</code></td><td>16</td><td>out</td><td>result</td><td>Q1.15 fractional CFO phase word from u_tfc CORDIC; <span class="eq">step_word<span class="op">=</span><span class="op">+</span>frac_phase<span class="op">·</span>2<sup>8</sup></span> inside this module</td><td>Wire from u_tfc; stable after frac_phase_valid</td><td>—</td></tr>
+      <tr><td><code>frac_phase_valid</code></td><td>1</td><td>out</td><td>result</td><td>1-cycle pulse when frac_phase (and frame_index, peak_lag) valid; from u_tfc</td><td>Wire; 1-cycle pulse</td><td>—</td></tr>
+      <tr><td><code>m_axis_tdata[31:0]</code></td><td>32</td><td>out</td><td>AXI-S</td><td>Frac-corrected IQ; I=[15:0], Q=[31:16]; active only in S_CORRECT</td><td>Registered from frac_cfo_corrector_top output</td><td>With m_axis_tvalid; backpressured by m_axis_tready</td></tr>
+      <tr><td><code>m_axis_tvalid</code></td><td>1</td><td>out</td><td>AXI-S</td><td>Corrected output valid; from u_corr m_axis_tvalid</td><td>Registered from u_corr</td><td>Must hold until m_axis_tready asserts</td></tr>
+      <tr><td><code>m_axis_tlast</code></td><td>1</td><td>out</td><td>AXI-S</td><td>Last sample of corrected output; fires on beat TOTAL_SAMPLES-1</td><td>From u_corr m_axis_tlast; driven by play_hold_last on last accepted sample</td><td>With m_axis_tvalid on last beat</td></tr>
+    </tbody>
+  </table>
+
+  <!-- ===== SECTION 6: PARAMETERS / LOCALPARAMS ===== -->
+  <h2><span class="section-num">6</span> Parameters / Localparams</h2>
+  <table>
+    <thead><tr><th>Name</th><th>Default</th><th>Meaning</th><th>Where Used</th><th>Dependency</th></tr></thead>
+    <tbody>
+      <tr><td><code>NSC</code></td><td>256</td><td>FFT size / subcarrier count</td><td>u_tfc (frame_frac_cfo_top); default TOTAL_SAMPLES if OUTPUT_SAMPLES=0</td><td>NSC+CP_LEN = 288 default output</td></tr>
+      <tr><td><code>CP_LEN</code></td><td>32</td><td>Cyclic prefix length</td><td>u_tfc CP autocorrelation window; default TOTAL_SAMPLES</td><td>Same</td></tr>
+      <tr><td><code>OUTPUT_SAMPLES</code></td><td>0 (= NSC+CP_LEN=288)</td><td>Number of corrected IQ samples to emit on m_axis; 0 = use default NSC+CP_LEN</td><td>TOTAL_SAMPLES localparam; play_rd_ptr terminal count; PLAY_CNT_W width</td><td>Overridden to 576 by phase3_sync_top; critical for PSS+SSS coverage</td></tr>
+      <tr><td><code>BUF_AW</code></td><td>12</td><td>iq_frame_buffer address width; 2^12=4096 entries</td><td>u_buf, u_fd, u_tfc port widths; frame_index_r, slot_start_r widths</td><td>Must exceed TOTAL_SAMPLES; 4096 &gt;&gt; 576</td></tr>
+      <tr><td><code>PHASE_WIDTH</code></td><td>16</td><td>Q1.15 frac CFO phase word width</td><td>u_tfc frac_phase; frac_phase_r; step_word_w computation</td><td>step_word_w = {{8{frac_phase_r[15]}}, frac_phase_r, 8'h00}</td></tr>
+      <tr><td><code>NCO_PHASE_WIDTH</code></td><td>32</td><td>NCO phase accumulator width</td><td>u_corr step_word port; step_word_w width (32b)</td><td>step_word_w is exactly 32b: sign-extended frac_phase shifted left 8</td></tr>
+      <tr><td><code>LATENCY</code></td><td>15</td><td>CORDIC pipeline stages in frac NCO (passed to u_corr)</td><td>NCO_WAIT localparam = LATENCY+2</td><td>NCO_WAIT=17 total cycles to wait in S_LOAD_NCO before entering S_CORRECT</td></tr>
+      <tr><td><code>ACQ_WATCHDOG_CYCLES</code></td><td>0</td><td>Acquisition inactivity watchdog. 0=disabled. Non-zero N: exit S_FILL with error_code=6 if N consecutive cycles with no accepted IQ sample.</td><td>acq_wdog_r counter; acq_timeout_w wire; S_FILL transition</td><td>0 preserves backward compatibility; when disabled, entire counter is dead code in synthesis</td></tr>
+      <tr><td><code>TOTAL_SAMPLES</code></td><td>288 or 576 (localparam)</td><td>= (OUTPUT_SAMPLES&gt;0) ? OUTPUT_SAMPLES : (NSC+CP_LEN). Actual corrected samples to emit.</td><td>play_rd_ptr terminal count; PLAY_CNT_W; play_rd_last generation</td><td>576 when called from phase3_sync_top; 288 when called standalone</td></tr>
+      <tr><td><code>PLAY_CNT_W</code></td><td>$clog2(TOTAL_SAMPLES+1) (localparam)</td><td>Width of play_rd_ptr counter; must represent 0..TOTAL_SAMPLES</td><td>play_rd_ptr register width</td><td>10 bits for TOTAL_SAMPLES=576 (clog2(577)=10)</td></tr>
+      <tr><td><code>NCO_WAIT</code></td><td>17 (localparam)</td><td>= LATENCY+2. nco_cnt value when sincos_valid asserts; triggers S_LOAD_NCO → S_CORRECT transition.</td><td>S_LOAD_NCO transition condition; nco_cnt counter</td><td>LATENCY+2: +1 for load cycle, +1 for reset cycle before pipeline warming</td></tr>
+    </tbody>
+  </table>
+
+  <!-- ===== SECTION 7: OPERATION ===== -->
+  <h2><span class="section-num">7</span> Operation</h2>
+  <div class="card">
+    <h3>S_IDLE — Waiting for Start</h3>
+    <p>FSM waits with busy=0. On <code>start &amp;&amp; !busy</code>: set busy=1, clear error_code_r=0, pulse <code>buf_capture_start=1</code> (starts iq_frame_buffer capture mode), transition to S_FILL.</p>
+
+    <h3>S_FILL — AXI-S Buffer Capture</h3>
+    <p>The iq_frame_buffer accepts incoming IQ samples via its s_axis interface. <code>s_axis_tready</code> is asserted by u_buf while the buffer has space. The buffer captures exactly 2^BUF_AW = 4096 samples (or until buf_capture_done asserts). During S_FILL, the ACQ watchdog is active if ACQ_WATCHDOG_CYCLES &gt; 0: if the watchdog counter reaches ACQ_WATCHDOG_CYCLES-1 without an accepted sample, <code>acq_timeout_w</code> fires, frame_error=1, error_code_r=6, and the FSM jumps to S_DONE.</p>
+    <p>On <code>buf_capture_done</code>: pulse <code>fd_start_r=1</code>, transition to S_FRAME_DET.</p>
+
+    <h3>S_FRAME_DET — Frame Detection</h3>
+    <p>The buf_rd_addr/buf_rd_en mux connects to <code>fd_buf_rd_addr/fd_buf_rd_en</code> (frame_detector drives these). The frame_detector performs a sliding-window energy scan over the buffer looking for a sustained period where IQ power falls below the threshold (indicating a CP correlation peak). When <code>fd_done</code> asserts:</p>
+    <ul>
+      <li>If <code>fd_frame_found=1</code>: latch <code>frame_index_r = fd_frame_index</code>, pulse <code>tfc_start_r=1</code>, transition to S_TIMING_CFO.</li>
+      <li>If <code>fd_frame_found=0</code>: set <code>frame_error=1</code>, transition to S_DONE (no error_code set = code 0).</li>
+    </ul>
+
+    <h3>S_TIMING_CFO — CP Autocorrelation and CORDIC atan2</h3>
+    <p>buf_rd_addr/en mux connects to <code>tfc_buf_rd_addr/tfc_buf_rd_en</code> (frame_frac_cfo_top). The u_tfc module reads CP-length windows from the buffer at <code>base_addr = frame_index_r</code>, computes the VanDeBeek autocorrelation for each lag (0..NSC-1), finds the peak, then applies CORDIC atan2 to get the fractional CFO phase.</p>
+    <p>When <code>tfc_done</code> asserts: latch <code>peak_lag_r = peak_lag</code>, <code>frac_phase_r = frac_phase</code>, compute <code>slot_start_r = frame_index_r + peak_lag</code>, reset <code>nco_cnt=0</code>, transition to S_LOAD_NCO.</p>
+
+    <h3>S_LOAD_NCO — NCO Load, Reset, and Warmup</h3>
+    <p>The NCO sequencing uses a 5-bit counter <code>nco_cnt</code> (0..NCO_WAIT) with combinatorial decode:</p>
+    <ul>
+      <li><code>nco_cnt=0</code>: <code>nco_load_step_w=1</code> → step_word loaded into u_corr NCO phase accumulator.</li>
+      <li><code>nco_cnt=1</code>: <code>nco_phase_reset_w=1</code> → NCO phase accumulator cleared to 0.</li>
+      <li><code>nco_cnt=2..NCO_WAIT-1</code>: <code>nco_enable_w=1</code> → NCO CORDIC pipeline runs; sin/cos values flow through the 15-stage CORDIC pipeline.</li>
+      <li><code>nco_cnt=NCO_WAIT=17</code>: <code>sincos_valid</code> should be asserted (pipeline fully primed); latch initial play_rd_ptr=0, play_rd_pend=0, play_hold_valid=0; transition to S_CORRECT.</li>
+    </ul>
+    <p>The step_word is computed as: <code>step_word_w = {{8{frac_phase_r[15]}}, frac_phase_r, 8'h00}</code> — this is sign-extend-8 of frac_phase_r concatenated with 8 zero bits. Equivalently: <span class="eq">step_word_w<span class="op">=</span><span class="op">+</span>frac_phase_r<span class="op">·</span>2<sup>8</sup></span> (as a 32-bit signed fixed-point number). The positive sign means the NCO rotates at +frac_phase frequency to cancel the negative frac CFO in the input signal.</p>
+
+    <h3>S_CORRECT — Corrected IQ Stream Playback</h3>
+    <p>The buffer read mux is: <code>buf_rd_addr = slot_start_r + play_rd_ptr</code>. The play sequencer uses a 2-cycle pipeline (1 cycle BRAM read latency + 1 hold register stage) to match the sample rate to the corrector acceptance rate:</p>
+    <ol>
+      <li><strong>can_issue</strong>: asserts when no pending read is outstanding (<code>!play_rd_pend</code>), there are remaining samples (<code>play_rd_ptr &lt; TOTAL_SAMPLES</code>), and the hold register is either empty or being consumed (<code>!play_hold_valid || corr_accept</code>).</li>
+      <li>When <code>can_issue=1</code>: issue buffer read (buf_rd_en=1), set play_rd_pend=1, advance play_rd_ptr.</li>
+      <li>On the next cycle (play_rd_pend=1): capture buf_rd_data into play_hold_data, set play_hold_valid=1, clear play_rd_pend.</li>
+      <li><code>corr_accept = play_hold_valid &amp;&amp; corr_tready</code>: when the corrector accepts a sample, clear play_hold_valid.</li>
+      <li>When <code>play_hold_last &amp;&amp; corr_accept</code>: last sample consumed; transition to S_DONE.</li>
+    </ol>
+    <p>This 2-cycle pipeline (BRAM read + hold register) limits throughput to 1 sample per 2 clocks maximum. The corrector (frac_cfo_corrector_top with CORDIC pipeline) processes each sample with NCO enable=1 continuously during S_CORRECT.</p>
+
+    <h3>S_DONE — Completion</h3>
+    <p>done=1 (registered, 1 cycle), busy=0, transition to S_IDLE. Frame_error and error_code_r remain latched until cleared at the start of the next run.</p>
+
+    <h3>NCO Step Word Direction</h3>
+    <p>The step word <span class="eq"><span class="op">+</span>frac_phase<span class="op">·</span>2<sup>8</sup></span> (A-FIX2 convention) is chosen so that the corrector rotates at the same frequency as the CFO (not opposite). This is correct because: frac_phase = CORDIC atan2 output = angle of the CP correlation complex sum = the carrier frequency offset accumulated over CP_LEN samples. The corrector must multiply by <span class="eq">e<sup>&nbsp;+j2π·frac_phase·<i>n</i>/NSC</sup></span> to cancel the <span class="eq">e<sup>&nbsp;−j(·)</sup></span> rotation introduced by the CFO in the received signal. Contrast with the integer CFO step word in phase3_sync_top which uses negation.</p>
+  </div>
+
+  <!-- ===== SECTION 8: TIMING DIAGRAM ===== -->
+  <h2><span class="section-num">8</span> Timing Diagram</h2>
+  <div class="card">
+    <p style="font-size:11px; color:#8b949e; margin-bottom:10px;">Compressed time axis. State labels below each row segment.</p>
+    <table style="width:100%; border-collapse:collapse; font-size:11px;">
+      <colgroup><col style="width:170px;"><col></colgroup>
+      <tbody>
+        <tr>
+          <td style="color:var(--light); font-weight:bold; text-align:right; padding-right:10px;">start (1 cycle)</td>
+          <td>
+            <div style="display:flex; height:12px; align-items:center;">
+              <span class="wl" style="width:20px;"></span><span class="wh" style="width:12px;"></span><span class="wl" style="width:608px;"></span>
+            </div>
+            <span class="ann" style="margin-left:12px;">start</span>
+          </td>
+        </tr>
+        <tr>
+          <td style="color:var(--light); font-weight:bold; text-align:right; padding-right:10px;">s_axis_tready</td>
+          <td>
+            <div style="display:flex; height:12px; align-items:center;">
+              <span class="wl" style="width:32px;"></span><span class="wh" style="width:100px;"></span><span class="wl" style="width:508px;"></span>
+            </div>
+            <span class="ann" style="margin-left:26px;">S_FILL (buffer capturing)</span>
+          </td>
+        </tr>
+        <tr>
+          <td style="color:var(--light); font-weight:bold; text-align:right; padding-right:10px;">buf_rd_en</td>
+          <td>
+            <div style="display:flex; height:12px; align-items:center;">
+              <span class="wl" style="width:132px;"></span>
+              <span class="wx" style="width:80px;"></span>
+              <span class="wl" style="width:20px;"></span>
+              <span class="wx" style="width:60px;"></span>
+              <span class="wl" style="width:20px;"></span>
+              <span class="wx" style="width:80px;"></span>
+              <span class="wl" style="width:248px;"></span>
+            </div>
+            <span class="ann" style="margin-left:120px;">S_FRAME_DET</span>
+            <span class="ann" style="margin-left:25px;">S_TFC</span>
+            <span class="ann" style="margin-left:10px;">S_CORRECT (slot_start+ptr)</span>
+          </td>
+        </tr>
+        <tr>
+          <td style="color:var(--light); font-weight:bold; text-align:right; padding-right:10px;">frac_phase_valid</td>
+          <td>
+            <div style="display:flex; height:12px; align-items:center;">
+              <span class="wl" style="width:212px;"></span><span class="wh" style="width:12px;"></span><span class="wl" style="width:416px;"></span>
+            </div>
+            <span class="ann" style="margin-left:202px;">frac_phase + peak_lag valid</span>
+          </td>
+        </tr>
+        <tr>
+          <td style="color:var(--light); font-weight:bold; text-align:right; padding-right:10px;">nco_cnt (S_LOAD_NCO)</td>
+          <td>
+            <div style="display:flex; height:12px; align-items:center;">
+              <span class="wl" style="width:224px;"></span>
+              <span class="wx" style="width:34px;"></span>
+              <span class="wl" style="width:382px;"></span>
+            </div>
+            <span class="ann" style="margin-left:218px;">0→17 (NCO_WAIT=17 cycles)</span>
+          </td>
+        </tr>
+        <tr>
+          <td style="color:var(--light); font-weight:bold; text-align:right; padding-right:10px;">m_axis_tvalid</td>
+          <td>
+            <div style="display:flex; height:12px; align-items:center;">
+              <span class="wl" style="width:258px;"></span>
+              <span class="wx" style="width:220px;"></span>
+              <span class="wl" style="width:162px;"></span>
+            </div>
+            <span class="ann" style="margin-left:248px;">S_CORRECT: TOTAL_SAMPLES at ~1/2 clk</span>
+          </td>
+        </tr>
+        <tr>
+          <td style="color:var(--light); font-weight:bold; text-align:right; padding-right:10px;">m_axis_tlast</td>
+          <td>
+            <div style="display:flex; height:12px; align-items:center;">
+              <span class="wl" style="width:470px;"></span><span class="wh" style="width:12px;"></span><span class="wl" style="width:158px;"></span>
+            </div>
+            <span class="ann" style="margin-left:460px;">last sample (play_rd_ptr=TOTAL-1)</span>
+          </td>
+        </tr>
+        <tr>
+          <td style="color:var(--light); font-weight:bold; text-align:right; padding-right:10px;">done</td>
+          <td>
+            <div style="display:flex; height:12px; align-items:center;">
+              <span class="wl" style="width:482px;"></span><span class="wh" style="width:12px;"></span><span class="wl" style="width:146px;"></span>
+            </div>
+            <span class="ann" style="margin-left:472px;">S_DONE (1 cycle)</span>
+          </td>
+        </tr>
+        <tr>
+          <td style="color:var(--light); font-weight:bold; text-align:right; padding-right:10px;">state</td>
+          <td>
+            <div style="display:flex; height:12px; align-items:center;">
+              <span style="width:20px; background:#1a4a55; height:10px; display:inline-block;"></span>
+              <span style="width:100px; background:#0A9396; height:10px; display:inline-block;"></span>
+              <span style="width:80px; background:#CA6702; height:10px; display:inline-block;"></span>
+              <span style="width:60px; background:#BB3E03; height:10px; display:inline-block;"></span>
+              <span style="width:34px; background:#9B2226; height:10px; display:inline-block;"></span>
+              <span style="width:220px; background:#005F73; height:10px; display:inline-block;"></span>
+              <span style="width:12px; background:#e3b341; height:10px; display:inline-block;"></span>
+              <span style="width:114px; background:#1a4a55; height:10px; display:inline-block;"></span>
+            </div>
+            <div style="font-size:9px; color:#8b949e; margin-top:2px;">
+              &nbsp;IDLE&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;FILL&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;FRAME_DET&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;TIMING_CFO&nbsp;&nbsp;&nbsp;LOAD_NCO&nbsp;&nbsp;
+              CORRECT&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;DONE&nbsp;IDLE
+            </div>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+    <p style="font-size:11px; color:#8b949e; margin-top:8px;">Approximate cycle counts: FILL ~576, FRAME_DET ~1000–4000, TIMING_CFO ~300–600, LOAD_NCO 17, CORRECT TOTAL_SAMPLES&times;2. Total ~3000–8000 cycles.</p>
+  </div>
+
+  <!-- ===== SECTION 9: INTERNAL FSM ===== -->
+  <h2><span class="section-num">9</span> Internal FSM</h2>
+  <div class="card">
+    <p>7-state Moore FSM encoded in 3-bit register <code>state[2:0]</code>. Synchronous reset (posedge aclk, <code>if (!aresetn)</code> block).</p>
+
+    <div class="fsm-row">
+      <div style="text-align:center;">
+        <div class="fsm-state">S_IDLE<br><span style="font-size:10px;">3'd0</span></div>
+      </div>
+      <div style="font-size:18px; color:var(--accent2);">&#8594;</div>
+      <div style="text-align:center;">
+        <div class="fsm-state" style="background:#0A9396;">S_FILL<br><span style="font-size:10px;">3'd1</span></div>
+        <div style="font-size:10px; color:var(--warn);">start</div>
+      </div>
+      <div style="font-size:18px; color:var(--accent2);">&#8594;</div>
+      <div style="text-align:center;">
+        <div class="fsm-state" style="background:#CA6702;">S_FRAME_DET<br><span style="font-size:10px;">3'd2</span></div>
+        <div style="font-size:10px; color:var(--warn);">buf_done</div>
+      </div>
+      <div style="font-size:18px; color:var(--accent2);">&#8594;</div>
+      <div style="text-align:center;">
+        <div class="fsm-state" style="background:#BB3E03;">S_TIMING_CFO<br><span style="font-size:10px;">3'd3</span></div>
+        <div style="font-size:10px; color:var(--warn);">fd_done &amp;&amp; found</div>
+      </div>
+      <div style="font-size:18px; color:var(--accent2);">&#8594;</div>
+      <div style="text-align:center;">
+        <div class="fsm-state" style="background:#9B2226;">S_LOAD_NCO<br><span style="font-size:10px;">3'd4</span></div>
+        <div style="font-size:10px; color:var(--warn);">tfc_done</div>
+      </div>
+      <div style="font-size:18px; color:var(--accent2);">&#8594;</div>
+      <div style="text-align:center;">
+        <div class="fsm-state" style="background:#005F73;">S_CORRECT<br><span style="font-size:10px;">3'd5</span></div>
+        <div style="font-size:10px; color:var(--warn);">nco_cnt=17</div>
+      </div>
+      <div style="font-size:18px; color:var(--accent2);">&#8594;</div>
+      <div style="text-align:center;">
+        <div class="fsm-state" style="background:#e3b341; color:#000;">S_DONE<br><span style="font-size:10px;">3'd6</span></div>
+        <div style="font-size:10px; color:var(--warn);">last accepted</div>
+      </div>
+      <div style="font-size:18px; color:var(--accent2);">&#8594;</div>
+      <div style="text-align:center;">
+        <div class="fsm-state">S_IDLE<br><span style="font-size:10px;">3'd0</span></div>
+      </div>
+    </div>
+
+    <p style="font-size:11px; color:#8b949e; margin:8px 0;">Error exits: S_FILL→S_DONE (watchdog), S_FRAME_DET→S_DONE (!fd_frame_found)</p>
+
+    <table>
+      <thead><tr><th>From</th><th>Condition</th><th>To</th><th>Actions (registered, same clock)</th></tr></thead>
+      <tbody>
+        <tr><td>S_IDLE</td><td>!aresetn (sync reset)</td><td>S_IDLE</td><td>All registers and FSM state cleared</td></tr>
+        <tr><td>S_IDLE</td><td>start &amp;&amp; !busy</td><td>S_FILL</td><td>busy=1; error_code_r=0; buf_capture_start=1 (1-cycle pulse)</td></tr>
+        <tr><td>S_FILL</td><td>acq_timeout_w (watchdog)</td><td>S_DONE</td><td>frame_error=1; error_code_r=4'd6 (INPUT_ACQ_TIMEOUT)</td></tr>
+        <tr><td>S_FILL</td><td>buf_capture_done</td><td>S_FRAME_DET</td><td>fd_start_r=1 (1-cycle pulse)</td></tr>
+        <tr><td>S_FRAME_DET</td><td>fd_done &amp;&amp; !fd_frame_found</td><td>S_DONE</td><td>frame_error=1 (error_code_r remains 0)</td></tr>
+        <tr><td>S_FRAME_DET</td><td>fd_done &amp;&amp; fd_frame_found</td><td>S_TIMING_CFO</td><td>frame_index_r = fd_frame_index; tfc_start_r=1 (pulse)</td></tr>
+        <tr><td>S_TIMING_CFO</td><td>tfc_done</td><td>S_LOAD_NCO</td><td>peak_lag_r=peak_lag; frac_phase_r=frac_phase; slot_start_r=frame_index_r+peak_lag; nco_cnt=0</td></tr>
+        <tr><td>S_LOAD_NCO</td><td>nco_cnt == NCO_WAIT (=17)</td><td>S_CORRECT</td><td>play_rd_ptr=0; play_rd_pend=0; play_hold_valid=0</td></tr>
+        <tr><td>S_LOAD_NCO</td><td>nco_cnt &lt; NCO_WAIT</td><td>S_LOAD_NCO</td><td>nco_cnt++</td></tr>
+        <tr><td>S_CORRECT</td><td>play_hold_last &amp;&amp; corr_accept</td><td>S_DONE</td><td>Last sample consumed by corrector</td></tr>
+        <tr><td>S_DONE</td><td>always</td><td>S_IDLE</td><td>done=1; busy=0</td></tr>
+        <tr><td>default</td><td>any</td><td>S_IDLE</td><td>Safety fallback</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- ===== SECTION 10: ALGORITHM MAPPING ===== -->
+  <h2><span class="section-num">10</span> Algorithm Mapping</h2>
+  <div class="card">
+    <p>This module implements C reference functions from <code>ref/receiver.c</code>:</p>
+    <table>
+      <thead><tr><th>C Reference</th><th>RTL State / Sub-module</th><th>RTL Signal(s)</th></tr></thead>
+      <tbody>
+        <tr><td><code>frame_detector()</code> @ receiver.c:327<br><span style="font-size:11px;">sliding energy window; envelope power vs threshold</span></td><td>S_FRAME_DET via u_fd (frame_detector)</td><td>fd_frame_index, fd_frame_found, fd_done</td></tr>
+        <tr><td><span class="eq"><i>E</i>[<i>j</i>]<span class="op">=</span><span class="frac"><span>1</span><span>wndLen</span></span><span class="op">∑</span><sub>i=0</sub><sup>wndLen−1</sup>(<i>I</i><sup>2</sup><span class="op">+</span><i>Q</i><sup>2</sup>)</span> @ receiver.c:337 → 10 hits ≥ threshold ⇒ <span class="eq">frame_index</span></td><td>S_FRAME_DET → frame_index_r latched</td><td>frame_index_r (BUF_AW bits)</td></tr>
+        <tr><td><code>VanDeBeekAutoCorrelation()</code> @ receiver.c:556 → <code>auto_corr()</code> @ receiver.c:571, <code>find_max_index()</code> @ receiver.c:585</td><td>S_TIMING_CFO via u_tfc (frame_frac_cfo_top)</td><td>peak_lag, peak_metric; base_addr=frame_index_r</td></tr>
+        <tr><td><span class="eq"><i>P</i>[<i>m</i>]<span class="op">=</span><span class="op">∑</span><sub>i=0</sub><sup>CP−1</sup><i>r</i><sub>i+m</sub><span class="conj"><i>r</i><sub>i+m+NSC</sub></span></span>,&nbsp; peak <span class="eq"><i>m</i></span> maximizes <span class="eq">2√(<i>P</i><sub>I</sub><sup>2</sup><span class="op">+</span><i>P</i><sub>Q</sub><sup>2</sup>)<span class="op">−</span><i>ρ</i></span> @ receiver.c:564</td><td>S_TIMING_CFO autocorr accumulate + peak search in u_tfc</td><td>peak_lag = argmax; peak_metric</td></tr>
+        <tr><td><span class="eq">frac_phase<span class="op">=</span><span class="op">−</span>atan2(<i>P</i><sub>Q</sub>,&nbsp;<i>P</i><sub>I</sub>)<span class="op">/</span>π<span class="op">·</span>2<sup>15</sup></span> (Q1.15)<br><span style="font-size:11px;">C ref uses <span class="eq"><span class="op">−</span>atan2(·)/2π</span> @ receiver.c:296; RTL scales to Q1.15 (·2<sup>15</sup>/π)</span></td><td>S_TIMING_CFO: CORDIC atan2 inside u_tfc</td><td>frac_phase (Q1.15), frac_phase_valid</td></tr>
+        <tr><td><span class="eq">slot_start<span class="op">=</span>frame_index<span class="op">+</span>peak_lag</span> @ receiver.c:291</td><td>S_TIMING_CFO→S_LOAD_NCO transition</td><td>slot_start_r = frame_index_r + peak_lag</td></tr>
+        <tr><td><span class="eq">corrected[<i>n</i>]<span class="op">=</span>raw[slot_start<span class="op">+</span><i>n</i>]<span class="op">·</span>e<sup>&nbsp;+j2π·frac_phase·<i>n</i>/NSC</sup></span><br><code>apply_carrier_freq_offset()</code> @ receiver.c:443</td><td>S_CORRECT: u_buf + u_corr (frac_cfo_corrector_top)</td><td>slot_start_r + play_rd_ptr → buf_rd_addr; <span class="eq">step_word<span class="op">=</span><span class="op">+</span>frac_phase<span class="op">·</span>2<sup>8</sup></span></td></tr>
+        <tr><td>Output TOTAL_SAMPLES corrected samples</td><td>S_CORRECT: play_rd_ptr 0..TOTAL_SAMPLES-1</td><td>m_axis stream (TOTAL_SAMPLES beats, tlast on last)</td></tr>
+      </tbody>
+    </table>
+    <div class="note">Step word sign convention (A-FIX2): <code>step_word_w</code> = <span class="eq"><span class="op">+</span>frac_phase<span class="op">·</span>2<sup>8</sup></span> (positive). In the C reference, the complex correction is <span class="eq">e<sup>&nbsp;+j2π·frac_phase·<i>n</i>/NSC</sup></span> where <span class="eq">frac_phase<span class="op">=</span>atan2(<i>P</i><sub>Q</sub>,&nbsp;<i>P</i><sub>I</sub>)<span class="op">/</span>π<span class="op">·</span>2<sup>15</sup></span> (Q1.15). The RTL NCO generates sin/cos for this positive rotation. This differs from the integer CFO correction in phase3_sync_top which uses negation — the difference arises from the sign of the C reference formula for each correction step.</div>
+  </div>
+
+  <!-- ===== SECTION 11: LATENCY ANALYSIS ===== -->
+  <h2><span class="section-num">11</span> Latency Analysis</h2>
+  <table>
+    <thead><tr><th>State / Path</th><th>Latency (cycles)</th><th>Measurement Method</th><th>Notes</th></tr></thead>
+    <tbody>
+      <tr><td>S_IDLE → S_FILL entry</td><td>1</td><td>start to buf_capture_start</td><td>Registered; buf_capture_start pulses 1 cycle after start</td></tr>
+      <tr><td>S_FILL duration</td><td>&ge;576 (min, at 1 smp/clk input)</td><td>iq_frame_buffer capture count (captures 2^BUF_AW=4096 entries or until done)</td><td>Actual depth=4096; typically limited to FRAME_LEN samples flowing in</td></tr>
+      <tr><td>S_FRAME_DET duration</td><td>~1,000–4,096 cycles</td><td>frame_detector scan over buf (BUF_AW=12 → 4096 positions)</td><td>Depends on where in buffer the frame start is located</td></tr>
+      <tr><td>S_TIMING_CFO duration</td><td>~NSC + LATENCY ≈ 271 cycles</td><td>NSC=256 lag positions scanned + CORDIC_LATENCY=15 pipeline</td><td>VanDeBeek evaluates all NSC lags; CORDIC at end adds 15 cycles</td></tr>
+      <tr><td>S_LOAD_NCO duration</td><td>NCO_WAIT = 17 cycles</td><td>nco_cnt counts 0→17</td><td>LATENCY+2: 1 load + 1 reset + 15 pipeline stages</td></tr>
+      <tr><td>S_CORRECT duration</td><td>TOTAL_SAMPLES &times; 2 cycles (max)</td><td>576 &times; 2 = 1,152 (with OUTPUT_SAMPLES=576)</td><td>1 sample per 2 clocks due to BRAM read pipeline (play_rd_pend round-trip)</td></tr>
+      <tr><td>BRAM read pipeline</td><td>2 cycles</td><td>Issue read (cycle N): buf_rd_en=1; data on buf_rd_data (cycle N+1); loaded to play_hold (cycle N+1); consumed by corrector (cycle N+2 if tready=1)</td><td>1-cycle BRAM latency + 1 hold register stage</td></tr>
+      <tr><td>frac_cfo_corrector_top output latency</td><td>1 cycle</td><td>From play_hold accepted (corr_accept) to m_axis_tvalid</td><td>complex_mult_iq 1-cycle registered output</td></tr>
+      <tr><td>done fires after last m_axis beat</td><td>0 additional cycles</td><td>play_hold_last &amp;&amp; corr_accept → S_DONE next cycle → done=1</td><td>done and m_axis_tlast are concurrent (both fire on last accepted sample cycle)</td></tr>
+      <tr><td>Total: start → done (typical)</td><td>~3,000–8,000 cycles</td><td>P3-15D measurement over 100 frames</td><td>Dominated by FILL (576+) and FRAME_DET (1000+)</td></tr>
+    </tbody>
+  </table>
+
+  <!-- ===== SECTION 12: THROUGHPUT ANALYSIS ===== -->
+  <h2><span class="section-num">12</span> Throughput Analysis</h2>
+  <table>
+    <thead><tr><th>Mode / State</th><th>Samples/Clock</th><th>Throughput</th><th>Bottleneck</th><th>Backpressure Impact</th></tr></thead>
+    <tbody>
+      <tr><td>S_FILL: input acceptance</td><td>1</td><td>1 IQ sample/cycle (when tvalid=1)</td><td>iq_frame_buffer write bandwidth (synchronous BRAM write)</td><td>s_axis_tready deasserts when buf full (BUF_AW=12 → 4096 entries)</td></tr>
+      <tr><td>S_FRAME_DET: buffer scan</td><td>1 (buf rd)</td><td>1 buffer address evaluated per cycle</td><td>frame_detector energy accumulate pipeline</td><td>No external backpressure; internal read-only operation</td></tr>
+      <tr><td>S_TIMING_CFO: autocorrelation</td><td>1 (buf rd)</td><td>1 lag evaluated per cycle (approximately)</td><td>VanDeBeek accumulator width; CORDIC pipeline at end</td><td>No external backpressure; read-only operation</td></tr>
+      <tr><td>S_CORRECT: corrected output</td><td>0.5</td><td>1 IQ sample per 2 clocks</td><td>BRAM read pipeline: can_issue gated by play_rd_pend (1-cycle outstanding)</td><td>m_axis_tready from parent (u_extractor or wrapper replay buffer); stalls play_hold consumption when deasserted; corrector output held in m_axis register</td></tr>
+      <tr><td>S_CORRECT: with full backpressure</td><td>0</td><td>Stalled</td><td>m_axis_tready=0 holds corr_tready=0; play_hold_valid stays set; can_issue=0; no new reads</td><td>Full stall: no data lost; pipeline freezes cleanly</td></tr>
+    </tbody>
+  </table>
+
+  <!-- ===== SECTION 13: RESOURCE IMPACT ===== -->
+  <h2><span class="section-num">13</span> Resource Impact</h2>
+  <div class="note">REQUIRES_CONFIRMATION: Synthesis not run. Estimates based on architectural analysis.</div>
+  <table>
+    <thead><tr><th>Resource</th><th>Estimate</th><th>Dominant Source</th><th>Optimization Notes</th></tr></thead>
+    <tbody>
+      <tr><td>LUTs</td><td>~1,500–3,000</td><td>frame_detector (energy accumulator, window logic); CORDIC stages in u_corr/u_tfc; FSM decode</td><td>frame_detector WINDOW_LEN=25 uses shift-register energy window; 40-bit ENERGY_WIDTH wide</td></tr>
+      <tr><td>FFs</td><td>~800–1,500</td><td>CORDIC pipeline (15 stages &times; PHASE_WIDTH=16 each); play_hold registers; FSM state and latched results</td><td>frac_phase_r (16b), frame_index_r (12b), peak_lag_r (9b), slot_start_r (12b), nco_cnt (5b), play_rd_ptr (10b) = ~64 control FFs</td></tr>
+      <tr><td>BRAM (18K)</td><td>~4–5</td><td>iq_frame_buffer: BUF_AW=12 → 4096&times;32b = 131,072 bits = ~4 BRAM18K. u_tfc may use small distributed RAM for lag scores.</td><td>Reducing BUF_AW to 10 (1024 entries, still &gt; 576) saves 3 BRAM18K at the cost of smaller frame search range</td></tr>
+      <tr><td>DSP48</td><td>~4–8</td><td>complex_rotator in u_corr (4&times;16b multipliers); VanDeBeek accumulator (40-bit MAC in u_tfc)</td><td>40-bit accumulator uses 2 DSP48 in cascade; rotator multipliers may use DSP48 for speed</td></tr>
+      <tr><td>Special</td><td>BRAM18E2 (UltraScale+)</td><td>iq_frame_buffer inferred from 2D reg array or explicit RAMB</td><td>BUF_AW=12 forces BRAM inference; smaller BUF_AW might infer LUT RAM instead</td></tr>
+    </tbody>
+  </table>
+
+  <!-- ===== SECTION 14: RTL SIMULATION COVERAGE ===== -->
+  <h2><span class="section-num">14</span> RTL Simulation Coverage</h2>
+  <table>
+    <thead><tr><th>Gate ID</th><th>Simulator</th><th>IP Type</th><th>Cases</th><th>Status</th><th>Report Path</th><th>Notes</th></tr></thead>
+    <tbody>
+      <tr><td>P3-12B</td><td>iverilog</td><td>Behavioral stub</td><td>Frac corr only</td><td><span class="badge-pending">Not Verified</span></td><td>docs/session_A_p3_12b_frac_cfo_corrector.md</td><td>Standalone frac corrector; NCO sequencing verified; step_word direction</td></tr>
+      <tr><td>P3-12C</td><td>iverilog</td><td>Behavioral stub</td><td>Frame det + frac</td><td><span class="badge-pending">Not Verified</span></td><td>docs/session_A2_p3_12c_frame_detector.md</td><td>frame_detector integration; S_FILL → S_FRAME_DET → S_TIMING_CFO chain</td></tr>
+      <tr><td>P3-14B</td><td>iverilog</td><td>Behavioral stub</td><td>Full pipeline</td><td><span class="badge-pending">Not Verified</span></td><td>docs/session_D_p3_14b_replay_integration.md</td><td>Full S_IDLE→S_DONE flow; OUTPUT_SAMPLES=576 override verified</td></tr>
+      <tr><td>P3-14C</td><td>iverilog</td><td>Behavioral stub</td><td>Backpressure</td><td><span class="badge-pending">Not Verified</span></td><td>docs/session_D2_p3_14c_backpressure.md</td><td>m_axis_tready=0 stall and resume; ISSUE-001 fix in complex_mult_iq verified here</td></tr>
+      <tr><td>P3-15A</td><td>iverilog</td><td>Behavioral stub</td><td>Full sync</td><td><span class="badge-pending">Not Verified</span></td><td>docs/session_C_p3_15a_phase3_sync_top.md</td><td>Called from phase3_sync_top; dbg_frac_m_* tap verified for replay buffer</td></tr>
+      <tr><td>P3-15D</td><td>iverilog</td><td>Behavioral stub</td><td>100/100</td><td><span class="badge-pending">Not Verified</span></td><td>docs/session_C3_p3_15d_100frame.md</td><td>100 random frames; frame_index and frac_phase accuracy vs C reference; ISSUE-002 fixed</td></tr>
+    </tbody>
+  </table>
+
+  <!-- ===== SECTION 15: KNOWN ISSUES / LESSONS LEARNED ===== -->
+  <h2><span class="section-num">15</span> Known Issues / Lessons Learned</h2>
+  <div class="ok">ISSUE-001 RESOLVED (P3-14C): complex_mult_iq.v backpressure bug. This module calls frac_cfo_corrector_top which contains complex_mult_iq. The bug caused corr_tready=0 even when m_axis_tready=1 (output was valid and downstream was ready, but module incorrectly held tready low). Fix: <code>can_accept = !m_axis_tvalid || m_axis_tready</code>. After fix: S_CORRECT runs smoothly at 0.5 smp/clk with no stalls when m_axis_tready=1.</div>
+  <div class="ok">ISSUE-002 RESOLVED (P3-15D statistical gate): TB AXI-S race fixed. The 100-frame statistical test caught intermittent first-sample errors caused by the TB driving s_axis_tvalid in the same delta as posedge aclk. Fix: <code>#1</code> delay in TB.</div>
+  <div class="note">S_CORRECT throughput is fundamentally limited to 0.5 smp/clk by the BRAM read pipeline. The play_rd_pend mechanism ensures only one read is outstanding at a time (BRAM has no read-ahead buffering). A future enhancement could add a 2-stage read pipeline to approach 1 smp/clk, but this requires careful handling of two simultaneous outstanding reads and two hold registers.</div>
+  <div class="note">slot_start_r = frame_index_r + peak_lag: this is the starting buffer address for the corrected output playback. The buffer wraps modulo 2^BUF_AW (4096). If frame_index is near the end of the buffer (e.g., 4090) and peak_lag=8, slot_start wraps around. The iq_frame_buffer must handle this wrap-around in its read address generation.</div>
+  <div class="note">ACQ_WATCHDOG_CYCLES=0 (default disabled): the watchdog is a new feature (Step 43). When enabled, it catches scenarios where the DMA stalls mid-frame and the module would otherwise wait indefinitely in S_FILL. For FPGA bring-up, consider enabling with a large value (e.g., 65535 cycles) to detect DMA stall conditions without false triggering during normal backpressure events.</div>
+
+  <!-- ===== SECTION 16: FPGA BRING-UP GUIDE ===== -->
+  <h2><span class="section-num">16</span> FPGA Bring-Up Guide</h2>
+  <div class="card">
+    <h3>ILA Probe List</h3>
+    <table>
+      <thead><tr><th>Signal</th><th>Width</th><th>Purpose</th></tr></thead>
+      <tbody>
+        <tr><td><code>state[2:0]</code></td><td>3</td><td>FSM state tracking; trigger on each state transition</td></tr>
+        <tr><td><code>s_axis_tready</code></td><td>1</td><td>Verify buffer accepting input in S_FILL; deasserts outside S_FILL</td></tr>
+        <tr><td><code>buf_capture_done</code></td><td>1</td><td>One-shot at S_FILL completion; trigger for S_FRAME_DET start</td></tr>
+        <tr><td><code>fd_done, fd_frame_found</code></td><td>1+1</td><td>Frame detection result; if fd_frame_found=0, expect frame_error=1</td></tr>
+        <tr><td><code>frame_index_r[11:0]</code></td><td>12</td><td>Latched frame index; compare to C reference frame_detector()</td></tr>
+        <tr><td><code>tfc_done</code></td><td>1</td><td>CP autocorr + CORDIC complete; triggers S_LOAD_NCO entry</td></tr>
+        <tr><td><code>peak_lag_r[8:0]</code></td><td>9</td><td>Latched CP peak; compare to C reference VanDeBeek output</td></tr>
+        <tr><td><code>frac_phase_r[15:0]</code></td><td>16</td><td>Q1.15 latched frac CFO; compare to C reference atan2 output</td></tr>
+        <tr><td><code>slot_start_r[11:0]</code></td><td>12</td><td>frame_index_r + peak_lag_r; verify buffer playback start address</td></tr>
+        <tr><td><code>nco_cnt[4:0]</code></td><td>5</td><td>S_LOAD_NCO warmup counter; verify counts 0→17</td></tr>
+        <tr><td><code>play_rd_ptr</code></td><td>10</td><td>S_CORRECT sample counter; verify 0→TOTAL_SAMPLES-1</td></tr>
+        <tr><td><code>m_axis_tvalid, m_axis_tready, m_axis_tlast</code></td><td>1 each</td><td>Output stream health; count beats, verify tlast position</td></tr>
+        <tr><td><code>can_issue</code></td><td>1</td><td>Debug read issuance rate in S_CORRECT; should toggle every 2 cycles max</td></tr>
+      </tbody>
+    </table>
+
+    <h3>Reset Sequence (numbered)</h3>
+    <ol>
+      <li>Apply aresetn=0 for &ge;8 cycles; ILA should show state=S_IDLE, busy=0, frame_error=0.</li>
+      <li>Release aresetn=1; parent (phase3_sync_top) will deliver start pulse.</li>
+      <li>Observe state transitions: S_IDLE→S_FILL on start pulse; s_axis_tready should assert.</li>
+      <li>In S_FILL: monitor buf_capture_done; expect after ~576 input beats (or when buffer full at 4096).</li>
+      <li>In S_FRAME_DET: monitor fd_done and fd_frame_found; if fd_frame_found=0 on valid input, check threshold_in value.</li>
+      <li>On tfc_done: read frame_index_r, peak_lag_r, frac_phase_r from ILA; cross-check all three against C reference.</li>
+      <li>In S_LOAD_NCO: verify nco_cnt increments 0→1→...→17; confirm frac_cfo_corrector_top sincos_valid asserts at nco_cnt=17.</li>
+      <li>In S_CORRECT: monitor play_rd_ptr incrementing; confirm m_axis_tvalid pulses every 2 cycles approximately.</li>
+      <li>Verify m_axis_tlast fires when play_rd_ptr=TOTAL_SAMPLES-1 (575 for 576-sample output).</li>
+      <li>Verify done fires 1 cycle after last m_axis handshake; state returns to S_IDLE.</li>
+    </ol>
+
+    <h3>AXI-Lite Register Notes</h3>
+    <p>This module does not have a direct AXI-Lite interface. Results are read via the wrapper's AXI-Lite register bank (phase3_axi_lite_regs) through debug output ports of phase3_sync_top. Key registers: 0x1C (frame_index), 0x20 (peak_lag), 0x2C (frac_phase).</p>
+
+    <h3>Hardware Risks</h3>
+    <ul>
+      <li>Buffer address wrap: if slot_start_r + play_rd_ptr wraps past 2^BUF_AW, the iq_frame_buffer read address wraps. Verify that the buffer correctly handles this (modular arithmetic on the BRAM address).</li>
+      <li>CORDIC sign: if frac_phase_r has wrong sign, the corrected output will have 2x CFO instead of 0. Verify by injecting a known frac CFO and checking the corrected output phase is flat.</li>
+      <li>ACQ watchdog: when enabled (ACQ_WATCHDOG_CYCLES non-zero), ensure the DMA can deliver samples within the watchdog window. The watchdog counter is 16-bit; maximum watch period = 65535 cycles.</li>
+    </ul>
+  </div>
+
+  <!-- ===== SECTION 17: DEBUG CHECKLIST ===== -->
+  <h2><span class="section-num">17</span> Debug Checklist</h2>
+  <ol>
+    <li>Verify state=S_IDLE, busy=0, frame_error=0 after reset.</li>
+    <li>Confirm buf_capture_start pulses exactly 1 cycle on start transition to S_FILL.</li>
+    <li>Verify s_axis_tready=1 during S_FILL; deasserts in S_FRAME_DET and later states.</li>
+    <li>Count s_axis accepted beats in S_FILL: confirm buf_capture_done after expected count.</li>
+    <li>Verify fd_done fires with fd_frame_found=1 for valid input; check frame_index_r vs C reference.</li>
+    <li>Verify tfc_done fires; check peak_lag_r and frac_phase_r vs C reference VanDeBeek + atan2 outputs.</li>
+    <li>Confirm slot_start_r = frame_index_r + peak_lag_r (simple arithmetic check in ILA).</li>
+    <li>Verify nco_cnt in S_LOAD_NCO counts 0→17 (17 steps exactly).</li>
+    <li>In S_CORRECT: verify play_rd_ptr increments by 1 every 2 cycles (can_issue every other cycle).</li>
+    <li>Test backpressure: hold m_axis_tready=0 for 20 cycles in S_CORRECT; verify play_rd_ptr freezes and no output beats lost when tready resumes.</li>
+    <li>Verify m_axis_tlast fires at correct beat (TOTAL_SAMPLES-1).</li>
+    <li>Check total m_axis valid beats = TOTAL_SAMPLES (576 or 288 depending on OUTPUT_SAMPLES).</li>
+    <li>After done: verify frame_error=0 for successful run; busy=0.</li>
+    <li>Test error path: inject empty (all-zero) input; verify frame_error=1, frame_found=0, error_code=0 (default error code when frame not found).</li>
+  </ol>
+
+  <!-- ===== SECTION 18: REVIEW NOTES ===== -->
+  <h2><span class="section-num">18</span> Review Notes</h2>
+  <div class="card">
+    <h3>Non-Obvious Design Decisions</h3>
+    <ul>
+      <li><strong>Shared buffer read port (mux design)</strong>: The iq_frame_buffer has a single read port shared between frame_detector, frame_frac_cfo_top, and the correction playback sequencer. This is managed by the FSM-state-based combinatorial mux. The states are sequential (FRAME_DET → TIMING_CFO → CORRECT), so no arbitration is needed — only one module needs the read port at a time. This saves one BRAM read port and simplifies routing.</li>
+      <li><strong>OUTPUT_SAMPLES=0 default</strong>: The parameter default of 0 means "use NSC+CP_LEN" is the correct interpretation. The ternary localparam <code>TOTAL_SAMPLES = (OUTPUT_SAMPLES&gt;0) ? OUTPUT_SAMPLES : (NSC+CP_LEN)</code> handles this. A future engineer passing OUTPUT_SAMPLES=0 explicitly will get the default behavior, not a counter width of 1 bit.</li>
+      <li><strong>nco_cnt sequencing</strong>: The NCO requires explicit load (nco_cnt=0), then reset (nco_cnt=1), then warm-up (nco_cnt=2..16), then ready (nco_cnt=17). The combinatorial decode wires <code>nco_load_step_w</code>, <code>nco_phase_reset_w</code>, <code>nco_enable_w</code> are purely combinatorial from nco_cnt and state. This avoids extra registered pulses that would require an additional FSM cycle.</li>
+      <li><strong>Step word direction (<span class="eq"><span class="op">+</span>frac_phase<span class="op">·</span>2<sup>8</sup></span>)</strong>: Positive, unlike the integer CFO step in phase3_sync_top (negative). This is because frac_phase = atan2 of the CP autocorrelation complex sum, which directly gives the positive phase rotation per symbol. The correction must add the same rotation per sample to cancel the CFO.</li>
+      <li><strong>play_rd_pend as a state bit</strong>: The 1-bit play_rd_pend register serves as a state for the 2-cycle BRAM read pipeline. It prevents the sequencer from issuing a second read before the first result has been captured into play_hold. Without this, two back-to-back reads would overwrite the first result before it could be consumed.</li>
+      <li><strong>can_issue condition includes !play_hold_valid || corr_accept</strong>: The "or corr_accept" term means a new read can be issued in the same cycle that the hold register is being consumed. This eliminates a dead cycle between consecutive corrections and improves throughput from 1/3 to 1/2 samples per clock.</li>
+    </ul>
+    <h3>Open Items for Future Engineers</h3>
+    <ul>
+      <li>Consider adding ACQ_WATCHDOG_CYCLES to AXI-Lite register space for runtime configurability during FPGA debug.</li>
+      <li>The 0.5 smp/clk output throughput could be improved to 1 smp/clk by adding a 2-entry read-ahead FIFO in the play sequencer. This requires handling simultaneous outstanding reads, which complicates the play_rd_pend logic but doubles corrected output rate.</li>
+      <li>The TIMING_PROBE ifdef block (lines 504–519 in RTL) is for simulation only; it is harmless in synthesis but should be removed in production RTL to keep the code clean.</li>
+      <li>Error code 6 (INPUT_ACQ_TIMEOUT) is only possible when ACQ_WATCHDOG_CYCLES &gt; 0. The error_code output is always driven from error_code_r which is 0 by default. Consider documenting all possible error codes (0=none, 6=watchdog) more explicitly in the port comment.</li>
+    </ul>
+  </div>
+
+</div>
+</body>
+</html>

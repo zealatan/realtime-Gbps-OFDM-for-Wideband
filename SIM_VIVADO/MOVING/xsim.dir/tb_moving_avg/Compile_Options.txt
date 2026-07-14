@@ -1,0 +1,1 @@
+"tb_moving_avg" -debug "all" -s "tb_moving_avg" 

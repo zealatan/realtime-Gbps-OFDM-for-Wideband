@@ -1,1 +1,0 @@
-OFFICIAL_GATE: PASS (real Xilinx FFT IP, Vivado xsim — 2026-06-01)

@@ -1,0 +1,16 @@
+source /home/zealatan/Downloads/Vivado/2022.2/settings64.sh
+export PATH=/home/zealatan/Downloads/Vivado/2022.2/bin:$PATH
+
+
+rm -rf xsim.dir *.log *.jou *.pb *.wdb
+
+
+xvlog \
+  -f ./design_list.f \
+  -f ./testbench_list.f \
+   ./usrp2/ram_2port.v \
+   ./usrp2/setting_reg.v 
+
+xelab tb_dma_wrapper -debug all -s tb_dma_wrapper
+
+xsim tb_dma_wrapper -runall &

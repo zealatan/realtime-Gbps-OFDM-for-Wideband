@@ -1,0 +1,8 @@
+0.7
+2020.2
+Oct 14 2022
+05:07:14
+/home/zealatan/FPGA_Based_OFDM_Transceiver/SIM_VIVADO/MOVING/moving_avg_optimized.v,1775891778,verilog,,/home/zealatan/FPGA_Based_OFDM_Transceiver/SIM_VIVADO/MOVING/tb_moving_avg.v,,moving_avg_optimized,,,,,,,,
+/home/zealatan/FPGA_Based_OFDM_Transceiver/SIM_VIVADO/MOVING/tb_moving_avg.v,1775891778,verilog,,/home/zealatan/FPGA_Based_OFDM_Transceiver/SIM_VIVADO/MOVING/usrp2/ram_2port.v,,tb_moving_avg,,,,,,,,
+/home/zealatan/FPGA_Based_OFDM_Transceiver/SIM_VIVADO/MOVING/usrp2/ram_2port.v,1775891778,verilog,,/home/zealatan/FPGA_Based_OFDM_Transceiver/SIM_VIVADO/MOVING/usrp2/setting_reg.v,,ram_2port,,,,,,,,
+/home/zealatan/FPGA_Based_OFDM_Transceiver/SIM_VIVADO/MOVING/usrp2/setting_reg.v,1775891778,verilog,,,,setting_reg,,,,,,,,

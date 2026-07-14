@@ -1,0 +1,1023 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>RFSoC ZCU216 Synchronizer Verification Plan - RTL Stage + FPGA Stage</title>
+  <style>
+    :root {
+      --ink: #e5e7eb;
+      --muted: #cbd5e1;
+      --line: rgba(148, 163, 184, 0.28);
+      --bg: #020617;
+      --card: rgba(15, 23, 42, 0.92);
+      --panel: rgba(30, 41, 59, 0.72);
+      --blue: #38bdf8;
+      --blue2: rgba(56, 189, 248, 0.16);
+      --green: #34d399;
+      --green2: rgba(52, 211, 153, 0.16);
+      --orange: #fb923c;
+      --orange2: rgba(251, 146, 60, 0.16);
+      --purple: #c084fc;
+      --purple2: rgba(192, 132, 252, 0.17);
+      --red: #fb7185;
+      --red2: rgba(251, 113, 133, 0.17);
+      --yellow: #facc15;
+      --yellow2: rgba(250, 204, 21, 0.15);
+      --cyan: #22d3ee;
+      --pink: #f472b6;
+      --slate: #020617;
+      --rainbow: linear-gradient(90deg, #38bdf8, #34d399, #facc15, #fb923c, #f472b6, #c084fc);
+      --rainbow-soft: linear-gradient(135deg, rgba(56,189,248,.18), rgba(52,211,153,.14), rgba(250,204,21,.12), rgba(244,114,182,.14), rgba(192,132,252,.16));
+    }
+    * { box-sizing: border-box; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Noto Sans KR", Arial, sans-serif;
+      line-height: 1.65;
+      color: var(--ink);
+      background:
+        radial-gradient(circle at 12% 0%, rgba(56, 189, 248, 0.25), transparent 28%),
+        radial-gradient(circle at 86% 8%, rgba(244, 114, 182, 0.22), transparent 30%),
+        radial-gradient(circle at 50% 100%, rgba(52, 211, 153, 0.16), transparent 34%),
+        var(--bg);
+      margin: 0;
+      padding: 0;
+    }
+    .page {
+      max-width: 1220px;
+      margin: 0 auto;
+      padding: 40px 24px 80px;
+      background: linear-gradient(180deg, rgba(15, 23, 42, .96), rgba(2, 6, 23, .96));
+      border-left: 1px solid rgba(148, 163, 184, .18);
+      border-right: 1px solid rgba(148, 163, 184, .18);
+      box-shadow: 0 0 80px rgba(56,189,248,.08), 0 0 120px rgba(244,114,182,.07);
+    }
+    h1, h2, h3 { line-height: 1.25; }
+    h1 {
+      font-size: 2.15rem;
+      border-bottom: 4px solid transparent;
+      border-image: var(--rainbow) 1;
+      padding-bottom: 14px;
+      margin-bottom: 20px;
+      letter-spacing: -0.02em;
+    }
+    h2 {
+      font-size: 1.55rem;
+      margin-top: 48px;
+      padding-left: 12px;
+      border-left: 5px solid var(--blue);
+      color: #f8fafc;
+      text-shadow: 0 1px 1px rgba(0,0,0,.5);
+    }
+    h3 {
+      font-size: 1.18rem;
+      margin-top: 28px;
+      color: #f8fafc;
+      text-shadow: 0 1px 1px rgba(0,0,0,.45);
+    }
+    .subtitle {
+      color: var(--muted);
+      font-size: 1.05rem;
+      margin-bottom: 32px;
+    }
+    .box {
+      background: var(--panel);
+      border: 1px solid var(--line);
+      border-radius: 14px;
+      padding: 18px 20px;
+      margin: 18px 0;
+      box-shadow: 0 14px 34px rgba(2, 6, 23, .22);
+    }
+    .warning { background: var(--orange2); border-color: rgba(251,146,60,.45); }
+    .success { background: var(--green2); border-color: rgba(52,211,153,.45); }
+    .important { background: var(--blue2); border-color: rgba(56,189,248,.45); }
+    .danger { background: var(--red2); border-color: rgba(251,113,133,.48); }
+    .note { background: var(--yellow2); border-color: rgba(250,204,21,.42); }
+    code, pre {
+      font-family: "SFMono-Regular", Consolas, "Liberation Mono", monospace;
+      font-size: 0.94rem;
+    }
+    code { color: #bae6fd; }
+    pre {
+      background: rgba(2, 6, 23, .92);
+      color: #e5e7eb;
+      padding: 16px 18px;
+      border-radius: 12px;
+      overflow-x: auto;
+      line-height: 1.45;
+      border: 1px solid rgba(148, 163, 184, .24);
+      box-shadow: inset 0 0 0 1px rgba(255,255,255,.02);
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 16px 0 24px;
+      font-size: 0.95rem;
+      background: rgba(15, 23, 42, .58);
+      border-radius: 12px;
+      overflow: hidden;
+    }
+    th, td {
+      border: 1px solid var(--line);
+      padding: 10px 12px;
+      vertical-align: top;
+    }
+    th {
+      background: rgba(30, 41, 59, .86);
+      text-align: left;
+      color: #f8fafc;
+    }
+    .diagram {
+      margin: 24px 0;
+      padding: 18px;
+      border: 1px solid rgba(148, 163, 184, .26);
+      border-radius: 16px;
+      background: linear-gradient(135deg, rgba(15, 23, 42, .88), rgba(30, 41, 59, .48));
+      box-shadow: 0 18px 40px rgba(2, 6, 23, .28), 0 0 28px rgba(56,189,248,.05);
+    }
+    .diagram-title {
+      font-weight: 700;
+      margin-bottom: 12px;
+      color: #020617;
+    }
+    svg {
+      width: 100%;
+      height: auto;
+      display: block;
+      background: rgba(2, 6, 23, .24);
+      border-radius: 12px;
+    }
+    svg text { fill: #f8fafc; paint-order: stroke; stroke: rgba(2,6,23,.92); stroke-width: 3px; stroke-linejoin: round; }
+    svg line { stroke: #94a3b8; }
+    .caption {
+      color: var(--muted);
+      font-size: 0.92rem;
+      margin-top: 10px;
+    }
+    .grid2 {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 18px;
+    }
+    @media (max-width: 880px) {
+      .grid2 { grid-template-columns: 1fr; }
+    }
+    .small {
+      color: #e5e7eb;
+      font-size: 0.92rem;
+    }
+    .badge {
+      display: inline-block;
+      padding: 3px 9px;
+      border-radius: 999px;
+      background: rgba(56,189,248,.16);
+      color: #bae6fd;
+      border: 1px solid rgba(56,189,248,.38);
+      font-size: 0.82rem;
+      font-weight: 700;
+      margin-right: 6px;
+    }
+    .stage1 { color: var(--purple); font-weight: 800; }
+    .stage2 { color: var(--green); font-weight: 800; }
+    .milestone {
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      gap: 12px;
+      margin: 22px 0;
+    }
+    .milestone div {
+      padding: 14px;
+      border-radius: 14px;
+      border: 1px solid rgba(148, 163, 184, .25);
+      background: var(--rainbow-soft);
+      min-height: 108px;
+    }
+    .milestone strong { display:block; color:#f8fafc; margin-bottom: 6px; text-shadow: 0 1px 1px rgba(0,0,0,.55); }
+    .milestone span { color:#dbeafe; font-size:.9rem; }
+    @media (max-width: 980px) { .milestone { grid-template-columns: 1fr; } }
+  </style>
+</head>
+<body>
+<main class="page">
+
+<h1>RFSoC ZCU216 Synchronizer Verification Plan</h1>
+<p class="subtitle">
+  A synchronizer porting and verification plan that reuses the same OFDM test vectors while separating <strong>Stage 1: RTL Simulation Verification</strong> from <strong>Stage 2: FPGA/ZCU216 Board Test</strong>.
+</p>
+
+<div class="box important">
+  <strong>Core principle:</strong><br>Use one shared test-vector source. In <span class="stage1">Stage 1 RTL</span>, compare internal stage-by-stage golden signals. In <span class="stage2">Stage 2 FPGA</span>, compare final events through DDR-based loopback.
+</div>
+
+<section>
+<h2>0. Current RFDC Bring-up Status Update</h2>
+
+<div class="box success">
+  <strong>Passed milestone:</strong><br>The PS + RFDC Block Design based RF loopback passed the FFT peak-location match test. This proves that the <strong>DAC → wire/RF loopback → ADC → sample capture → FFT</strong> path is alive and that the intended frequency component exists in the captured ADC I/Q samples.
+</div>
+
+<div class="milestone">
+  <div><strong>1. RFDC alive</strong><span>PS configuration, DAC output, ADC capture, and FFT peak-location match are complete.</span></div>
+  <div><strong>2. IQ sanity</strong><span>Use +f / -f tones to check I/Q swap, sign inversion, and conjugation.</span></div>
+  <div><strong>3. PL BYPASS</strong><span>Compare ADC AXIS → PL bypass → DMA/DDR → PS FFT against the PS-only result.</span></div>
+  <div><strong>4. DDR TX/RX</strong><span>Verify PS→DDR→DMA→DAC and ADC→DMA→DDR→PS readback.</span></div>
+  <div><strong>5. RX SYNC</strong><span>Insert the synchronizer DUT into the RX path after BYPASS is stable.</span></div>
+</div>
+
+<div class="diagram">
+  <div class="diagram-title">Figure 0. Board verification flow from the current state</div>
+  <svg viewBox="0 0 1180 360" role="img" aria-label="RFDC to PL bypass to DDR to synchronizer flow">
+    <defs>
+      <marker id="arrow0" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto">
+        <path d="M0,0 L10,3 L0,6 Z" fill="#94a3b8"></path>
+      </marker>
+    </defs>
+    <rect x="35" y="120" width="165" height="85" rx="16" fill="#075985" stroke="#38bdf8"/>
+    <text x="118" y="154" text-anchor="middle" font-size="17" font-weight="900">RFDC Loopback</text>
+    <text x="118" y="180" text-anchor="middle" font-size="12">FFT peak match</text>
+
+    <line x1="200" y1="162" x2="285" y2="162" stroke="#94a3b8" stroke-width="3" marker-end="url(#arrow0)"/>
+    <rect x="285" y="120" width="165" height="85" rx="16" fill="#581c87" stroke="#c084fc"/>
+    <text x="368" y="154" text-anchor="middle" font-size="17" font-weight="900">± Tone IQ Test</text>
+    <text x="368" y="180" text-anchor="middle" font-size="12">Check +bin / -bin</text>
+
+    <line x1="450" y1="162" x2="535" y2="162" stroke="#94a3b8" stroke-width="3" marker-end="url(#arrow0)"/>
+    <rect x="535" y="120" width="165" height="85" rx="16" fill="#064e3b" stroke="#34d399"/>
+    <text x="618" y="154" text-anchor="middle" font-size="17" font-weight="900">PL BYPASS</text>
+    <text x="618" y="180" text-anchor="middle" font-size="12">AXIS transparent</text>
+
+    <line x1="700" y1="162" x2="785" y2="162" stroke="#94a3b8" stroke-width="3" marker-end="url(#arrow0)"/>
+    <rect x="785" y="120" width="165" height="85" rx="16" fill="#713f12" stroke="#facc15"/>
+    <text x="868" y="154" text-anchor="middle" font-size="17" font-weight="900">DDR TX/RX</text>
+    <text x="868" y="180" text-anchor="middle" font-size="12">send/readback FFT</text>
+
+    <line x1="950" y1="162" x2="1035" y2="162" stroke="#94a3b8" stroke-width="3" marker-end="url(#arrow0)"/>
+    <rect x="1035" y="120" width="115" height="85" rx="16" fill="#881337" stroke="#fb7185"/>
+    <text x="1092" y="154" text-anchor="middle" font-size="17" font-weight="900">RX SYNC</text>
+    <text x="1092" y="180" text-anchor="middle" font-size="12">DUT insert</text>
+
+    <rect x="120" y="260" width="940" height="58" rx="16" fill="#0f172a" stroke="#64748b"/>
+    <text x="590" y="295" text-anchor="middle" font-size="15" font-weight="800">
+      Rule: Before adding SYNC, first lock down BYPASS mode and confirm that the DDR readback FFT result matches the PS-only RFDC result.
+    </text>
+  </svg>
+</div>
+
+<table>
+  <tr><th>Verification step</th><th>What it proves</th><th>Next action</th></tr>
+  <tr>
+    <td>RFDC FFT peak match</td>
+    <td>The I/Q sample stream is alive inside the wire loopback. Complex-sample convention is not fully verified yet.</td>
+    <td>Inject <code>+9.6 MHz</code> and <code>-9.6 MHz</code> tones and confirm FFT +40/-40 bins.</td>
+  </tr>
+  <tr>
+    <td>PL BYPASS</td>
+    <td>The data/valid/ready/TLAST path between RFDC AXIS and the custom PL shell is correct.</td>
+    <td>Run ADC→BYPASS→DMA/DDR→PS readback and confirm the FFT peak matches the previous result.</td>
+  </tr>
+  <tr>
+    <td>DDR TX/RX loop</td>
+    <td>Verifies the full board data path: PS-written DDR waveform goes to DAC, and ADC capture returns to DDR.</td>
+    <td>Expand in this order: single tone → ±tone → multi-tone → known OFDM symbol.</td>
+  </tr>
+  <tr>
+    <td>RX SYNC insertion</td>
+    <td>This enters the stage where the synchronizer RTL itself is tested on the board, separated from RFDC/DMA issues.</td>
+    <td>Keep <code>mode=0 bypass</code> and <code>mode=1 sync_enable</code>, then compare against golden C/Python.</td>
+  </tr>
+</table>
+
+<div class="box warning">
+  <strong>Important:</strong> The FFT peak match proves that the RF path is alive. For OFDM/SYNC confidence, <strong>I/Q direction, packing order, sign extension, TLAST/sample count, and DDR alignment</strong> must be separately verified in the BYPASS stage.
+</div>
+</section>
+
+
+<section>
+<h2>1. Overall Two-Stage Verification Strategy</h2>
+
+<div class="diagram">
+  <div class="diagram-title">Figure 1. Overall strategy: same vector, different verification depth</div>
+  <svg viewBox="0 0 1180 390" role="img" aria-label="Two stage verification strategy">
+    <defs>
+      <marker id="arrow" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto">
+        <path d="M0,0 L10,3 L0,6 Z" fill="#94a3b8"></path>
+      </marker>
+      <filter id="shadow" x="-20%" y="-20%" width="140%" height="140%">
+        <feDropShadow dx="0" dy="3" stdDeviation="3" flood-color="#020617" flood-opacity="0.16"/>
+      </filter>
+    </defs>
+
+    <rect x="40" y="135" width="180" height="90" rx="16" fill="#075985" stroke="#38bdf8" filter="url(#shadow)"/>
+    <text x="130" y="168" text-anchor="middle" font-size="18" font-weight="800">Golden C</text>
+    <text x="130" y="194" text-anchor="middle" font-size="13">clean OFDM frame</text>
+
+    <line x1="220" y1="180" x2="315" y2="180" stroke="#94a3b8" stroke-width="3" marker-end="url(#arrow)"/>
+    <rect x="315" y="135" width="210" height="90" rx="16" fill="#7c2d12" stroke="#fb923c" filter="url(#shadow)"/>
+    <text x="420" y="168" text-anchor="middle" font-size="18" font-weight="800">Python Generator</text>
+    <text x="420" y="194" text-anchor="middle" font-size="13">padding / scale / CFO / Q15</text>
+
+    <line x1="525" y1="180" x2="615" y2="180" stroke="#94a3b8" stroke-width="3" marker-end="url(#arrow)"/>
+    <rect x="615" y="135" width="180" height="90" rx="16" fill="#713f12" stroke="#facc15" filter="url(#shadow)"/>
+    <text x="705" y="168" text-anchor="middle" font-size="18" font-weight="800">Shared Vectors</text>
+    <text x="705" y="194" text-anchor="middle" font-size="13">input.hex + expected</text>
+
+    <line x1="795" y1="155" x2="905" y2="95" stroke="#94a3b8" stroke-width="3" marker-end="url(#arrow)"/>
+    <rect x="905" y="45" width="230" height="100" rx="18" fill="#581c87" stroke="#c084fc" filter="url(#shadow)"/>
+    <text x="1020" y="82" text-anchor="middle" font-size="19" font-weight="900">Stage 1 RTL</text>
+    <text x="1020" y="110" text-anchor="middle" font-size="13">internal signal compare</text>
+    <text x="1020" y="130" text-anchor="middle" font-size="12">corr / metric / peak / FSM</text>
+
+    <line x1="795" y1="205" x2="905" y2="265" stroke="#94a3b8" stroke-width="3" marker-end="url(#arrow)"/>
+    <rect x="905" y="225" width="230" height="100" rx="18" fill="#064e3b" stroke="#34d399" filter="url(#shadow)"/>
+    <text x="1020" y="262" text-anchor="middle" font-size="19" font-weight="900">Stage 2 FPGA</text>
+    <text x="1020" y="290" text-anchor="middle" font-size="13">DDR → DUT → DDR</text>
+    <text x="1020" y="310" text-anchor="middle" font-size="12">frame_start / valid / metric</text>
+  </svg>
+  <p class="caption">
+    Debugging becomes messy if RTL and FPGA use different vectors. Keep the input vector unified and use deeper golden dumps only in RTL.
+  </p>
+</div>
+
+<table>
+  <tr><th>Item</th><th>Stage 1: RTL Simulation Verification</th><th>Stage 2: FPGA/ZCU216 Board Test</th></tr>
+  <tr>
+    <td>Purpose</td>
+    <td>Check that the algorithm and fixed-point implementation are bit-accurate.</td>
+    <td>Check that the DUT works stably with real AXI, DMA, DDR, and RFSoC paths.</td>
+  </tr>
+  <tr>
+    <td>Input</td>
+    <td>Same <code>tcXXXX_input.hex</code></td>
+    <td>Same <code>tcXXXX_input.hex</code></td>
+  </tr>
+  <tr>
+    <td>Comparison target</td>
+    <td>Internal stage signals + final event</td>
+    <td>final event + capture result</td>
+  </tr>
+  <tr>
+    <td>Pass criterion</td>
+    <td><code>corr/metric/peak/frame_start</code> match the fixed-point golden reference.</td>
+    <td><code>dut_frame_start == golden_frame_start ± tolerance</code></td>
+  </tr>
+</table>
+</section>
+
+<section>
+<h2>2. Shared Testvector Package</h2>
+
+<p>
+  All tests start from one vector package shared by the RTL testbench and FPGA board test.
+</p>
+
+<div class="diagram">
+  <div class="diagram-title">Figure 2. Test-vector package structure</div>
+  <svg viewBox="0 0 1060 520">
+    <defs>
+      <marker id="arrow2" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto">
+        <path d="M0,0 L10,3 L0,6 Z" fill="#94a3b8"></path>
+      </marker>
+    </defs>
+
+    <rect x="60" y="50" width="220" height="80" rx="14" fill="#075985" stroke="#38bdf8"/>
+    <text x="170" y="83" text-anchor="middle" font-size="17" font-weight="800">clean_float_iq.txt</text>
+    <text x="170" y="108" text-anchor="middle" font-size="13">Golden C output</text>
+
+    <line x1="280" y1="90" x2="380" y2="90" stroke="#94a3b8" stroke-width="3" marker-end="url(#arrow2)"/>
+    <rect x="380" y="50" width="250" height="80" rx="14" fill="#7c2d12" stroke="#fb923c"/>
+    <text x="505" y="83" text-anchor="middle" font-size="17" font-weight="800">vector_generator.py</text>
+    <text x="505" y="108" text-anchor="middle" font-size="13">impairment + Q15 + packing</text>
+
+    <line x1="630" y1="90" x2="730" y2="90" stroke="#94a3b8" stroke-width="3" marker-end="url(#arrow2)"/>
+    <rect x="730" y="50" width="260" height="80" rx="14" fill="#713f12" stroke="#facc15"/>
+    <text x="860" y="83" text-anchor="middle" font-size="17" font-weight="800">vectors/</text>
+    <text x="860" y="108" text-anchor="middle" font-size="13">shared vector directory</text>
+
+    <rect x="105" y="220" width="250" height="210" rx="16" fill="#020617" stroke="#64748b"/>
+    <text x="230" y="252" text-anchor="middle" font-size="17" font-weight="800">Input files</text>
+    <text x="230" y="292" text-anchor="middle" font-size="14">tc0000_input.hex</text>
+    <text x="230" y="322" text-anchor="middle" font-size="14">tc0001_input.hex</text>
+    <text x="230" y="352" text-anchor="middle" font-size="14">tc0002_input.hex</text>
+    <text x="230" y="382" text-anchor="middle" font-size="14">...</text>
+
+    <rect x="405" y="220" width="250" height="210" rx="16" fill="#581c87" stroke="#c084fc"/>
+    <text x="530" y="252" text-anchor="middle" font-size="17" font-weight="800">RTL golden files</text>
+    <text x="530" y="292" text-anchor="middle" font-size="14">corr_real.hex</text>
+    <text x="530" y="322" text-anchor="middle" font-size="14">corr_imag.hex</text>
+    <text x="530" y="352" text-anchor="middle" font-size="14">metric.hex</text>
+    <text x="530" y="382" text-anchor="middle" font-size="14">events.csv/json</text>
+
+    <rect x="705" y="220" width="250" height="210" rx="16" fill="#064e3b" stroke="#34d399"/>
+    <text x="830" y="252" text-anchor="middle" font-size="17" font-weight="800">FPGA expected files</text>
+    <text x="830" y="292" text-anchor="middle" font-size="14">expected.json</text>
+    <text x="830" y="322" text-anchor="middle" font-size="14">manifest.csv</text>
+    <text x="830" y="352" text-anchor="middle" font-size="14">golden_start</text>
+    <text x="830" y="382" text-anchor="middle" font-size="14">golden_payload_start</text>
+  </svg>
+</div>
+
+<pre><code>vectors/
+  manifest.csv
+
+  tc0000/
+    input.hex
+    input_iq.txt
+    expected.json
+    rtl_corr_real.hex
+    rtl_corr_imag.hex
+    rtl_power_acc.hex
+    rtl_metric.hex
+    rtl_events.csv
+
+  tc0001/
+    input.hex
+    input_iq.txt
+    expected.json
+    rtl_corr_real.hex
+    rtl_corr_imag.hex
+    rtl_power_acc.hex
+    rtl_metric.hex
+    rtl_events.csv</code></pre>
+
+<div class="box note">
+  <strong>Summary:</strong> For FPGA board tests, <code>input.hex</code> and <code>expected.json</code> are often enough. RTL simulation should go deeper and compare <code>corr</code>, <code>metric</code>, and <code>FSM state</code>.
+</div>
+</section>
+
+<section>
+<h2>3. OFDM Frame and Vector Format</h2>
+
+<table>
+  <tr><th>Parameter</th><th>Value</th></tr>
+  <tr><td>FFT / NSC</td><td>256</td></tr>
+  <tr><td>CP length</td><td>32</td></tr>
+  <tr><td>OFDM symbol length</td><td>288 complex samples</td></tr>
+  <tr><td>Preamble</td><td>2 symbols</td></tr>
+  <tr><td>Data</td><td>12 symbols</td></tr>
+  <tr><td>Burst</td><td>32 samples</td></tr>
+  <tr><td>Total slot length</td><td><strong>4064 complex samples</strong></td></tr>
+</table>
+
+<div class="diagram">
+  <div class="diagram-title">Figure 3. 2 preamble + 12 data frame layout</div>
+  <svg viewBox="0 0 1160 250">
+    <rect x="20" y="80" width="90" height="70" rx="10" fill="#94a3b8" stroke="#94a3b8"/>
+    <text x="65" y="108" text-anchor="middle" font-size="14" font-weight="700">Burst</text>
+    <text x="65" y="132" text-anchor="middle" font-size="13">32</text>
+
+    <rect x="115" y="80" width="130" height="70" rx="10" fill="#075985" stroke="#38bdf8"/>
+    <text x="180" y="106" text-anchor="middle" font-size="14" font-weight="700">Preamble 0</text>
+    <text x="180" y="132" text-anchor="middle" font-size="13">288</text>
+
+    <rect x="250" y="80" width="130" height="70" rx="10" fill="#075985" stroke="#38bdf8"/>
+    <text x="315" y="106" text-anchor="middle" font-size="14" font-weight="700">Preamble 1</text>
+    <text x="315" y="132" text-anchor="middle" font-size="13">288</text>
+
+    <g>
+      <rect x="390" y="80" width="54" height="70" rx="8" fill="#064e3b" stroke="#34d399"/>
+      <text x="417" y="121" text-anchor="middle" font-size="12">D0</text>
+      <rect x="449" y="80" width="54" height="70" rx="8" fill="#064e3b" stroke="#34d399"/>
+      <text x="476" y="121" text-anchor="middle" font-size="12">D1</text>
+      <rect x="508" y="80" width="54" height="70" rx="8" fill="#064e3b" stroke="#34d399"/>
+      <text x="535" y="121" text-anchor="middle" font-size="12">D2</text>
+      <rect x="567" y="80" width="54" height="70" rx="8" fill="#064e3b" stroke="#34d399"/>
+      <text x="594" y="121" text-anchor="middle" font-size="12">D3</text>
+      <rect x="626" y="80" width="54" height="70" rx="8" fill="#064e3b" stroke="#34d399"/>
+      <text x="653" y="121" text-anchor="middle" font-size="12">D4</text>
+      <rect x="685" y="80" width="54" height="70" rx="8" fill="#064e3b" stroke="#34d399"/>
+      <text x="712" y="121" text-anchor="middle" font-size="12">D5</text>
+      <rect x="744" y="80" width="54" height="70" rx="8" fill="#064e3b" stroke="#34d399"/>
+      <text x="771" y="121" text-anchor="middle" font-size="12">D6</text>
+      <rect x="803" y="80" width="54" height="70" rx="8" fill="#064e3b" stroke="#34d399"/>
+      <text x="830" y="121" text-anchor="middle" font-size="12">D7</text>
+      <rect x="862" y="80" width="54" height="70" rx="8" fill="#064e3b" stroke="#34d399"/>
+      <text x="889" y="121" text-anchor="middle" font-size="12">D8</text>
+      <rect x="921" y="80" width="54" height="70" rx="8" fill="#064e3b" stroke="#34d399"/>
+      <text x="948" y="121" text-anchor="middle" font-size="12">D9</text>
+      <rect x="980" y="80" width="54" height="70" rx="8" fill="#064e3b" stroke="#34d399"/>
+      <text x="1007" y="121" text-anchor="middle" font-size="12">D10</text>
+      <rect x="1039" y="80" width="54" height="70" rx="8" fill="#064e3b" stroke="#34d399"/>
+      <text x="1066" y="121" text-anchor="middle" font-size="12">D11</text>
+    </g>
+
+    <line x1="20" y1="180" x2="1093" y2="180" stroke="#94a3b8" stroke-width="2"/>
+    <line x1="20" y1="172" x2="20" y2="188" stroke="#94a3b8" stroke-width="2"/>
+    <line x1="1093" y1="172" x2="1093" y2="188" stroke="#94a3b8" stroke-width="2"/>
+    <text x="556" y="210" text-anchor="middle" font-size="15" font-weight="700">total_slot_len = 4064 complex samples</text>
+  </svg>
+</div>
+
+<div class="diagram">
+  <div class="diagram-title">Figure 4. Input packing format</div>
+  <svg viewBox="0 0 900 260">
+    <rect x="100" y="80" width="700" height="80" rx="10" fill="#020617" stroke="#94a3b8"/>
+    <rect x="100" y="80" width="350" height="80" rx="10" fill="#075985" stroke="#38bdf8"/>
+    <rect x="450" y="80" width="350" height="80" rx="10" fill="#064e3b" stroke="#34d399"/>
+    <text x="275" y="115" text-anchor="middle" font-size="18" font-weight="800">I[15:0]</text>
+    <text x="625" y="115" text-anchor="middle" font-size="18" font-weight="800">Q[15:0]</text>
+    <text x="275" y="142" text-anchor="middle" font-size="13">signed int16</text>
+    <text x="625" y="142" text-anchor="middle" font-size="13">signed int16</text>
+    <text x="275" y="190" text-anchor="middle" font-size="14" font-weight="700">word[31:16]</text>
+    <text x="625" y="190" text-anchor="middle" font-size="14" font-weight="700">word[15:0]</text>
+    <text x="450" y="230" text-anchor="middle" font-size="13">If the RFSoC path uses QI order, change only the packing order in the generator.</text>
+  </svg>
+</div>
+</section>
+
+<section>
+<h2>4. Stage 1 — RTL Simulation Verification</h2>
+
+<div class="box important">
+  <strong>Stage 1 goal:</strong> Verify that the DUT internal fixed-point operations match the bit-accurate golden reference. Catch as many bugs as possible here to avoid FPGA debug hell later.
+</div>
+
+<div class="diagram">
+  <div class="diagram-title">Figure 5. RTL simulation testbench architecture</div>
+  <svg viewBox="0 0 1180 420">
+    <defs>
+      <marker id="arrow3" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto">
+        <path d="M0,0 L10,3 L0,6 Z" fill="#94a3b8"></path>
+      </marker>
+    </defs>
+
+    <rect x="40" y="160" width="170" height="80" rx="14" fill="#713f12" stroke="#facc15"/>
+    <text x="125" y="193" text-anchor="middle" font-size="17" font-weight="800">input.hex</text>
+    <text x="125" y="217" text-anchor="middle" font-size="12">shared vector</text>
+
+    <line x1="210" y1="200" x2="300" y2="200" stroke="#94a3b8" stroke-width="3" marker-end="url(#arrow3)"/>
+    <rect x="300" y="145" width="190" height="110" rx="16" fill="#075985" stroke="#38bdf8"/>
+    <text x="395" y="182" text-anchor="middle" font-size="18" font-weight="800">AXIS Driver</text>
+    <text x="395" y="209" text-anchor="middle" font-size="13">valid/ready/tlast</text>
+    <text x="395" y="230" text-anchor="middle" font-size="12">sample-by-sample</text>
+
+    <line x1="490" y1="200" x2="585" y2="200" stroke="#94a3b8" stroke-width="3" marker-end="url(#arrow3)"/>
+    <rect x="585" y="115" width="210" height="170" rx="18" fill="#581c87" stroke="#c084fc"/>
+    <text x="690" y="156" text-anchor="middle" font-size="20" font-weight="900">Synchronizer DUT</text>
+    <text x="690" y="186" text-anchor="middle" font-size="13">corr_real / corr_imag</text>
+    <text x="690" y="208" text-anchor="middle" font-size="13">power_acc / metric</text>
+    <text x="690" y="230" text-anchor="middle" font-size="13">peak_index / frame_start</text>
+    <text x="690" y="252" text-anchor="middle" font-size="13">FSM state</text>
+
+    <line x1="795" y1="200" x2="890" y2="200" stroke="#94a3b8" stroke-width="3" marker-end="url(#arrow3)"/>
+    <rect x="890" y="145" width="220" height="110" rx="16" fill="#064e3b" stroke="#34d399"/>
+    <text x="1000" y="182" text-anchor="middle" font-size="18" font-weight="800">Scoreboard</text>
+    <text x="1000" y="209" text-anchor="middle" font-size="13">compare with golden</text>
+    <text x="1000" y="230" text-anchor="middle" font-size="12">$fatal on mismatch</text>
+
+    <rect x="585" y="330" width="525" height="50" rx="12" fill="#881337" stroke="#fb7185"/>
+    <text x="848" y="362" text-anchor="middle" font-size="15" font-weight="800">
+      In RTL, do not check only the final output. Always dump and compare internal stages.
+    </text>
+  </svg>
+</div>
+
+<h3>Stage 1 comparison signals</h3>
+
+<table>
+  <tr><th>Signal</th><th>Comparison method</th><th>Purpose</th></tr>
+  <tr><td><code>input_i_q15</code>, <code>input_q_q15</code></td><td>sample-exact</td><td>Check packing/sign extension</td></tr>
+  <tr><td><code>corr_real</code>, <code>corr_imag</code></td><td>sample-index aligned</td><td>Check complex multiply and accumulation</td></tr>
+  <tr><td><code>power_acc</code></td><td>sample-index aligned</td><td>Check normalization denominator</td></tr>
+  <tr><td><code>metric</code></td><td>tolerance or exact</td><td>Check peak-detection criterion</td></tr>
+  <tr><td><code>peak_index</code></td><td>exact or ±1</td><td>Check timing decision</td></tr>
+  <tr><td><code>frame_start</code></td><td>exact or ±1</td><td>Final DUT pass criterion</td></tr>
+  <tr><td><code>cfo_est</code></td><td>quantized tolerance</td><td>If a CFO estimator is present</td></tr>
+  <tr><td><code>fsm_state</code></td><td>event sequence</td><td>Check reset, detect, hold, and output states</td></tr>
+</table>
+
+<div class="diagram">
+  <div class="diagram-title">Figure 6. RTL debug depth: internal-stage verification before final event</div>
+  <svg viewBox="0 0 1060 340">
+    <defs>
+      <marker id="arrow4" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto">
+        <path d="M0,0 L10,3 L0,6 Z" fill="#94a3b8"></path>
+      </marker>
+    </defs>
+
+    <rect x="40" y="120" width="130" height="75" rx="12" fill="#075985" stroke="#38bdf8"/>
+    <text x="105" y="151" text-anchor="middle" font-weight="800">Input</text>
+    <text x="105" y="174" text-anchor="middle" font-size="12">Q15 IQ</text>
+
+    <line x1="170" y1="158" x2="240" y2="158" stroke="#94a3b8" stroke-width="3" marker-end="url(#arrow4)"/>
+    <rect x="240" y="120" width="150" height="75" rx="12" fill="#7c2d12" stroke="#fb923c"/>
+    <text x="315" y="151" text-anchor="middle" font-weight="800">Correlation</text>
+    <text x="315" y="174" text-anchor="middle" font-size="12">real/imag</text>
+
+    <line x1="390" y1="158" x2="460" y2="158" stroke="#94a3b8" stroke-width="3" marker-end="url(#arrow4)"/>
+    <rect x="460" y="120" width="150" height="75" rx="12" fill="#581c87" stroke="#c084fc"/>
+    <text x="535" y="151" text-anchor="middle" font-weight="800">Metric</text>
+    <text x="535" y="174" text-anchor="middle" font-size="12">fixed-point</text>
+
+    <line x1="610" y1="158" x2="680" y2="158" stroke="#94a3b8" stroke-width="3" marker-end="url(#arrow4)"/>
+    <rect x="680" y="120" width="150" height="75" rx="12" fill="#064e3b" stroke="#34d399"/>
+    <text x="755" y="151" text-anchor="middle" font-weight="800">Peak</text>
+    <text x="755" y="174" text-anchor="middle" font-size="12">index/value</text>
+
+    <line x1="830" y1="158" x2="900" y2="158" stroke="#94a3b8" stroke-width="3" marker-end="url(#arrow4)"/>
+    <rect x="900" y="120" width="130" height="75" rx="12" fill="#881337" stroke="#fb7185"/>
+    <text x="965" y="151" text-anchor="middle" font-weight="800">Event</text>
+    <text x="965" y="174" text-anchor="middle" font-size="12">frame_start</text>
+
+    <text x="535" y="270" text-anchor="middle" font-size="15" font-weight="800">
+      If only frame_start is wrong on FPGA, this chain must already be verified in RTL to find the root cause.
+    </text>
+  </svg>
+</div>
+
+<h3>Stage 1 vector count</h3>
+
+<table>
+  <tr><th>RTL phase</th><th>Vector count</th><th>Purpose</th></tr>
+  <tr><td>Smoke</td><td>10~20</td><td>Check compile, reset, AXIS handshake, and valid output</td></tr>
+  <tr><td>Bit-accurate</td><td>50~100</td><td>Internal comparison of corr/metric/peak/frame_start</td></tr>
+  <tr><td>Stress regression</td><td>300~500</td><td>timing, scale, CFO, rounding, saturation, back-to-back</td></tr>
+</table>
+
+<pre><code>// RTL testbench pseudo-flow
+for each test_case:
+    load input.hex
+    load rtl_corr_real.hex
+    load rtl_corr_imag.hex
+    load rtl_metric.hex
+    load expected.json
+
+    reset_dut()
+    drive_axis_samples(input.hex)
+
+    capture_internal_signals()
+    compare_stage_by_stage()
+
+    if mismatch:
+        dump waveform
+        $fatal</code></pre>
+
+</section>
+
+<section>
+<h2>5. Stage 2 — FPGA/ZCU216 Board Test</h2>
+
+<div class="box success">
+  <strong>Stage 2 goal:</strong> Confirm that the RTL-verified DUT operates stably with the real ZCU216 DDR, AXI DMA, clock/reset, and RFDC formatting path.
+</div>
+
+<div class="diagram">
+  <div class="diagram-title">Figure 7. Stage 2A: DDR → DUT → DDR without RFDC</div>
+  <svg viewBox="0 0 1120 370">
+    <defs>
+      <marker id="arrow5" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto">
+        <path d="M0,0 L10,3 L0,6 Z" fill="#94a3b8"></path>
+      </marker>
+    </defs>
+    <rect x="45" y="120" width="150" height="85" rx="14" fill="#94a3b8" stroke="#94a3b8"/>
+    <text x="120" y="154" text-anchor="middle" font-size="18" font-weight="800">DDR</text>
+    <text x="120" y="180" text-anchor="middle" font-size="12">input.hex</text>
+
+    <line x1="195" y1="162" x2="285" y2="162" stroke="#94a3b8" stroke-width="3" marker-end="url(#arrow5)"/>
+    <rect x="285" y="120" width="160" height="85" rx="14" fill="#075985" stroke="#38bdf8"/>
+    <text x="365" y="154" text-anchor="middle" font-size="18" font-weight="800">AXI DMA</text>
+    <text x="365" y="180" text-anchor="middle" font-size="12">MM2S</text>
+
+    <line x1="445" y1="162" x2="535" y2="162" stroke="#94a3b8" stroke-width="3" marker-end="url(#arrow5)"/>
+    <rect x="535" y="100" width="210" height="125" rx="18" fill="#064e3b" stroke="#34d399"/>
+    <text x="640" y="140" text-anchor="middle" font-size="20" font-weight="900">Synchronizer DUT</text>
+    <text x="640" y="170" text-anchor="middle" font-size="13">frame_start</text>
+    <text x="640" y="192" text-anchor="middle" font-size="13">metric / cfo / valid</text>
+
+    <line x1="745" y1="162" x2="835" y2="162" stroke="#94a3b8" stroke-width="3" marker-end="url(#arrow5)"/>
+    <rect x="835" y="120" width="160" height="85" rx="14" fill="#581c87" stroke="#c084fc"/>
+    <text x="915" y="154" text-anchor="middle" font-size="18" font-weight="800">AXI DMA</text>
+    <text x="915" y="180" text-anchor="middle" font-size="12">S2MM capture</text>
+
+    <rect x="280" y="270" width="720" height="55" rx="12" fill="#020617" stroke="#64748b"/>
+    <text x="640" y="304" text-anchor="middle" font-size="15" font-weight="800">
+      Exclude RFDC in this step. Lock down only DMA/DDR/DUT/AXIS first.
+    </text>
+  </svg>
+</div>
+
+<h3>Stage 2A Pass criterion</h3>
+
+<table>
+  <tr><th>Item</th><th>Pass criterion</th></tr>
+  <tr><td>Detection valid</td><td><code>dut_detect_valid == 1</code></td></tr>
+  <tr><td>Frame start</td><td><code>dut_frame_start == golden_frame_start ± 1 sample</code></td></tr>
+  <tr><td>Payload start</td><td><code>dut_payload_start == golden_payload_start ± 1 sample</code></td></tr>
+  <tr><td>AXI Stream</td><td>No valid/ready deadlock</td></tr>
+  <tr><td>TLAST</td><td>Correct for the 4064 complex-sample frame</td></tr>
+  <tr><td>Overflow flag</td><td>Occurs only within the expected range</td></tr>
+  <tr><td>Saturation flag</td><td>Occurs deterministically in scale stress cases</td></tr>
+</table>
+
+<div class="diagram">
+  <div class="diagram-title">Figure 8. Stage 2B: RFDC formatting-only check</div>
+  <svg viewBox="0 0 1120 320">
+    <defs>
+      <marker id="arrow6" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto">
+        <path d="M0,0 L10,3 L0,6 Z" fill="#94a3b8"></path>
+      </marker>
+    </defs>
+    <rect x="50" y="110" width="135" height="80" rx="14" fill="#94a3b8" stroke="#94a3b8"/>
+    <text x="117" y="143" text-anchor="middle" font-weight="800">DDR</text>
+    <text x="117" y="168" text-anchor="middle" font-size="12">known IQ</text>
+
+    <line x1="185" y1="150" x2="275" y2="150" stroke="#94a3b8" stroke-width="3" marker-end="url(#arrow6)"/>
+    <rect x="275" y="110" width="160" height="80" rx="14" fill="#075985" stroke="#38bdf8"/>
+    <text x="355" y="143" text-anchor="middle" font-weight="800">DAC/RFDC</text>
+    <text x="355" y="168" text-anchor="middle" font-size="12">formatting</text>
+
+    <line x1="435" y1="150" x2="525" y2="150" stroke="#94a3b8" stroke-width="3" marker-end="url(#arrow6)"/>
+    <rect x="525" y="110" width="160" height="80" rx="14" fill="#7c2d12" stroke="#fb923c"/>
+    <text x="605" y="143" text-anchor="middle" font-weight="800">Loop path</text>
+    <text x="605" y="168" text-anchor="middle" font-size="12">digital/cable</text>
+
+    <line x1="685" y1="150" x2="775" y2="150" stroke="#94a3b8" stroke-width="3" marker-end="url(#arrow6)"/>
+    <rect x="775" y="110" width="160" height="80" rx="14" fill="#581c87" stroke="#c084fc"/>
+    <text x="855" y="143" text-anchor="middle" font-weight="800">ADC/RFDC</text>
+    <text x="855" y="168" text-anchor="middle" font-size="12">capture</text>
+
+    <text x="560" y="255" text-anchor="middle" font-size="15" font-weight="800">
+      Before inserting the synchronizer, check only I/Q order, sign extension, scaling, clipping, and sample rate.
+    </text>
+  </svg>
+</div>
+
+<div class="diagram">
+  <div class="diagram-title">Figure 9. Stage 2C: RF cable loopback</div>
+  <svg viewBox="0 0 1150 350">
+    <defs>
+      <marker id="arrow7" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto">
+        <path d="M0,0 L10,3 L0,6 Z" fill="#94a3b8"></path>
+      </marker>
+    </defs>
+    <rect x="35" y="120" width="120" height="70" rx="12" fill="#94a3b8" stroke="#94a3b8"/>
+    <text x="95" y="150" text-anchor="middle" font-weight="700">DDR</text>
+    <text x="95" y="173" text-anchor="middle" font-size="12">OFDM</text>
+
+    <line x1="155" y1="155" x2="235" y2="155" stroke="#94a3b8" stroke-width="3" marker-end="url(#arrow7)"/>
+    <rect x="235" y="120" width="120" height="70" rx="12" fill="#075985" stroke="#38bdf8"/>
+    <text x="295" y="150" text-anchor="middle" font-weight="700">DAC</text>
+    <text x="295" y="173" text-anchor="middle" font-size="12">RFSoC</text>
+
+    <line x1="355" y1="155" x2="435" y2="155" stroke="#94a3b8" stroke-width="3" marker-end="url(#arrow7)"/>
+    <rect x="435" y="105" width="155" height="100" rx="16" fill="#7c2d12" stroke="#fb923c"/>
+    <text x="512" y="143" text-anchor="middle" font-weight="700">RF cable</text>
+    <text x="512" y="169" text-anchor="middle" font-size="12">attenuator/gain</text>
+
+    <line x1="590" y1="155" x2="670" y2="155" stroke="#94a3b8" stroke-width="3" marker-end="url(#arrow7)"/>
+    <rect x="670" y="120" width="120" height="70" rx="12" fill="#581c87" stroke="#c084fc"/>
+    <text x="730" y="150" text-anchor="middle" font-weight="700">ADC</text>
+    <text x="730" y="173" text-anchor="middle" font-size="12">RFSoC</text>
+
+    <line x1="790" y1="155" x2="870" y2="155" stroke="#94a3b8" stroke-width="3" marker-end="url(#arrow7)"/>
+    <rect x="870" y="105" width="185" height="100" rx="16" fill="#064e3b" stroke="#34d399"/>
+    <text x="962" y="143" text-anchor="middle" font-weight="900">Synchronizer</text>
+    <text x="962" y="169" text-anchor="middle" font-size="12">detect/CFO/metric</text>
+
+    <text x="575" y="275" text-anchor="middle" font-size="15" font-weight="800">
+      First RF-stage goal: not BER, but 1000 detections out of 1000 frames.
+    </text>
+  </svg>
+</div>
+
+<h3>Stage 2 vector count</h3>
+
+<table>
+  <tr><th>FPGA phase</th><th>Vector count</th><th>Purpose</th></tr>
+  <tr><td>Board bring-up</td><td>50</td><td>Basic DDR → DUT → DDR pass</td></tr>
+  <tr><td>Pre-RF board regression</td><td>500</td><td>timing/scale/CFO/mixed stress</td></tr>
+  <tr><td>RF loopback stability</td><td>1000+ frames</td><td>detection success, jitter, miss/false alarm</td></tr>
+  <tr><td>Final regression</td><td>1000~2000 vectors</td><td>Automatic regression after bitstream changes</td></tr>
+</table>
+</section>
+
+<section>
+<h2>6. Vector Generation Flow</h2>
+
+<div class="diagram">
+  <div class="diagram-title">Figure 10. Vector generation flow: from clean frame to stress vectors</div>
+  <svg viewBox="0 0 1120 420">
+    <defs>
+      <marker id="arrow8" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto">
+        <path d="M0,0 L10,3 L0,6 Z" fill="#94a3b8"></path>
+      </marker>
+    </defs>
+
+    <rect x="50" y="70" width="190" height="80" rx="14" fill="#075985" stroke="#38bdf8"/>
+    <text x="145" y="103" text-anchor="middle" font-size="17" font-weight="800">Golden C</text>
+    <text x="145" y="128" text-anchor="middle" font-size="12">generate_transmit_slot()</text>
+
+    <line x1="240" y1="110" x2="340" y2="110" stroke="#94a3b8" stroke-width="3" marker-end="url(#arrow8)"/>
+    <rect x="340" y="70" width="190" height="80" rx="14" fill="#713f12" stroke="#facc15"/>
+    <text x="435" y="103" text-anchor="middle" font-size="17" font-weight="800">Clean IQ</text>
+    <text x="435" y="128" text-anchor="middle" font-size="12">4064 complex samples</text>
+
+    <line x1="530" y1="110" x2="630" y2="110" stroke="#94a3b8" stroke-width="3" marker-end="url(#arrow8)"/>
+    <rect x="630" y="70" width="220" height="80" rx="14" fill="#7c2d12" stroke="#fb923c"/>
+    <text x="740" y="103" text-anchor="middle" font-size="17" font-weight="800">Impairment</text>
+    <text x="740" y="128" text-anchor="middle" font-size="12">padding / scale / CFO / phase</text>
+
+    <line x1="850" y1="110" x2="950" y2="110" stroke="#94a3b8" stroke-width="3" marker-end="url(#arrow8)"/>
+    <rect x="950" y="70" width="135" height="80" rx="14" fill="#581c87" stroke="#c084fc"/>
+    <text x="1017" y="103" text-anchor="middle" font-size="17" font-weight="800">Q15</text>
+    <text x="1017" y="128" text-anchor="middle" font-size="12">int16 IQ</text>
+
+    <rect x="150" y="255" width="220" height="70" rx="14" fill="#064e3b" stroke="#34d399"/>
+    <text x="260" y="284" text-anchor="middle" font-size="17" font-weight="800">input.hex</text>
+    <text x="260" y="308" text-anchor="middle" font-size="12">RTL + FPGA shared</text>
+
+    <rect x="450" y="255" width="220" height="70" rx="14" fill="#581c87" stroke="#c084fc"/>
+    <text x="560" y="284" text-anchor="middle" font-size="17" font-weight="800">RTL golden</text>
+    <text x="560" y="308" text-anchor="middle" font-size="12">corr/metric/events</text>
+
+    <rect x="750" y="255" width="220" height="70" rx="14" fill="#075985" stroke="#38bdf8"/>
+    <text x="860" y="284" text-anchor="middle" font-size="17" font-weight="800">expected.json</text>
+    <text x="860" y="308" text-anchor="middle" font-size="12">frame/payload start</text>
+  </svg>
+</div>
+
+<table>
+  <tr><th>Category</th><th>Examples</th><th>Main purpose</th></tr>
+  <tr><td>Timing padding</td><td>0, 1, 2, 4, 16, 31, 32, 64, 128, 256, 511</td><td>Frame starts in the middle of the buffer</td></tr>
+  <tr><td>Scale</td><td>0.03125 ~ 1.2</td><td>Verify gain, clipping, and saturation</td></tr>
+  <tr><td>Fractional CFO</td><td>±0.001, ±0.005, ±0.01, ±0.03, ±0.05, ±0.1, ±0.2</td><td>CFO quantization boundary</td></tr>
+  <tr><td>Integer CFO</td><td>0, ±1, ±2, ±3, ±4</td><td>Verify CFO bin decision</td></tr>
+  <tr><td>Phase</td><td>0, π/4, π/2, π</td><td>initial phase robustness</td></tr>
+  <tr><td>Back-to-back</td><td>10, 100, 1000 frames</td><td>state reset, false alarm, miss detection</td></tr>
+</table>
+</section>
+
+<section>
+<h2>7. Stage 1 → Stage 2 Promotion Rule</h2>
+
+<div class="diagram">
+  <div class="diagram-title">Figure 11. Promotion criteria from RTL to FPGA</div>
+  <svg viewBox="0 0 1100 370">
+    <defs>
+      <marker id="arrow9" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto">
+        <path d="M0,0 L10,3 L0,6 Z" fill="#94a3b8"></path>
+      </marker>
+    </defs>
+
+    <rect x="55" y="80" width="210" height="90" rx="16" fill="#581c87" stroke="#c084fc"/>
+    <text x="160" y="115" text-anchor="middle" font-size="18" font-weight="900">RTL Smoke</text>
+    <text x="160" y="142" text-anchor="middle" font-size="13">10~20 vectors</text>
+
+    <line x1="265" y1="125" x2="350" y2="125" stroke="#94a3b8" stroke-width="3" marker-end="url(#arrow9)"/>
+    <rect x="350" y="80" width="230" height="90" rx="16" fill="#581c87" stroke="#c084fc"/>
+    <text x="465" y="115" text-anchor="middle" font-size="18" font-weight="900">RTL Bit-accurate</text>
+    <text x="465" y="142" text-anchor="middle" font-size="13">50~100 vectors</text>
+
+    <line x1="580" y1="125" x2="665" y2="125" stroke="#94a3b8" stroke-width="3" marker-end="url(#arrow9)"/>
+    <rect x="665" y="80" width="230" height="90" rx="16" fill="#581c87" stroke="#c084fc"/>
+    <text x="780" y="115" text-anchor="middle" font-size="18" font-weight="900">RTL Stress</text>
+    <text x="780" y="142" text-anchor="middle" font-size="13">300~500 vectors</text>
+
+    <line x1="780" y1="170" x2="780" y2="230" stroke="#94a3b8" stroke-width="3" marker-end="url(#arrow9)"/>
+    <rect x="665" y="230" width="230" height="90" rx="16" fill="#064e3b" stroke="#34d399"/>
+    <text x="780" y="265" text-anchor="middle" font-size="18" font-weight="900">FPGA Bring-up</text>
+    <text x="780" y="292" text-anchor="middle" font-size="13">50 shared vectors</text>
+
+    <rect x="90" y="240" width="430" height="55" rx="12" fill="#881337" stroke="#fb7185"/>
+    <text x="305" y="273" text-anchor="middle" font-size="15" font-weight="800">
+      Do not move to FPGA if RTL stress fails.
+    </text>
+  </svg>
+</div>
+
+<h3>Promotion checklist</h3>
+<table>
+  <tr><th>Condition</th><th>Description</th><th>Required</th></tr>
+  <tr><td>AXIS smoke pass</td><td>Reset, valid/ready, TLAST, and output valid are normal</td><td>Required</td></tr>
+  <tr><td>Fixed-point stage pass</td><td>corr/metric/peak/frame_start comparison passes</td><td>Required</td></tr>
+  <tr><td>Boundary vector pass</td><td>Deterministic results at scale, CFO, and timing boundaries</td><td>Required</td></tr>
+  <tr><td>Back-to-back pass</td><td>State reset and frame interval are normal</td><td>Required</td></tr>
+  <tr><td>Waveform debug clean</td><td>No overflow, wrap-around, or unknown X</td><td>Strongly recommended</td></tr>
+</table>
+</section>
+
+<section>
+<h2>8. Final Regression CSV</h2>
+
+<pre><code>test_id,
+stage,
+mode,
+padding,
+scale,
+frac_cfo,
+int_cfo,
+phase0,
+input_q_format,
+num_samples,
+detect_valid,
+golden_start,
+dut_start,
+start_error,
+golden_payload_start,
+dut_payload_start,
+peak_metric,
+cfo_est,
+overflow_flag,
+saturation_flag,
+rtl_corr_mismatch_count,
+rtl_metric_mismatch_count,
+axis_error,
+pass_fail</code></pre>
+
+<div class="diagram">
+  <div class="diagram-title">Figure 12. Unified regression report</div>
+  <svg viewBox="0 0 1050 370">
+    <rect x="70" y="70" width="190" height="90" rx="16" fill="#581c87" stroke="#c084fc"/>
+    <text x="165" y="105" text-anchor="middle" font-size="18" font-weight="900">RTL report</text>
+    <text x="165" y="132" text-anchor="middle" font-size="13">stage mismatch counts</text>
+
+    <rect x="430" y="70" width="190" height="90" rx="16" fill="#064e3b" stroke="#34d399"/>
+    <text x="525" y="105" text-anchor="middle" font-size="18" font-weight="900">FPGA report</text>
+    <text x="525" y="132" text-anchor="middle" font-size="13">start error / flags</text>
+
+    <rect x="790" y="70" width="190" height="90" rx="16" fill="#7c2d12" stroke="#fb923c"/>
+    <text x="885" y="105" text-anchor="middle" font-size="18" font-weight="900">RF report</text>
+    <text x="885" y="132" text-anchor="middle" font-size="13">jitter / miss / false</text>
+
+    <line x1="165" y1="160" x2="525" y2="250" stroke="#94a3b8" stroke-width="3"/>
+    <line x1="525" y1="160" x2="525" y2="250" stroke="#94a3b8" stroke-width="3"/>
+    <line x1="885" y1="160" x2="525" y2="250" stroke="#94a3b8" stroke-width="3"/>
+
+    <rect x="330" y="250" width="390" height="70" rx="16" fill="#020617" stroke="#94a3b8"/>
+    <text x="525" y="280" text-anchor="middle" font-size="18" font-weight="900">one manifest / one CSV</text>
+    <text x="525" y="305" text-anchor="middle" font-size="13">same vector ID across RTL, FPGA, RF</text>
+  </svg>
+</div>
+
+</section>
+
+<section>
+<h2>9. Final Recommended Flow</h2>
+
+<div class="diagram">
+  <div class="diagram-title">Figure 13. Final execution order</div>
+  <svg viewBox="0 0 1100 610">
+    <defs>
+      <marker id="arrow10" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto">
+        <path d="M0,0 L10,3 L0,6 Z" fill="#94a3b8"></path>
+      </marker>
+    </defs>
+
+    <rect x="60" y="40" width="270" height="55" rx="12" fill="#075985" stroke="#38bdf8"/>
+    <text x="195" y="74" text-anchor="middle" font-weight="800">1. Update Golden C: DATA=12</text>
+
+    <line x1="330" y1="68" x2="430" y2="68" stroke="#94a3b8" stroke-width="3" marker-end="url(#arrow10)"/>
+    <rect x="430" y="40" width="270" height="55" rx="12" fill="#075985" stroke="#38bdf8"/>
+    <text x="565" y="74" text-anchor="middle" font-weight="800">2. Generate clean_float_iq</text>
+
+    <line x1="700" y1="68" x2="800" y2="68" stroke="#94a3b8" stroke-width="3" marker-end="url(#arrow10)"/>
+    <rect x="800" y="40" width="240" height="55" rx="12" fill="#7c2d12" stroke="#fb923c"/>
+    <text x="920" y="74" text-anchor="middle" font-weight="800">3. Generate shared vectors</text>
+
+    <line x1="920" y1="95" x2="920" y2="155" stroke="#94a3b8" stroke-width="3" marker-end="url(#arrow10)"/>
+    <rect x="770" y="155" width="300" height="55" rx="12" fill="#581c87" stroke="#c084fc"/>
+    <text x="920" y="189" text-anchor="middle" font-weight="800">4. Stage 1 RTL smoke</text>
+
+    <line x1="770" y1="183" x2="670" y2="183" stroke="#94a3b8" stroke-width="3" marker-end="url(#arrow10)"/>
+    <rect x="390" y="155" width="280" height="55" rx="12" fill="#581c87" stroke="#c084fc"/>
+    <text x="530" y="189" text-anchor="middle" font-weight="800">5. Stage 1 bit-accurate</text>
+
+    <line x1="390" y1="183" x2="290" y2="183" stroke="#94a3b8" stroke-width="3" marker-end="url(#arrow10)"/>
+    <rect x="50" y="155" width="240" height="55" rx="12" fill="#581c87" stroke="#c084fc"/>
+    <text x="170" y="189" text-anchor="middle" font-weight="800">6. Stage 1 stress</text>
+
+    <line x1="170" y1="210" x2="170" y2="270" stroke="#94a3b8" stroke-width="3" marker-end="url(#arrow10)"/>
+    <rect x="50" y="270" width="300" height="55" rx="12" fill="#064e3b" stroke="#34d399"/>
+    <text x="200" y="304" text-anchor="middle" font-weight="800">7. Stage 2A DDR-DUT-DDR</text>
+
+    <line x1="350" y1="298" x2="450" y2="298" stroke="#94a3b8" stroke-width="3" marker-end="url(#arrow10)"/>
+    <rect x="450" y="270" width="270" height="55" rx="12" fill="#064e3b" stroke="#34d399"/>
+    <text x="585" y="304" text-anchor="middle" font-weight="800">8. Stage 2B RFDC format</text>
+
+    <line x1="720" y1="298" x2="820" y2="298" stroke="#94a3b8" stroke-width="3" marker-end="url(#arrow10)"/>
+    <rect x="820" y="270" width="230" height="55" rx="12" fill="#064e3b" stroke="#34d399"/>
+    <text x="935" y="304" text-anchor="middle" font-weight="800">9. Stage 2C RF cable</text>
+
+    <rect x="120" y="430" width="860" height="80" rx="18" fill="#020617" stroke="#94a3b8"/>
+    <text x="550" y="462" text-anchor="middle" font-size="18" font-weight="900">
+      Rule: Promote only vectors that pass RTL stress reliably to the FPGA board test.
+    </text>
+    <text x="550" y="492" text-anchor="middle" font-size="14">
+      If a mismatch occurs on FPGA, reopen the RTL waveform with the same vector ID to trace the root cause.
+    </text>
+  </svg>
+</div>
+
+<div class="box success">
+  <strong>Final conclusion:</strong><br>In <span class="stage1">Stage 1 RTL</span>, use the same input vector and compare internal fixed-point stages. In <span class="stage2">Stage 2 FPGA</span>, place the same vector in DDR and compare final events. This keeps RTL/FPGA/RF results tied to one vector ID and makes debugging much easier.
+</div>
+
+<p class="small">
+  Generated visual HTML document for RFSoC ZCU216 synchronizer verification planning.
+</p>
+
+</section>
+
+</main>
+</body>
+</html>

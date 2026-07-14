@@ -1,0 +1,209 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>OFDM Transceiver — full block diagram (ZCU216)</title>
+<style>
+  :root{
+    --bg:#0f1419; --panel:#1a212b; --ink:#e6edf3; --mut:#9aa7b4;
+    --tx:#243b53; --txb:#5fa8ff;
+    --rx:#1f3a2e; --rxb:#4ade80;
+    --ch:#3a3320; --chb:#fbbf24;
+    --mux:#3a2740; --muxb:#c084fc;
+    --axis:#fb923c; --lite:#60a5fa; --clk:#64748b;
+    --border:#2a3543;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--bg);color:var(--ink);font:14px/1.5 -apple-system,Segoe UI,Roboto,sans-serif}
+  header{padding:18px 26px;border-bottom:1px solid var(--border);background:var(--panel)}
+  h1{margin:0 0 4px;font-size:20px}
+  .sub{color:var(--mut);font-size:13px}
+  .wrap{padding:22px 26px;max-width:1500px;margin:0 auto}
+  .legend{display:flex;gap:18px;flex-wrap:wrap;margin:10px 0 18px;font-size:12.5px}
+  .legend span{display:inline-flex;align-items:center;gap:6px}
+  .sw{width:24px;height:0;border-top:3px solid #888;display:inline-block}
+  .chip{display:inline-block;padding:1px 8px;border-radius:10px;font-size:11px}
+  svg{width:100%;height:auto;background:#0c1117;border:1px solid var(--border);border-radius:10px}
+  .box-title{font-weight:700;font-size:13px;fill:var(--ink)}
+  .box-sub{font-size:10.5px;fill:var(--mut)}
+  .wlbl{font-size:10.5px;fill:#cbd5e1}
+  .band{font-size:12px;font-weight:700;letter-spacing:.5px}
+  table{border-collapse:collapse;width:100%;margin-top:16px;font-size:12.5px}
+  th,td{border:1px solid var(--border);padding:7px 10px;text-align:left;vertical-align:top}
+  th{background:#16202b;color:#cbd5e1}
+  td code,th code{color:#fbbf24;font-family:ui-monospace,Consolas,monospace}
+  h2{font-size:15px;margin:26px 0 8px;border-left:3px solid var(--txb);padding-left:8px}
+  .ok{color:#86efac;font-weight:600}
+</style>
+</head>
+<body>
+<header>
+  <h1>OFDM Transceiver — full block diagram</h1>
+  <div class="sub">AMD ZCU216 RFSoC &middot; <code>ofdm_transceiver_top</code> &mdash; runtime <code>mode[1:0]</code> = TX / RX / LOOPBACK &middot; <code>mod_sel[1:0]</code> = QPSK / 16-QAM / 64-QAM / 256-QAM &middot; <span class="ok">sim &amp; silicon BER = 0</span></div>
+</header>
+<div class="wrap">
+
+  <div class="legend">
+    <span><span class="sw" style="border-color:var(--axis)"></span> AXI-Stream (32-bit IQ datapath)</span>
+    <span><span class="sw" style="border-color:var(--lite)"></span> AXI4-Lite / GPIO (control &amp; status)</span>
+    <span><span class="chip" style="background:var(--tx);color:var(--txb)">TX</span> transmit chain</span>
+    <span><span class="chip" style="background:var(--rx);color:var(--rxb)">RX</span> receive chain</span>
+    <span><span class="chip" style="background:var(--ch);color:var(--chb)">channel</span> loopback / RF</span>
+    <span><span class="chip" style="background:var(--mux);color:var(--muxb)">mux</span> mode select</span>
+  </div>
+
+  <svg viewBox="0 0 1440 640" role="img" aria-label="OFDM transceiver block diagram">
+    <defs>
+      <marker id="arr" markerWidth="9" markerHeight="9" refX="7" refY="3" orient="auto">
+        <path d="M0,0 L7,3 L0,6 z" fill="#cbd5e1"/>
+      </marker>
+      <marker id="arrO" markerWidth="9" markerHeight="9" refX="7" refY="3" orient="auto">
+        <path d="M0,0 L7,3 L0,6 z" fill="var(--axis)"/>
+      </marker>
+    </defs>
+
+    <!-- ====================== TX BAND ====================== -->
+    <text x="30" y="40" class="band" fill="var(--txb)">TX CHAIN</text>
+
+    <!-- TX data input -->
+    <text x="30" y="92" class="wlbl">data_bits_flat</text>
+    <line x1="30" y1="100" x2="120" y2="100" stroke="var(--axis)" stroke-width="2.5" marker-end="url(#arrO)"/>
+
+    <!-- tx_subcarrier_map -->
+    <rect x="122" y="62" width="180" height="76" rx="8" fill="var(--tx)" stroke="var(--txb)"/>
+    <text x="132" y="86" class="box-title">tx_subcarrier_map</text>
+    <text x="132" y="104" class="box-sub">QAM map + QPSK pilots</text>
+    <text x="132" y="120" class="box-sub">+ fftshift (mod_sel)</text>
+
+    <line x1="302" y1="100" x2="346" y2="100" stroke="var(--axis)" stroke-width="2.5" marker-end="url(#arrO)"/>
+
+    <!-- tx_ifft_frontend -->
+    <rect x="348" y="62" width="180" height="76" rx="8" fill="var(--tx)" stroke="var(--txb)"/>
+    <text x="358" y="86" class="box-title">tx_ifft_frontend</text>
+    <text x="358" y="104" class="box-sub">256-pt IDFT (xfft 9.1)</text>
+    <text x="358" y="120" class="box-sub">+ cyclic prefix (CP=32)</text>
+
+    <line x1="528" y1="100" x2="572" y2="100" stroke="var(--axis)" stroke-width="2.5" marker-end="url(#arrO)"/>
+
+    <!-- tx_ofdm_top -->
+    <rect x="574" y="62" width="190" height="76" rx="8" fill="var(--tx)" stroke="var(--txb)"/>
+    <text x="584" y="86" class="box-title">tx_ofdm_top</text>
+    <text x="584" y="104" class="box-sub">PSS/SSS + 12 data symbols</text>
+    <text x="584" y="120" class="box-sub">&rarr; 4032-sample slot</text>
+
+    <!-- tx_out master -->
+    <line x1="764" y1="100" x2="844" y2="100" stroke="var(--axis)" stroke-width="2.5" marker-end="url(#arrO)"/>
+    <text x="770" y="92" class="wlbl">tx_out (master)</text>
+
+    <!-- ====================== MODE MUX ====================== -->
+    <rect x="846" y="56" width="150" height="92" rx="8" fill="var(--mux)" stroke="var(--muxb)"/>
+    <text x="856" y="82" class="box-title">mode mux</text>
+    <text x="856" y="100" class="box-sub">0 TX  1 RX</text>
+    <text x="856" y="116" class="box-sub">2 LOOPBACK</text>
+    <text x="856" y="136" class="box-sub">frame: 64+4032+64</text>
+
+    <!-- ext rx input into mux -->
+    <text x="846" y="186" class="wlbl">ext_s_axis (4160-sample frame)</text>
+    <line x1="921" y1="192" x2="921" y2="150" stroke="var(--axis)" stroke-width="2.5" marker-end="url(#arrO)"/>
+
+    <!-- mux to RX -->
+    <line x1="996" y1="102" x2="1060" y2="102" stroke="var(--axis)" stroke-width="2.5"/>
+    <line x1="1060" y1="102" x2="1060" y2="300" stroke="var(--axis)" stroke-width="2.5"/>
+    <line x1="1060" y1="300" x2="120" y2="300" stroke="var(--axis)" stroke-width="2.5" marker-end="url(#arrO)"/>
+    <text x="430" y="292" class="wlbl">rx_s_axis = (mode==LOOPBACK) ? tx_framed_stream : ext_s_axis</text>
+
+    <!-- ====================== RX BAND ====================== -->
+    <text x="30" y="360" class="band" fill="var(--rxb)">RX CHAIN</text>
+
+    <!-- synchronizer -->
+    <rect x="122" y="382" width="200" height="86" rx="8" fill="var(--rx)" stroke="var(--rxb)"/>
+    <text x="132" y="406" class="box-title">synchronizer</text>
+    <text x="132" y="424" class="box-sub">frame-detect + timing</text>
+    <text x="132" y="440" class="box-sub">frac/int CFO (meyr_cfo)</text>
+    <text x="132" y="458" class="box-sub">PSS/SSS extract</text>
+
+    <line x1="322" y1="425" x2="366" y2="425" stroke="var(--axis)" stroke-width="2.5" marker-end="url(#arrO)"/>
+
+    <!-- rx_fft_frontend -->
+    <rect x="368" y="390" width="170" height="70" rx="8" fill="var(--rx)" stroke="var(--rxb)"/>
+    <text x="378" y="416" class="box-title">rx_fft_frontend</text>
+    <text x="378" y="434" class="box-sub">256-pt FFT (xfft 9.1)</text>
+
+    <line x1="538" y1="425" x2="582" y2="425" stroke="var(--axis)" stroke-width="2.5" marker-end="url(#arrO)"/>
+
+    <!-- rx_ch_est -->
+    <rect x="584" y="390" width="150" height="70" rx="8" fill="var(--rx)" stroke="var(--rxb)"/>
+    <text x="594" y="416" class="box-title">rx_ch_est</text>
+    <text x="594" y="434" class="box-sub">pilot CE</text>
+
+    <line x1="734" y1="425" x2="778" y2="425" stroke="var(--axis)" stroke-width="2.5" marker-end="url(#arrO)"/>
+
+    <!-- rx_equalizer -->
+    <rect x="780" y="390" width="150" height="70" rx="8" fill="var(--rx)" stroke="var(--rxb)"/>
+    <text x="790" y="416" class="box-title">rx_equalizer</text>
+    <text x="790" y="434" class="box-sub">zero-forcing EQ</text>
+
+    <line x1="930" y1="425" x2="974" y2="425" stroke="var(--axis)" stroke-width="2.5" marker-end="url(#arrO)"/>
+
+    <!-- rx_demod_qam -->
+    <rect x="976" y="390" width="160" height="70" rx="8" fill="var(--rx)" stroke="var(--rxb)"/>
+    <text x="986" y="416" class="box-title">rx_demod_qam</text>
+    <text x="986" y="434" class="box-sub">QAM slicer (mod_sel)</text>
+
+    <!-- demod bits out -->
+    <line x1="1136" y1="425" x2="1216" y2="425" stroke="var(--axis)" stroke-width="2.5" marker-end="url(#arrO)"/>
+    <text x="1150" y="417" class="wlbl">demod bits</text>
+
+    <!-- rx_ber_checker -->
+    <rect x="976" y="510" width="160" height="60" rx="8" fill="var(--rx)" stroke="var(--rxb)"/>
+    <text x="986" y="534" class="box-title">rx_ber_checker</text>
+    <text x="986" y="552" class="box-sub ok" style="fill:#86efac">on-chip BER = 0</text>
+    <line x1="1056" y1="460" x2="1056" y2="510" stroke="var(--axis)" stroke-width="2.5" marker-end="url(#arrO)"/>
+
+    <!-- ====================== CONTROL BAND ====================== -->
+    <rect x="1216" y="60" width="190" height="150" rx="8" fill="#16202b" stroke="var(--lite)"/>
+    <text x="1226" y="86" class="box-title" style="fill:var(--lite)">control / status</text>
+    <text x="1226" y="108" class="box-sub">AXI4-Lite / GPIO</text>
+    <text x="1226" y="128" class="box-sub">mode[1:0]</text>
+    <text x="1226" y="146" class="box-sub">mod_sel[1:0]</text>
+    <text x="1226" y="164" class="box-sub">start (1-cycle pulse)</text>
+    <text x="1226" y="182" class="box-sub">ber_ctrl / readout</text>
+    <line x1="1311" y1="210" x2="1311" y2="240" stroke="var(--lite)" stroke-width="2" stroke-dasharray="5 4"/>
+    <line x1="1311" y1="240" x2="921" y2="240" stroke="var(--lite)" stroke-width="2" stroke-dasharray="5 4"/>
+    <line x1="921" y1="240" x2="921" y2="148" stroke="var(--lite)" stroke-width="2" stroke-dasharray="5 4" marker-end="url(#arr)"/>
+
+    <!-- channel/loopback note -->
+    <rect x="846" y="300" width="290" height="50" rx="8" fill="var(--ch)" stroke="var(--chb)"/>
+    <text x="856" y="322" class="box-title" style="fill:var(--chb)">channel / loopback / RF DAC&harr;ADC</text>
+    <text x="856" y="340" class="box-sub">LOOPBACK: TX slot framed (64+4032+64) &rarr; RX in</text>
+  </svg>
+
+  <h2>Block reference</h2>
+  <table>
+    <thead><tr><th>Stage</th><th>Module</th><th>Function</th></tr></thead>
+    <tbody>
+      <tr><td>TX 1</td><td><code>tx_subcarrier_map</code></td><td>QAM-map payload + insert 32 QPSK pilots + fftshift; modulation from <code>mod_sel</code></td></tr>
+      <tr><td>TX 2</td><td><code>tx_ifft_frontend</code></td><td>256-point IDFT via real Xilinx xfft 9.1 IP, then prepend cyclic prefix (CP=32)</td></tr>
+      <tr><td>TX 3</td><td><code>tx_ofdm_top</code></td><td>assemble PSS/SSS sync symbols + 12 data symbols into the 4032-sample slot</td></tr>
+      <tr><td>MUX</td><td><code>ofdm_transceiver_top</code></td><td><code>mode[1:0]</code> selects TX / RX / LOOPBACK; in LOOPBACK the TX slot is framed (64+4032+64=4160) and fed to RX</td></tr>
+      <tr><td>RX 1</td><td>synchronizer (<code>frame_detector</code>, <code>frac_cfo_*</code>, <code>meyr_cfo_top</code>)</td><td>frame detect + timing + fractional/integer CFO estimate &amp; correct; PSS/SSS extract</td></tr>
+      <tr><td>RX 2</td><td><code>rx_fft_frontend</code></td><td>256-point FFT (real xfft 9.1 IP)</td></tr>
+      <tr><td>RX 3</td><td><code>rx_ch_est</code></td><td>pilot-based channel estimation</td></tr>
+      <tr><td>RX 4</td><td><code>rx_equalizer</code></td><td>zero-forcing equalization</td></tr>
+      <tr><td>RX 5</td><td><code>rx_demod_qam</code></td><td>QAM slicer / demodulator (modulation from <code>mod_sel</code>)</td></tr>
+      <tr><td>Check</td><td><code>rx_ber_checker</code></td><td>on-chip bit-error-rate counter (verified <span class="ok">BER = 0</span>)</td></tr>
+      <tr><td>Board</td><td><code>ofdm_xcvr_board_top</code></td><td>board adapter: exposes mode / mod_sel / start / BER readout over GPIO &amp; AXI-Lite</td></tr>
+    </tbody>
+  </table>
+
+  <p class="sub" style="margin-top:18px">
+    Related: <a href="../rtl_dashboard/rtl_coverage.html" style="color:var(--rxb)">RTL coverage</a> &middot;
+    <a href="../fpga_dashboard/fpga_test_coverage.html" style="color:var(--rxb)">FPGA / silicon coverage</a> &middot;
+    <a href="../README.md" style="color:var(--rxb)">README</a> &middot;
+    <a href="digital_loopback_block_diagram.html" style="color:var(--rxb)">DMA-free loopback shell diagram</a>
+  </p>
+
+</div>
+</body>
+</html>

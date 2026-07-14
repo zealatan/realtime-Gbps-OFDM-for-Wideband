@@ -1,0 +1,7 @@
+source /home/zealatan/Downloads/Vivado/2022.2/settings64.sh
+export PATH=/home/zealatan/Downloads/Vivado/2022.2/bin:$PATH
+
+xvlog --sv -L xilinx_vip -f ./design_list.f -f ./testbench_list.f  
+xelab dma_ip_tb -L xilinx_vip  -debug all -s  dma_ip_tb
+#xsim dma_ip_tb -R  # do not check waveform
+xsim dma_ip_tb -gui -wdb simulate_xsim_dma_ip_tb.wdb -tclbatch sim.tcl -log simulate.log -protoinst ./protoinst_files/sim.protoinst  &

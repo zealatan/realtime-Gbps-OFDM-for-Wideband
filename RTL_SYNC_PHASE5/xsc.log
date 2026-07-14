@@ -1,0 +1,5 @@
+Multi-threading is on. Using 10 slave threads.
+Linking with command:
+/home/zealatan/Downloads/Vivado/2022.2/lib/lnx64.o/../../tps/lnx64/gcc-6.2.0/bin/g++ -Wa,-W  -O -fPIC  -m64  -shared  -o "/home/zealatan/RTL_SYNC_PHASE5/sim_out/xsim_simlib/aie_ps_v1_0/libaie_ps_v1_0.so" /home/zealatan/RTL_SYNC_PHASE5/sim_out/xsim_simlib/aie_ps_v1_0/xsc/*.o    -L/home/zealatan/RTL_SYNC_PHASE5/sim_out/xsim_simlib/xtlm -L/home/zealatan/RTL_SYNC_PHASE5/sim_out/xsim_simlib/common_cpp_v1_0 -L/home/zealatan/RTL_SYNC_PHASE5/sim_out/xsim_simlib/xtlm_ap_ctrl_v1_0 -L/home/zealatan/RTL_SYNC_PHASE5/sim_out/xsim_simlib/pl_fileio_v1_0_0 -lxtlm -lcommon_cpp_v1_0 -lxtlm_ap_ctrl_v1_0 -lpl_fileio_v1_0_0  -L/home/zealatan/Downloads/Vivado/2022.2/lib/lnx64.o -lrdi_simulator_kernel  -lrdi_xsim_systemc -std=c++11 -L/home/zealatan/Downloads/Vivado/2022.2/lib/lnx64.o/Default  -B/home/zealatan/Downloads/Vivado/2022.2/lib/lnx64.o/../../tps/lnx64/gcc-6.2.0/bin/../../binutils-2.37/bin/ 
+
+Done linking: "/home/zealatan/RTL_SYNC_PHASE5/sim_out/xsim_simlib/aie_ps_v1_0/libaie_ps_v1_0.so"

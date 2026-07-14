@@ -1,0 +1,83 @@
+# Program the 12_xcvr_loopback PL image (dut_player -> ofdm_xcvr_board_top ->
+# dut_capture), run the baremetal ELF (run_xcvr_3mode), then JTAG-dump the three
+# per-mode capture buffers (xcvr_lb_buf / xcvr_rx_buf / xcvr_tx_buf) for offline
+# host BER + TX-slot compare. Watch UART0 for ZCU216_XCVR: markers.
+#   Run: scripts/xsct_2021_compat.sh scripts/run_12_xcvr_loopback.xsct <label>
+set repo_root [file normalize [file join [file dirname [info script]] ..]]
+set label "run"
+if {[info exists argv] && [llength $argv] >= 1} { set label [lindex $argv 0] }
+
+set hw_dir   [file join $repo_root hardware generated 12_xcvr_loopback]
+set ws       [file join $repo_root software generated rfdc_capture_ws]
+set bit      [file join $hw_dir zcu216_xcvr.runs impl_1 system_wrapper.bit]
+set psu_init [file join $hw_dir psu_init.tcl]
+set elf      [file join $ws rfdc_capture Debug rfdc_capture.elf]
+set tests_dir [file join $repo_root tests 12_xcvr_loopback]
+file mkdir $tests_dir
+
+set nm ""
+foreach nm_glob [list \
+    $env(HOME)/xilinx/Vitis/Vitis/*/gnu/aarch64/lin/aarch64-none/bin/aarch64-none-elf-nm \
+    /tools/Xilinx/Vitis/*/gnu/aarch64/lin/aarch64-none/bin/aarch64-none-elf-nm] {
+    foreach c [lsort -decreasing [glob -nocomplain $nm_glob]] {
+        if {[file exists $c]} { set nm $c; break }
+    }
+    if {$nm ne ""} { break }
+}
+
+foreach f [list $bit $psu_init $elf] {
+    if {![file exists $f]} { error "Missing prerequisite: $f" }
+}
+
+connect
+targets -set -nocase -filter {name =~ "*PSU*"}
+rst -system
+after 1000
+
+source $psu_init
+psu_init
+# FULL-RATE: force pl_clk0 = 187.5 MHz (PL0_REF_CTRL DIVISOR0=8: 1500/8=187.5MHz).
+# Same override as run_11 (the design closes at the rated pl_clk0). CLKACT bit24=1.
+mwr 0xFF5E00C0 0x01010800
+after 500
+fpga -file $bit
+after 500
+psu_ps_pl_isolation_removal
+psu_ps_pl_reset_config
+after 500
+
+targets -set -nocase -filter {name =~ "*A53*#0"}
+rst -processor -clear-registers
+dow $elf
+con
+puts "ZCU216_XCVR_APP: running; inspect UART0 for ZCU216_XCVR: markers"
+
+# Resolve the three per-mode buffer symbols.
+proc sym_addr {nm elf name} {
+    set addr 0
+    if {$nm ne ""} {
+        catch {
+            foreach line [split [exec $nm $elf] "\n"] {
+                if {[lindex $line 2] eq $name} { set addr 0x[lindex $line 0] }
+            }
+        }
+    }
+    return $addr
+}
+
+# 3-mode sequence + continuous LIVE-TX->RX LOOPBACK long-run + 3 GPIO readbacks
+# take a while (the continuous rot-sweep + ~800-frame stream adds time); margin.
+after 90000
+
+targets -set -nocase -filter {name =~ "*A53*#0"}
+foreach {name words} {xcvr_lb_buf 127296 xcvr_rx_buf 13260 xcvr_tx_buf 4032} {
+    set addr [sym_addr $nm $elf $name]
+    set dump [file join $tests_dir ${name}_$label.bin]
+    if {$addr ne 0} {
+        mrd -force -bin -file $dump $addr $words
+        puts "ZCU216_XCVR_APP: dumped $name addr=$addr words=$words -> $dump"
+    } else {
+        puts "ZCU216_XCVR_APP: WARN could not resolve $name; skipped"
+    }
+}
+puts "ZCU216_XCVR_APP: DONE"

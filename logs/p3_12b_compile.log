@@ -1,4 +1,0 @@
-rtl/phase2_legacy/delay_sample.v:27: warning: Port 2 (ena) of ram_2port expects 1 bits, got 32.
-rtl/phase2_legacy/delay_sample.v:27:        : Pruning (signed) 31 high bits of the expression.
-rtl/phase2_legacy/delay_sample.v:27: warning: Port 11 (dib) of ram_2port expects 16 bits, got 32.
-rtl/phase2_legacy/delay_sample.v:27:        : Pruning 16 high bits of the expression.

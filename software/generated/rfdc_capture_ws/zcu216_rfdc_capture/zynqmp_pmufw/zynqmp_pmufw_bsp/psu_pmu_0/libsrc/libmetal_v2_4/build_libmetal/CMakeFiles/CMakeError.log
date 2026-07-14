@@ -1,0 +1,23 @@
+Determining if files xintc.h exist failed with the following output:
+Change Dir: /home/dsp-mikro7/FPGA_Based_OFDM_Transceiver/software/generated/rfdc_capture_ws/zcu216_rfdc_capture/zynqmp_pmufw/zynqmp_pmufw_bsp/psu_pmu_0/libsrc/libmetal_v2_4/build_libmetal/CMakeFiles/CMakeTmp
+
+Run Build Command:"/usr/bin/gmake" "cmTC_4480a/fast"
+/usr/bin/gmake -f CMakeFiles/cmTC_4480a.dir/build.make CMakeFiles/cmTC_4480a.dir/build
+gmake[1]: Entering directory '/home/dsp-mikro7/FPGA_Based_OFDM_Transceiver/software/generated/rfdc_capture_ws/zcu216_rfdc_capture/zynqmp_pmufw/zynqmp_pmufw_bsp/psu_pmu_0/libsrc/libmetal_v2_4/build_libmetal/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_4480a.dir/CheckIncludeFiles.c.obj
+/home/dsp-mikro7/xilinx/Vitis/Vitis/2022.2/gnu/microblaze/lin/bin/mb-gcc   -mlittle-endian -mxl-barrel-shift -mxl-pattern-compare -mxl-soft-mul -mcpu=v9.2  -mlittle-endian -g -ffunction-sections -fdata-sections -Wall -Wextra -fno-tree-loop-distribute-patterns  -Os -flto -ffat-lto-objects -I/home/dsp-mikro7/FPGA_Based_OFDM_Transceiver/software/generated/rfdc_capture_ws/zcu216_rfdc_capture/zynqmp_pmufw/zynqmp_pmufw_bsp/psu_pmu_0/include -c   -o CMakeFiles/cmTC_4480a.dir/CheckIncludeFiles.c.obj   -c /home/dsp-mikro7/FPGA_Based_OFDM_Transceiver/software/generated/rfdc_capture_ws/zcu216_rfdc_capture/zynqmp_pmufw/zynqmp_pmufw_bsp/psu_pmu_0/libsrc/libmetal_v2_4/build_libmetal/CMakeFiles/CMakeTmp/CheckIncludeFiles.c
+/home/dsp-mikro7/FPGA_Based_OFDM_Transceiver/software/generated/rfdc_capture_ws/zcu216_rfdc_capture/zynqmp_pmufw/zynqmp_pmufw_bsp/psu_pmu_0/libsrc/libmetal_v2_4/build_libmetal/CMakeFiles/CMakeTmp/CheckIncludeFiles.c:2:10: fatal error: xintc.h: No such file or directory
+    2 | #include <xintc.h>
+      |          ^~~~~~~~~
+compilation terminated.
+gmake[1]: *** [CMakeFiles/cmTC_4480a.dir/build.make:66: CMakeFiles/cmTC_4480a.dir/CheckIncludeFiles.c.obj] Error 1
+gmake[1]: Leaving directory '/home/dsp-mikro7/FPGA_Based_OFDM_Transceiver/software/generated/rfdc_capture_ws/zcu216_rfdc_capture/zynqmp_pmufw/zynqmp_pmufw_bsp/psu_pmu_0/libsrc/libmetal_v2_4/build_libmetal/CMakeFiles/CMakeTmp'
+gmake: *** [Makefile:126: cmTC_4480a/fast] Error 2
+
+Source:
+/* */
+#include <xintc.h>
+
+
+int main(void){return 0;}
+

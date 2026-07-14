@@ -1,0 +1,88 @@
+{
+  "generator": "scripts/gen_p5_wrapper_full_chain_stim.py",
+  "purpose": "B[k]-matched full-chain stim for wrapper TB (ISS-26 fix)",
+  "date": "2026-06-19",
+  "spec_change": "NUM_DATA_BLOCKS 5 -> 12: slot is now 2 sync + 12 data = 14 OFDM symbols. Per-file length 704 -> 4160 samples; full M_AXIS output_count is now 4032 beats. Sync-region landmarks unchanged.",
+  "params": {
+    "NSC": 256,
+    "CP_LEN": 32,
+    "SYM_LEN": 288,
+    "NUM_SYNC": 2,
+    "NUM_DATA": 12,
+    "NUM_SYMBOLS": 14,
+    "SYNC_LEN": 576,
+    "FRAME_LEN": 4032,
+    "PRE_ZEROS": 64,
+    "POST_ZEROS": 64,
+    "TOTAL_LEN": 4160,
+    "TARGET_PEAK": 16384,
+    "Q15_scale": 5045.882185761891,
+    "DATA_SEED": 3665428505
+  },
+  "wrapper_expected_constants": {
+    "frame_start_index_approx": 41,
+    "peak_index_auto": 23,
+    "slot_start_index_approx": 64,
+    "frac_cfo_q15": 0,
+    "expected_output_count": 4032,
+    "expected_tlast_beat": 4031
+  },
+  "tdata_format": "{im[15:0], re[15:0]}, 32b LSB-packed hex per AXI-S beat",
+  "samples_per_file": 4160,
+  "cases": {
+    "km8": {
+      "k_int": -8,
+      "file": "golden/p5_wrapper_fullchain/fc_km8.mem",
+      "expected_k_int": -8,
+      "expected_int_cfo_word": 134217728
+    },
+    "km4": {
+      "k_int": -4,
+      "file": "golden/p5_wrapper_fullchain/fc_km4.mem",
+      "expected_k_int": -4,
+      "expected_int_cfo_word": 67108864
+    },
+    "km2": {
+      "k_int": -2,
+      "file": "golden/p5_wrapper_fullchain/fc_km2.mem",
+      "expected_k_int": -2,
+      "expected_int_cfo_word": 33554432
+    },
+    "km1": {
+      "k_int": -1,
+      "file": "golden/p5_wrapper_fullchain/fc_km1.mem",
+      "expected_k_int": -1,
+      "expected_int_cfo_word": 16777216
+    },
+    "kp0": {
+      "k_int": 0,
+      "file": "golden/p5_wrapper_fullchain/fc_kp0.mem",
+      "expected_k_int": 0,
+      "expected_int_cfo_word": 0
+    },
+    "kp1": {
+      "k_int": 1,
+      "file": "golden/p5_wrapper_fullchain/fc_kp1.mem",
+      "expected_k_int": 1,
+      "expected_int_cfo_word": -16777216
+    },
+    "kp2": {
+      "k_int": 2,
+      "file": "golden/p5_wrapper_fullchain/fc_kp2.mem",
+      "expected_k_int": 2,
+      "expected_int_cfo_word": -33554432
+    },
+    "kp4": {
+      "k_int": 4,
+      "file": "golden/p5_wrapper_fullchain/fc_kp4.mem",
+      "expected_k_int": 4,
+      "expected_int_cfo_word": -67108864
+    },
+    "kp8": {
+      "k_int": 8,
+      "file": "golden/p5_wrapper_fullchain/fc_kp8.mem",
+      "expected_k_int": 8,
+      "expected_int_cfo_word": -134217728
+    }
+  }
+}

@@ -1,0 +1,1 @@
+"dma_ip_tb" -L "xilinx_vip" -debug "all" -s "dma_ip_tb" 

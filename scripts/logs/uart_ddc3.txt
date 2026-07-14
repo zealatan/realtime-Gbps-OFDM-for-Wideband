@@ -1,0 +1,2191 @@
+
+ZCU216_RFDC: capture application start
+ZCU216_RFCLK: init I2C
+ZCU216_RFCLK: init I2C complete
+ZCU216_RFCLK: init GPIO
+ZCU216_RFCLK: init GPIO complete
+ZCU216_RFCLK: init I2C-to-SPI bridge
+ZCU216_RFCLK: I2C write start addr=0x74 len=1
+ZCU216_RFCLK: I2C write transfer status=0
+ZCU216_RFCLK: I2C write start addr=0x2F len=2
+ZCU216_RFCLK: I2C write transfer status=0
+ZCU216_RFCLK: I2C read start addr=0x74 len=1
+ZCU216_RFCLK: I2C read transfer status=0
+ZCU216_RFCLK: init I2C-to-SPI bridge complete
+ZCU216_RFCLK: I2C write start addr=0x74 len=1
+ZCU216_RFCLK: I2C write transfer status=0
+ZCU216_RFCLK: I2C write start addr=0x2F len=4
+ZCU216_RFCLK: I2C write transfer status=0
+ZCU216_RFCLK: I2C read start addr=0x74 len=1
+ZCU216_RFCLK: I2C read transfer status=0
+ZCU216_RFCLK: I2C write start addr=0x74 len=1
+ZCU216_RFCLK: I2C write transfer status=0
+ZCU216_RFCLK: I2C write start addr=0x2F len=4
+ZCU216_RFCLK: I2C write transfer status=0
+ZCU216_RFCLK: I2C read start addr=0x74 len=1
+ZCU216_RFCLK: I2C read transfer status=0
+ZCU216_RFCLK: I2C write start addr=0x74 len=1
+ZCU216_RFCLK: I2C write transfer status=0
+ZCU216_RFCLK: I2C write start addr=0x2F len=4
+ZCU216_RFCLK: I2C write transfer status=0
+ZCU216_RFCLK: I2C read start addr=0x74 len=1
+ZCU216_RFCLK: I2C read transfer status=0
+ZCU216_RFCLK: I2C write start addr=0x74 len=1
+ZCU216_RFCLK: I2C write transfer status=0
+ZCU216_RFCLK: I2C write start addr=0x2F len=4
+ZCU216_RFCLK: I2C write transfer status=0
+ZCU216_RFCLK: I2C read start addr=0x74 len=1
+ZCU216_RFCLK: I2C read transfer status=0
+ZCU216_RFCLK: I2C write start addr=0x74 len=1
+ZCU216_RFCLK: I2C write transfer status=0
+ZCU216_RFCLK: I2C write start addr=0x2F len=4
+ZCU216_RFCLK: I2C write transfer status=0
+ZCU216_RFCLK: I2C read start addr=0x74 len=1
+ZCU216_RFCLK: I2C read transfer status=0
+ZCU216_RFCLK: I2C write start addr=0x74 len=1
+ZCU216_RFCLK: I2C write transfer status=0
+ZCU216_RFCLK: I2C write start addr=0x2F len=4
+ZCU216_RFCLK: I2C write transfer status=0
+ZCU216_RFCLK: I2C read start addr=0x74 len=1
+ZCU216_RFCLK: I2C read transfer status=0
+ZCU216_RFCLK: I2C write start addr=0x74 len=1
+ZCU216_RFCLK: I2C write transfer status=0
+ZCU216_RFCLK: I2C write start addr=0x2F len=4
+ZCU216_RFCLK: I2C write transfer status=0
+ZCU216_RFCLK: I2C read start addr=0x74 len=1
+ZCU216_RFCLK: I2C read transfer status=0
+ZCU216_RFCLK: I2C write start addr=0x74 len=1
+ZCU216_RFCLK: I2C write transfer status=0
+ZCU216_RFCLK: I2C write start addr=0x2F len=4
+ZCU216_RFCLK: I2C write transfer status=0
+ZCU216_RFCLK: I2C read start addr=0x74 len=1
+ZCU216_RFCLK: I2C read transfer status=0
+ZCU216_RFCLK: I2C write start addr=0x74 len=1
+ZCU216_RFCLK: I2C write transfer status=0
+ZCU216_RFCLK: I2C write start addr=0x2F len=4
+ZCU216_RFCLK: I2C write transfer status=0
+ZCU216_RFCLK: I2C read start addr=0x74 len=1
+ZCU216_RFCLK: I2C read transfer status=0
+ZCU216_RFCLK: I2C write start addr=0x74 len=1
+ZCU216_RFCLK: I2C write transfer status=0
+ZCU216_RFCLK: I2C write start addr=0x2F len=4
+ZCU216_RFCLK: I2C write transfer status=0
+ZCU216_RFCLK: I2C read start addr=0x74 len=1
+ZCU216_RFCLK: I2C read transfer status=0
+ZCU216_RFCLK: I2C write start addr=0x74 len=1
+ZCU216_RFCLK: I2C write transfer status=0
+ZCU216_RFCLK: I2C write start addr=0x2F len=4
+ZCU216_RFCLK: I2C write transfer status=0
+ZCU216_RFCLK: I2C read start addr=0x74 len=1
+ZCU216_RFCLK: I2C read transfer status=0
+ZCU216_RFCLK: I2C write start addr=0x74 len=1
+ZCU216_RFCLK: I2C write transfer status=0
+ZCU216_RFCLK: I2C write start addr=0x2F len=4
+ZCU216_RFCLK: I2C write transfer status=0
+ZCU216_RFCLK: I2C read start addr=0x74 len=1
+ZCU216_RFCLK: I2C read transfer status=0
+ZCU216_RFCLK: I2C write start addr=0x74 len=1
+ZCU216_RFCLK: I2C write transfer status=0
+ZCU216_RFCLK: I2C write start addr=0x2F len=4
+ZCU216_RFCLK: I2C write transfer status=0
+ZCU216_RFCLK: I2C read start addr=0x74 len=1
+ZCU216_RFCLK: I2C read transfer status=0
+ZCU216_RFCLK: I2C write start addr=0x74 len=1
+ZCU216_RFCLK: I2C write transfer status=0
+ZCU216_RFCLK: I2C write start addr=0x2F len=4
+ZCU216_RFCLK: I2C write transfer status=0
+ZCU216_RFCLK: I2C read start addr=0x74 len=1
+ZCU216_RFCLK: I2C read transfer status=0
+ZCU216_RFCLK: I2C write start addr=0x74 len=1
+ZCU216_RFCLK: I2C write transfer status=0
+ZCU216_RFCLK: I2C write start addr=0x2F len=4
+ZCU216_RFCLK: I2C write transfer status=0
+ZCU216_RFCLK: I2C read start addr=0x74 len=1
+ZCU216_RFCLK: I2C read transfer status=0
+ZCU216_RFCLK: I2C write start addr=0x74 len=1
+ZCU216_RFCLK: I2C write transfer status=0
+ZCU216_RFCLK: I2C write start addr=0x2F len=4
+ZCU216_RFCLK: I2C write transfer status=0
+ZCU216_RFCLK: I2C read start addr=0x74 len=1
+ZCU216_RFCLK: I2C read transfer status=0
+ZCU216_RFCLK: I2C write start addr=0x74 len=1
+ZCU216_RFCLK: I2C write transfer status=0
+ZCU216_RFCLK: I2C write start addr=0x2F len=4
+ZCU216_RFCLK: I2C write transfer status=0
+ZCU216_RFCLK: I2C read start addr=0x74 len=1
+ZCU216_RFCLK: I2C read transfer status=0
+ZCU216_RFCLK: I2C write start addr=0x74 len=1
+ZCU216_RFCLK: I2C write transfer status=0
+ZCU216_RFCLK: I2C write start addr=0x2F len=4
+ZCU216_RFCLK: I2C write transfer status=0
+ZCU216_RFCLK: I2C read start addr=0x74 len=1
+ZCU216_RFCLK: I2C read transfer status=0
+ZCU216_RFCLK: I2C write start addr=0x74 len=1
+ZCU216_RFCLK: I2C write transfer status=0
+ZCU216_RFCLK: I2C write start addr=0x2F len=4
+ZCU216_RFCLK: I2C write transfer status=0
+ZCU216_RFCLK: I2C read start addr=0x74 len=1
+ZCU216_RFCLK: I2C read transfer status=0
+ZCU216_RFCLK: I2C write start addr=0x74 len=1
+ZCU216_RFCLK: I2C write transfer status=0
+ZCU216_RFCLK: I2C write start addr=0x2F len=4
+ZCU216_RFCLK: I2C write transfer status=0
+ZCU216_RFCLK: I2C read start addr=0x74 len=1
+ZCU216_RFCLK: I2C read transfer status=0
+ZCU216_RFCLK: I2C write start addr=0x74 len=1
+ZCU216_RFCLK: I2C write transfer status=0
+ZCU216_RFCLK: I2C write start addr=0x2F len=4
+ZCU216_RFCLK: I2C write transfer status=0
+ZCU216_RFCLK: I2C read start addr=0x74 len=1
+ZCU216_RFCLK: I2C read transfer status=0
+ZCU216_RFCLK: I2C write start addr=0x74 len=1
+ZCU216_RFCLK: I2C write transfer status=0
+ZCU216_RFCLK: I2C write start addr=0x2F len=4
+ZCU216_RFCLK: I2C write transfer status=0
+ZCU216_RFCLK: I2C read start addr=0x74 len=1
+ZCU216_RFCLK: I2C read transfer status=0
+ZCU216_RFCLK: I2C write start addr=0x74 len=1
+ZCU216_RFCLK: I2C write transfer status=0
+ZCU216_RFCLK: I2C write start addr=0x2F len=4
+ZCU216_RFCLK: I2C write transfer status=0
+ZCU216_RFCLK: I2C read start addr=0x74 len=1
+ZCU216_RFCLK: I2C read transfer status=0
+ZCU216_RFCLK: I2C write start addr=0x74 len=1
+ZCU216_RFCLK: I2C write transfer status=0
+ZCU216_RFCLK: I2C write start addr=0x2F len=4
+ZCU216_RFCLK: I2C write transfer status=0
+ZCU216_RFCLK: I2C read start addr=0x74 len=1
+ZCU216_RFCLK: I2C read transfer status=0
+ZCU216_RFCLK: I2C write start addr=0x74 len=1
+ZCU216_RFCLK: I2C write transfer status=0
+ZCU216_RFCLK: I2C write start addr=0x2F len=4
+ZCU216_RFCLK: I2C write transfer status=0
+ZCU216_RFCLK: I2C read start addr=0x74 len=1
+ZCU216_RFCLK: I2C read transfer status=0
+ZCU216_RFCLK: I2C write start addr=0x74 len=1
+ZCU216_RFCLK: I2C write transfer status=0
+ZCU216_RFCLK: I2C write start addr=0x2F len=4
+ZCU216_RFCLK: I2C write transfer status=0
+ZCU216_RFCLK: I2C read start addr=0x74 len=1
+ZCU216_RFCLK: I2C read transfer status=0
+ZCU216_RFCLK: I2C write start addr=0x74 len=1
+ZCU216_RFCLK: I2C write transfer status=0
+ZCU216_RFCLK: I2C write start addr=0x2F len=4
+ZCU216_RFCLK: I2C write transfer status=0
+ZCU216_RFCLK: I2C read start addr=0x74 len=1
+ZCU216_RFCLK: I2C read transfer status=0
+ZCU216_RFCLK: I2C write start addr=0x74 len=1
+ZCU216_RFCLK: I2C write transfer status=0
+ZCU216_RFCLK: I2C write start addr=0x2F len=4
+ZCU216_RFCLK: I2C write transfer status=0
+ZCU216_RFCLK: I2C read start addr=0x74 len=1
+ZCU216_RFCLK: I2C read transfer status=0
+ZCU216_RFCLK: I2C write start addr=0x74 len=1
+ZCU216_RFCLK: I2C write transfer status=0
+ZCU216_RFCLK: I2C write start addr=0x2F len=4
+ZCU216_RFCLK: I2C write transfer status=0
+ZCU216_RFCLK: I2C read start addr=0x74 len=1
+ZCU216_RFCLK: I2C read transfer status=0
+ZCU216_RFCLK: I2C write start addr=0x74 len=1
+ZCU216_RFCLK: I2C write transfer status=0
+ZCU216_RFCLK: I2C write start addr=0x2F len=4
+ZCU216_RFCLK: I2C write transfer status=0
+ZCU216_RFCLK: I2C read start addr=0x74 len=1
+ZCU216_RFCLK: I2C read transfer status=0
+ZCU216_RFCLK: I2C write start addr=0x74 len=1
+ZCU216_RFCLK: I2C write transfer status=0
+ZCU216_RFCLK: I2C write start addr=0x2F len=4
+ZCU216_RFCLK: I2C write transfer status=0
+ZCU216_RFCLK: I2C read start addr=0x74 len=1
+ZCU216_RFCLK: I2C read transfer status=0
+ZCU216_RFCLK: I2C write start addr=0x74 len=1
+ZCU216_RFCLK: I2C write transfer status=0
+ZCU216_RFCLK: I2C write start addr=0x2F len=4
+ZCU216_RFCLK: I2C write transfer status=0
+ZCU216_RFCLK: I2C read start addr=0x74 len=1
+ZCU216_RFCLK: I2C read transfer status=0
+ZCU216_RFCLK: I2C write start addr=0x74 len=1
+ZCU216_RFCLK: I2C write transfer status=0
+ZCU216_RFCLK: I2C write start addr=0x2F len=4
+ZCU216_RFCLK: I2C write transfer status=0
+ZCU216_RFCLK: I2C read start addr=0x74 len=1
+ZCU216_RFCLK: I2C read transfer status=0
+ZCU216_RFCLK: I2C write start addr=0x74 len=1
+ZCU216_RFCLK: I2C write transfer status=0
+ZCU216_RFCLK: I2C write start addr=0x2F len=4
+ZCU216_RFCLK: I2C write transfer status=0
+ZCU216_RFCLK: I2C read start addr=0x74 len=1
+ZCU216_RFCLK: I2C read transfer status=0
+ZCU216_RFCLK: I2C write start addr=0x74 len=1
+ZCU216_RFCLK: I2C write transfer status=0
+ZCU216_RFCLK: I2C write start addr=0x2F len=4
+ZCU216_RFCLK: I2C write transfer status=0
+ZCU216_RFCLK: I2C read start addr=0x74 len=1
+ZCU216_RFCLK: I2C read transfer status=0
+ZCU216_RFCLK: I2C write start addr=0x74 len=1
+ZCU216_RFCLK: I2C write transfer status=0
+ZCU216_RFCLK: I2C write start addr=0x2F len=4
+ZCU216_RFCLK: I2C write transfer status=0
+ZCU216_RFCLK: I2C read start addr=0x74 len=1
+ZCU216_RFCLK: I2C read transfer status=0
+ZCU216_RFCLK: I2C write start addr=0x74 len=1
+ZCU216_RFCLK: I2C write transfer status=0
+ZCU216_RFCLK: I2C write start addr=0x2F len=4
+ZCU216_RFCLK: I2C write transfer status=0
+ZCU216_RFCLK: I2C read start addr=0x74 len=1
+ZCU216_RFCLK: I2C read transfer status=0
+ZCU216_RFCLK: I2C write start addr=0x74 len=1
+ZCU216_RFCLK: I2C write transfer status=0
+ZCU216_RFCLK: I2C write start addr=0x2F len=4
+ZCU216_RFCLK: I2C write transfer status=0
+ZCU216_RFCLK: I2C read start addr=0x74 len=1
+ZCU216_RFCLK: I2C read transfer status=0
+ZCU216_RFCLK: I2C write start addr=0x74 len=1
+ZCU216_RFCLK: I2C write transfer status=0
+ZCU216_RFCLK: I2C write start addr=0x2F len=4
+ZCU216_RFCLK: I2C write transfer status=0
+ZCU216_RFCLK: I2C read start addr=0x74 len=1
+ZCU216_RFCLK: I2C read transfer status=0
+ZCU216_RFCLK: I2C write start addr=0x74 len=1
+ZCU216_RFCLK: I2C write transfer status=0
+ZCU216_RFCLK: I2C write start addr=0x2F len=4
+ZCU216_RFCLK: I2C write transfer status=0
+ZCU216_RFCLK: I2C read start addr=0x74 len=1
+ZCU216_RFCLK: I2C read transfer status=0
+ZCU216_RFCLK: I2C write start addr=0x74 len=1
+ZCU216_RFCLK: I2C write transfer status=0
+ZCU216_RFCLK: I2C write start addr=0x2F len=4
+ZCU216_RFCLK: I2C write transfer status=0
+ZCU216_RFCLK: I2C read start addr=0x74 len=1
+ZCU216_RFCLK: I2C read transfer status=0
+ZCU216_RFCLK: I2C write start addr=0x74 len=1
+ZCU216_RFCLK: I2C write transfer status=0
+ZCU216_RFCLK: I2C write start addr=0x2F len=4
+ZCU216_RFCLK: I2C write transfer status=0
+ZCU216_RFCLK: I2C read start addr=0x74 len=1
+ZCU216_RFCLK: I2C read transfer status=0
+ZCU216_RFCLK: I2C write start addr=0x74 len=1
+ZCU216_RFCLK: I2C write transfer status=0
+ZCU216_RFCLK: I2C write start addr=0x2F len=4
+ZCU216_RFCLK: I2C write transfer status=0
+ZCU216_RFCLK: I2C read start addr=0x74 len=1
+ZCU216_RFCLK: I2C read transfer status=0
+ZCU216_RFCLK: I2C write start addr=0x74 len=1
+ZCU216_RFCLK: I2C write transfer status=0
+ZCU216_RFCLK: I2C write start addr=0x2F len=4
+ZCU216_RFCLK: I2C write transfer status=0
+ZCU216_RFCLK: I2C read start addr=0x74 len=1
+ZCU216_RFCLK: I2C read transfer status=0
+ZCU216_RFCLK: I2C write start addr=0x74 len=1
+ZCU216_RFCLK: I2C write transfer status=0
+ZCU216_RFCLK: I2C write start addr=0x2F len=4
+ZCU216_RFCLK: I2C write transfer status=0
+ZCU216_RFCLK: I2C read start addr=0x74 len=1
+ZCU216_RFCLK: I2C read transfer status=0
+ZCU216_RFCLK: I2C write start addr=0x74 len=1
+ZCU216_RFCLK: I2C write transfer status=0
+ZCU216_RFCLK: I2C write start addr=0x2F len=4
+ZCU216_RFCLK: I2C write transfer status=0
+ZCU216_RFCLK: I2C read start addr=0x74 len=1
+ZCU216_RFCLK: I2C read transfer status=0
+ZCU216_RFCLK: I2C write start addr=0x74 len=1
+ZCU216_RFCLK: I2C write transfer status=0
+ZCU216_RFCLK: I2C write start addr=0x2F len=4
+ZCU216_RFCLK: I2C write transfer status=0
+ZCU216_RFCLK: I2C read start addr=0x74 len=1
+ZCU216_RFCLK: I2C read transfer status=0
+ZCU216_RFCLK: I2C write start addr=0x74 len=1
+ZCU216_RFCLK: I2C write transfer status=0
+ZCU216_RFCLK: I2C write start addr=0x2F len=4
+ZCU216_RFCLK: I2C write transfer status=0
+ZCU216_RFCLK: I2C read start addr=0x74 len=1
+ZCU216_RFCLK: I2C read transfer status=0
+ZCU216_RFCLK: I2C write start addr=0x74 len=1
+ZCU216_RFCLK: I2C write transfer status=0
+ZCU216_RFCLK: I2C write start addr=0x2F len=4
+ZCU216_RFCLK: I2C write transfer status=0
+ZCU216_RFCLK: I2C read start addr=0x74 len=1
+ZCU216_RFCLK: I2C read transfer status=0
+ZCU216_RFCLK: I2C write start addr=0x74 len=1
+ZCU216_RFCLK: I2C write transfer status=0
+ZCU216_RFCLK: I2C write start addr=0x2F len=4
+ZCU216_RFCLK: I2C write transfer status=0
+ZCU216_RFCLK: I2C read start addr=0x74 len=1
+ZCU216_RFCLK: I2C read transfer status=0
+ZCU216_RFCLK: I2C write start addr=0x74 len=1
+ZCU216_RFCLK: I2C write transfer status=0
+ZCU216_RFCLK: I2C write start addr=0x2F len=4
+ZCU216_RFCLK: I2C write transfer status=0
+ZCU216_RFCLK: I2C read start addr=0x74 len=1
+ZCU216_RFCLK: I2C read transfer status=0
+ZCU216_RFCLK: I2C write start addr=0x74 len=1
+ZCU216_RFCLK: I2C write transfer status=0
+ZCU216_RFCLK: I2C write start addr=0x2F len=4
+ZCU216_RFCLK: I2C write transfer status=0
+ZCU216_RFCLK: I2C read start addr=0x74 len=1
+ZCU216_RFCLK: I2C read transfer status=0
+ZCU216_RFCLK: I2C write start addr=0x74 len=1
+ZCU216_RFCLK: I2C write transfer status=0
+ZCU216_RFCLK: I2C write start addr=0x2F len=4
+ZCU216_RFCLK: I2C write transfer status=0
+ZCU216_RFCLK: I2C read start addr=0x74 len=1
+ZCU216_RFCLK: I2C read transfer status=0
+ZCU216_RFCLK: I2C write start addr=0x74 len=1
+ZCU216_RFCLK: I2C write transfer status=0
+ZCU216_RFCLK: I2C write start addr=0x2F len=4
+ZCU216_RFCLK: I2C write transfer status=0
+ZCU216_RFCLK: I2C read start addr=0x74 len=1
+ZCU216_RFCLK: I2C read transfer status=0
+ZCU216_RFCLK: I2C write start addr=0x74 len=1
+ZCU216_RFCLK: I2C write transfer status=0
+ZCU216_RFCLK: I2C write start addr=0x2F len=4
+ZCU216_RFCLK: I2C write transfer status=0
+ZCU216_RFCLK: I2C read start addr=0x74 len=1
+ZCU216_RFCLK: I2C read transfer status=0
+ZCU216_RFCLK: I2C write start addr=0x74 len=1
+ZCU216_RFCLK: I2C write transfer status=0
+ZCU216_RFCLK: I2C write start addr=0x2F len=4
+ZCU216_RFCLK: I2C write transfer status=0
+ZCU216_RFCLK: I2C read start addr=0x74 len=1
+ZCU216_RFCLK: I2C read transfer status=0
+ZCU216_RFCLK: I2C write start addr=0x74 len=1
+ZCU216_RFCLK: I2C write transfer status=0
+ZCU216_RFCLK: I2C write start addr=0x2F len=4
+ZCU216_RFCLK: I2C write transfer status=0
+ZCU216_RFCLK: I2C read start addr=0x74 len=1
+ZCU216_RFCLK: I2C read transfer status=0
+ZCU216_RFCLK: I2C write start addr=0x74 len=1
+ZCU216_RFCLK: I2C write transfer status=0
+ZCU216_RFCLK: I2C write start addr=0x2F len=4
+ZCU216_RFCLK: I2C write transfer status=0
+ZCU216_RFCLK: I2C read start addr=0x74 len=1
+ZCU216_RFCLK: I2C read transfer status=0
+ZCU216_RFCLK: I2C write start addr=0x74 len=1
+ZCU216_RFCLK: I2C write transfer status=0
+ZCU216_RFCLK: I2C write start addr=0x2F len=4
+ZCU216_RFCLK: I2C write transfer status=0
+ZCU216_RFCLK: I2C read start addr=0x74 len=1
+ZCU216_RFCLK: I2C read transfer status=0
+ZCU216_RFCLK: I2C write start addr=0x74 len=1
+ZCU216_RFCLK: I2C write transfer status=0
+ZCU216_RFCLK: I2C write start addr=0x2F len=4
+ZCU216_RFCLK: I2C write transfer status=0
+ZCU216_RFCLK: I2C read start addr=0x74 len=1
+ZCU216_RFCLK: I2C read transfer status=0
+ZCU216_RFCLK: I2C write start addr=0x74 len=1
+ZCU216_RFCLK: I2C write transfer status=0
+ZCU216_RFCLK: I2C write start addr=0x2F len=4
+ZCU216_RFCLK: I2C write transfer status=0
+ZCU216_RFCLK: I2C read start addr=0x74 len=1
+ZCU216_RFCLK: I2C read transfer status=0
+ZCU216_RFCLK: I2C write start addr=0x74 len=1
+ZCU216_RFCLK: I2C write transfer status=0
+ZCU216_RFCLK: I2C write start addr=0x2F len=4
+ZCU216_RFCLK: I2C write transfer status=0
+ZCU216_RFCLK: I2C read start addr=0x74 len=1
+ZCU216_RFCLK: I2C read transfer status=0
+ZCU216_RFCLK: I2C write start addr=0x74 len=1
+ZCU216_RFCLK: I2C write transfer status=0
+ZCU216_RFCLK: I2C write start addr=0x2F len=4
+ZCU216_RFCLK: I2C write transfer status=0
+ZCU216_RFCLK: I2C read start addr=0x74 len=1
+ZCU216_RFCLK: I2C read transfer status=0
+ZCU216_RFCLK: I2C write start addr=0x74 len=1
+ZCU216_RFCLK: I2C write transfer status=0
+ZCU216_RFCLK: I2C write start addr=0x2F len=4
+ZCU216_RFCLK: I2C write transfer status=0
+ZCU216_RFCLK: I2C read start addr=0x74 len=1
+ZCU216_RFCLK: I2C read transfer status=0
+ZCU216_RFCLK: I2C write start addr=0x74 len=1
+ZCU216_RFCLK: I2C write transfer status=0
+ZCU216_RFCLK: I2C write start addr=0x2F len=4
+ZCU216_RFCLK: I2C write transfer status=0
+ZCU216_RFCLK: I2C read start addr=0x74 len=1
+ZCU216_RFCLK: I2C read transfer status=0
+ZCU216_RFCLK: I2C write start addr=0x74 len=1
+ZCU216_RFCLK: I2C write transfer status=0
+ZCU216_RFCLK: I2C write start addr=0x2F len=4
+ZCU216_RFCLK: I2C write transfer status=0
+ZCU216_RFCLK: I2C read start addr=0x74 len=1
+ZCU216_RFCLK: I2C read transfer status=0
+ZCU216_RFCLK: I2C write start addr=0x74 len=1
+ZCU216_RFCLK: I2C write transfer status=0
+ZCU216_RFCLK: I2C write start addr=0x2F len=4
+ZCU216_RFCLK: I2C write transfer status=0
+ZCU216_RFCLK: I2C read start addr=0x74 len=1
+ZCU216_RFCLK: I2C read transfer status=0
+ZCU216_RFCLK: I2C write start addr=0x74 len=1
+ZCU216_RFCLK: I2C write transfer status=0
+ZCU216_RFCLK: I2C write start addr=0x2F len=4
+ZCU216_RFCLK: I2C write transfer status=0
+ZCU216_RFCLK: I2C read start addr=0x74 len=1
+ZCU216_RFCLK: I2C read transfer status=0
+ZCU216_RFCLK: I2C write start addr=0x74 len=1
+ZCU216_RFCLK: I2C write transfer status=0
+ZCU216_RFCLK: I2C write start addr=0x2F len=4
+ZCU216_RFCLK: I2C write transfer status=0
+ZCU216_RFCLK: I2C read start addr=0x74 len=1
+ZCU216_RFCLK: I2C read transfer status=0
+ZCU216_RFCLK: I2C write start addr=0x74 len=1
+ZCU216_RFCLK: I2C write transfer status=0
+ZCU216_RFCLK: I2C write start addr=0x2F len=4
+ZCU216_RFCLK: I2C write transfer status=0
+ZCU216_RFCLK: I2C read start addr=0x74 len=1
+ZCU216_RFCLK: I2C read transfer status=0
+ZCU216_RFCLK: I2C write start addr=0x74 len=1
+ZCU216_RFCLK: I2C write transfer status=0
+ZCU216_RFCLK: I2C write start addr=0x2F len=4
+ZCU216_RFCLK: I2C write transfer status=0
+ZCU216_RFCLK: I2C read start addr=0x74 len=1
+ZCU216_RFCLK: I2C read transfer status=0
+ZCU216_RFCLK: I2C write start addr=0x74 len=1
+ZCU216_RFCLK: I2C write transfer status=0
+ZCU216_RFCLK: I2C write start addr=0x2F len=4
+ZCU216_RFCLK: I2C write transfer status=0
+ZCU216_RFCLK: I2C read start addr=0x74 len=1
+ZCU216_RFCLK: I2C read transfer status=0
+ZCU216_RFCLK: I2C write start addr=0x74 len=1
+ZCU216_RFCLK: I2C write transfer status=0
+ZCU216_RFCLK: I2C write start addr=0x2F len=4
+ZCU216_RFCLK: I2C write transfer status=0
+ZCU216_RFCLK: I2C read start addr=0x74 len=1
+ZCU216_RFCLK: I2C read transfer status=0
+ZCU216_RFCLK: I2C write start addr=0x74 len=1
+ZCU216_RFCLK: I2C write transfer status=0
+ZCU216_RFCLK: I2C write start addr=0x2F len=4
+ZCU216_RFCLK: I2C write transfer status=0
+ZCU216_RFCLK: I2C read start addr=0x74 len=1
+ZCU216_RFCLK: I2C read transfer status=0
+ZCU216_RFCLK: I2C write start addr=0x74 len=1
+ZCU216_RFCLK: I2C write transfer status=0
+ZCU216_RFCLK: I2C write start addr=0x2F len=4
+ZCU216_RFCLK: I2C write transfer status=0
+ZCU216_RFCLK: I2C read start addr=0x74 len=1
+ZCU216_RFCLK: I2C read transfer status=0
+ZCU216_RFCLK: I2C write start addr=0x74 len=1
+ZCU216_RFCLK: I2C write transfer status=0
+ZCU216_RFCLK: I2C write start addr=0x2F len=4
+ZCU216_RFCLK: I2C write transfer status=0
+ZCU216_RFCLK: I2C read start addr=0x74 len=1
+ZCU216_RFCLK: I2C read transfer status=0
+ZCU216_RFCLK: I2C write start addr=0x74 len=1
+ZCU216_RFCLK: I2C write transfer status=0
+ZCU216_RFCLK: I2C write start addr=0x2F len=4
+ZCU216_RFCLK: I2C write transfer status=0
+ZCU216_RFCLK: I2C read start addr=0x74 len=1
+ZCU216_RFCLK: I2C read transfer status=0
+ZCU216_RFCLK: I2C write start addr=0x74 len=1
+ZCU216_RFCLK: I2C write transfer status=0
+ZCU216_RFCLK: I2C write start addr=0x2F len=4
+ZCU216_RFCLK: I2C write transfer status=0
+ZCU216_RFCLK: I2C read start addr=0x74 len=1
+ZCU216_RFCLK: I2C read transfer status=0
+ZCU216_RFCLK: I2C write start addr=0x74 len=1
+ZCU216_RFCLK: I2C write transfer status=0
+ZCU216_RFCLK: I2C write start addr=0x2F len=4
+ZCU216_RFCLK: I2C write transfer status=0
+ZCU216_RFCLK: I2C read start addr=0x74 len=1
+ZCU216_RFCLK: I2C read transfer status=0
+ZCU216_RFCLK: I2C write start addr=0x74 len=1
+ZCU216_RFCLK: I2C write transfer status=0
+ZCU216_RFCLK: I2C write start addr=0x2F len=4
+ZCU216_RFCLK: I2C write transfer status=0
+ZCU216_RFCLK: I2C read start addr=0x74 len=1
+ZCU216_RFCLK: I2C read transfer status=0
+ZCU216_RFCLK: I2C write start addr=0x74 len=1
+ZCU216_RFCLK: I2C write transfer status=0
+ZCU216_RFCLK: I2C write start addr=0x2F len=4
+ZCU216_RFCLK: I2C write transfer status=0
+ZCU216_RFCLK: I2C read start addr=0x74 len=1
+ZCU216_RFCLK: I2C read transfer status=0
+ZCU216_RFCLK: I2C write start addr=0x74 len=1
+ZCU216_RFCLK: I2C write transfer status=0
+ZCU216_RFCLK: I2C write start addr=0x2F len=4
+ZCU216_RFCLK: I2C write transfer status=0
+ZCU216_RFCLK: I2C read start addr=0x74 len=1
+ZCU216_RFCLK: I2C read transfer status=0
+ZCU216_RFCLK: I2C write start addr=0x74 len=1
+ZCU216_RFCLK: I2C write transfer status=0
+ZCU216_RFCLK: I2C write start addr=0x2F len=4
+ZCU216_RFCLK: I2C write transfer status=0
+ZCU216_RFCLK: I2C read start addr=0x74 len=1
+ZCU216_RFCLK: I2C read transfer status=0
+ZCU216_RFCLK: I2C write start addr=0x74 len=1
+ZCU216_RFCLK: I2C write transfer status=0
+ZCU216_RFCLK: I2C write start addr=0x2F len=4
+ZCU216_RFCLK: I2C write transfer status=0
+ZCU216_RFCLK: I2C read start addr=0x74 len=1
+ZCU216_RFCLK: I2C read transfer status=0
+ZCU216_RFCLK: I2C write start addr=0x74 len=1
+ZCU216_RFCLK: I2C write transfer status=0
+ZCU216_RFCLK: I2C write start addr=0x2F len=4
+ZCU216_RFCLK: I2C write transfer status=0
+ZCU216_RFCLK: I2C read start addr=0x74 len=1
+ZCU216_RFCLK: I2C read transfer status=0
+ZCU216_RFCLK: I2C write start addr=0x74 len=1
+ZCU216_RFCLK: I2C write transfer status=0
+ZCU216_RFCLK: I2C write start addr=0x2F len=4
+ZCU216_RFCLK: I2C write transfer status=0
+ZCU216_RFCLK: I2C read start addr=0x74 len=1
+ZCU216_RFCLK: I2C read transfer status=0
+ZCU216_RFCLK: I2C write start addr=0x74 len=1
+ZCU216_RFCLK: I2C write transfer status=0
+ZCU216_RFCLK: I2C write start addr=0x2F len=4
+ZCU216_RFCLK: I2C write transfer status=0
+ZCU216_RFCLK: I2C read start addr=0x74 len=1
+ZCU216_RFCLK: I2C read transfer status=0
+ZCU216_RFCLK: I2C write start addr=0x74 len=1
+ZCU216_RFCLK: I2C write transfer status=0
+ZCU216_RFCLK: I2C write start addr=0x2F len=4
+ZCU216_RFCLK: I2C write transfer status=0
+ZCU216_RFCLK: I2C read start addr=0x74 len=1
+ZCU216_RFCLK: I2C read transfer status=0
+ZCU216_RFCLK: I2C write start addr=0x74 len=1
+ZCU216_RFCLK: I2C write transfer status=0
+ZCU216_RFCLK: I2C write start addr=0x2F len=4
+ZCU216_RFCLK: I2C write transfer status=0
+ZCU216_RFCLK: I2C read start addr=0x74 len=1
+ZCU216_RFCLK: I2C read transfer status=0
+ZCU216_RFCLK: I2C write start addr=0x74 len=1
+ZCU216_RFCLK: I2C write transfer status=0
+ZCU216_RFCLK: I2C write start addr=0x2F len=4
+ZCU216_RFCLK: I2C write transfer status=0
+ZCU216_RFCLK: I2C read start addr=0x74 len=1
+ZCU216_RFCLK: I2C read transfer status=0
+ZCU216_RFCLK: I2C write start addr=0x74 len=1
+ZCU216_RFCLK: I2C write transfer status=0
+ZCU216_RFCLK: I2C write start addr=0x2F len=4
+ZCU216_RFCLK: I2C write transfer status=0
+ZCU216_RFCLK: I2C read start addr=0x74 len=1
+ZCU216_RFCLK: I2C read transfer status=0
+ZCU216_RFCLK: I2C write start addr=0x74 len=1
+ZCU216_RFCLK: I2C write transfer status=0
+ZCU216_RFCLK: I2C write start addr=0x2F len=4
+ZCU216_RFCLK: I2C write transfer status=0
+ZCU216_RFCLK: I2C read start addr=0x74 len=1
+ZCU216_RFCLK: I2C read transfer status=0
+ZCU216_RFCLK: I2C write start addr=0x74 len=1
+ZCU216_RFCLK: I2C write transfer status=0
+ZCU216_RFCLK: I2C write start addr=0x2F len=4
+ZCU216_RFCLK: I2C write transfer status=0
+ZCU216_RFCLK: I2C read start addr=0x74 len=1
+ZCU216_RFCLK: I2C read transfer status=0
+ZCU216_RFCLK: I2C write start addr=0x74 len=1
+ZCU216_RFCLK: I2C write transfer status=0
+ZCU216_RFCLK: I2C write start addr=0x2F len=4
+ZCU216_RFCLK: I2C write transfer status=0
+ZCU216_RFCLK: I2C read start addr=0x74 len=1
+ZCU216_RFCLK: I2C read transfer status=0
+ZCU216_RFCLK: I2C write start addr=0x74 len=1
+ZCU216_RFCLK: I2C write transfer status=0
+ZCU216_RFCLK: I2C write start addr=0x2F len=4
+ZCU216_RFCLK: I2C write transfer status=0
+ZCU216_RFCLK: I2C read start addr=0x74 len=1
+ZCU216_RFCLK: I2C read transfer status=0
+ZCU216_RFCLK: I2C write start addr=0x74 len=1
+ZCU216_RFCLK: I2C write transfer status=0
+ZCU216_RFCLK: I2C write start addr=0x2F len=4
+ZCU216_RFCLK: I2C write transfer status=0
+ZCU216_RFCLK: I2C read start addr=0x74 len=1
+ZCU216_RFCLK: I2C read transfer status=0
+ZCU216_RFCLK: I2C write start addr=0x74 len=1
+ZCU216_RFCLK: I2C write transfer status=0
+ZCU216_RFCLK: I2C write start addr=0x2F len=4
+ZCU216_RFCLK: I2C write transfer status=0
+ZCU216_RFCLK: I2C read start addr=0x74 len=1
+ZCU216_RFCLK: I2C read transfer status=0
+ZCU216_RFCLK: I2C write start addr=0x74 len=1
+ZCU216_RFCLK: I2C write transfer status=0
+ZCU216_RFCLK: I2C write start addr=0x2F len=4
+ZCU216_RFCLK: I2C write transfer status=0
+ZCU216_RFCLK: I2C read start addr=0x74 len=1
+ZCU216_RFCLK: I2C read transfer status=0
+ZCU216_RFCLK: I2C write start addr=0x74 len=1
+ZCU216_RFCLK: I2C write transfer status=0
+ZCU216_RFCLK: I2C write start addr=0x2F len=4
+ZCU216_RFCLK: I2C write transfer status=0
+ZCU216_RFCLK: I2C read start addr=0x74 len=1
+ZCU216_RFCLK: I2C read transfer status=0
+ZCU216_RFCLK: I2C write start addr=0x74 len=1
+ZCU216_RFCLK: I2C write transfer status=0
+ZCU216_RFCLK: I2C write start addr=0x2F len=4
+ZCU216_RFCLK: I2C write transfer status=0
+ZCU216_RFCLK: I2C read start addr=0x74 len=1
+ZCU216_RFCLK: I2C read transfer status=0
+ZCU216_RFCLK: I2C write start addr=0x74 len=1
+ZCU216_RFCLK: I2C write transfer status=0
+ZCU216_RFCLK: I2C write start addr=0x2F len=4
+ZCU216_RFCLK: I2C write transfer status=0
+ZCU216_RFCLK: I2C read start addr=0x74 len=1
+ZCU216_RFCLK: I2C read transfer status=0
+ZCU216_RFCLK: I2C write start addr=0x74 len=1
+ZCU216_RFCLK: I2C write transfer status=0
+ZCU216_RFCLK: I2C write start addr=0x2F len=4
+ZCU216_RFCLK: I2C write transfer status=0
+ZCU216_RFCLK: I2C read start addr=0x74 len=1
+ZCU216_RFCLK: I2C read transfer status=0
+ZCU216_RFCLK: I2C write start addr=0x74 len=1
+ZCU216_RFCLK: I2C write transfer status=0
+ZCU216_RFCLK: I2C write start addr=0x2F len=4
+ZCU216_RFCLK: I2C write transfer status=0
+ZCU216_RFCLK: I2C read start addr=0x74 len=1
+ZCU216_RFCLK: I2C read transfer status=0
+ZCU216_RFCLK: I2C write start addr=0x74 len=1
+ZCU216_RFCLK: I2C write transfer status=0
+ZCU216_RFCLK: I2C write start addr=0x2F len=4
+ZCU216_RFCLK: I2C write transfer status=0
+ZCU216_RFCLK: I2C read start addr=0x74 len=1
+ZCU216_RFCLK: I2C read transfer status=0
+ZCU216_RFCLK: I2C write start addr=0x74 len=1
+ZCU216_RFCLK: I2C write transfer status=0
+ZCU216_RFCLK: I2C write start addr=0x2F len=4
+ZCU216_RFCLK: I2C write transfer status=0
+ZCU216_RFCLK: I2C read start addr=0x74 len=1
+ZCU216_RFCLK: I2C read transfer status=0
+ZCU216_RFCLK: I2C write start addr=0x74 len=1
+ZCU216_RFCLK: I2C write transfer status=0
+ZCU216_RFCLK: I2C write start addr=0x2F len=4
+ZCU216_RFCLK: I2C write transfer status=0
+ZCU216_RFCLK: I2C read start addr=0x74 len=1
+ZCU216_RFCLK: I2C read transfer status=0
+ZCU216_RFCLK: I2C write start addr=0x74 len=1
+ZCU216_RFCLK: I2C write transfer status=0
+ZCU216_RFCLK: I2C write start addr=0x2F len=4
+ZCU216_RFCLK: I2C write transfer status=0
+ZCU216_RFCLK: I2C read start addr=0x74 len=1
+ZCU216_RFCLK: I2C read transfer status=0
+ZCU216_RFCLK: I2C write start addr=0x74 len=1
+ZCU216_RFCLK: I2C write transfer status=0
+ZCU216_RFCLK: I2C write start addr=0x2F len=4
+ZCU216_RFCLK: I2C write transfer status=0
+ZCU216_RFCLK: I2C read start addr=0x74 len=1
+ZCU216_RFCLK: I2C read transfer status=0
+ZCU216_RFCLK: I2C write start addr=0x74 len=1
+ZCU216_RFCLK: I2C write transfer status=0
+ZCU216_RFCLK: I2C write start addr=0x2F len=4
+ZCU216_RFCLK: I2C write transfer status=0
+ZCU216_RFCLK: I2C read start addr=0x74 len=1
+ZCU216_RFCLK: I2C read transfer status=0
+ZCU216_RFCLK: I2C write start addr=0x74 len=1
+ZCU216_RFCLK: I2C write transfer status=0
+ZCU216_RFCLK: I2C write start addr=0x2F len=4
+ZCU216_RFCLK: I2C write transfer status=0
+ZCU216_RFCLK: I2C read start addr=0x74 len=1
+ZCU216_RFCLK: I2C read transfer status=0
+ZCU216_RFCLK: I2C write start addr=0x74 len=1
+ZCU216_RFCLK: I2C write transfer status=0
+ZCU216_RFCLK: I2C write start addr=0x2F len=4
+ZCU216_RFCLK: I2C write transfer status=0
+ZCU216_RFCLK: I2C read start addr=0x74 len=1
+ZCU216_RFCLK: I2C read transfer status=0
+ZCU216_RFCLK: I2C write start addr=0x74 len=1
+ZCU216_RFCLK: I2C write transfer status=0
+ZCU216_RFCLK: I2C write start addr=0x2F len=4
+ZCU216_RFCLK: I2C write transfer status=0
+ZCU216_RFCLK: I2C read start addr=0x74 len=1
+ZCU216_RFCLK: I2C read transfer status=0
+ZCU216_RFCLK: I2C write start addr=0x74 len=1
+ZCU216_RFCLK: I2C write transfer status=0
+ZCU216_RFCLK: I2C write start addr=0x2F len=4
+ZCU216_RFCLK: I2C write transfer status=0
+ZCU216_RFCLK: I2C read start addr=0x74 len=1
+ZCU216_RFCLK: I2C read transfer status=0
+ZCU216_RFCLK: I2C write start addr=0x74 len=1
+ZCU216_RFCLK: I2C write transfer status=0
+ZCU216_RFCLK: I2C write start addr=0x2F len=4
+ZCU216_RFCLK: I2C write transfer status=0
+ZCU216_RFCLK: I2C read start addr=0x74 len=1
+ZCU216_RFCLK: I2C read transfer status=0
+ZCU216_RFCLK: I2C write start addr=0x74 len=1
+ZCU216_RFCLK: I2C write transfer status=0
+ZCU216_RFCLK: I2C write start addr=0x2F len=4
+ZCU216_RFCLK: I2C write transfer status=0
+ZCU216_RFCLK: I2C read start addr=0x74 len=1
+ZCU216_RFCLK: I2C read transfer status=0
+ZCU216_RFCLK: I2C write start addr=0x74 len=1
+ZCU216_RFCLK: I2C write transfer status=0
+ZCU216_RFCLK: I2C write start addr=0x2F len=4
+ZCU216_RFCLK: I2C write transfer status=0
+ZCU216_RFCLK: I2C read start addr=0x74 len=1
+ZCU216_RFCLK: I2C read transfer status=0
+ZCU216_RFCLK: I2C write start addr=0x74 len=1
+ZCU216_RFCLK: I2C write transfer status=0
+ZCU216_RFCLK: I2C write start addr=0x2F len=4
+ZCU216_RFCLK: I2C write transfer status=0
+ZCU216_RFCLK: I2C read start addr=0x74 len=1
+ZCU216_RFCLK: I2C read transfer status=0
+ZCU216_RFCLK: I2C write start addr=0x74 len=1
+ZCU216_RFCLK: I2C write transfer status=0
+ZCU216_RFCLK: I2C write start addr=0x2F len=4
+ZCU216_RFCLK: I2C write transfer status=0
+ZCU216_RFCLK: I2C read start addr=0x74 len=1
+ZCU216_RFCLK: I2C read transfer status=0
+ZCU216_RFCLK: I2C write start addr=0x74 len=1
+ZCU216_RFCLK: I2C write transfer status=0
+ZCU216_RFCLK: I2C write start addr=0x2F len=4
+ZCU216_RFCLK: I2C write transfer status=0
+ZCU216_RFCLK: I2C read start addr=0x74 len=1
+ZCU216_RFCLK: I2C read transfer status=0
+ZCU216_RFCLK: I2C write start addr=0x74 len=1
+ZCU216_RFCLK: I2C write transfer status=0
+ZCU216_RFCLK: I2C write start addr=0x2F len=4
+ZCU216_RFCLK: I2C write transfer status=0
+ZCU216_RFCLK: I2C read start addr=0x74 len=1
+ZCU216_RFCLK: I2C read transfer status=0
+ZCU216_RFCLK: I2C write start addr=0x74 len=1
+ZCU216_RFCLK: I2C write transfer status=0
+ZCU216_RFCLK: I2C write start addr=0x2F len=4
+ZCU216_RFCLK: I2C write transfer status=0
+ZCU216_RFCLK: I2C read start addr=0x74 len=1
+ZCU216_RFCLK: I2C read transfer status=0
+ZCU216_RFCLK: I2C write start addr=0x74 len=1
+ZCU216_RFCLK: I2C write transfer status=0
+ZCU216_RFCLK: I2C write start addr=0x2F len=4
+ZCU216_RFCLK: I2C write transfer status=0
+ZCU216_RFCLK: I2C read start addr=0x74 len=1
+ZCU216_RFCLK: I2C read transfer status=0
+ZCU216_RFCLK: I2C write start addr=0x74 len=1
+ZCU216_RFCLK: I2C write transfer status=0
+ZCU216_RFCLK: I2C write start addr=0x2F len=4
+ZCU216_RFCLK: I2C write transfer status=0
+ZCU216_RFCLK: I2C read start addr=0x74 len=1
+ZCU216_RFCLK: I2C read transfer status=0
+ZCU216_RFCLK: I2C write start addr=0x74 len=1
+ZCU216_RFCLK: I2C write transfer status=0
+ZCU216_RFCLK: I2C write start addr=0x2F len=4
+ZCU216_RFCLK: I2C write transfer status=0
+ZCU216_RFCLK: I2C read start addr=0x74 len=1
+ZCU216_RFCLK: I2C read transfer status=0
+ZCU216_RFCLK: I2C write start addr=0x74 len=1
+ZCU216_RFCLK: I2C write transfer status=0
+ZCU216_RFCLK: I2C write start addr=0x2F len=4
+ZCU216_RFCLK: I2C write transfer status=0
+ZCU216_RFCLK: I2C read start addr=0x74 len=1
+ZCU216_RFCLK: I2C read transfer status=0
+ZCU216_RFCLK: I2C write start addr=0x74 len=1
+ZCU216_RFCLK: I2C write transfer status=0
+ZCU216_RFCLK: I2C write start addr=0x2F len=4
+ZCU216_RFCLK: I2C write transfer status=0
+ZCU216_RFCLK: I2C read start addr=0x74 len=1
+ZCU216_RFCLK: I2C read transfer status=0
+ZCU216_RFCLK: I2C write start addr=0x74 len=1
+ZCU216_RFCLK: I2C write transfer status=0
+ZCU216_RFCLK: I2C write start addr=0x2F len=4
+ZCU216_RFCLK: I2C write transfer status=0
+ZCU216_RFCLK: I2C read start addr=0x74 len=1
+ZCU216_RFCLK: I2C read transfer status=0
+ZCU216_RFCLK: I2C write start addr=0x74 len=1
+ZCU216_RFCLK: I2C write transfer status=0
+ZCU216_RFCLK: I2C write start addr=0x2F len=4
+ZCU216_RFCLK: I2C write transfer status=0
+ZCU216_RFCLK: I2C read start addr=0x74 len=1
+ZCU216_RFCLK: I2C read transfer status=0
+ZCU216_RFCLK: I2C write start addr=0x74 len=1
+ZCU216_RFCLK: I2C write transfer status=0
+ZCU216_RFCLK: I2C write start addr=0x2F len=4
+ZCU216_RFCLK: I2C write transfer status=0
+ZCU216_RFCLK: I2C read start addr=0x74 len=1
+ZCU216_RFCLK: I2C read transfer status=0
+ZCU216_RFCLK: I2C write start addr=0x74 len=1
+ZCU216_RFCLK: I2C write transfer status=0
+ZCU216_RFCLK: I2C write start addr=0x2F len=4
+ZCU216_RFCLK: I2C write transfer status=0
+ZCU216_RFCLK: I2C read start addr=0x74 len=1
+ZCU216_RFCLK: I2C read transfer status=0
+ZCU216_RFCLK: I2C write start addr=0x74 len=1
+ZCU216_RFCLK: I2C write transfer status=0
+ZCU216_RFCLK: I2C write start addr=0x2F len=4
+ZCU216_RFCLK: I2C write transfer status=0
+ZCU216_RFCLK: I2C read start addr=0x74 len=1
+ZCU216_RFCLK: I2C read transfer status=0
+ZCU216_RFCLK: I2C write start addr=0x74 len=1
+ZCU216_RFCLK: I2C write transfer status=0
+ZCU216_RFCLK: I2C write start addr=0x2F len=4
+ZCU216_RFCLK: I2C write transfer status=0
+ZCU216_RFCLK: I2C read start addr=0x74 len=1
+ZCU216_RFCLK: I2C read transfer status=0
+ZCU216_RFCLK: I2C write start addr=0x74 len=1
+ZCU216_RFCLK: I2C write transfer status=0
+ZCU216_RFCLK: I2C write start addr=0x2F len=4
+ZCU216_RFCLK: I2C write transfer status=0
+ZCU216_RFCLK: I2C read start addr=0x74 len=1
+ZCU216_RFCLK: I2C read transfer status=0
+ZCU216_RFCLK: I2C write start addr=0x74 len=1
+ZCU216_RFCLK: I2C write transfer status=0
+ZCU216_RFCLK: I2C write start addr=0x2F len=4
+ZCU216_RFCLK: I2C write transfer status=0
+ZCU216_RFCLK: I2C read start addr=0x74 len=1
+ZCU216_RFCLK: I2C read transfer status=0
+ZCU216_RFCLK: I2C write start addr=0x74 len=1
+ZCU216_RFCLK: I2C write transfer status=0
+ZCU216_RFCLK: I2C write start addr=0x2F len=4
+ZCU216_RFCLK: I2C write transfer status=0
+ZCU216_RFCLK: I2C read start addr=0x74 len=1
+ZCU216_RFCLK: I2C read transfer status=0
+ZCU216_RFCLK: I2C write start addr=0x74 len=1
+ZCU216_RFCLK: I2C write transfer status=0
+ZCU216_RFCLK: I2C write start addr=0x2F len=4
+ZCU216_RFCLK: I2C write transfer status=0
+ZCU216_RFCLK: I2C read start addr=0x74 len=1
+ZCU216_RFCLK: I2C read transfer status=0
+ZCU216_RFCLK: I2C write start addr=0x74 len=1
+ZCU216_RFCLK: I2C write transfer status=0
+ZCU216_RFCLK: I2C write start addr=0x2F len=4
+ZCU216_RFCLK: I2C write transfer status=0
+ZCU216_RFCLK: I2C read start addr=0x74 len=1
+ZCU216_RFCLK: I2C read transfer status=0
+ZCU216_RFCLK: I2C write start addr=0x74 len=1
+ZCU216_RFCLK: I2C write transfer status=0
+ZCU216_RFCLK: I2C write start addr=0x2F len=4
+ZCU216_RFCLK: I2C write transfer status=0
+ZCU216_RFCLK: I2C read start addr=0x74 len=1
+ZCU216_RFCLK: I2C read transfer status=0
+ZCU216_RFCLK: I2C write start addr=0x74 len=1
+ZCU216_RFCLK: I2C write transfer status=0
+ZCU216_RFCLK: I2C write start addr=0x2F len=4
+ZCU216_RFCLK: I2C write transfer status=0
+ZCU216_RFCLK: I2C read start addr=0x74 len=1
+ZCU216_RFCLK: I2C read transfer status=0
+ZCU216_RFCLK: I2C write start addr=0x74 len=1
+ZCU216_RFCLK: I2C write transfer status=0
+ZCU216_RFCLK: I2C write start addr=0x2F len=4
+ZCU216_RFCLK: I2C write transfer status=0
+ZCU216_RFCLK: I2C read start addr=0x74 len=1
+ZCU216_RFCLK: I2C read transfer status=0
+ZCU216_RFCLK: I2C write start addr=0x74 len=1
+ZCU216_RFCLK: I2C write transfer status=0
+ZCU216_RFCLK: I2C write start addr=0x2F len=4
+ZCU216_RFCLK: I2C write transfer status=0
+ZCU216_RFCLK: I2C read start addr=0x74 len=1
+ZCU216_RFCLK: I2C read transfer status=0
+ZCU216_RFCLK: I2C write start addr=0x74 len=1
+ZCU216_RFCLK: I2C write transfer status=0
+ZCU216_RFCLK: I2C write start addr=0x2F len=4
+ZCU216_RFCLK: I2C write transfer status=0
+ZCU216_RFCLK: I2C read start addr=0x74 len=1
+ZCU216_RFCLK: I2C read transfer status=0
+ZCU216_RFCLK: I2C write start addr=0x74 len=1
+ZCU216_RFCLK: I2C write transfer status=0
+ZCU216_RFCLK: I2C write start addr=0x2F len=4
+ZCU216_RFCLK: I2C write transfer status=0
+ZCU216_RFCLK: I2C read start addr=0x74 len=1
+ZCU216_RFCLK: I2C read transfer status=0
+ZCU216_RFCLK: I2C write start addr=0x74 len=1
+ZCU216_RFCLK: I2C write transfer status=0
+ZCU216_RFCLK: I2C write start addr=0x2F len=4
+ZCU216_RFCLK: I2C write transfer status=0
+ZCU216_RFCLK: I2C read start addr=0x74 len=1
+ZCU216_RFCLK: I2C read transfer status=0
+ZCU216_RFCLK: I2C write start addr=0x74 len=1
+ZCU216_RFCLK: I2C write transfer status=0
+ZCU216_RFCLK: I2C write start addr=0x2F len=4
+ZCU216_RFCLK: I2C write transfer status=0
+ZCU216_RFCLK: I2C read start addr=0x74 len=1
+ZCU216_RFCLK: I2C read transfer status=0
+ZCU216_RFCLK: I2C write start addr=0x74 len=1
+ZCU216_RFCLK: I2C write transfer status=0
+ZCU216_RFCLK: I2C write start addr=0x2F len=4
+ZCU216_RFCLK: I2C write transfer status=0
+ZCU216_RFCLK: I2C read start addr=0x74 len=1
+ZCU216_RFCLK: I2C read transfer status=0
+ZCU216_RFCLK: I2C write start addr=0x74 len=1
+ZCU216_RFCLK: I2C write transfer status=0
+ZCU216_RFCLK: I2C write start addr=0x2F len=4
+ZCU216_RFCLK: I2C write transfer status=0
+ZCU216_RFCLK: I2C read start addr=0x74 len=1
+ZCU216_RFCLK: I2C read transfer status=0
+ZCU216_RFCLK: I2C write start addr=0x74 len=1
+ZCU216_RFCLK: I2C write transfer status=0
+ZCU216_RFCLK: I2C write start addr=0x2F len=4
+ZCU216_RFCLK: I2C write transfer status=0
+ZCU216_RFCLK: I2C read start addr=0x74 len=1
+ZCU216_RFCLK: I2C read transfer status=0
+ZCU216_RFCLK: I2C write start addr=0x74 len=1
+ZCU216_RFCLK: I2C write transfer status=0
+ZCU216_RFCLK: I2C write start addr=0x2F len=4
+ZCU216_RFCLK: I2C write transfer status=0
+ZCU216_RFCLK: I2C read start addr=0x74 len=1
+ZCU216_RFCLK: I2C read transfer status=0
+ZCU216_RFCLK: I2C write start addr=0x74 len=1
+ZCU216_RFCLK: I2C write transfer status=0
+ZCU216_RFCLK: I2C write start addr=0x2F len=4
+ZCU216_RFCLK: I2C write transfer status=0
+ZCU216_RFCLK: I2C read start addr=0x74 len=1
+ZCU216_RFCLK: I2C read transfer status=0
+ZCU216_RFCLK: I2C write start addr=0x74 len=1
+ZCU216_RFCLK: I2C write transfer status=0
+ZCU216_RFCLK: I2C write start addr=0x2F len=4
+ZCU216_RFCLK: I2C write transfer status=0
+ZCU216_RFCLK: I2C read start addr=0x74 len=1
+ZCU216_RFCLK: I2C read transfer status=0
+ZCU216_RFCLK: I2C write start addr=0x74 len=1
+ZCU216_RFCLK: I2C write transfer status=0
+ZCU216_RFCLK: I2C write start addr=0x2F len=4
+ZCU216_RFCLK: I2C write transfer status=0
+ZCU216_RFCLK: I2C read start addr=0x74 len=1
+ZCU216_RFCLK: I2C read transfer status=0
+ZCU216_RFCLK: I2C write start addr=0x74 len=1
+ZCU216_RFCLK: I2C write transfer status=0
+ZCU216_RFCLK: I2C write start addr=0x2F len=4
+ZCU216_RFCLK: I2C write transfer status=0
+ZCU216_RFCLK: I2C read start addr=0x74 len=1
+ZCU216_RFCLK: I2C read transfer status=0
+ZCU216_RFCLK: I2C write start addr=0x74 len=1
+ZCU216_RFCLK: I2C write transfer status=0
+ZCU216_RFCLK: I2C write start addr=0x2F len=4
+ZCU216_RFCLK: I2C write transfer status=0
+ZCU216_RFCLK: I2C read start addr=0x74 len=1
+ZCU216_RFCLK: I2C read transfer status=0
+ZCU216_RFCLK: I2C write start addr=0x74 len=1
+ZCU216_RFCLK: I2C write transfer status=0
+ZCU216_RFCLK: I2C write start addr=0x2F len=4
+ZCU216_RFCLK: I2C write transfer status=0
+ZCU216_RFCLK: I2C read start addr=0x74 len=1
+ZCU216_RFCLK: I2C read transfer status=0
+ZCU216_RFCLK: I2C write start addr=0x74 len=1
+ZCU216_RFCLK: I2C write transfer status=0
+ZCU216_RFCLK: I2C write start addr=0x2F len=4
+ZCU216_RFCLK: I2C write transfer status=0
+ZCU216_RFCLK: I2C read start addr=0x74 len=1
+ZCU216_RFCLK: I2C read transfer status=0
+ZCU216_RFCLK: I2C write start addr=0x74 len=1
+ZCU216_RFCLK: I2C write transfer status=0
+ZCU216_RFCLK: I2C write start addr=0x2F len=4
+ZCU216_RFCLK: I2C write transfer status=0
+ZCU216_RFCLK: I2C read start addr=0x74 len=1
+ZCU216_RFCLK: I2C read transfer status=0
+ZCU216_RFCLK: I2C write start addr=0x74 len=1
+ZCU216_RFCLK: I2C write transfer status=0
+ZCU216_RFCLK: I2C write start addr=0x2F len=4
+ZCU216_RFCLK: I2C write transfer status=0
+ZCU216_RFCLK: I2C read start addr=0x74 len=1
+ZCU216_RFCLK: I2C read transfer status=0
+ZCU216_RFCLK: I2C write start addr=0x74 len=1
+ZCU216_RFCLK: I2C write transfer status=0
+ZCU216_RFCLK: I2C write start addr=0x2F len=4
+ZCU216_RFCLK: I2C write transfer status=0
+ZCU216_RFCLK: I2C read start addr=0x74 len=1
+ZCU216_RFCLK: I2C read transfer status=0
+ZCU216_RFCLK: I2C write start addr=0x74 len=1
+ZCU216_RFCLK: I2C write transfer status=0
+ZCU216_RFCLK: I2C write start addr=0x2F len=4
+ZCU216_RFCLK: I2C write transfer status=0
+ZCU216_RFCLK: I2C read start addr=0x74 len=1
+ZCU216_RFCLK: I2C read transfer status=0
+ZCU216_RFCLK: I2C write start addr=0x74 len=1
+ZCU216_RFCLK: I2C write transfer status=0
+ZCU216_RFCLK: I2C write start addr=0x2F len=4
+ZCU216_RFCLK: I2C write transfer status=0
+ZCU216_RFCLK: I2C read start addr=0x74 len=1
+ZCU216_RFCLK: I2C read transfer status=0
+ZCU216_RFCLK: I2C write start addr=0x74 len=1
+ZCU216_RFCLK: I2C write transfer status=0
+ZCU216_RFCLK: I2C write start addr=0x2F len=4
+ZCU216_RFCLK: I2C write transfer status=0
+ZCU216_RFCLK: I2C read start addr=0x74 len=1
+ZCU216_RFCLK: I2C read transfer status=0
+ZCU216_RFCLK: I2C write start addr=0x74 len=1
+ZCU216_RFCLK: I2C write transfer status=0
+ZCU216_RFCLK: I2C write start addr=0x2F len=4
+ZCU216_RFCLK: I2C write transfer status=0
+ZCU216_RFCLK: I2C read start addr=0x74 len=1
+ZCU216_RFCLK: I2C read transfer status=0
+ZCU216_RFCLK: I2C write start addr=0x74 len=1
+ZCU216_RFCLK: I2C write transfer status=0
+ZCU216_RFCLK: I2C write start addr=0x2F len=4
+ZCU216_RFCLK: I2C write transfer status=0
+ZCU216_RFCLK: I2C read start addr=0x74 len=1
+ZCU216_RFCLK: I2C read transfer status=0
+ZCU216_RFCLK: I2C write start addr=0x74 len=1
+ZCU216_RFCLK: I2C write transfer status=0
+ZCU216_RFCLK: I2C write start addr=0x2F len=4
+ZCU216_RFCLK: I2C write transfer status=0
+ZCU216_RFCLK: I2C read start addr=0x74 len=1
+ZCU216_RFCLK: I2C read transfer status=0
+ZCU216_RFCLK: I2C write start addr=0x74 len=1
+ZCU216_RFCLK: I2C write transfer status=0
+ZCU216_RFCLK: I2C write start addr=0x2F len=4
+ZCU216_RFCLK: I2C write transfer status=0
+ZCU216_RFCLK: I2C read start addr=0x74 len=1
+ZCU216_RFCLK: I2C read transfer status=0
+ZCU216_RFCLK: I2C write start addr=0x74 len=1
+ZCU216_RFCLK: I2C write transfer status=0
+ZCU216_RFCLK: I2C write start addr=0x2F len=4
+ZCU216_RFCLK: I2C write transfer status=0
+ZCU216_RFCLK: I2C read start addr=0x74 len=1
+ZCU216_RFCLK: I2C read transfer status=0
+ZCU216_RFCLK: I2C write start addr=0x74 len=1
+ZCU216_RFCLK: I2C write transfer status=0
+ZCU216_RFCLK: I2C write start addr=0x2F len=4
+ZCU216_RFCLK: I2C write transfer status=0
+ZCU216_RFCLK: I2C read start addr=0x74 len=1
+ZCU216_RFCLK: I2C read transfer status=0
+ZCU216_RFCLK: I2C write start addr=0x74 len=1
+ZCU216_RFCLK: I2C write transfer status=0
+ZCU216_RFCLK: I2C write start addr=0x2F len=4
+ZCU216_RFCLK: I2C write transfer status=0
+ZCU216_RFCLK: I2C read start addr=0x74 len=1
+ZCU216_RFCLK: I2C read transfer status=0
+ZCU216_RFCLK: I2C write start addr=0x74 len=1
+ZCU216_RFCLK: I2C write transfer status=0
+ZCU216_RFCLK: I2C write start addr=0x2F len=4
+ZCU216_RFCLK: I2C write transfer status=0
+ZCU216_RFCLK: I2C read start addr=0x74 len=1
+ZCU216_RFCLK: I2C read transfer status=0
+ZCU216_RFCLK: I2C write start addr=0x74 len=1
+ZCU216_RFCLK: I2C write transfer status=0
+ZCU216_RFCLK: I2C write start addr=0x2F len=4
+ZCU216_RFCLK: I2C write transfer status=0
+ZCU216_RFCLK: I2C read start addr=0x74 len=1
+ZCU216_RFCLK: I2C read transfer status=0
+ZCU216_RFCLK: I2C write start addr=0x74 len=1
+ZCU216_RFCLK: I2C write transfer status=0
+ZCU216_RFCLK: I2C write start addr=0x2F len=4
+ZCU216_RFCLK: I2C write transfer status=0
+ZCU216_RFCLK: I2C read start addr=0x74 len=1
+ZCU216_RFCLK: I2C read transfer status=0
+ZCU216_RFCLK: I2C write start addr=0x74 len=1
+ZCU216_RFCLK: I2C write transfer status=0
+ZCU216_RFCLK: I2C write start addr=0x2F len=4
+ZCU216_RFCLK: I2C write transfer status=0
+ZCU216_RFCLK: I2C read start addr=0x74 len=1
+ZCU216_RFCLK: I2C read transfer status=0
+ZCU216_RFCLK: I2C write start addr=0x74 len=1
+ZCU216_RFCLK: I2C write transfer status=0
+ZCU216_RFCLK: I2C write start addr=0x2F len=4
+ZCU216_RFCLK: I2C write transfer status=0
+ZCU216_RFCLK: I2C read start addr=0x74 len=1
+ZCU216_RFCLK: I2C read transfer status=0
+ZCU216_RFCLK: I2C write start addr=0x74 len=1
+ZCU216_RFCLK: I2C write transfer status=0
+ZCU216_RFCLK: I2C write start addr=0x2F len=4
+ZCU216_RFCLK: I2C write transfer status=0
+ZCU216_RFCLK: I2C read start addr=0x74 len=1
+ZCU216_RFCLK: I2C read transfer status=0
+ZCU216_RFCLK: I2C write start addr=0x74 len=1
+ZCU216_RFCLK: I2C write transfer status=0
+ZCU216_RFCLK: I2C write start addr=0x2F len=4
+ZCU216_RFCLK: I2C write transfer status=0
+ZCU216_RFCLK: I2C read start addr=0x74 len=1
+ZCU216_RFCLK: I2C read transfer status=0
+ZCU216_RFCLK: I2C write start addr=0x74 len=1
+ZCU216_RFCLK: I2C write transfer status=0
+ZCU216_RFCLK: I2C write start addr=0x2F len=4
+ZCU216_RFCLK: I2C write transfer status=0
+ZCU216_RFCLK: I2C read start addr=0x74 len=1
+ZCU216_RFCLK: I2C read transfer status=0
+ZCU216_RFCLK: I2C write start addr=0x74 len=1
+ZCU216_RFCLK: I2C write transfer status=0
+ZCU216_RFCLK: I2C write start addr=0x2F len=4
+ZCU216_RFCLK: I2C write transfer status=0
+ZCU216_RFCLK: I2C read start addr=0x74 len=1
+ZCU216_RFCLK: I2C read transfer status=0
+ZCU216_RFCLK: I2C write start addr=0x74 len=1
+ZCU216_RFCLK: I2C write transfer status=0
+ZCU216_RFCLK: I2C write start addr=0x2F len=4
+ZCU216_RFCLK: I2C write transfer status=0
+ZCU216_RFCLK: I2C read start addr=0x74 len=1
+ZCU216_RFCLK: I2C read transfer status=0
+ZCU216_RFCLK: I2C write start addr=0x74 len=1
+ZCU216_RFCLK: I2C write transfer status=0
+ZCU216_RFCLK: I2C write start addr=0x2F len=4
+ZCU216_RFCLK: I2C write transfer status=0
+ZCU216_RFCLK: I2C read start addr=0x74 len=1
+ZCU216_RFCLK: I2C read transfer status=0
+ZCU216_RFCLK: I2C write start addr=0x74 len=1
+ZCU216_RFCLK: I2C write transfer status=0
+ZCU216_RFCLK: I2C write start addr=0x2F len=4
+ZCU216_RFCLK: I2C write transfer status=0
+ZCU216_RFCLK: I2C read start addr=0x74 len=1
+ZCU216_RFCLK: I2C read transfer status=0
+ZCU216_RFCLK: I2C write start addr=0x74 len=1
+ZCU216_RFCLK: I2C write transfer status=0
+ZCU216_RFCLK: I2C write start addr=0x2F len=4
+ZCU216_RFCLK: I2C write transfer status=0
+ZCU216_RFCLK: I2C read start addr=0x74 len=1
+ZCU216_RFCLK: I2C read transfer status=0
+ZCU216_RFCLK: I2C write start addr=0x74 len=1
+ZCU216_RFCLK: I2C write transfer status=0
+ZCU216_RFCLK: I2C write start addr=0x2F len=4
+ZCU216_RFCLK: I2C write transfer status=0
+ZCU216_RFCLK: I2C read start addr=0x74 len=1
+ZCU216_RFCLK: I2C read transfer status=0
+ZCU216_RFCLK: I2C write start addr=0x74 len=1
+ZCU216_RFCLK: I2C write transfer status=0
+ZCU216_RFCLK: I2C write start addr=0x2F len=4
+ZCU216_RFCLK: I2C write transfer status=0
+ZCU216_RFCLK: I2C read start addr=0x74 len=1
+ZCU216_RFCLK: I2C read transfer status=0
+ZCU216_RFCLK: I2C write start addr=0x74 len=1
+ZCU216_RFCLK: I2C write transfer status=0
+ZCU216_RFCLK: I2C write start addr=0x2F len=4
+ZCU216_RFCLK: I2C write transfer status=0
+ZCU216_RFCLK: I2C read start addr=0x74 len=1
+ZCU216_RFCLK: I2C read transfer status=0
+ZCU216_RFCLK: I2C write start addr=0x74 len=1
+ZCU216_RFCLK: I2C write transfer status=0
+ZCU216_RFCLK: I2C write start addr=0x2F len=4
+ZCU216_RFCLK: I2C write transfer status=0
+ZCU216_RFCLK: I2C read start addr=0x74 len=1
+ZCU216_RFCLK: I2C read transfer status=0
+ZCU216_RFCLK: I2C write start addr=0x74 len=1
+ZCU216_RFCLK: I2C write transfer status=0
+ZCU216_RFCLK: I2C write start addr=0x2F len=4
+ZCU216_RFCLK: I2C write transfer status=0
+ZCU216_RFCLK: I2C read start addr=0x74 len=1
+ZCU216_RFCLK: I2C read transfer status=0
+ZCU216_RFCLK: I2C write start addr=0x74 len=1
+ZCU216_RFCLK: I2C write transfer status=0
+ZCU216_RFCLK: I2C write start addr=0x2F len=4
+ZCU216_RFCLK: I2C write transfer status=0
+ZCU216_RFCLK: I2C read start addr=0x74 len=1
+ZCU216_RFCLK: I2C read transfer status=0
+ZCU216_RFCLK: I2C write start addr=0x74 len=1
+ZCU216_RFCLK: I2C write transfer status=0
+ZCU216_RFCLK: I2C write start addr=0x2F len=4
+ZCU216_RFCLK: I2C write transfer status=0
+ZCU216_RFCLK: I2C read start addr=0x74 len=1
+ZCU216_RFCLK: I2C read transfer status=0
+ZCU216_RFCLK: I2C write start addr=0x74 len=1
+ZCU216_RFCLK: I2C write transfer status=0
+ZCU216_RFCLK: I2C write start addr=0x2F len=4
+ZCU216_RFCLK: I2C write transfer status=0
+ZCU216_RFCLK: I2C read start addr=0x74 len=1
+ZCU216_RFCLK: I2C read transfer status=0
+ZCU216_RFCLK: I2C write start addr=0x74 len=1
+ZCU216_RFCLK: I2C write transfer status=0
+ZCU216_RFCLK: I2C write start addr=0x2F len=4
+ZCU216_RFCLK: I2C write transfer status=0
+ZCU216_RFCLK: I2C read start addr=0x74 len=1
+ZCU216_RFCLK: I2C read transfer status=0
+ZCU216_RFCLK: I2C write start addr=0x74 len=1
+ZCU216_RFCLK: I2C write transfer status=0
+ZCU216_RFCLK: I2C write start addr=0x2F len=4
+ZCU216_RFCLK: I2C write transfer status=0
+ZCU216_RFCLK: I2C read start addr=0x74 len=1
+ZCU216_RFCLK: I2C read transfer status=0
+ZCU216_RFCLK: I2C write start addr=0x74 len=1
+ZCU216_RFCLK: I2C write transfer status=0
+ZCU216_RFCLK: I2C write start addr=0x2F len=4
+ZCU216_RFCLK: I2C write transfer status=0
+ZCU216_RFCLK: I2C read start addr=0x74 len=1
+ZCU216_RFCLK: I2C read transfer status=0
+ZCU216_RFCLK: I2C write start addr=0x74 len=1
+ZCU216_RFCLK: I2C write transfer status=0
+ZCU216_RFCLK: I2C write start addr=0x2F len=4
+ZCU216_RFCLK: I2C write transfer status=0
+ZCU216_RFCLK: I2C read start addr=0x74 len=1
+ZCU216_RFCLK: I2C read transfer status=0
+ZCU216_RFCLK: I2C write start addr=0x74 len=1
+ZCU216_RFCLK: I2C write transfer status=0
+ZCU216_RFCLK: I2C write start addr=0x2F len=4
+ZCU216_RFCLK: I2C write transfer status=0
+ZCU216_RFCLK: I2C read start addr=0x74 len=1
+ZCU216_RFCLK: I2C read transfer status=0
+ZCU216_RFCLK: I2C write start addr=0x74 len=1
+ZCU216_RFCLK: I2C write transfer status=0
+ZCU216_RFCLK: I2C write start addr=0x2F len=4
+ZCU216_RFCLK: I2C write transfer status=0
+ZCU216_RFCLK: I2C read start addr=0x74 len=1
+ZCU216_RFCLK: I2C read transfer status=0
+ZCU216_RFCLK: I2C write start addr=0x74 len=1
+ZCU216_RFCLK: I2C write transfer status=0
+ZCU216_RFCLK: I2C write start addr=0x2F len=4
+ZCU216_RFCLK: I2C write transfer status=0
+ZCU216_RFCLK: I2C read start addr=0x74 len=1
+ZCU216_RFCLK: I2C read transfer status=0
+ZCU216_RFCLK: I2C write start addr=0x74 len=1
+ZCU216_RFCLK: I2C write transfer status=0
+ZCU216_RFCLK: I2C write start addr=0x2F len=4
+ZCU216_RFCLK: I2C write transfer status=0
+ZCU216_RFCLK: I2C read start addr=0x74 len=1
+ZCU216_RFCLK: I2C read transfer status=0
+ZCU216_RFCLK: I2C write start addr=0x74 len=1
+ZCU216_RFCLK: I2C write transfer status=0
+ZCU216_RFCLK: I2C write start addr=0x2F len=4
+ZCU216_RFCLK: I2C write transfer status=0
+ZCU216_RFCLK: I2C read start addr=0x74 len=1
+ZCU216_RFCLK: I2C read transfer status=0
+ZCU216_RFCLK: I2C write start addr=0x74 len=1
+ZCU216_RFCLK: I2C write transfer status=0
+ZCU216_RFCLK: I2C write start addr=0x2F len=4
+ZCU216_RFCLK: I2C write transfer status=0
+ZCU216_RFCLK: I2C read start addr=0x74 len=1
+ZCU216_RFCLK: I2C read transfer status=0
+ZCU216_RFCLK: I2C write start addr=0x74 len=1
+ZCU216_RFCLK: I2C write transfer status=0
+ZCU216_RFCLK: I2C write start addr=0x2F len=4
+ZCU216_RFCLK: I2C write transfer status=0
+ZCU216_RFCLK: I2C read start addr=0x74 len=1
+ZCU216_RFCLK: I2C read transfer status=0
+ZCU216_RFCLK: I2C write start addr=0x74 len=1
+ZCU216_RFCLK: I2C write transfer status=0
+ZCU216_RFCLK: I2C write start addr=0x2F len=4
+ZCU216_RFCLK: I2C write transfer status=0
+ZCU216_RFCLK: I2C read start addr=0x74 len=1
+ZCU216_RFCLK: I2C read transfer status=0
+ZCU216_RFCLK: I2C write start addr=0x74 len=1
+ZCU216_RFCLK: I2C write transfer status=0
+ZCU216_RFCLK: I2C write start addr=0x2F len=4
+ZCU216_RFCLK: I2C write transfer status=0
+ZCU216_RFCLK: I2C read start addr=0x74 len=1
+ZCU216_RFCLK: I2C read transfer status=0
+ZCU216_RFCLK: I2C write start addr=0x74 len=1
+ZCU216_RFCLK: I2C write transfer status=0
+ZCU216_RFCLK: I2C write start addr=0x2F len=4
+ZCU216_RFCLK: I2C write transfer status=0
+ZCU216_RFCLK: I2C read start addr=0x74 len=1
+ZCU216_RFCLK: I2C read transfer status=0
+ZCU216_RFCLK: I2C write start addr=0x74 len=1
+ZCU216_RFCLK: I2C write transfer status=0
+ZCU216_RFCLK: I2C write start addr=0x2F len=4
+ZCU216_RFCLK: I2C write transfer status=0
+ZCU216_RFCLK: I2C read start addr=0x74 len=1
+ZCU216_RFCLK: I2C read transfer status=0
+ZCU216_RFCLK: I2C write start addr=0x74 len=1
+ZCU216_RFCLK: I2C write transfer status=0
+ZCU216_RFCLK: I2C write start addr=0x2F len=4
+ZCU216_RFCLK: I2C write transfer status=0
+ZCU216_RFCLK: I2C read start addr=0x74 len=1
+ZCU216_RFCLK: I2C read transfer status=0
+ZCU216_RFCLK: I2C write start addr=0x74 len=1
+ZCU216_RFCLK: I2C write transfer status=0
+ZCU216_RFCLK: I2C write start addr=0x2F len=4
+ZCU216_RFCLK: I2C write transfer status=0
+ZCU216_RFCLK: I2C read start addr=0x74 len=1
+ZCU216_RFCLK: I2C read transfer status=0
+ZCU216_RFCLK: I2C write start addr=0x74 len=1
+ZCU216_RFCLK: I2C write transfer status=0
+ZCU216_RFCLK: I2C write start addr=0x2F len=4
+ZCU216_RFCLK: I2C write transfer status=0
+ZCU216_RFCLK: I2C read start addr=0x74 len=1
+ZCU216_RFCLK: I2C read transfer status=0
+ZCU216_RFCLK: I2C write start addr=0x74 len=1
+ZCU216_RFCLK: I2C write transfer status=0
+ZCU216_RFCLK: I2C write start addr=0x2F len=4
+ZCU216_RFCLK: I2C write transfer status=0
+ZCU216_RFCLK: I2C read start addr=0x74 len=1
+ZCU216_RFCLK: I2C read transfer status=0
+ZCU216_RFCLK: I2C write start addr=0x74 len=1
+ZCU216_RFCLK: I2C write transfer status=0
+ZCU216_RFCLK: I2C write start addr=0x2F len=4
+ZCU216_RFCLK: I2C write transfer status=0
+ZCU216_RFCLK: I2C read start addr=0x74 len=1
+ZCU216_RFCLK: I2C read transfer status=0
+ZCU216_RFCLK: I2C write start addr=0x74 len=1
+ZCU216_RFCLK: I2C write transfer status=0
+ZCU216_RFCLK: I2C write start addr=0x2F len=4
+ZCU216_RFCLK: I2C write transfer status=0
+ZCU216_RFCLK: I2C read start addr=0x74 len=1
+ZCU216_RFCLK: I2C read transfer status=0
+ZCU216_RFCLK: I2C write start addr=0x74 len=1
+ZCU216_RFCLK: I2C write transfer status=0
+ZCU216_RFCLK: I2C write start addr=0x2F len=4
+ZCU216_RFCLK: I2C write transfer status=0
+ZCU216_RFCLK: I2C read start addr=0x74 len=1
+ZCU216_RFCLK: I2C read transfer status=0
+ZCU216_RFCLK: I2C write start addr=0x74 len=1
+ZCU216_RFCLK: I2C write transfer status=0
+ZCU216_RFCLK: I2C write start addr=0x2F len=4
+ZCU216_RFCLK: I2C write transfer status=0
+ZCU216_RFCLK: I2C read start addr=0x74 len=1
+ZCU216_RFCLK: I2C read transfer status=0
+ZCU216_RFCLK: I2C write start addr=0x74 len=1
+ZCU216_RFCLK: I2C write transfer status=0
+ZCU216_RFCLK: I2C write start addr=0x2F len=4
+ZCU216_RFCLK: I2C write transfer status=0
+ZCU216_RFCLK: I2C read start addr=0x74 len=1
+ZCU216_RFCLK: I2C read transfer status=0
+ZCU216_RFCLK: I2C write start addr=0x74 len=1
+ZCU216_RFCLK: I2C write transfer status=0
+ZCU216_RFCLK: I2C write start addr=0x2F len=4
+ZCU216_RFCLK: I2C write transfer status=0
+ZCU216_RFCLK: I2C read start addr=0x74 len=1
+ZCU216_RFCLK: I2C read transfer status=0
+ZCU216_RFCLK: I2C write start addr=0x74 len=1
+ZCU216_RFCLK: I2C write transfer status=0
+ZCU216_RFCLK: I2C write start addr=0x2F len=4
+ZCU216_RFCLK: I2C write transfer status=0
+ZCU216_RFCLK: I2C read start addr=0x74 len=1
+ZCU216_RFCLK: I2C read transfer status=0
+ZCU216_RFCLK: I2C write start addr=0x74 len=1
+ZCU216_RFCLK: I2C write transfer status=0
+ZCU216_RFCLK: I2C write start addr=0x2F len=4
+ZCU216_RFCLK: I2C write transfer status=0
+ZCU216_RFCLK: I2C read start addr=0x74 len=1
+ZCU216_RFCLK: I2C read transfer status=0
+ZCU216_RFCLK: I2C write start addr=0x74 len=1
+ZCU216_RFCLK: I2C write transfer status=0
+ZCU216_RFCLK: I2C write start addr=0x2F len=4
+ZCU216_RFCLK: I2C write transfer status=0
+ZCU216_RFCLK: I2C read start addr=0x74 len=1
+ZCU216_RFCLK: I2C read transfer status=0
+ZCU216_RFCLK: I2C write start addr=0x74 len=1
+ZCU216_RFCLK: I2C write transfer status=0
+ZCU216_RFCLK: I2C write start addr=0x2F len=4
+ZCU216_RFCLK: I2C write transfer status=0
+ZCU216_RFCLK: I2C read start addr=0x74 len=1
+ZCU216_RFCLK: I2C read transfer status=0
+ZCU216_RFCLK: I2C write start addr=0x74 len=1
+ZCU216_RFCLK: I2C write transfer status=0
+ZCU216_RFCLK: I2C write start addr=0x2F len=4
+ZCU216_RFCLK: I2C write transfer status=0
+ZCU216_RFCLK: I2C read start addr=0x74 len=1
+ZCU216_RFCLK: I2C read transfer status=0
+ZCU216_RFCLK: I2C write start addr=0x74 len=1
+ZCU216_RFCLK: I2C write transfer status=0
+ZCU216_RFCLK: I2C write start addr=0x2F len=4
+ZCU216_RFCLK: I2C write transfer status=0
+ZCU216_RFCLK: I2C read start addr=0x74 len=1
+ZCU216_RFCLK: I2C read transfer status=0
+ZCU216_RFCLK: I2C write start addr=0x74 len=1
+ZCU216_RFCLK: I2C write transfer status=0
+ZCU216_RFCLK: I2C write start addr=0x2F len=4
+ZCU216_RFCLK: I2C write transfer status=0
+ZCU216_RFCLK: I2C read start addr=0x74 len=1
+ZCU216_RFCLK: I2C read transfer status=0
+ZCU216_RFCLK: I2C write start addr=0x74 len=1
+ZCU216_RFCLK: I2C write transfer status=0
+ZCU216_RFCLK: I2C write start addr=0x2F len=4
+ZCU216_RFCLK: I2C write transfer status=0
+ZCU216_RFCLK: I2C read start addr=0x74 len=1
+ZCU216_RFCLK: I2C read transfer status=0
+ZCU216_RFCLK: I2C write start addr=0x74 len=1
+ZCU216_RFCLK: I2C write transfer status=0
+ZCU216_RFCLK: I2C write start addr=0x2F len=4
+ZCU216_RFCLK: I2C write transfer status=0
+ZCU216_RFCLK: I2C read start addr=0x74 len=1
+ZCU216_RFCLK: I2C read transfer status=0
+ZCU216_RFCLK: I2C write start addr=0x74 len=1
+ZCU216_RFCLK: I2C write transfer status=0
+ZCU216_RFCLK: I2C write start addr=0x2F len=4
+ZCU216_RFCLK: I2C write transfer status=0
+ZCU216_RFCLK: I2C read start addr=0x74 len=1
+ZCU216_RFCLK: I2C read transfer status=0
+ZCU216_RFCLK: I2C write start addr=0x74 len=1
+ZCU216_RFCLK: I2C write transfer status=0
+ZCU216_RFCLK: I2C write start addr=0x2F len=4
+ZCU216_RFCLK: I2C write transfer status=0
+ZCU216_RFCLK: I2C read start addr=0x74 len=1
+ZCU216_RFCLK: I2C read transfer status=0
+ZCU216_RFCLK: I2C write start addr=0x74 len=1
+ZCU216_RFCLK: I2C write transfer status=0
+ZCU216_RFCLK: I2C write start addr=0x2F len=4
+ZCU216_RFCLK: I2C write transfer status=0
+ZCU216_RFCLK: I2C read start addr=0x74 len=1
+ZCU216_RFCLK: I2C read transfer status=0
+ZCU216_RFCLK: I2C write start addr=0x74 len=1
+ZCU216_RFCLK: I2C write transfer status=0
+ZCU216_RFCLK: I2C write start addr=0x2F len=4
+ZCU216_RFCLK: I2C write transfer status=0
+ZCU216_RFCLK: I2C read start addr=0x74 len=1
+ZCU216_RFCLK: I2C read transfer status=0
+ZCU216_RFCLK: I2C write start addr=0x74 len=1
+ZCU216_RFCLK: I2C write transfer status=0
+ZCU216_RFCLK: I2C write start addr=0x2F len=4
+ZCU216_RFCLK: I2C write transfer status=0
+ZCU216_RFCLK: I2C read start addr=0x74 len=1
+ZCU216_RFCLK: I2C read transfer status=0
+ZCU216_RFCLK: I2C write start addr=0x74 len=1
+ZCU216_RFCLK: I2C write transfer status=0
+ZCU216_RFCLK: I2C write start addr=0x2F len=4
+ZCU216_RFCLK: I2C write transfer status=0
+ZCU216_RFCLK: I2C read start addr=0x74 len=1
+ZCU216_RFCLK: I2C read transfer status=0
+ZCU216_RFCLK: I2C write start addr=0x74 len=1
+ZCU216_RFCLK: I2C write transfer status=0
+ZCU216_RFCLK: I2C write start addr=0x2F len=4
+ZCU216_RFCLK: I2C write transfer status=0
+ZCU216_RFCLK: I2C read start addr=0x74 len=1
+ZCU216_RFCLK: I2C read transfer status=0
+ZCU216_RFCLK: I2C write start addr=0x74 len=1
+ZCU216_RFCLK: I2C write transfer status=0
+ZCU216_RFCLK: I2C write start addr=0x2F len=4
+ZCU216_RFCLK: I2C write transfer status=0
+ZCU216_RFCLK: I2C read start addr=0x74 len=1
+ZCU216_RFCLK: I2C read transfer status=0
+ZCU216_RFCLK: I2C write start addr=0x74 len=1
+ZCU216_RFCLK: I2C write transfer status=0
+ZCU216_RFCLK: I2C write start addr=0x2F len=4
+ZCU216_RFCLK: I2C write transfer status=0
+ZCU216_RFCLK: I2C read start addr=0x74 len=1
+ZCU216_RFCLK: I2C read transfer status=0
+ZCU216_RFCLK: I2C write start addr=0x74 len=1
+ZCU216_RFCLK: I2C write transfer status=0
+ZCU216_RFCLK: I2C write start addr=0x2F len=4
+ZCU216_RFCLK: I2C write transfer status=0
+ZCU216_RFCLK: I2C read start addr=0x74 len=1
+ZCU216_RFCLK: I2C read transfer status=0
+ZCU216_RFCLK: I2C write start addr=0x74 len=1
+ZCU216_RFCLK: I2C write transfer status=0
+ZCU216_RFCLK: I2C write start addr=0x2F len=4
+ZCU216_RFCLK: I2C write transfer status=0
+ZCU216_RFCLK: I2C read start addr=0x74 len=1
+ZCU216_RFCLK: I2C read transfer status=0
+ZCU216_RFCLK: I2C write start addr=0x74 len=1
+ZCU216_RFCLK: I2C write transfer status=0
+ZCU216_RFCLK: I2C write start addr=0x2F len=4
+ZCU216_RFCLK: I2C write transfer status=0
+ZCU216_RFCLK: I2C read start addr=0x74 len=1
+ZCU216_RFCLK: I2C read transfer status=0
+ZCU216_RFCLK: I2C write start addr=0x74 len=1
+ZCU216_RFCLK: I2C write transfer status=0
+ZCU216_RFCLK: I2C write start addr=0x2F len=4
+ZCU216_RFCLK: I2C write transfer status=0
+ZCU216_RFCLK: I2C read start addr=0x74 len=1
+ZCU216_RFCLK: I2C read transfer status=0
+ZCU216_RFCLK: I2C write start addr=0x74 len=1
+ZCU216_RFCLK: I2C write transfer status=0
+ZCU216_RFCLK: I2C write start addr=0x2F len=4
+ZCU216_RFCLK: I2C write transfer status=0
+ZCU216_RFCLK: I2C read start addr=0x74 len=1
+ZCU216_RFCLK: I2C read transfer status=0
+ZCU216_RFCLK: I2C write start addr=0x74 len=1
+ZCU216_RFCLK: I2C write transfer status=0
+ZCU216_RFCLK: I2C write start addr=0x2F len=4
+ZCU216_RFCLK: I2C write transfer status=0
+ZCU216_RFCLK: I2C read start addr=0x74 len=1
+ZCU216_RFCLK: I2C read transfer status=0
+ZCU216_RFCLK: I2C write start addr=0x74 len=1
+ZCU216_RFCLK: I2C write transfer status=0
+ZCU216_RFCLK: I2C write start addr=0x2F len=4
+ZCU216_RFCLK: I2C write transfer status=0
+ZCU216_RFCLK: I2C read start addr=0x74 len=1
+ZCU216_RFCLK: I2C read transfer status=0
+ZCU216_RFCLK: I2C write start addr=0x74 len=1
+ZCU216_RFCLK: I2C write transfer status=0
+ZCU216_RFCLK: I2C write start addr=0x2F len=4
+ZCU216_RFCLK: I2C write transfer status=0
+ZCU216_RFCLK: I2C read start addr=0x74 len=1
+ZCU216_RFCLK: I2C read transfer status=0
+ZCU216_RFCLK: I2C write start addr=0x74 len=1
+ZCU216_RFCLK: I2C write transfer status=0
+ZCU216_RFCLK: I2C write start addr=0x2F len=4
+ZCU216_RFCLK: I2C write transfer status=0
+ZCU216_RFCLK: I2C read start addr=0x74 len=1
+ZCU216_RFCLK: I2C read transfer status=0
+ZCU216_RFCLK: I2C write start addr=0x74 len=1
+ZCU216_RFCLK: I2C write transfer status=0
+ZCU216_RFCLK: I2C write start addr=0x2F len=4
+ZCU216_RFCLK: I2C write transfer status=0
+ZCU216_RFCLK: I2C read start addr=0x74 len=1
+ZCU216_RFCLK: I2C read transfer status=0
+ZCU216_RFCLK: I2C write start addr=0x74 len=1
+ZCU216_RFCLK: I2C write transfer status=0
+ZCU216_RFCLK: I2C write start addr=0x2F len=4
+ZCU216_RFCLK: I2C write transfer status=0
+ZCU216_RFCLK: I2C read start addr=0x74 len=1
+ZCU216_RFCLK: I2C read transfer status=0
+ZCU216_RFCLK: I2C write start addr=0x74 len=1
+ZCU216_RFCLK: I2C write transfer status=0
+ZCU216_RFCLK: I2C write start addr=0x2F len=4
+ZCU216_RFCLK: I2C write transfer status=0
+ZCU216_RFCLK: I2C read start addr=0x74 len=1
+ZCU216_RFCLK: I2C read transfer status=0
+ZCU216_RFCLK: I2C write start addr=0x74 len=1
+ZCU216_RFCLK: I2C write transfer status=0
+ZCU216_RFCLK: I2C write start addr=0x2F len=4
+ZCU216_RFCLK: I2C write transfer status=0
+ZCU216_RFCLK: I2C read start addr=0x74 len=1
+ZCU216_RFCLK: I2C read transfer status=0
+ZCU216_RFCLK: I2C write start addr=0x74 len=1
+ZCU216_RFCLK: I2C write transfer status=0
+ZCU216_RFCLK: I2C write start addr=0x2F len=4
+ZCU216_RFCLK: I2C write transfer status=0
+ZCU216_RFCLK: I2C read start addr=0x74 len=1
+ZCU216_RFCLK: I2C read transfer status=0
+ZCU216_RFCLK: I2C write start addr=0x74 len=1
+ZCU216_RFCLK: I2C write transfer status=0
+ZCU216_RFCLK: I2C write start addr=0x2F len=4
+ZCU216_RFCLK: I2C write transfer status=0
+ZCU216_RFCLK: I2C read start addr=0x74 len=1
+ZCU216_RFCLK: I2C read transfer status=0
+ZCU216_RFCLK: I2C write start addr=0x74 len=1
+ZCU216_RFCLK: I2C write transfer status=0
+ZCU216_RFCLK: I2C write start addr=0x2F len=4
+ZCU216_RFCLK: I2C write transfer status=0
+ZCU216_RFCLK: I2C read start addr=0x74 len=1
+ZCU216_RFCLK: I2C read transfer status=0
+ZCU216_RFCLK: I2C write start addr=0x74 len=1
+ZCU216_RFCLK: I2C write transfer status=0
+ZCU216_RFCLK: I2C write start addr=0x2F len=4
+ZCU216_RFCLK: I2C write transfer status=0
+ZCU216_RFCLK: I2C read start addr=0x74 len=1
+ZCU216_RFCLK: I2C read transfer status=0
+ZCU216_RFCLK: I2C write start addr=0x74 len=1
+ZCU216_RFCLK: I2C write transfer status=0
+ZCU216_RFCLK: I2C write start addr=0x2F len=4
+ZCU216_RFCLK: I2C write transfer status=0
+ZCU216_RFCLK: I2C read start addr=0x74 len=1
+ZCU216_RFCLK: I2C read transfer status=0
+ZCU216_RFCLK: I2C write start addr=0x74 len=1
+ZCU216_RFCLK: I2C write transfer status=0
+ZCU216_RFCLK: I2C write start addr=0x2F len=4
+ZCU216_RFCLK: I2C write transfer status=0
+ZCU216_RFCLK: I2C read start addr=0x74 len=1
+ZCU216_RFCLK: I2C read transfer status=0
+ZCU216_RFCLK: I2C write start addr=0x74 len=1
+ZCU216_RFCLK: I2C write transfer status=0
+ZCU216_RFCLK: I2C write start addr=0x2F len=4
+ZCU216_RFCLK: I2C write transfer status=0
+ZCU216_RFCLK: I2C read start addr=0x74 len=1
+ZCU216_RFCLK: I2C read transfer status=0
+ZCU216_RFCLK: I2C write start addr=0x74 len=1
+ZCU216_RFCLK: I2C write transfer status=0
+ZCU216_RFCLK: I2C write start addr=0x2F len=4
+ZCU216_RFCLK: I2C write transfer status=0
+ZCU216_RFCLK: I2C read start addr=0x74 len=1
+ZCU216_RFCLK: I2C read transfer status=0
+ZCU216_RFCLK: I2C write start addr=0x74 len=1
+ZCU216_RFCLK: I2C write transfer status=0
+ZCU216_RFCLK: I2C write start addr=0x2F len=4
+ZCU216_RFCLK: I2C write transfer status=0
+ZCU216_RFCLK: I2C read start addr=0x74 len=1
+ZCU216_RFCLK: I2C read transfer status=0
+ZCU216_RFCLK: I2C write start addr=0x74 len=1
+ZCU216_RFCLK: I2C write transfer status=0
+ZCU216_RFCLK: I2C write start addr=0x2F len=4
+ZCU216_RFCLK: I2C write transfer status=0
+ZCU216_RFCLK: I2C read start addr=0x74 len=1
+ZCU216_RFCLK: I2C read transfer status=0
+ZCU216_RFCLK: I2C write start addr=0x74 len=1
+ZCU216_RFCLK: I2C write transfer status=0
+ZCU216_RFCLK: I2C write start addr=0x2F len=4
+ZCU216_RFCLK: I2C write transfer status=0
+ZCU216_RFCLK: I2C read start addr=0x74 len=1
+ZCU216_RFCLK: I2C read transfer status=0
+ZCU216_RFCLK: I2C write start addr=0x74 len=1
+ZCU216_RFCLK: I2C write transfer status=0
+ZCU216_RFCLK: I2C write start addr=0x2F len=4
+ZCU216_RFCLK: I2C write transfer status=0
+ZCU216_RFCLK: I2C read start addr=0x74 len=1
+ZCU216_RFCLK: I2C read transfer status=0
+ZCU216_RFCLK: I2C write start addr=0x74 len=1
+ZCU216_RFCLK: I2C write transfer status=0
+ZCU216_RFCLK: I2C write start addr=0x2F len=4
+ZCU216_RFCLK: I2C write transfer status=0
+ZCU216_RFCLK: I2C read start addr=0x74 len=1
+ZCU216_RFCLK: I2C read transfer status=0
+ZCU216_RFCLK: I2C write start addr=0x74 len=1
+ZCU216_RFCLK: I2C write transfer status=0
+ZCU216_RFCLK: I2C write start addr=0x2F len=4
+ZCU216_RFCLK: I2C write transfer status=0
+ZCU216_RFCLK: I2C read start addr=0x74 len=1
+ZCU216_RFCLK: I2C read transfer status=0
+ZCU216_RFCLK: I2C write start addr=0x74 len=1
+ZCU216_RFCLK: I2C write transfer status=0
+ZCU216_RFCLK: I2C write start addr=0x2F len=4
+ZCU216_RFCLK: I2C write transfer status=0
+ZCU216_RFCLK: I2C read start addr=0x74 len=1
+ZCU216_RFCLK: I2C read transfer status=0
+ZCU216_RFCLK: I2C write start addr=0x74 len=1
+ZCU216_RFCLK: I2C write transfer status=0
+ZCU216_RFCLK: I2C write start addr=0x2F len=4
+ZCU216_RFCLK: I2C write transfer status=0
+ZCU216_RFCLK: I2C read start addr=0x74 len=1
+ZCU216_RFCLK: I2C read transfer status=0
+ZCU216_RFCLK: I2C write start addr=0x74 len=1
+ZCU216_RFCLK: I2C write transfer status=0
+ZCU216_RFCLK: I2C write start addr=0x2F len=4
+ZCU216_RFCLK: I2C write transfer status=0
+ZCU216_RFCLK: I2C read start addr=0x74 len=1
+ZCU216_RFCLK: I2C read transfer status=0
+ZCU216_RFCLK: I2C write start addr=0x74 len=1
+ZCU216_RFCLK: I2C write transfer status=0
+ZCU216_RFCLK: I2C write start addr=0x2F len=4
+ZCU216_RFCLK: I2C write transfer status=0
+ZCU216_RFCLK: I2C read start addr=0x74 len=1
+ZCU216_RFCLK: I2C read transfer status=0
+ZCU216_RFCLK: I2C write start addr=0x74 len=1
+ZCU216_RFCLK: I2C write transfer status=0
+ZCU216_RFCLK: I2C write start addr=0x2F len=4
+ZCU216_RFCLK: I2C write transfer status=0
+ZCU216_RFCLK: I2C read start addr=0x74 len=1
+ZCU216_RFCLK: I2C read transfer status=0
+ZCU216_RFCLK: I2C write start addr=0x74 len=1
+ZCU216_RFCLK: I2C write transfer status=0
+ZCU216_RFCLK: I2C write start addr=0x2F len=4
+ZCU216_RFCLK: I2C write transfer status=0
+ZCU216_RFCLK: I2C read start addr=0x74 len=1
+ZCU216_RFCLK: I2C read transfer status=0
+ZCU216_RFCLK: I2C write start addr=0x74 len=1
+ZCU216_RFCLK: I2C write transfer status=0
+ZCU216_RFCLK: I2C write start addr=0x2F len=4
+ZCU216_RFCLK: I2C write transfer status=0
+ZCU216_RFCLK: I2C read start addr=0x74 len=1
+ZCU216_RFCLK: I2C read transfer status=0
+ZCU216_RFCLK: I2C write start addr=0x74 len=1
+ZCU216_RFCLK: I2C write transfer status=0
+ZCU216_RFCLK: I2C write start addr=0x2F len=4
+ZCU216_RFCLK: I2C write transfer status=0
+ZCU216_RFCLK: I2C read start addr=0x74 len=1
+ZCU216_RFCLK: I2C read transfer status=0
+ZCU216_RFCLK: I2C write start addr=0x74 len=1
+ZCU216_RFCLK: I2C write transfer status=0
+ZCU216_RFCLK: I2C write start addr=0x2F len=4
+ZCU216_RFCLK: I2C write transfer status=0
+ZCU216_RFCLK: I2C read start addr=0x74 len=1
+ZCU216_RFCLK: I2C read transfer status=0
+ZCU216_RFCLK: I2C write start addr=0x74 len=1
+ZCU216_RFCLK: I2C write transfer status=0
+ZCU216_RFCLK: I2C write start addr=0x2F len=4
+ZCU216_RFCLK: I2C write transfer status=0
+ZCU216_RFCLK: I2C read start addr=0x74 len=1
+ZCU216_RFCLK: I2C read transfer status=0
+ZCU216_RFCLK: I2C write start addr=0x74 len=1
+ZCU216_RFCLK: I2C write transfer status=0
+ZCU216_RFCLK: I2C write start addr=0x2F len=4
+ZCU216_RFCLK: I2C write transfer status=0
+ZCU216_RFCLK: I2C read start addr=0x74 len=1
+ZCU216_RFCLK: I2C read transfer status=0
+ZCU216_RFCLK: I2C write start addr=0x74 len=1
+ZCU216_RFCLK: I2C write transfer status=0
+ZCU216_RFCLK: I2C write start addr=0x2F len=4
+ZCU216_RFCLK: I2C write transfer status=0
+ZCU216_RFCLK: I2C read start addr=0x74 len=1
+ZCU216_RFCLK: I2C read transfer status=0
+ZCU216_RFCLK: I2C write start addr=0x74 len=1
+ZCU216_RFCLK: I2C write transfer status=0
+ZCU216_RFCLK: I2C write start addr=0x2F len=4
+ZCU216_RFCLK: I2C write transfer status=0
+ZCU216_RFCLK: I2C read start addr=0x74 len=1
+ZCU216_RFCLK: I2C read transfer status=0
+ZCU216_RFCLK: I2C write start addr=0x74 len=1
+ZCU216_RFCLK: I2C write transfer status=0
+ZCU216_RFCLK: I2C write start addr=0x2F len=4
+ZCU216_RFCLK: I2C write transfer status=0
+ZCU216_RFCLK: I2C read start addr=0x74 len=1
+ZCU216_RFCLK: I2C read transfer status=0
+ZCU216_RFCLK: I2C write start addr=0x74 len=1
+ZCU216_RFCLK: I2C write transfer status=0
+ZCU216_RFCLK: I2C write start addr=0x2F len=4
+ZCU216_RFCLK: I2C write transfer status=0
+ZCU216_RFCLK: I2C read start addr=0x74 len=1
+ZCU216_RFCLK: I2C read transfer status=0
+ZCU216_RFCLK: I2C write start addr=0x74 len=1
+ZCU216_RFCLK: I2C write transfer status=0
+ZCU216_RFCLK: I2C write start addr=0x2F len=4
+ZCU216_RFCLK: I2C write transfer status=0
+ZCU216_RFCLK: I2C read start addr=0x74 len=1
+ZCU216_RFCLK: I2C read transfer status=0
+ZCU216_RFCLK: I2C write start addr=0x74 len=1
+ZCU216_RFCLK: I2C write transfer status=0
+ZCU216_RFCLK: I2C write start addr=0x2F len=4
+ZCU216_RFCLK: I2C write transfer status=0
+ZCU216_RFCLK: I2C read start addr=0x74 len=1
+ZCU216_RFCLK: I2C read transfer status=0
+ZCU216_RFCLK: I2C write start addr=0x74 len=1
+ZCU216_RFCLK: I2C write transfer status=0
+ZCU216_RFCLK: I2C write start addr=0x2F len=4
+ZCU216_RFCLK: I2C write transfer status=0
+ZCU216_RFCLK: I2C read start addr=0x74 len=1
+ZCU216_RFCLK: I2C read transfer status=0
+ZCU216_RFCLK: I2C write start addr=0x74 len=1
+ZCU216_RFCLK: I2C write transfer status=0
+ZCU216_RFCLK: I2C write start addr=0x2F len=4
+ZCU216_RFCLK: I2C write transfer status=0
+ZCU216_RFCLK: I2C read start addr=0x74 len=1
+ZCU216_RFCLK: I2C read transfer status=0
+ZCU216_RFCLK: I2C write start addr=0x74 len=1
+ZCU216_RFCLK: I2C write transfer status=0
+ZCU216_RFCLK: I2C write start addr=0x2F len=4
+ZCU216_RFCLK: I2C write transfer status=0
+ZCU216_RFCLK: I2C read start addr=0x74 len=1
+ZCU216_RFCLK: I2C read transfer status=0
+ZCU216_RFCLK: I2C write start addr=0x74 len=1
+ZCU216_RFCLK: I2C write transfer status=0
+ZCU216_RFCLK: I2C write start addr=0x2F len=4
+ZCU216_RFCLK: I2C write transfer status=0
+ZCU216_RFCLK: I2C read start addr=0x74 len=1
+ZCU216_RFCLK: I2C read transfer status=0
+ZCU216_RFCLK: I2C write start addr=0x74 len=1
+ZCU216_RFCLK: I2C write transfer status=0
+ZCU216_RFCLK: I2C write start addr=0x2F len=4
+ZCU216_RFCLK: I2C write transfer status=0
+ZCU216_RFCLK: I2C read start addr=0x74 len=1
+ZCU216_RFCLK: I2C read transfer status=0
+ZCU216_RFCLK: I2C write start addr=0x74 len=1
+ZCU216_RFCLK: I2C write transfer status=0
+ZCU216_RFCLK: I2C write start addr=0x2F len=4
+ZCU216_RFCLK: I2C write transfer status=0
+ZCU216_RFCLK: I2C read start addr=0x74 len=1
+ZCU216_RFCLK: I2C read transfer status=0
+ZCU216_RFCLK: I2C write start addr=0x74 len=1
+ZCU216_RFCLK: I2C write transfer status=0
+ZCU216_RFCLK: I2C write start addr=0x2F len=4
+ZCU216_RFCLK: I2C write transfer status=0
+ZCU216_RFCLK: I2C read start addr=0x74 len=1
+ZCU216_RFCLK: I2C read transfer status=0
+ZCU216_RFCLK: I2C write start addr=0x74 len=1
+ZCU216_RFCLK: I2C write transfer status=0
+ZCU216_RFCLK: I2C write start addr=0x2F len=4
+ZCU216_RFCLK: I2C write transfer status=0
+ZCU216_RFCLK: I2C read start addr=0x74 len=1
+ZCU216_RFCLK: I2C read transfer status=0
+ZCU216_RFCLK: I2C write start addr=0x74 len=1
+ZCU216_RFCLK: I2C write transfer status=0
+ZCU216_RFCLK: I2C write start addr=0x2F len=4
+ZCU216_RFCLK: I2C write transfer status=0
+ZCU216_RFCLK: I2C read start addr=0x74 len=1
+ZCU216_RFCLK: I2C read transfer status=0
+ZCU216_RFCLK: I2C write start addr=0x74 len=1
+ZCU216_RFCLK: I2C write transfer status=0
+ZCU216_RFCLK: I2C write start addr=0x2F len=4
+ZCU216_RFCLK: I2C write transfer status=0
+ZCU216_RFCLK: I2C read start addr=0x74 len=1
+ZCU216_RFCLK: I2C read transfer status=0
+ZCU216_RFCLK: I2C write start addr=0x74 len=1
+ZCU216_RFCLK: I2C write transfer status=0
+ZCU216_RFCLK: I2C write start addr=0x2F len=4
+ZCU216_RFCLK: I2C write transfer status=0
+ZCU216_RFCLK: I2C read start addr=0x74 len=1
+ZCU216_RFCLK: I2C read transfer status=0
+ZCU216_RFCLK: I2C write start addr=0x74 len=1
+ZCU216_RFCLK: I2C write transfer status=0
+ZCU216_RFCLK: I2C write start addr=0x2F len=4
+ZCU216_RFCLK: I2C write transfer status=0
+ZCU216_RFCLK: I2C read start addr=0x74 len=1
+ZCU216_RFCLK: I2C read transfer status=0
+ZCU216_RFCLK: I2C write start addr=0x74 len=1
+ZCU216_RFCLK: I2C write transfer status=0
+ZCU216_RFCLK: I2C write start addr=0x2F len=4
+ZCU216_RFCLK: I2C write transfer status=0
+ZCU216_RFCLK: I2C read start addr=0x74 len=1
+ZCU216_RFCLK: I2C read transfer status=0
+ZCU216_RFCLK: I2C write start addr=0x74 len=1
+ZCU216_RFCLK: I2C write transfer status=0
+ZCU216_RFCLK: I2C write start addr=0x2F len=4
+ZCU216_RFCLK: I2C write transfer status=0
+ZCU216_RFCLK: I2C read start addr=0x74 len=1
+ZCU216_RFCLK: I2C read transfer status=0
+ZCU216_RFCLK: I2C write start addr=0x74 len=1
+ZCU216_RFCLK: I2C write transfer status=0
+ZCU216_RFCLK: I2C write start addr=0x2F len=4
+ZCU216_RFCLK: I2C write transfer status=0
+ZCU216_RFCLK: I2C read start addr=0x74 len=1
+ZCU216_RFCLK: I2C read transfer status=0
+ZCU216_RFCLK: I2C write start addr=0x74 len=1
+ZCU216_RFCLK: I2C write transfer status=0
+ZCU216_RFCLK: I2C write start addr=0x2F len=4
+ZCU216_RFCLK: I2C write transfer status=0
+ZCU216_RFCLK: I2C read start addr=0x74 len=1
+ZCU216_RFCLK: I2C read transfer status=0
+ZCU216_RFCLK: I2C write start addr=0x74 len=1
+ZCU216_RFCLK: I2C write transfer status=0
+ZCU216_RFCLK: I2C write start addr=0x2F len=4
+ZCU216_RFCLK: I2C write transfer status=0
+ZCU216_RFCLK: I2C read start addr=0x74 len=1
+ZCU216_RFCLK: I2C read transfer status=0
+ZCU216_RFCLK: I2C write start addr=0x74 len=1
+ZCU216_RFCLK: I2C write transfer status=0
+ZCU216_RFCLK: I2C write start addr=0x2F len=4
+ZCU216_RFCLK: I2C write transfer status=0
+ZCU216_RFCLK: I2C read start addr=0x74 len=1
+ZCU216_RFCLK: I2C read transfer status=0
+ZCU216_RFCLK: I2C write start addr=0x74 len=1
+ZCU216_RFCLK: I2C write transfer status=0
+ZCU216_RFCLK: I2C write start addr=0x2F len=4
+ZCU216_RFCLK: I2C write transfer status=0
+ZCU216_RFCLK: I2C read start addr=0x74 len=1
+ZCU216_RFCLK: I2C read transfer status=0
+ZCU216_RFCLK: I2C write start addr=0x74 len=1
+ZCU216_RFCLK: I2C write transfer status=0
+ZCU216_RFCLK: I2C write start addr=0x2F len=4
+ZCU216_RFCLK: I2C write transfer status=0
+ZCU216_RFCLK: I2C read start addr=0x74 len=1
+ZCU216_RFCLK: I2C read transfer status=0
+ZCU216_RFCLK: I2C write start addr=0x74 len=1
+ZCU216_RFCLK: I2C write transfer status=0
+ZCU216_RFCLK: I2C write start addr=0x2F len=4
+ZCU216_RFCLK: I2C write transfer status=0
+ZCU216_RFCLK: I2C read start addr=0x74 len=1
+ZCU216_RFCLK: I2C read transfer status=0
+ZCU216_RFCLK: I2C write start addr=0x74 len=1
+ZCU216_RFCLK: I2C write transfer status=0
+ZCU216_RFCLK: I2C write start addr=0x2F len=4
+ZCU216_RFCLK: I2C write transfer status=0
+ZCU216_RFCLK: I2C read start addr=0x74 len=1
+ZCU216_RFCLK: I2C read transfer status=0
+ZCU216_RFCLK: I2C write start addr=0x74 len=1
+ZCU216_RFCLK: I2C write transfer status=0
+ZCU216_RFCLK: I2C write start addr=0x2F len=4
+ZCU216_RFCLK: I2C write transfer status=0
+ZCU216_RFCLK: I2C read start addr=0x74 len=1
+ZCU216_RFCLK: I2C read transfer status=0
+ZCU216_RFCLK: I2C write start addr=0x74 len=1
+ZCU216_RFCLK: I2C write transfer status=0
+ZCU216_RFCLK: I2C write start addr=0x2F len=4
+ZCU216_RFCLK: I2C write transfer status=0
+ZCU216_RFCLK: I2C read start addr=0x74 len=1
+ZCU216_RFCLK: I2C read transfer status=0
+ZCU216_RFCLK: I2C write start addr=0x74 len=1
+ZCU216_RFCLK: I2C write transfer status=0
+ZCU216_RFCLK: I2C write start addr=0x2F len=4
+ZCU216_RFCLK: I2C write transfer status=0
+ZCU216_RFCLK: I2C read start addr=0x74 len=1
+ZCU216_RFCLK: I2C read transfer status=0
+ZCU216_RFCLK: I2C write start addr=0x74 len=1
+ZCU216_RFCLK: I2C write transfer status=0
+ZCU216_RFCLK: I2C write start addr=0x2F len=4
+ZCU216_RFCLK: I2C write transfer status=0
+ZCU216_RFCLK: I2C read start addr=0x74 len=1
+ZCU216_RFCLK: I2C read transfer status=0
+ZCU216_RFCLK: I2C write start addr=0x74 len=1
+ZCU216_RFCLK: I2C write transfer status=0
+ZCU216_RFCLK: I2C write start addr=0x2F len=4
+ZCU216_RFCLK: I2C write transfer status=0
+ZCU216_RFCLK: I2C read start addr=0x74 len=1
+ZCU216_RFCLK: I2C read transfer status=0
+ZCU216_RFCLK: I2C write start addr=0x74 len=1
+ZCU216_RFCLK: I2C write transfer status=0
+ZCU216_RFCLK: I2C write start addr=0x2F len=4
+ZCU216_RFCLK: I2C write transfer status=0
+ZCU216_RFCLK: I2C read start addr=0x74 len=1
+ZCU216_RFCLK: I2C read transfer status=0
+ZCU216_RFCLK: I2C write start addr=0x74 len=1
+ZCU216_RFCLK: I2C write transfer status=0
+ZCU216_RFCLK: I2C write start addr=0x2F len=4
+ZCU216_RFCLK: I2C write transfer status=0
+ZCU216_RFCLK: I2C read start addr=0x74 len=1
+ZCU216_RFCLK: I2C read transfer status=0
+ZCU216_RFCLK: I2C write start addr=0x74 len=1
+ZCU216_RFCLK: I2C write transfer status=0
+ZCU216_RFCLK: I2C write start addr=0x2F len=4
+ZCU216_RFCLK: I2C write transfer status=0
+ZCU216_RFCLK: I2C read start addr=0x74 len=1
+ZCU216_RFCLK: I2C read transfer status=0
+ZCU216_RFCLK: I2C write start addr=0x74 len=1
+ZCU216_RFCLK: I2C write transfer status=0
+ZCU216_RFCLK: I2C write start addr=0x2F len=4
+ZCU216_RFCLK: I2C write transfer status=0
+ZCU216_RFCLK: I2C read start addr=0x74 len=1
+ZCU216_RFCLK: I2C read transfer status=0
+ZCU216_RFCLK: I2C write start addr=0x74 len=1
+ZCU216_RFCLK: I2C write transfer status=0
+ZCU216_RFCLK: I2C write start addr=0x2F len=4
+ZCU216_RFCLK: I2C write transfer status=0
+ZCU216_RFCLK: I2C read start addr=0x74 len=1
+ZCU216_RFCLK: I2C read transfer status=0
+ZCU216_RFCLK: I2C write start addr=0x74 len=1
+ZCU216_RFCLK: I2C write transfer status=0
+ZCU216_RFCLK: I2C write start addr=0x2F len=4
+ZCU216_RFCLK: I2C write transfer status=0
+ZCU216_RFCLK: I2C read start addr=0x74 len=1
+ZCU216_RFCLK: I2C read transfer status=0
+ZCU216_RFCLK: I2C write start addr=0x74 len=1
+ZCU216_RFCLK: I2C write transfer status=0
+ZCU216_RFCLK: I2C write start addr=0x2F len=4
+ZCU216_RFCLK: I2C write transfer status=0
+ZCU216_RFCLK: I2C read start addr=0x74 len=1
+ZCU216_RFCLK: I2C read transfer status=0
+ZCU216_RFCLK: I2C write start addr=0x74 len=1
+ZCU216_RFCLK: I2C write transfer status=0
+ZCU216_RFCLK: I2C write start addr=0x2F len=4
+ZCU216_RFCLK: I2C write transfer status=0
+ZCU216_RFCLK: I2C read start addr=0x74 len=1
+ZCU216_RFCLK: I2C read transfer status=0
+ZCU216_RFCLK: I2C write start addr=0x74 len=1
+ZCU216_RFCLK: I2C write transfer status=0
+ZCU216_RFCLK: I2C write start addr=0x2F len=4
+ZCU216_RFCLK: I2C write transfer status=0
+ZCU216_RFCLK: I2C read start addr=0x74 len=1
+ZCU216_RFCLK: I2C read transfer status=0
+ZCU216_RFCLK: I2C write start addr=0x74 len=1
+ZCU216_RFCLK: I2C write transfer status=0
+ZCU216_RFCLK: I2C write start addr=0x2F len=4
+ZCU216_RFCLK: I2C write transfer status=0
+ZCU216_RFCLK: I2C read start addr=0x74 len=1
+ZCU216_RFCLK: I2C read transfer status=0
+ZCU216_RFCLK: I2C write start addr=0x74 len=1
+ZCU216_RFCLK: I2C write transfer status=0
+ZCU216_RFCLK: I2C write start addr=0x2F len=4
+ZCU216_RFCLK: I2C write transfer status=0
+ZCU216_RFCLK: I2C read start addr=0x74 len=1
+ZCU216_RFCLK: I2C read transfer status=0
+ZCU216_RFCLK: I2C write start addr=0x74 len=1
+ZCU216_RFCLK: I2C write transfer status=0
+ZCU216_RFCLK: I2C write start addr=0x2F len=4
+ZCU216_RFCLK: I2C write transfer status=0
+ZCU216_RFCLK: I2C read start addr=0x74 len=1
+ZCU216_RFCLK: I2C read transfer status=0
+ZCU216_RFCLK: I2C write start addr=0x74 len=1
+ZCU216_RFCLK: I2C write transfer status=0
+ZCU216_RFCLK: I2C write start addr=0x2F len=4
+ZCU216_RFCLK: I2C write transfer status=0
+ZCU216_RFCLK: I2C read start addr=0x74 len=1
+ZCU216_RFCLK: I2C read transfer status=0
+ZCU216_RFCLK: I2C write start addr=0x74 len=1
+ZCU216_RFCLK: I2C write transfer status=0
+ZCU216_RFCLK: I2C write start addr=0x2F len=4
+ZCU216_RFCLK: I2C write transfer status=0
+ZCU216_RFCLK: I2C read start addr=0x74 len=1
+ZCU216_RFCLK: I2C read transfer status=0
+ZCU216_RFCLK: I2C write start addr=0x74 len=1
+ZCU216_RFCLK: I2C write transfer status=0
+ZCU216_RFCLK: I2C write start addr=0x2F len=4
+ZCU216_RFCLK: I2C write transfer status=0
+ZCU216_RFCLK: I2C read start addr=0x74 len=1
+ZCU216_RFCLK: I2C read transfer status=0
+ZCU216_RFCLK: I2C write start addr=0x74 len=1
+ZCU216_RFCLK: I2C write transfer status=0
+ZCU216_RFCLK: I2C write start addr=0x2F len=4
+ZCU216_RFCLK: I2C write transfer status=0
+ZCU216_RFCLK: I2C read start addr=0x74 len=1
+ZCU216_RFCLK: I2C read transfer status=0
+ZCU216_RFCLK: I2C write start addr=0x74 len=1
+ZCU216_RFCLK: I2C write transfer status=0
+ZCU216_RFCLK: I2C write start addr=0x2F len=4
+ZCU216_RFCLK: I2C write transfer status=0
+ZCU216_RFCLK: I2C read start addr=0x74 len=1
+ZCU216_RFCLK: I2C read transfer status=0
+ZCU216_RFCLK: I2C write start addr=0x74 len=1
+ZCU216_RFCLK: I2C write transfer status=0
+ZCU216_RFCLK: I2C write start addr=0x2F len=4
+ZCU216_RFCLK: I2C write transfer status=0
+ZCU216_RFCLK: I2C read start addr=0x74 len=1
+ZCU216_RFCLK: I2C read transfer status=0
+ZCU216_RFCLK: I2C write start addr=0x74 len=1
+ZCU216_RFCLK: I2C write transfer status=0
+ZCU216_RFCLK: I2C write start addr=0x2F len=4
+ZCU216_RFCLK: I2C write transfer status=0
+ZCU216_RFCLK: I2C read start addr=0x74 len=1
+ZCU216_RFCLK: I2C read transfer status=0
+ZCU216_RFCLK: I2C write start addr=0x74 len=1
+ZCU216_RFCLK: I2C write transfer status=0
+ZCU216_RFCLK: I2C write start addr=0x2F len=4
+ZCU216_RFCLK: I2C write transfer status=0
+ZCU216_RFCLK: I2C read start addr=0x74 len=1
+ZCU216_RFCLK: I2C read transfer status=0
+ZCU216_RFCLK: I2C write start addr=0x74 len=1
+ZCU216_RFCLK: I2C write transfer status=0
+ZCU216_RFCLK: I2C write start addr=0x2F len=4
+ZCU216_RFCLK: I2C write transfer status=0
+ZCU216_RFCLK: I2C read start addr=0x74 len=1
+ZCU216_RFCLK: I2C read transfer status=0
+ZCU216_RFCLK: I2C write start addr=0x74 len=1
+ZCU216_RFCLK: I2C write transfer status=0
+ZCU216_RFCLK: I2C write start addr=0x2F len=4
+ZCU216_RFCLK: I2C write transfer status=0
+ZCU216_RFCLK: I2C read start addr=0x74 len=1
+ZCU216_RFCLK: I2C read transfer status=0
+ZCU216_RFCLK: I2C write start addr=0x74 len=1
+ZCU216_RFCLK: I2C write transfer status=0
+ZCU216_RFCLK: I2C write start addr=0x2F len=4
+ZCU216_RFCLK: I2C write transfer status=0
+ZCU216_RFCLK: I2C read start addr=0x74 len=1
+ZCU216_RFCLK: I2C read transfer status=0
+ZCU216_RFCLK: I2C write start addr=0x74 len=1
+ZCU216_RFCLK: I2C write transfer status=0
+ZCU216_RFCLK: I2C write start addr=0x2F len=4
+ZCU216_RFCLK: I2C write transfer status=0
+ZCU216_RFCLK: I2C read start addr=0x74 len=1
+ZCU216_RFCLK: I2C read transfer status=0
+ZCU216_RFCLK: I2C write start addr=0x74 len=1
+ZCU216_RFCLK: I2C write transfer status=0
+ZCU216_RFCLK: I2C write start addr=0x2F len=4
+ZCU216_RFCLK: I2C write transfer status=0
+ZCU216_RFCLK: I2C read start addr=0x74 len=1
+ZCU216_RFCLK: I2C read transfer status=0
+ZCU216_RFCLK: I2C write start addr=0x74 len=1
+ZCU216_RFCLK: I2C write transfer status=0
+ZCU216_RFCLK: I2C write start addr=0x2F len=4
+ZCU216_RFCLK: I2C write transfer status=0
+ZCU216_RFCLK: I2C read start addr=0x74 len=1
+ZCU216_RFCLK: I2C read transfer status=0
+ZCU216_RFCLK: I2C write start addr=0x74 len=1
+ZCU216_RFCLK: I2C write transfer status=0
+ZCU216_RFCLK: I2C write start addr=0x2F len=4
+ZCU216_RFCLK: I2C write transfer status=0
+ZCU216_RFCLK: I2C read start addr=0x74 len=1
+ZCU216_RFCLK: I2C read transfer status=0
+ZCU216_RFCLK: I2C write start addr=0x74 len=1
+ZCU216_RFCLK: I2C write transfer status=0
+ZCU216_RFCLK: I2C write start addr=0x2F len=4
+ZCU216_RFCLK: I2C write transfer status=0
+ZCU216_RFCLK: I2C read start addr=0x74 len=1
+ZCU216_RFCLK: I2C read transfer status=0
+ZCU216_RFCLK: I2C write start addr=0x74 len=1
+ZCU216_RFCLK: I2C write transfer status=0
+ZCU216_RFCLK: I2C write start addr=0x2F len=4
+ZCU216_RFCLK: I2C write transfer status=0
+ZCU216_RFCLK: I2C read start addr=0x74 len=1
+ZCU216_RFCLK: I2C read transfer status=0
+ZCU216_RFCLK: I2C write start addr=0x74 len=1
+ZCU216_RFCLK: I2C write transfer status=0
+ZCU216_RFCLK: I2C write start addr=0x2F len=4
+ZCU216_RFCLK: I2C write transfer status=0
+ZCU216_RFCLK: I2C read start addr=0x74 len=1
+ZCU216_RFCLK: I2C read transfer status=0
+ZCU216_RFCLK: I2C write start addr=0x74 len=1
+ZCU216_RFCLK: I2C write transfer status=0
+ZCU216_RFCLK: I2C write start addr=0x2F len=4
+ZCU216_RFCLK: I2C write transfer status=0
+ZCU216_RFCLK: I2C read start addr=0x74 len=1
+ZCU216_RFCLK: I2C read transfer status=0
+ZCU216_RFCLK: I2C write start addr=0x74 len=1
+ZCU216_RFCLK: I2C write transfer status=0
+ZCU216_RFCLK: I2C write start addr=0x2F len=4
+ZCU216_RFCLK: I2C write transfer status=0
+ZCU216_RFCLK: I2C read start addr=0x74 len=1
+ZCU216_RFCLK: I2C read transfer status=0
+ZCU216_RFCLK: I2C write start addr=0x74 len=1
+ZCU216_RFCLK: I2C write transfer status=0
+ZCU216_RFCLK: I2C write start addr=0x2F len=4
+ZCU216_RFCLK: I2C write transfer status=0
+ZCU216_RFCLK: I2C read start addr=0x74 len=1
+ZCU216_RFCLK: I2C read transfer status=0
+ZCU216_RFCLK: I2C write start addr=0x74 len=1
+ZCU216_RFCLK: I2C write transfer status=0
+ZCU216_RFCLK: I2C write start addr=0x2F len=4
+ZCU216_RFCLK: I2C write transfer status=0
+ZCU216_RFCLK: I2C read start addr=0x74 len=1
+ZCU216_RFCLK: I2C read transfer status=0
+ZCU216_RFCLK: I2C write start addr=0x74 len=1
+ZCU216_RFCLK: I2C write transfer status=0
+ZCU216_RFCLK: I2C write start addr=0x2F len=4
+ZCU216_RFCLK: I2C write transfer status=0
+ZCU216_RFCLK: I2C read start addr=0x74 len=1
+ZCU216_RFCLK: I2C read transfer status=0
+ZCU216_RFCLK: I2C write start addr=0x74 len=1
+ZCU216_RFCLK: I2C write transfer status=0
+ZCU216_RFCLK: I2C write start addr=0x2F len=4
+ZCU216_RFCLK: I2C write transfer status=0
+ZCU216_RFCLK: I2C read start addr=0x74 len=1
+ZCU216_RFCLK: I2C read transfer status=0
+ZCU216_RFCLK: I2C write start addr=0x74 len=1
+ZCU216_RFCLK: I2C write transfer status=0
+ZCU216_RFCLK: I2C write start addr=0x2F len=4
+ZCU216_RFCLK: I2C write transfer status=0
+ZCU216_RFCLK: I2C read start addr=0x74 len=1
+ZCU216_RFCLK: I2C read transfer status=0
+ZCU216_RFCLK: I2C write start addr=0x74 len=1
+ZCU216_RFCLK: I2C write transfer status=0
+ZCU216_RFCLK: I2C write start addr=0x2F len=4
+ZCU216_RFCLK: I2C write transfer status=0
+ZCU216_RFCLK: I2C read start addr=0x74 len=1
+ZCU216_RFCLK: I2C read transfer status=0
+ZCU216_RFCLK: I2C write start addr=0x74 len=1
+ZCU216_RFCLK: I2C write transfer status=0
+ZCU216_RFCLK: I2C write start addr=0x2F len=4
+ZCU216_RFCLK: I2C write transfer status=0
+ZCU216_RFCLK: I2C read start addr=0x74 len=1
+ZCU216_RFCLK: I2C read transfer status=0
+ZCU216_RFCLK: I2C write start addr=0x74 len=1
+ZCU216_RFCLK: I2C write transfer status=0
+ZCU216_RFCLK: I2C write start addr=0x2F len=4
+ZCU216_RFCLK: I2C write transfer status=0
+ZCU216_RFCLK: I2C read start addr=0x74 len=1
+ZCU216_RFCLK: I2C read transfer status=0
+ZCU216_RFCLK: I2C write start addr=0x74 len=1
+ZCU216_RFCLK: I2C write transfer status=0
+ZCU216_RFCLK: I2C write start addr=0x2F len=4
+ZCU216_RFCLK: I2C write transfer status=0
+ZCU216_RFCLK: I2C read start addr=0x74 len=1
+ZCU216_RFCLK: I2C read transfer status=0
+ZCU216_RFCLK: I2C write start addr=0x74 len=1
+ZCU216_RFCLK: I2C write transfer status=0
+ZCU216_RFCLK: I2C write start addr=0x2F len=4
+ZCU216_RFCLK: I2C write transfer status=0
+ZCU216_RFCLK: I2C read start addr=0x74 len=1
+ZCU216_RFCLK: I2C read transfer status=0
+ZCU216_RFCLK: I2C write start addr=0x74 len=1
+ZCU216_RFCLK: I2C write transfer status=0
+ZCU216_RFCLK: I2C write start addr=0x2F len=4
+ZCU216_RFCLK: I2C write transfer status=0
+ZCU216_RFCLK: I2C read start addr=0x74 len=1
+ZCU216_RFCLK: I2C read transfer status=0
+ZCU216_RFCLK: I2C write start addr=0x74 len=1
+ZCU216_RFCLK: I2C write transfer status=0
+ZCU216_RFCLK: I2C write start addr=0x2F len=4
+ZCU216_RFCLK: I2C write transfer status=0
+ZCU216_RFCLK: I2C read start addr=0x74 len=1
+ZCU216_RFCLK: I2C read transfer status=0
+ZCU216_RFCLK: I2C write start addr=0x74 len=1
+ZCU216_RFCLK: I2C write transfer status=0
+ZCU216_RFCLK: I2C write start addr=0x2F len=4
+ZCU216_RFCLK: I2C write transfer status=0
+ZCU216_RFCLK: I2C read start addr=0x74 len=1
+ZCU216_RFCLK: I2C read transfer status=0
+ZCU216_RFCLK: I2C write start addr=0x74 len=1
+ZCU216_RFCLK: I2C write transfer status=0
+ZCU216_RFCLK: I2C write start addr=0x2F len=4
+ZCU216_RFCLK: I2C write transfer status=0
+ZCU216_RFCLK: I2C read start addr=0x74 len=1
+ZCU216_RFCLK: I2C read transfer status=0
+ZCU216_RFCLK: I2C write start addr=0x74 len=1
+ZCU216_RFCLK: I2C write transfer status=0
+ZCU216_RFCLK: I2C write start addr=0x2F len=4
+ZCU216_RFCLK: I2C write transfer status=0
+ZCU216_RFCLK: I2C read start addr=0x74 len=1
+ZCU216_RFCLK: I2C read transfer status=0
+ZCU216_RFCLK: I2C write start addr=0x74 len=1
+ZCU216_RFCLK: I2C write transfer status=0
+ZCU216_RFCLK: I2C write start addr=0x2F len=4
+ZCU216_RFCLK: I2C write transfer status=0
+ZCU216_RFCLK: I2C read start addr=0x74 len=1
+ZCU216_RFCLK: I2C read transfer status=0
+ZCU216_RFCLK: I2C write start addr=0x74 len=1
+ZCU216_RFCLK: I2C write transfer status=0
+ZCU216_RFCLK: I2C write start addr=0x2F len=4
+ZCU216_RFCLK: I2C write transfer status=0
+ZCU216_RFCLK: I2C read start addr=0x74 len=1
+ZCU216_RFCLK: I2C read transfer status=0
+ZCU216_RFCLK: I2C write start addr=0x74 len=1
+ZCU216_RFCLK: I2C write transfer status=0
+ZCU216_RFCLK: I2C write start addr=0x2F len=4
+ZCU216_RFCLK: I2C write transfer status=0
+ZCU216_RFCLK: I2C read start addr=0x74 len=1
+ZCU216_RFCLK: I2C read transfer status=0
+ZCU216_RFCLK: I2C write start addr=0x74 len=1
+ZCU216_RFCLK: I2C write transfer status=0
+ZCU216_RFCLK: I2C write start addr=0x2F len=4
+ZCU216_RFCLK: I2C write transfer status=0
+ZCU216_RFCLK: I2C read start addr=0x74 len=1
+ZCU216_RFCLK: I2C read transfer status=0
+ZCU216_RFCLK: I2C write start addr=0x74 len=1
+ZCU216_RFCLK: I2C write transfer status=0
+ZCU216_RFCLK: I2C write start addr=0x2F len=4
+ZCU216_RFCLK: I2C write transfer status=0
+ZCU216_RFCLK: I2C read start addr=0x74 len=1
+ZCU216_RFCLK: I2C read transfer status=0
+ZCU216_RFCLK: I2C write start addr=0x74 len=1
+ZCU216_RFCLK: I2C write transfer status=0
+ZCU216_RFCLK: I2C write start addr=0x2F len=4
+ZCU216_RFCLK: I2C write transfer status=0
+ZCU216_RFCLK: I2C read start addr=0x74 len=1
+ZCU216_RFCLK: I2C read transfer status=0
+ZCU216_RFCLK: I2C write start addr=0x74 len=1
+ZCU216_RFCLK: I2C write transfer status=0
+ZCU216_RFCLK: I2C write start addr=0x2F len=4
+ZCU216_RFCLK: I2C write transfer status=0
+ZCU216_RFCLK: I2C read start addr=0x74 len=1
+ZCU216_RFCLK: I2C read transfer status=0
+ZCU216_RFCLK: I2C write start addr=0x74 len=1
+ZCU216_RFCLK: I2C write transfer status=0
+ZCU216_RFCLK: I2C write start addr=0x2F len=4
+ZCU216_RFCLK: I2C write transfer status=0
+ZCU216_RFCLK: I2C read start addr=0x74 len=1
+ZCU216_RFCLK: I2C read transfer status=0
+ZCU216_RFCLK: I2C write start addr=0x74 len=1
+ZCU216_RFCLK: I2C write transfer status=0
+ZCU216_RFCLK: I2C write start addr=0x2F len=4
+ZCU216_RFCLK: I2C write transfer status=0
+ZCU216_RFCLK: I2C read start addr=0x74 len=1
+ZCU216_RFCLK: I2C read transfer status=0
+ZCU216_RFDC: CLK104 configuration complete
+ZCU216_RFDC: RFDC initialized base=0xA0000000
+ZCU216_RFDC: resetting all DAC tiles after CLK104 setup
+ZCU216_RFDC: DAC reset complete
+ZCU216_RFDC: ADC2 enabled=1 blocks=0x01 power=1 pll_state=1 pll_lock=2 tile_state=15
+ZCU216_RFDC: DAC2 enabled=1 blocks=0x01 power=1 pll_state=1 pll_lock=2 tile_state=15
+ZCU216_RFDC: DAC3 enabled=1 blocks=0x04 power=1 pll_state=1 pll_lock=2 tile_state=15
+ZCU216_RFDC: PASS all required tiles ready
+ZCU216_PLL: ADC2 enabled=1 src=1 fs=2457600 kHz refclk=245760 kHz refdiv=1 fbdiv=40 outdiv=4
+ZCU216_PLL: DAC2 enabled=1 src=1 fs=6881280 kHz refclk=245760 kHz refdiv=1 fbdiv=56 outdiv=2
+ZCU216_PLL: DAC3 enabled=1 src=1 fs=6881280 kHz refclk=245760 kHz refdiv=1 fbdiv=56 outdiv=2
+ZCU216_CAPTURE: depth=8192 fs=307.2MHz tone=107.52MHz buf=0x0003DC28 amp=128
+ZCU216_CAPTURE: BRAM window DAC_OFF baseline
+ZCU216_CAPTURE: dac_off bin_k=2834 tone_pwr=4879 ac_pwr=22540656 tone/ac_x1000=0 mean=55
+ZCU216_CAPTURE: BRAM window DAC_ON (OFDM loopback)
+ZCU216_CAPTURE: PASS BRAM window captured
+ZCU216_CAPTURE: dac_on bin_k=2834 tone_pwr=0 ac_pwr=0 tone/ac_x1000=0 mean=0

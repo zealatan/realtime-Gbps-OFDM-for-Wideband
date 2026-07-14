@@ -1,0 +1,105 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>FPGA test — issue tracker (reset 2026-06-19)</title><style>
+:root{--bg:#0d1117;--surf:#161b22;--surf2:#1c2230;--line:#2a313c;--line2:#363f4d;
+--tx:#d8dee6;--tx2:#8b949e;--tx3:#636e7b;--teal:#3fd0c9;--green:#56d364;--amber:#e3b341;
+--red:#f47067;--gray:#6e7681;--purple:#bc8cff;
+--mono:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;
+--sans:-apple-system,BlinkMacSystemFont,"Segoe UI",Inter,system-ui,sans-serif;}
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--bg);color:var(--tx);font-family:var(--sans);line-height:1.55;
+padding:28px 20px 60px;max-width:1180px;margin:0 auto;font-size:14px}
+.eyebrow{font-family:var(--mono);font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--teal);margin-bottom:8px}
+h1{font-size:21px;font-weight:600;letter-spacing:-.01em}
+.goal{color:var(--tx2);margin-top:8px;max-width:780px}.goal b{color:var(--tx);font-weight:600}
+.meta{display:flex;flex-wrap:wrap;gap:8px;margin-top:14px}
+.chip{font-family:var(--mono);font-size:11px;color:var(--tx2);border:1px solid var(--line2);border-radius:6px;padding:3px 9px;background:var(--surf2)}
+.chip b{color:var(--teal);font-weight:500}
+header{border:1px solid var(--line2);background:var(--surf);border-radius:12px;padding:20px 22px;margin-bottom:8px}
+section{margin-top:26px}
+h2{font-size:12px;font-family:var(--mono);letter-spacing:.12em;text-transform:uppercase;color:var(--tx3);margin-bottom:13px;display:flex;align-items:center;gap:10px}
+h2::after{content:"";flex:1;height:1px;background:var(--line)}
+.kpis{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
+.kpi{border:1px solid var(--line);background:var(--surf);border-radius:10px;padding:14px 15px}
+.kpi .name{font-size:12.5px;color:var(--tx2);margin-bottom:9px;min-height:2.6em}
+.kpi .val{display:flex;align-items:baseline;gap:8px;font-family:var(--mono)}
+.kpi .cur{font-size:21px;font-weight:600}.kpi .arrow{color:var(--tx3)}.kpi .tgt{font-size:13px;color:var(--teal)}
+.bar{height:5px;border-radius:3px;background:var(--surf2);margin-top:11px;overflow:hidden;border:1px solid var(--line)}
+.bar>i{display:block;height:100%;border-radius:3px}
+.st{font-family:var(--mono);font-size:10.5px;text-transform:uppercase;letter-spacing:.06em;margin-top:9px;display:inline-block}
+.s-done{color:var(--green)}.s-prog{color:var(--amber)}.s-plan{color:var(--gray)}.s-block{color:var(--red)}
+.f-green{background:var(--green)}.f-amber{background:var(--amber)}.f-gray{background:var(--gray)}.f-red{background:var(--red)}.f-teal{background:var(--teal)}
+.cov{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.covcard{border:1px solid var(--line);background:var(--surf);border-radius:10px;padding:14px 15px}
+.covcard h3{font-size:13px;font-weight:600;margin-bottom:4px}
+.covcard p{font-size:12px;color:var(--tx3);font-family:var(--mono);margin-bottom:10px}
+.covrow{display:flex;justify-content:space-between;font-size:12.5px;padding:4px 0;border-top:1px solid var(--line)}
+.covrow span:last-child{font-family:var(--mono);color:var(--tx2)}
+.chain{display:flex;align-items:stretch;overflow-x:auto;padding-bottom:6px}
+.stage{flex:1;min-width:118px;border:1px solid var(--line);border-radius:9px;background:var(--surf);padding:11px 12px;position:relative}
+.stage+.stage{margin-left:18px}
+.stage::before{content:"";position:absolute;left:-18px;top:50%;width:18px;height:2px;background:var(--line2)}
+.stage:first-child::before{display:none}.stage.lit::before{background:var(--teal)}
+.stage .ph{font-family:var(--mono);font-size:10px;color:var(--tx3);letter-spacing:.08em}
+.stage .ti{font-size:13px;font-weight:600;margin:3px 0 7px}
+.dot{width:8px;height:8px;border-radius:50%;display:inline-block;margin-right:6px;vertical-align:middle}
+.d-done{background:var(--green)}.d-prog{background:var(--amber);box-shadow:0 0 7px var(--amber)}.d-plan{background:var(--gray)}.d-block{background:var(--red);box-shadow:0 0 7px var(--red)}
+.stage small{font-size:10.5px;font-family:var(--mono);text-transform:uppercase;letter-spacing:.05em}
+.levels{display:grid;grid-template-columns:repeat(6,1fr);gap:10px}
+.lvl{border:1px solid var(--line);border-radius:9px;background:var(--surf);padding:11px 10px;text-align:center}
+.lvl .lid{font-family:var(--mono);font-size:11px;color:var(--teal)}
+.lvl .ln{font-size:11.5px;color:var(--tx2);margin:5px 0 8px;min-height:2.6em}
+.invhead{display:flex;align-items:center;gap:9px;padding:9px 0 7px}
+.tag{font-family:var(--mono);font-size:10px;padding:2px 8px;border-radius:5px;font-weight:600}
+.t-keep{background:rgba(86,211,100,.13);color:var(--green);border:1px solid rgba(86,211,100,.3)}
+.t-new{background:rgba(63,208,201,.13);color:var(--teal);border:1px solid rgba(63,208,201,.3)}
+.t-rewire{background:rgba(227,179,65,.13);color:var(--amber);border:1px solid rgba(227,179,65,.3)}
+.t-remove{background:rgba(244,112,103,.13);color:var(--red);border:1px solid rgba(244,112,103,.3)}
+.t-review{background:rgba(188,140,255,.13);color:var(--purple);border:1px solid rgba(188,140,255,.3)}
+.files{font-family:var(--mono);font-size:11.5px;color:var(--tx2);line-height:1.9;padding:2px 0 10px}
+.dec{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.decitem{border:1px solid var(--line);border-left:2px solid var(--teal);background:var(--surf);border-radius:0 8px 8px 0;padding:9px 13px;font-size:12.5px}
+.decitem.tbd{border-left-color:var(--amber)}
+.decitem b{color:var(--tx);font-family:var(--mono);font-size:11px}.decitem span{color:var(--tx2)}
+.note{font-size:11px;color:var(--tx3);font-family:var(--mono);margin-top:8px}
+footer{margin-top:34px;padding-top:16px;border-top:1px solid var(--line);font-family:var(--mono);font-size:11px;color:var(--tx3);display:flex;justify-content:space-between;flex-wrap:wrap;gap:8px}
+.counts{display:flex;flex-wrap:wrap;gap:8px;margin:14px 0 20px}
+.cnt{font-family:var(--mono);font-size:11px;border:1px solid var(--line2);border-radius:6px;padding:5px 11px;background:var(--surf);color:var(--tx2)}
+.cnt b{font-size:14px;color:var(--tx);margin-right:5px}
+.cnt .dt{display:inline-block;width:7px;height:7px;border-radius:50%;margin-right:6px;vertical-align:middle}
+.filters{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:16px;align-items:center}
+.flabel{font-family:var(--mono);font-size:10.5px;text-transform:uppercase;letter-spacing:.08em;color:var(--tx3)}
+.fchip{font-family:var(--mono);font-size:11px;border:1px solid var(--line2);border-radius:14px;padding:4px 12px;background:var(--surf);color:var(--tx2);cursor:pointer;user-select:none;transition:.12s}
+.fchip:hover{border-color:var(--tx3);color:var(--tx)}.fchip.on{background:var(--surf2);border-color:var(--teal);color:var(--teal)}
+table{width:100%;border-collapse:collapse;font-size:13px}
+thead th{font-family:var(--mono);font-size:10.5px;text-transform:uppercase;letter-spacing:.07em;color:var(--tx3);text-align:left;padding:8px 10px;border-bottom:1px solid var(--line2)}
+tbody tr{border-bottom:1px solid var(--line)}tbody tr:hover{background:var(--surf)}
+td{padding:11px 10px;vertical-align:top}
+.id{font-family:var(--mono);font-size:11.5px;color:var(--tx3);white-space:nowrap}
+.pill{font-family:var(--mono);font-size:10px;font-weight:600;padding:2px 8px;border-radius:5px;white-space:nowrap;display:inline-block}
+.sev-critical{background:rgba(244,112,103,.15);color:var(--red);border:1px solid rgba(244,112,103,.35)}
+.sev-high{background:rgba(227,179,65,.15);color:var(--amber);border:1px solid rgba(227,179,65,.35)}
+.sev-medium{background:rgba(63,208,201,.13);color:var(--teal);border:1px solid rgba(63,208,201,.3)}
+.sev-low{background:rgba(110,118,129,.18);color:var(--gray);border:1px solid rgba(110,118,129,.4)}
+.stt{font-family:var(--mono);font-size:11px;white-space:nowrap}
+.st-open{color:var(--amber)}.st-analyzed{color:var(--teal)}.st-resolved{color:var(--green)}.st-blocked{color:var(--red)}.st-deferred{color:var(--gray)}
+.stt::before{content:"\25CF";margin-right:6px;font-size:9px;vertical-align:middle}
+.area{font-family:var(--mono);font-size:11px;color:var(--tx3)}
+.ti2{font-weight:600;color:var(--tx);margin-bottom:3px}.de{font-size:12px;color:var(--tx2)}
+.nx{font-size:12px;color:var(--tx2)}.hidden{display:none}
+@media(max-width:820px){.kpis,.levels{grid-template-columns:repeat(2,1fr)}.cov,.dec{grid-template-columns:1fr}.col-area,.col-next{display:none}}
+</style></head><body>
+<div class="eyebrow">ZCU216 Synchronizer · FPGA bring-up · HW PC · reset 2026-06-19</div><h1>Open issues &amp; blockers</h1>
+<div style="font-size:12.5px;color:var(--tx2);margin:6px 0 14px;padding:8px 12px;border-left:3px solid var(--amber);background:rgba(227,179,65,.08);border-radius:0 6px 6px 0"><b style="color:var(--amber)">FPGA side — HW PC.</b> Hardware/integration/build/timing 카테고리만. RTL/verification/algorithm 이슈는 <a href="../rtl_dashboard/rtl_issues.html" style="color:var(--teal)">rtl_dashboard/rtl_issues.html</a>. All entries flipped to <code>open</code> for re-verification; original analysis preserved.</div>
+<div class="counts"><span class="cnt"><b>8</b>total</span><span class="cnt"><span class="dt" style="background:var(--amber)"></span><b>8</b>open</span><span class="cnt"><span class="dt" style="background:var(--teal)"></span><b>0</b>analyzed</span><span class="cnt"><span class="dt" style="background:var(--green)"></span><b>0</b>resolved</span><span class="cnt"><span class="dt" style="background:var(--red)"></span><b>0</b>blocked</span><span class="cnt"><span class="dt" style="background:var(--gray)"></span><b>0</b>deferred</span></div>
+<div class="filters"><span class="flabel">sev</span><span class="fchip sevf on" data-sev="all">all</span><span class="fchip sevf" data-sev="critical">critical</span><span class="fchip sevf" data-sev="high">high</span><span class="fchip sevf" data-sev="medium">medium</span><span class="fchip sevf" data-sev="low">low</span>
+<span class="flabel" style="margin-left:12px">status</span><span class="fchip sttf on" data-stt="all">all</span><span class="fchip sttf" data-stt="open">open</span><span class="fchip sttf" data-stt="analyzed">analyzed</span><span class="fchip sttf" data-stt="resolved">resolved</span><span class="fchip sttf" data-stt="blocked">blocked</span><span class="fchip sttf" data-stt="deferred">deferred</span></div>
+<table><thead><tr><th>ID</th><th>sev</th><th>status</th><th class="col-area">area</th><th>issue</th><th class="col-next">next action</th></tr></thead>
+<tbody><tr class="row" data-sev="critical" data-stt="open"><td class="id">ISS-12</td><td><span class="pill sev-critical">critical</span></td><td class="stt st-open">open</td><td class="area col-area">hardware</td><td><div class="ti2">board not connected</div><div class="de">HIL reports NO_TARGET — no JTAG target, PS not visible.</div></td><td class="nx col-next">Physically connect ZCU102 before Phase 5/6.</td></tr><tr class="row" data-sev="high" data-stt="open"><td class="id">ISS-09</td><td><span class="pill sev-high">high</span></td><td class="stt st-open">open</td><td class="area col-area">timing</td><td><div class="ti2">250 MHz not met</div><div class="de">meyr_cfo_top OOC @xczu9eg: WNS +0.688ns @250MHz -&gt; Fmax ~302MHz (meets, ~52MHz margin; OOC optimistic, no clock skew/IO). New core is NOT the bottleneck.</div></td><td class="nx col-next">5 iter (P5-04) + 2 iter (P5-05) = 7 iter. Best WNS=-0.568ns (~219MHz). Remaining blockers: (1) meyr_sync_capture LUTRAM combinational read (needs registered + BRAM + TB latency update), (2) meyr_cfo_top internal paths (forbidden by P5-04 prompt). See docs/p5_05_status.md.</td></tr><tr class="row" data-sev="high" data-stt="open"><td class="id">ISS-14</td><td><span class="pill sev-high">high</span></td><td class="stt st-open">open</td><td class="area col-area">build</td><td><div class="ti2">RTL consolidation — one DUT</div><div class="de">Old serial Meyr and new FFT-corr core coexist in rtl/; need a single deduplicated DUT top.</div></td><td class="nx col-next">Remove old Meyr set + dead path; rewire one top to the new core.</td></tr><tr class="row" data-sev="high" data-stt="open"><td class="id">ISS-16</td><td><span class="pill sev-high">high</span></td><td class="stt st-open">open</td><td class="area col-area">build</td><td><div class="ti2">FFT IP regeneration for target</div><div class="de">xfft_N/2N/IFFT regenerated for xczu9eg via Windows Vivado 2022.2.</div></td><td class="nx col-next">Done. Full build will include these IPs as project sources.</td></tr><tr class="row" data-sev="high" data-stt="open"><td class="id">ISS-19</td><td><span class="pill sev-high">high</span></td><td class="stt st-open">open</td><td class="area col-area">integration</td><td><div class="ti2">ssc_slot_valid never fires in wrapper TB sim</div><div class="de">Was misdiagnosed initially. Actual root cause: meyr_slot_frontend.slot_start was wired to slot_start_pulse (= rising edge of slot_start_controller.slot_valid, which fires AFTER frac_corrector's S_DONE = after the last corrected beat). By that cycle frac_m_tvalid had dropped, so meyr_slot_frontend's `if (slot_start &amp;&amp; s_tvalid)` activation condition could never be true.</div></td><td class="nx col-next">FIXED 2026-06-17 night by adding `frac_m_first_beat` signal (rising edge of frac_m_tvalid after frac_start_r) and re-wiring `u_slot_fe.slot_start` to it. ssc-derived slot_start_pulse is preserved for dbg_slot_start_valid downstream consumers.</td></tr><tr class="row" data-sev="medium" data-stt="open"><td class="id">ISS-06</td><td><span class="pill sev-medium">medium</span></td><td class="stt st-open">open</td><td class="area col-area">integration</td><td><div class="ti2">strobe &lt;-&gt; nonrealtime FFT backpressure</div><div class="de">complex_mult_32 has no tready; nonrealtime xfft deasserts s_tready -&gt; back-to-back frames can drop samples.</div></td><td class="nx col-next">Method-1 sync_capture decouples; verify in back-to-back test.</td></tr><tr class="row" data-sev="medium" data-stt="open"><td class="id">ISS-08</td><td><span class="pill sev-medium">medium</span></td><td class="stt st-open">open</td><td class="area col-area">integration</td><td><div class="ti2">slot_frontend marker + slot geometry</div><div class="de">pss_first_beat marker missing; NUM_DATA=12 vs C-ref slot = 2 sync + 5 data = 7 symbols.</div></td><td class="nx col-next">Add pss_first_beat; set NUM_DATA to the actual TX slot.</td></tr><tr class="row" data-sev="low" data-stt="open"><td class="id">ISS-20</td><td><span class="pill sev-low">low</span></td><td class="stt st-open">open</td><td class="area col-area">hardware</td><td><div class="ti2">First HW HIL_TEST_PASS achieved (milestone)</div><div class="de">2026-06-17 evening: manual Vitis flow (XSA → Application → Run As → Launch on Hardware). FSBL boot → A53 C runtime → AXI-Lite VERSION 0x00316001 readback → DMA 576/576 with drop=0 → frame_detector + frac_cfo latch. Unblocks ISS-12 (board not connected). HIL test plumbing fully validated.</div></td><td class="nx col-next">Done; supersedes ISS-12. Remaining open work captured in ISS-17/18/19.</td></tr></tbody></table>
+<footer><span>FPGA test · /home/zealatan/FPGA_Based_OFDM_Transceiver/fpga_dashboard</span><span>reset 2026-06-19 · 8 open</span></footer>
+<script>
+const setF=(cls)=>document.querySelectorAll(cls).forEach(c=>c.onclick=()=>{
+ document.querySelectorAll(cls).forEach(x=>x.classList.remove('on'));c.classList.add('on');apply();});
+function apply(){const sv=document.querySelector('.sevf.on').dataset.sev,st=document.querySelector('.sttf.on').dataset.stt;
+ document.querySelectorAll('.row').forEach(r=>{const h=(sv!=='all'&&r.dataset.sev!==sv)||(st!=='all'&&r.dataset.stt!==st);r.classList.toggle('hidden',h);});}
+setF('.sevf');setF('.sttf');</script></body></html>

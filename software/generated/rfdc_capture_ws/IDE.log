@@ -1,0 +1,13 @@
+11:19:54 DEBUG : Logs will be stored at '/home/dsp-mikro7/FPGA_Based_OFDM_Transceiver/software/generated/rfdc_capture_ws/IDE.log'.
+11:19:55 INFO  : Registering command handlers for Vitis TCF services
+11:19:55 INFO  : Platform repository initialization has completed.
+11:19:57 INFO  : Result from executing command 'getProjects': zcu216_rfdc_capture
+11:19:57 INFO  : Result from executing command 'getPlatforms': 
+11:20:18 INFO  : Result from executing command 'getProjects': zcu216_rfdc_capture
+11:20:18 INFO  : Result from executing command 'getPlatforms': zcu216_rfdc_capture|/home/dsp-mikro7/FPGA_Based_OFDM_Transceiver/software/generated/rfdc_capture_ws/zcu216_rfdc_capture/export/zcu216_rfdc_capture/zcu216_rfdc_capture.xpfm
+11:20:18 INFO  : Result from executing command 'reportPlatform': {zcu216_rfdc_capture={standalone_domain={Os=standalone, DomainName=standalone_domain, CpuType=cortex-a53, CpuInstance=psu_cortexa53_0}}}
+11:20:18 INFO  : Result from executing command 'reportPlatform': {zcu216_rfdc_capture={standalone_domain={Os=standalone, DomainName=standalone_domain, CpuType=cortex-a53, CpuInstance=psu_cortexa53_0}}}
+11:20:18 INFO  : Result from executing command 'reportPlatform': {zcu216_rfdc_capture={standalone_domain={Os=standalone, DomainName=standalone_domain, CpuType=cortex-a53, CpuInstance=psu_cortexa53_0}}}
+11:20:24 INFO  : plnx-install-location is set to ''
+11:20:24 INFO  : Successfully done query RDI_DATADIR 
+11:20:37 INFO  : Checking for BSP changes to sync application flags for project 'rfdc_capture'...

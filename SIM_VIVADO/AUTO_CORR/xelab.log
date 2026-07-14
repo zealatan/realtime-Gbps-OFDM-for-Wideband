@@ -1,0 +1,31 @@
+Vivado Simulator v2022.2
+Copyright 1986-1999, 2001-2022 Xilinx, Inc. All Rights Reserved.
+Running: /home/zealatan/Downloads/Vivado/2022.2/bin/unwrapped/lnx64.o/xelab tb_dma_wrapper -debug all -s tb_dma_wrapper 
+Multi-threading is on. Using 10 slave threads.
+Starting static elaboration
+Pass Through NonSizing Optimizer
+WARNING: [VRFC 10-3091] actual bit length 32 differs from formal bit length 1 for port 'ena' [/home/zealatan/FPGA_Based_OFDM_Transceiver/SIM_VIVADO/delay_sample.v:29]
+WARNING: [VRFC 10-3091] actual bit length 65 differs from formal bit length 64 for port 'data_out' [/home/zealatan/FPGA_Based_OFDM_Transceiver/SIM_VIVADO/auto_corr.v:222]
+WARNING: [VRFC 10-3091] actual bit length 65 differs from formal bit length 33 for port 'data_in' [/home/zealatan/FPGA_Based_OFDM_Transceiver/SIM_VIVADO/auto_corr.v:271]
+WARNING: [VRFC 10-3645] port 'dib' remains unconnected for this instance [/home/zealatan/FPGA_Based_OFDM_Transceiver/SIM_VIVADO/moving_avg_optimized.v:57]
+Completed static elaboration
+Starting simulation data flow analysis
+Completed simulation data flow analysis
+Time Resolution for simulation is 1ps
+Compiling module work.ram_2port(AWIDTH=8)
+Compiling module work.delay_sample(DATA_WIDTH=32,DELAY...
+Compiling module work.complex_mult
+Compiling module work.sample_power_sq
+Compiling module work.delayT(DATA_WIDTH=33,DELAY=257)
+Compiling module work.ram_2port(AWIDTH=5)
+Compiling module work.moving_avg_optimized(WINDOW_SHIF...
+Compiling module work.ram_2port(DWIDTH=33,AWIDTH=5)
+Compiling module work.moving_avg_optimized(DATA_WIDTH=...
+Compiling module work.delayT(DATA_WIDTH=1,DELAY=3)
+Compiling module work.complex_to_mag(DATA_WIDTH=32)
+Compiling module work.delayT(DATA_WIDTH=33,DELAY=3)
+Compiling module work.delayT(DATA_WIDTH=64,DELAY=3)
+Compiling module work.auto_corr
+Compiling module work.dma_wrapper_default
+Compiling module work.tb_dma_wrapper
+Built simulation snapshot tb_dma_wrapper

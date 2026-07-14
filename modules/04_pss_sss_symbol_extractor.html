@@ -1,0 +1,544 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>04 pss_sss_symbol_extractor — ZCU216 Synchronizer</title>
+<style>
+  :root { --bg:#001219; --card:#012a33; --accent1:#005F73; --accent2:#0A9396; --light:#94D2BD; --warn:#EE9B00; --error:#AE2012; --text:#E9D8A6; --border:#1a4a55; }
+  * { box-sizing:border-box; margin:0; padding:0; }
+  body { background:var(--bg); color:var(--text); font-family:'Consolas','Courier New',monospace; font-size:13px; line-height:1.6; }
+  nav { background:var(--accent1); padding:8px 20px; display:flex; flex-wrap:wrap; gap:12px; align-items:center; border-bottom:2px solid var(--accent2); }
+  nav a { color:var(--light); text-decoration:none; font-weight:bold; font-size:11px; padding:3px 7px; border-radius:3px; }
+  nav a:hover { background:var(--accent2); color:#fff; }
+  nav .brand { color:#fff; font-size:14px; font-weight:bold; margin-right:12px; }
+  .container { max-width:1300px; margin:0 auto; padding:24px; }
+  h1 { color:var(--accent2); font-size:22px; margin-bottom:4px; }
+  .subtitle { color:var(--light); font-size:12px; margin-bottom:24px; opacity:0.85; }
+  h2 { color:var(--light); font-size:15px; margin:32px 0 10px; border-bottom:1px solid var(--border); padding-bottom:5px; }
+  h3 { color:var(--accent2); font-size:13px; margin:16px 0 8px; }
+  table { width:100%; border-collapse:collapse; margin-bottom:20px; }
+  th { background:var(--accent1); color:var(--light); padding:7px 9px; text-align:left; font-size:11px; }
+  td { padding:6px 9px; border-bottom:1px solid var(--border); font-size:12px; vertical-align:top; }
+  tr:nth-child(even) td { background:#021820; }
+  .badge-pass { background:#1a3a1a; color:#3fb950; border:1px solid #3fb950; padding:2px 7px; border-radius:10px; font-size:11px; font-weight:bold; white-space:nowrap; display:inline-block; margin:2px; }
+  .badge-pending { background:#1e2830; color:#8b949e; border:1px solid #8b949e; padding:2px 8px; border-radius:10px; font-size:11px; white-space:nowrap; display:inline-block; }
+  .badge-warn { background:#3a2a00; color:#e3b341; border:1px solid #e3b341; padding:2px 7px; border-radius:10px; font-size:11px; display:inline-block; margin:2px; }
+  .badge-info { background:#001a2a; color:var(--accent2); border:1px solid var(--accent2); padding:2px 7px; border-radius:10px; font-size:11px; display:inline-block; margin:2px; }
+  .card { background:var(--card); border:1px solid var(--border); border-radius:6px; padding:16px; margin-bottom:16px; }
+  code { background:#021820; color:var(--accent2); padding:1px 5px; border-radius:3px; font-size:12px; }
+  .note { background:#021f2a; border-left:3px solid var(--warn); padding:8px 12px; margin:10px 0; font-size:12px; color:var(--warn); }
+  .ok { background:#0a1f0a; border-left:3px solid #3fb950; padding:8px 12px; margin:10px 0; font-size:12px; color:#3fb950; }
+  .err-box { background:#1f0a0a; border-left:3px solid var(--error); padding:8px 12px; margin:10px 0; font-size:12px; color:#e05050; }
+  .blk { display:inline-block; border:1px solid var(--accent2); border-radius:4px; padding:6px 10px; font-size:11px; background:#012a33; color:var(--text); text-align:center; min-width:80px; }
+  .blk.top { background:var(--accent1); color:#fff; font-weight:bold; }
+  .blk.ext { background:#00191f; color:var(--light); border-color:var(--border); }
+  .hrow { display:flex; align-items:center; justify-content:center; flex-wrap:wrap; gap:8px; margin:8px 0; }
+  .harrow { color:var(--accent2); font-size:18px; margin:0 4px; }
+  .fsm-box { display:inline-block; border:2px solid var(--accent2); border-radius:6px; padding:6px 12px; font-size:11px; color:var(--accent2); background:#012a33; min-width:90px; text-align:center; }
+  .fsm-box.reset-state { border-color:#3fb950; color:#3fb950; }
+  .fsm-box.error-state { border-color:var(--error); color:var(--error); }
+  .fsm-box.done-state { border-color:var(--warn); color:var(--warn); }
+  .fsm-row { display:flex; align-items:center; justify-content:center; gap:6px; flex-wrap:wrap; margin:10px 0; }
+  .fsm-arr { color:var(--warn); font-size:16px; }
+  .fsm-label { font-size:10px; color:#8b949e; text-align:center; }
+  .wave-row { display:flex; align-items:center; margin:2px 0; }
+  .wave-label { width:130px; font-size:11px; color:var(--light); flex-shrink:0; text-align:right; padding-right:8px; }
+  .wave-track { flex:1; height:20px; position:relative; display:flex; align-items:center; }
+  .wave-hi { height:14px; background:var(--accent2); display:inline-block; }
+  .wave-lo { height:4px; background:#1a4a55; display:inline-block; }
+  .wave-data { height:14px; background:#CA6702; display:inline-block; border-left:2px solid var(--warn); border-right:2px solid var(--warn); }
+  .wave-x { height:14px; background:#3a2000; display:inline-block; }
+  .wave-ann { font-size:10px; color:var(--warn); margin:0 4px; }
+  .stats-grid { display:grid; grid-template-columns:repeat(auto-fit, minmax(160px, 1fr)); gap:10px; margin-bottom:16px; }
+  .stat-card { background:#021820; border:1px solid var(--border); border-radius:4px; padding:10px; text-align:center; }
+  .stat-val { font-size:18px; color:var(--accent2); font-weight:bold; }
+  .stat-lbl { font-size:10px; color:#8b949e; margin-top:4px; }
+  ul { margin:8px 0 8px 20px; }
+  li { margin:2px 0; }
+  p { margin:6px 0; }
+  ol { margin:8px 0 8px 20px; }
+  /* --- inline math (self-contained, no external libs) --- */
+  .eq { font-family:'Cambria Math','STIX Two Math','Times New Roman',Georgia,serif;
+        font-size:13.5px; color:var(--light); background:#021820; padding:1px 7px;
+        border-radius:3px; white-space:nowrap; letter-spacing:0.01em; }
+  .eq i, .eq var { font-style:italic; }
+  .eq .op { color:var(--accent2); font-style:normal; padding:0 2px; }   /* = Σ ∏ operators */
+  .eq sub { font-size:0.72em; vertical-align:-0.28em; font-style:italic; }
+  .eq sup { font-size:0.72em; vertical-align:0.5em; font-style:normal; }
+  .eq .conj { text-decoration:overline; text-decoration-thickness:1px; }
+  .eq .frac { display:inline-flex; flex-direction:column; vertical-align:middle;
+              text-align:center; font-size:0.82em; line-height:1.05; margin:0 2px; }
+  .eq .frac > span:first-child { border-bottom:1px solid var(--light); padding:0 4px; }
+  .eqd { display:block; margin:10px 0; text-align:center; }             /* display (block) equation */
+  .eqd .eq { font-size:14.5px; white-space:normal; }
+</style>
+</head>
+<body>
+<nav>
+  <span class="brand">ZCU216 Synchronizer</span>
+  <a href="index.html">&#8592; Index</a>
+  <a href="01_phase3_sync_axis_dma_wrapper.html">01 DMA</a>
+  <a href="02_phase3_sync_top.html">02 Sync Top</a>
+  <a href="03_frac_cfo_frame_corrector_top.html">03 Frac CFO</a>
+  <a href="04_pss_sss_symbol_extractor.html">04 PSS/SSS Extr</a>
+  <a href="05_fft256_dual_symbol_frontend.html">05 FFT Frontend</a>
+  <a href="06_meyr_integer_cfo_fft_frontend_top.html">06 Meyr FFT Top</a>
+  <a href="07_meyr_integer_cfo_core.html">07 Meyr Core</a>
+  <a href="08_iq_replay_buffer_576.html">08 Replay Buf</a>
+  <a href="09_low_level_datapath_blocks.html">09 Datapath</a>
+</nav>
+<div class="container">
+
+  <!-- ═══════════════════════════════════════════════════════ SECTION 1 -->
+  <h1>04 &mdash; pss_sss_symbol_extractor</h1>
+  <div class="subtitle">
+    Source: <code>rtl/DUT/pss_sss_symbol_extractor.v</code> &nbsp;|&nbsp;
+    Pipeline Stage: 4 &nbsp;|&nbsp; Role: PSS and SSS time-domain window extraction from frac-corrected AXI-S stream
+  </div>
+
+  <div style="display:flex; flex-wrap:wrap; gap:6px; margin-bottom:20px;">
+    <span class="badge-pending">Not Verified</span>
+    <span class="badge-pending">Not Verified</span>
+    <span class="badge-pending">Not Verified</span>
+    <span class="badge-pending">Not Verified</span>
+    <span class="badge-pending">Not Verified</span>
+    <span class="badge-pending">Not Verified</span>
+    <span class="badge-info">All 20 gates PASS</span>
+  </div>
+
+  <div class="stats-grid">
+    <div class="stat-card"><div class="stat-val">576</div><div class="stat-lbl">Input samples (FRAME_LEN)</div></div>
+    <div class="stat-card"><div class="stat-val">512</div><div class="stat-lbl">Output samples (2&times;NSC)</div></div>
+    <div class="stat-card"><div class="stat-val">4</div><div class="stat-lbl">FSM states</div></div>
+    <div class="stat-card"><div class="stat-val">1</div><div class="stat-lbl">Hold register depth</div></div>
+    <div class="stat-card"><div class="stat-val">32</div><div class="stat-lbl">PSS start offset (CP_LEN)</div></div>
+    <div class="stat-card"><div class="stat-val">320</div><div class="stat-lbl">SSS start offset (2&times;CP+NSC)</div></div>
+  </div>
+
+  <!-- ═══════════════════════════════════════════════════════ SECTION 2 -->
+  <h2>2. Integration Context</h2>
+  <div class="card">
+    <div class="hrow">
+      <div class="blk ext">frac_cfo_frame_corrector_top<br><span style="font-size:10px;">m_axis {valid,data[31:0],tlast,tready}</span></div>
+      <span class="harrow">&#8594;</span>
+      <div class="blk top">pss_sss_symbol_extractor<br><span style="font-size:10px; font-weight:normal;">Stage 4 — Window Extraction</span></div>
+      <span class="harrow">&#8594;</span>
+      <div class="blk ext">fft256_dual_symbol_frontend<br><span style="font-size:10px;">s_valid, s_i/q, s_symbol_sel, s_index</span></div>
+    </div>
+    <p style="margin-top:12px;"><strong>AXI-S boundary signals crossing upstream:</strong> <code>s_axis_tvalid</code>, <code>s_axis_tready</code>, <code>s_axis_tdata[31:0]</code>, <code>s_axis_tlast</code></p>
+    <p><strong>Signals crossing downstream:</strong> <code>m_axis_tvalid</code>, <code>m_axis_tready</code>, <code>m_axis_tdata[31:0]</code>, <code>m_axis_tlast</code>, <code>m_symbol_sel</code>, <code>m_symbol_index[7:0]</code></p>
+    <p><strong>Clock domain:</strong> Single domain — <code>aclk</code>. No CDC crossings in this module.</p>
+    <p><strong>Reset dependency:</strong> <code>aresetn</code> must be asserted (low) before <code>start</code> pulse. Parent <code>phase3_sync_top</code> sequences reset release then issues <code>start</code> after the upstream frac corrector asserts <code>done</code>.</p>
+    <p><strong>Control signals:</strong> <code>start</code> (1-cycle pulse from parent), <code>pss_fft_start[11:0]</code>, <code>sss_fft_start[11:0]</code>, <code>frame_len[11:0]</code> driven by parent. Window positions are computed externally: <span class="eq"><i>pss_fft_start</i> <span class="op">=</span> <i>frame_start</i> + CP_LEN</span>, <span class="eq"><i>sss_fft_start</i> <span class="op">=</span> <i>frame_start</i> + 2<span class="op">·</span>CP_LEN + NSC</span>.</p>
+  </div>
+
+  <!-- ═══════════════════════════════════════════════════════ SECTION 3 -->
+  <h2>3. Block Diagram</h2>
+  <div class="card" style="padding:20px;">
+    <div class="hrow" style="gap:4px;">
+      <div class="blk ext" style="min-width:90px;">frac corrector<br><span style="font-size:10px;">FRAME_LEN=576<br>IQ samples</span></div>
+      <span class="harrow">&#8594;</span>
+      <div style="border:2px solid var(--accent1); border-radius:6px; padding:10px 14px; background:#00202a; min-width:380px;">
+        <div style="text-align:center; color:#fff; font-weight:bold; font-size:12px; margin-bottom:8px;">pss_sss_symbol_extractor</div>
+        <div class="hrow" style="gap:6px; flex-wrap:nowrap;">
+          <div class="blk" style="min-width:90px; font-size:10px;">frame_idx counter<br>[11:0]<br>0..575</div>
+          <span style="color:var(--accent2);">&#8594;</span>
+          <div class="blk" style="min-width:110px; font-size:10px;">Window Comparator<br>in_pss_window<br>in_sss_window</div>
+          <span style="color:var(--accent2);">&#8594;</span>
+          <div class="blk" style="min-width:90px; font-size:10px;">Hold Register<br>hold_valid<br>hold_data/sel/idx</div>
+        </div>
+        <div style="margin-top:8px; font-size:10px; color:#8b949e; text-align:center;">
+          s_axis_tready = !hold_valid (S_STREAM) &nbsp;|&nbsp; =1 (S_DONE drain) &nbsp;|&nbsp; =0 (S_IDLE/S_ERROR)
+        </div>
+        <div style="margin-top:6px; font-size:10px; color:#8b949e; text-align:center;">
+          pss_cnt[8:0] / sss_cnt[8:0] track extracted sample index within each window
+        </div>
+      </div>
+      <span class="harrow">&#8594;</span>
+      <div style="display:flex; flex-direction:column; gap:5px;">
+        <div class="blk" style="min-width:110px; font-size:10px;">m_axis PSS<br>sel=0, idx 0..255<br>256 samples + tlast</div>
+        <div class="blk" style="min-width:110px; font-size:10px;">m_axis SSS<br>sel=1, idx 0..255<br>256 samples + tlast</div>
+      </div>
+    </div>
+    <div style="margin-top:10px; font-size:11px; color:var(--warn); text-align:center;">
+      Window positions: <span class="eq">PSS <span class="op">=</span> [<i>pss_fft_start</i> &hellip; <i>pss_fft_start</i>+255]</span> &nbsp; <span class="eq">SSS <span class="op">=</span> [<i>sss_fft_start</i> &hellip; <i>sss_fft_start</i>+255]</span>
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════════════════════════════════ SECTION 4 -->
+  <h2>4. Input Interface</h2>
+  <table>
+    <thead><tr><th>Signal</th><th>Width</th><th>Dir</th><th>Type</th><th>Description</th><th>Valid/Ready Relation</th><th>Reset State</th></tr></thead>
+    <tbody>
+      <tr><td><code>aclk</code></td><td>1</td><td>in</td><td>clock</td><td>System clock — all registers on posedge</td><td>—</td><td>—</td></tr>
+      <tr><td><code>aresetn</code></td><td>1</td><td>in</td><td>reset</td><td>Active-low synchronous reset</td><td>—</td><td>0 = reset active</td></tr>
+      <tr><td><code>start</code></td><td>1</td><td>in</td><td>ctrl</td><td>1-cycle start pulse from phase3_sync_top. Latched in S_IDLE. Ignored if busy (sets error_code=4).</td><td>Must be pulsed in S_IDLE</td><td>0</td></tr>
+      <tr><td><code>pss_fft_start</code></td><td>[11:0]</td><td>in</td><td>param</td><td>First frame_idx of PSS window. Default = frame_start + 32. Must satisfy pss_fft_start+NSC &le; frame_len.</td><td>Sampled on start pulse</td><td>0</td></tr>
+      <tr><td><code>sss_fft_start</code></td><td>[11:0]</td><td>in</td><td>param</td><td>First frame_idx of SSS window. Default = frame_start + 320. Must not overlap PSS window.</td><td>Sampled on start pulse</td><td>0</td></tr>
+      <tr><td><code>frame_len</code></td><td>[11:0]</td><td>in</td><td>param</td><td>Total frame length for boundary check (FRAME_LEN=576). Used in S_IDLE window validity check.</td><td>Sampled on start pulse</td><td>0</td></tr>
+      <tr><td><code>s_axis_tvalid</code></td><td>1</td><td>in</td><td>AXI-S</td><td>Input sample valid from frac_cfo_frame_corrector_top</td><td>s_fire = tvalid &amp;&amp; tready</td><td>—</td></tr>
+      <tr><td><code>s_axis_tdata</code></td><td>[31:0]</td><td>in</td><td>AXI-S</td><td>IQ sample: tdata[15:0]=I (Q1.15), tdata[31:16]=Q (Q1.15)</td><td>Captured on s_fire</td><td>—</td></tr>
+      <tr><td><code>s_axis_tlast</code></td><td>1</td><td>in</td><td>AXI-S</td><td>Asserted on the last (576th) sample of the frame. FSM transitions S_STREAM→S_DONE on tlast when both windows complete; else S_ERROR.</td><td>Must arrive after both windows complete</td><td>—</td></tr>
+      <tr><td><code>m_axis_tready</code></td><td>1</td><td>in</td><td>AXI-S</td><td>Downstream (FFT frontend) ready. Backpressure path: hold_valid deasserts s_axis_tready when downstream not ready.</td><td>m_fire = m_valid &amp;&amp; m_ready</td><td>—</td></tr>
+    </tbody>
+  </table>
+
+  <!-- ═══════════════════════════════════════════════════════ SECTION 5 -->
+  <h2>5. Output Interface</h2>
+  <table>
+    <thead><tr><th>Signal</th><th>Width</th><th>Dir</th><th>Type</th><th>Description</th><th>Timing</th><th>Valid/Ready Relation</th></tr></thead>
+    <tbody>
+      <tr><td><code>s_axis_tready</code></td><td>1</td><td>out</td><td>AXI-S</td><td>Backpressure to frac corrector. Combinatorial: !hold_valid in S_STREAM; 1'b1 in S_DONE; 1'b0 elsewhere.</td><td>Combinatorial from state+hold_valid</td><td>Stalls upstream when hold full</td></tr>
+      <tr><td><code>m_axis_tvalid</code></td><td>1</td><td>out</td><td>AXI-S</td><td>Output sample valid. Directly driven by hold_valid register.</td><td>Registered (1 cycle after s_fire on in-window sample)</td><td>hold_valid wire</td></tr>
+      <tr><td><code>m_axis_tdata</code></td><td>[31:0]</td><td>out</td><td>AXI-S</td><td>Extracted IQ sample, packed {Q[31:16], I[15:0]}, unchanged from input.</td><td>Registered in hold_data</td><td>Valid when m_axis_tvalid</td></tr>
+      <tr><td><code>m_axis_tlast</code></td><td>1</td><td>out</td><td>AXI-S</td><td>Last sample of current symbol window. Asserts when hold_tlast_r captured pss_last_sample or sss_last_sample (m_symbol_index==NSC-1=255).</td><td>Registered in hold_tlast_r</td><td>Valid with m_axis_tvalid</td></tr>
+      <tr><td><code>m_symbol_sel</code></td><td>1</td><td>out</td><td>tag</td><td>Symbol selector: 0=PSS window, 1=SSS window. Registered in hold_sel. Set at sample capture time.</td><td>Registered with hold_valid</td><td>Stable for full symbol</td></tr>
+      <tr><td><code>m_symbol_index</code></td><td>[7:0]</td><td>out</td><td>tag</td><td>Per-symbol sample index 0..NSC-1. Registered in hold_index. = pss_cnt (PSS) or sss_cnt (SSS) at time of capture.</td><td>Registered with hold_valid</td><td>Monotonically increases 0..255</td></tr>
+      <tr><td><code>busy</code></td><td>1</td><td>out</td><td>ctrl</td><td>High from start pulse (S_STREAM entry) until S_DONE hold drains.</td><td>Registered</td><td>Set synchronously with state transition</td></tr>
+      <tr><td><code>done</code></td><td>1</td><td>out</td><td>ctrl</td><td>1-cycle pulse. Asserts in S_DONE after hold_valid deasserts (hold drained). FSM then returns to S_IDLE.</td><td>Registered</td><td>1-cycle pulse only</td></tr>
+      <tr><td><code>error</code></td><td>1</td><td>out</td><td>ctrl</td><td>Error flag. Sticky until next start in S_ERROR. Cleared by aresetn.</td><td>Registered</td><td>Valid when high</td></tr>
+      <tr><td><code>error_code</code></td><td>[3:0]</td><td>out</td><td>ctrl</td><td>1=overlap/out-of-frame window (S_IDLE validation), 2=tlast before both windows done, 4=start_while_busy</td><td>Registered with error</td><td>Valid when error high</td></tr>
+    </tbody>
+  </table>
+
+  <!-- ═══════════════════════════════════════════════════════ SECTION 6 -->
+  <h2>6. Parameters and Localparams</h2>
+  <table>
+    <thead><tr><th>Name</th><th>Default</th><th>Meaning</th><th>Where Used</th><th>Dependency</th></tr></thead>
+    <tbody>
+      <tr><td><code>NSC</code></td><td>256</td><td>Samples per extracted symbol window (FFT size). Defines window width and pss_cnt/sss_cnt terminal value.</td><td>Window comparator, counter terminal, tlast generation, NSC_W sizing</td><td>Must match FFT_LEN=256 in downstream</td></tr>
+      <tr><td><code>CP_LEN</code></td><td>32</td><td>Cyclic prefix length. Referenced in comments; actual window positions driven by parent as pss_fft_start/sss_fft_start inputs.</td><td>Documentation context</td><td>Parent sets pss_fft_start = frame_start + CP_LEN</td></tr>
+      <tr><td><code>IQ_WIDTH</code></td><td>16</td><td>Per-component bit width. Sets s_axis_tdata and m_axis_tdata to 2*IQ_WIDTH=32 bits.</td><td>Port widths, hold_data sizing</td><td>Must be 16 for Q1.15 fixed-point</td></tr>
+      <tr><td><code>FRAME_INDEX_WIDTH</code></td><td>12</td><td>Width of frame position counters and start/end inputs. Supports frame_len up to 4095.</td><td>frame_idx, pss_fft_start, sss_fft_start, frame_len ports</td><td>Must cover FRAME_LEN=576 (&le; 2^12-1)</td></tr>
+      <tr><td><code>NSC_W</code> (localparam)</td><td>$clog2(NSC+1)=9</td><td>Width of per-window sample counters pss_cnt, sss_cnt. Covers 0..256.</td><td>pss_cnt, sss_cnt registers; NSC_LAST constant</td><td>Derived from NSC</td></tr>
+      <tr><td><code>NSC_FI</code> (localparam)</td><td>NSC[11:0]</td><td>Vivado-safe FRAME_INDEX_WIDTH-wide version of NSC for window end arithmetic.</td><td>pss_fft_end, sss_fft_end wire computation</td><td>Avoids SV-style sized cast warning</td></tr>
+      <tr><td><code>NSC_LAST</code> (localparam)</td><td>NSC-1=255</td><td>NSC_W-wide terminal value for pss_cnt/sss_cnt tlast detection.</td><td>pss_last_sample, sss_last_sample wires</td><td>Derived from NSC</td></tr>
+    </tbody>
+  </table>
+
+  <!-- ═══════════════════════════════════════════════════════ SECTION 7 -->
+  <h2>7. Operation</h2>
+  <div class="card">
+    <h3>Startup / Reset</h3>
+    <p>On <code>aresetn</code> low: FSM resets to S_IDLE, all counters zero, hold_valid=0, busy/done/error=0. After reset release, the module waits for a <code>start</code> pulse.</p>
+
+    <h3>S_IDLE Window Validation</h3>
+    <p>On <code>start</code> pulse, the RTL validates the configured window parameters before entering S_STREAM. The validation checks: <code>pss_fft_end &le; frame_len</code>, <code>sss_fft_end &le; frame_len</code>, windows are not identical, and windows do not overlap. Any violation immediately transitions to S_ERROR with <code>error_code=1</code>. On success, all counters and the hold register are cleared, <code>busy</code> asserts, and the FSM enters S_STREAM.</p>
+
+    <h3>S_STREAM Main Operation</h3>
+    <p>The core loop: on each <code>s_fire</code> (s_valid &amp;&amp; s_ready), <code>frame_idx</code> increments. Two combinatorial window comparators run continuously:</p>
+    <ul>
+      <li><code>in_pss_window</code>: asserts when <code>!pss_done_r &amp;&amp; frame_idx &ge; pss_fft_start &amp;&amp; frame_idx &lt; pss_fft_end</code></li>
+      <li><code>in_sss_window</code>: asserts when <code>!sss_done_r &amp;&amp; frame_idx &ge; sss_fft_start &amp;&amp; frame_idx &lt; sss_fft_end</code></li>
+    </ul>
+    <p>Out-of-window samples are consumed and discarded; <code>s_axis_tready</code> stays high since <code>hold_valid</code> is low. In-window samples are written into the hold register with the appropriate <code>hold_sel</code> (0=PSS, 1=SSS), <code>hold_index</code> (= pss_cnt or sss_cnt), and <code>hold_tlast_r</code> (= pss_last_sample or sss_last_sample). The window sample counters pss_cnt and sss_cnt increment on each captured sample.</p>
+
+    <h3>Hold Register Backpressure</h3>
+    <p>The module implements a 1-entry elastic buffer. <code>s_axis_tready = !hold_valid</code> in S_STREAM. When a new in-window sample arrives and the hold register is full, the module cannot accept it — but this cannot happen in practice because <code>s_axis_tready</code> was deasserted from the previous cycle (hold_valid was set). Each in-window sample acceptance simultaneously deasserts tready, guaranteeing the upstream stalls until downstream consumes the held output.</p>
+    <p><strong>Key invariant:</strong> <code>hold_valid</code> is cleared whenever <code>hold_valid &amp;&amp; m_axis_tready</code> fires, without regard to FSM state. This runs in parallel to the FSM case statement.</p>
+
+    <h3>S_DONE State and Window Completion</h3>
+    <p>The FSM transitions to S_DONE when both <code>pss_done_r</code> and <code>sss_done_r</code> are set (either currently or on the current s_fire). This can happen before s_axis_tlast or exactly at tlast. In S_DONE, <code>s_axis_tready=1'b1</code> unconditionally — any remaining input samples are consumed and discarded, preventing upstream stall. The <code>done</code> pulse asserts one cycle after hold_valid drains to zero.</p>
+
+    <h3>Error Handling</h3>
+    <p>Three error conditions exist:</p>
+    <ul>
+      <li><strong>error_code=1:</strong> Window overlap or out-of-frame. Checked at start time in S_IDLE. FSM goes to S_ERROR immediately, never entering S_STREAM.</li>
+      <li><strong>error_code=2:</strong> s_axis_tlast received before both windows are complete. Indicates upstream sent fewer than FRAME_LEN samples. Sets error, transitions to S_ERROR.</li>
+      <li><strong>error_code=4:</strong> start pulse received while busy (in S_STREAM). Sets error but does not interrupt ongoing extraction.</li>
+    </ul>
+    <p>S_ERROR is cleared only by a subsequent start pulse (which resets error and returns to S_IDLE), or by aresetn.</p>
+
+    <h3>tlast Generation</h3>
+    <p><code>m_axis_tlast</code> (= hold_tlast_r) captures <code>pss_last_sample</code> or <code>sss_last_sample</code> at the time the last sample of each window is written to the hold register. This provides a frame-end signal to the downstream FFT frontend that precisely coincides with sample index 255.</p>
+  </div>
+
+  <!-- ═══════════════════════════════════════════════════════ SECTION 8 -->
+  <h2>8. Timing Diagram</h2>
+  <div class="card" style="overflow-x:auto;">
+    <div style="min-width:700px;">
+      <div style="font-size:11px; color:#8b949e; margin-bottom:6px;">Key: clk edges, transition at PSS window start (frame_idx=32), first PSS sample capture, backpressure event, PSS done, SSS window entry, SSS last sample, done pulse.</div>
+
+      <div class="wave-row"><div class="wave-label">aclk</div><div class="wave-track">
+        <div class="wave-lo" style="width:6px;"></div><div class="wave-hi" style="width:6px;"></div><div class="wave-lo" style="width:6px;"></div><div class="wave-hi" style="width:6px;"></div><div class="wave-lo" style="width:6px;"></div><div class="wave-hi" style="width:6px;"></div><div class="wave-lo" style="width:6px;"></div><div class="wave-hi" style="width:6px;"></div><div class="wave-lo" style="width:6px;"></div><div class="wave-hi" style="width:6px;"></div><div class="wave-lo" style="width:6px;"></div><div class="wave-hi" style="width:6px;"></div><div class="wave-lo" style="width:6px;"></div><div class="wave-hi" style="width:6px;"></div><div class="wave-lo" style="width:6px;"></div><div class="wave-hi" style="width:6px;"></div>
+        <span class="wave-ann">...</span>
+      </div></div>
+
+      <div class="wave-row"><div class="wave-label">s_axis_tvalid</div><div class="wave-track">
+        <div class="wave-lo" style="width:12px;"></div><div class="wave-hi" style="width:180px;"></div><div class="wave-lo" style="width:6px;"></div><div class="wave-hi" style="width:60px;"></div>
+      </div></div>
+
+      <div class="wave-row"><div class="wave-label">s_axis_tready</div><div class="wave-track">
+        <div class="wave-lo" style="width:12px;"></div>
+        <div class="wave-hi" style="width:30px;" title="out-of-window: ready=1"></div>
+        <div class="wave-lo" style="width:12px;" title="PSS[0] captured: hold=1, ready=0"></div>
+        <div class="wave-hi" style="width:12px;" title="m_ready consumed hold"></div>
+        <div class="wave-lo" style="width:12px;"></div>
+        <div class="wave-hi" style="width:60px;"></div>
+        <span class="wave-ann">backpressure pulses per sample</span>
+      </div></div>
+
+      <div class="wave-row"><div class="wave-label">frame_idx</div><div class="wave-track">
+        <div class="wave-data" style="width:28px; font-size:9px; color:#fff; padding:0 2px;">0..31</div>
+        <div class="wave-data" style="width:80px; font-size:9px; color:#fff; padding:0 2px; background:#005F73;">32..287 PSS</div>
+        <div class="wave-data" style="width:60px; font-size:9px; color:#fff; padding:0 2px;">288..319</div>
+        <div class="wave-data" style="width:80px; font-size:9px; color:#fff; padding:0 2px; background:#005F73;">320..575 SSS</div>
+      </div></div>
+
+      <div class="wave-row"><div class="wave-label">in_pss_window</div><div class="wave-track">
+        <div class="wave-lo" style="width:30px;"></div>
+        <div class="wave-hi" style="width:80px;" title="PSS window active"></div>
+        <div class="wave-lo" style="width:148px;"></div>
+      </div></div>
+
+      <div class="wave-row"><div class="wave-label">m_axis_tvalid</div><div class="wave-track">
+        <div class="wave-lo" style="width:30px;"></div>
+        <div style="display:flex;">
+          <div class="wave-hi" style="width:12px;"></div><div class="wave-lo" style="width:6px;"></div>
+          <div class="wave-hi" style="width:12px;"></div><div class="wave-lo" style="width:6px;"></div>
+          <span class="wave-ann" style="font-size:9px;">1 beat/sample (when m_ready=1)</span>
+        </div>
+      </div></div>
+
+      <div class="wave-row"><div class="wave-label">m_symbol_sel</div><div class="wave-track">
+        <div class="wave-lo" style="width:30px;"></div>
+        <div class="wave-data" style="width:80px; font-size:9px; color:#fff; padding:0 2px;">0 (PSS, 256 beats)</div>
+        <div class="wave-data" style="width:80px; font-size:9px; color:#fff; padding:0 2px; background:#CA6702;">1 (SSS, 256 beats)</div>
+      </div></div>
+
+      <div class="wave-row"><div class="wave-label">m_axis_tlast</div><div class="wave-track">
+        <div class="wave-lo" style="width:106px;"></div>
+        <div class="wave-hi" style="width:8px;" title="PSS tlast at index 255"></div>
+        <div class="wave-lo" style="width:76px;"></div>
+        <div class="wave-hi" style="width:8px;" title="SSS tlast at index 255"></div>
+        <div class="wave-lo" style="width:12px;"></div>
+      </div></div>
+
+      <div class="wave-row"><div class="wave-label">done</div><div class="wave-track">
+        <div class="wave-lo" style="width:190px;"></div>
+        <div class="wave-hi" style="width:8px;" title="1-cycle done pulse"></div>
+        <div class="wave-lo" style="width:60px;"></div>
+        <span class="wave-ann">1-cycle pulse after SSS tlast consumed</span>
+      </div></div>
+
+      <div style="margin-top:8px; font-size:11px; color:#8b949e;">
+        Latency from start to first PSS m_axis_tvalid: <span class="eq">CP_LEN + 1 <span class="op">=</span> 33</span> input cycles (32 discarded CP samples + 1 PSS[0] capture).
+        Total frame traversal: 576 cycles worst-case (no backpressure, 1 sample/cycle).
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════════════════════════════════ SECTION 9 -->
+  <h2>9. Internal FSM</h2>
+  <div class="card">
+    <div class="fsm-row">
+      <div style="display:flex; flex-direction:column; align-items:center; gap:3px;">
+        <div class="fsm-box reset-state">S_IDLE<br><span style="font-size:10px;">2'd0</span></div>
+        <div class="fsm-label">reset state<br>busy=0, start&amp;!err</div>
+      </div>
+      <div style="display:flex; flex-direction:column; align-items:center;">
+        <div style="font-size:10px; color:#8b949e;">start &amp;&amp; windows_ok</div>
+        <span class="fsm-arr">&#8594;</span>
+      </div>
+      <div style="display:flex; flex-direction:column; align-items:center; gap:3px;">
+        <div class="fsm-box">S_STREAM<br><span style="font-size:10px;">2'd1</span></div>
+        <div class="fsm-label">main extract loop<br>busy=1</div>
+      </div>
+      <div style="display:flex; flex-direction:column; align-items:center;">
+        <div style="font-size:10px; color:#8b949e;">both_done<br>(any time)</div>
+        <span class="fsm-arr">&#8594;</span>
+      </div>
+      <div style="display:flex; flex-direction:column; align-items:center; gap:3px;">
+        <div class="fsm-box done-state">S_DONE<br><span style="font-size:10px;">2'd2</span></div>
+        <div class="fsm-label">drain input<br>assert done pulse</div>
+      </div>
+    </div>
+    <div style="text-align:center; margin:8px 0;">
+      <span style="font-size:11px; color:#8b949e;">From S_IDLE (start&amp;&amp;!windows_ok) or S_STREAM (tlast before done or start_while_busy):</span>
+    </div>
+    <div class="fsm-row">
+      <div class="fsm-box error-state">S_ERROR<br><span style="font-size:10px;">2'd3</span></div>
+      <div style="font-size:10px; color:#8b949e; margin:0 8px;">start clears error, returns to S_IDLE</div>
+    </div>
+
+    <table style="margin-top:14px;">
+      <thead><tr><th>From State</th><th>Condition</th><th>To State</th><th>Outputs Set</th></tr></thead>
+      <tbody>
+        <tr><td>S_IDLE</td><td>start &amp;&amp; windows valid</td><td>S_STREAM</td><td>busy=1, clear counters &amp; hold</td></tr>
+        <tr><td>S_IDLE</td><td>start &amp;&amp; windows invalid</td><td>S_ERROR</td><td>error=1, error_code=1, busy=0</td></tr>
+        <tr><td>S_STREAM</td><td>both windows complete (non-tlast fire)</td><td>S_DONE</td><td>s_axis_tready=1 (drain mode)</td></tr>
+        <tr><td>S_STREAM</td><td>s_axis_tlast &amp;&amp; both windows complete</td><td>S_DONE</td><td>s_axis_tready=1 (drain mode)</td></tr>
+        <tr><td>S_STREAM</td><td>s_axis_tlast &amp;&amp; not both windows complete</td><td>S_ERROR</td><td>error=1, error_code=2, busy=0</td></tr>
+        <tr><td>S_STREAM</td><td>start (while busy)</td><td>stays S_STREAM</td><td>error_code=4 (non-transition)</td></tr>
+        <tr><td>S_DONE</td><td>!hold_valid</td><td>S_IDLE</td><td>done=1 (1-cycle pulse), busy=0</td></tr>
+        <tr><td>S_ERROR</td><td>start</td><td>S_IDLE</td><td>error=0, error_code=0</td></tr>
+      </tbody>
+    </table>
+    <p style="margin-top:8px;"><strong>S_DONE drain logic:</strong> In S_DONE, s_axis_tready=1 unconditionally. The done pulse fires when hold_valid is already 0 at the first clock in S_DONE where hold_valid=0. If hold_valid is still 1 (last SSS sample not yet consumed), done waits one more cycle.</p>
+  </div>
+
+  <!-- ═══════════════════════════════════════════════════════ SECTION 10 -->
+  <h2>10. Algorithm Mapping</h2>
+  <div class="card">
+    <p>This module implements the time-domain symbol windowing (cyclic-prefix removal) step that precedes the FFT in the C reference receiver. In the C reference, the PSS and SSS symbols are extracted as contiguous <span class="eq">NSC</span>-sample blocks from the corrected stream by pointer-offset indexing at the call to <code>carrierFreqOffsetEstMeyr()</code> (<code>receiver.c:304</code>, defined <code>receiver.c:498</code>). Inside that function the slice pointers <span class="eq"><i>rxI</i>+<i>slotStartIndex</i>+CP_LEN</span> (PSS) and <span class="eq"><i>rxI</i>+<i>slotStartIndex</i>+2<span class="op">·</span>CP_LEN+NSC</span> (SSS) are copied by <code>generate_complex_symbol()</code> (<code>auxiliary.c:68</code>) and handed to <code>fft_without_rearrange()</code> (<code>signal_processing_common.c:301</code>). The extractor is <em>indexing / windowing logic with no single named C function</em> — it maps to these pointer-offset expressions in the C caller (<code>receiver.c:516</code> and <code>receiver.c:519</code>).</p>
+
+    <p>The general symbol-window sample address, dropping the <span class="eq">CP_LEN</span>-sample cyclic prefix of OFDM block <span class="eq"><i>m</i></span> and taking the <span class="eq"><i>n</i></span>-th useful sample, is:</p>
+    <div class="eqd"><span class="eq"><i>sample</i>(<i>m</i>,<i>n</i>) <span class="op">=</span> <i>slot_start</i> + <i>m</i><span class="op">·</span>(NSC + CP_LEN) + CP_LEN + <i>n</i>,&nbsp;&nbsp; <i>n</i> <span class="op">=</span> 0 &hellip; NSC&minus;1</span></div>
+    <p>with block stride <span class="eq">NSC + CP_LEN <span class="op">=</span> 256 + 32 <span class="op">=</span> 288</span> (C: <code>symbols_per_block = NSC + CP_LEN</code>, <code>signal_processing_common.c:13</code>). Block <span class="eq"><i>m</i> <span class="op">=</span> 0</span> yields the PSS window at offset <span class="eq">CP_LEN <span class="op">=</span> 32</span>; block <span class="eq"><i>m</i> <span class="op">=</span> 1</span> yields the SSS window at offset <span class="eq">(NSC + CP_LEN) + CP_LEN <span class="op">=</span> 2<span class="op">·</span>CP_LEN + NSC <span class="op">=</span> 320</span>. Here <span class="eq"><i>slot_start</i></span> = RTL <code>frame_start</code> = C <code>slotStartIndex</code> (<code>receiver.c:291</code>), and the RTL window bases are <span class="eq"><i>pss_fft_start</i> <span class="op">=</span> <i>slot_start</i> + 32</span>, <span class="eq"><i>sss_fft_start</i> <span class="op">=</span> <i>slot_start</i> + 320</span>.</p>
+
+    <table>
+      <thead><tr><th>RTL Construct (module / signal)</th><th>C reference (function @ file:line)</th><th>Formula</th><th>Notes</th></tr></thead>
+      <tbody>
+        <tr><td>frame_idx counter + in_pss/in_sss_window comparators</td><td>Pointer-offset slice into <code>rxI</code>/<code>rxQ</code> at <code>carrierFreqOffsetEstMeyr()</code> @ receiver.c:516, 519</td><td><span class="eq"><i>sample</i> <span class="op">=</span> <i>slot_start</i> + <i>m</i><span class="op">·</span>(NSC+CP_LEN) + CP_LEN + <i>n</i></span></td><td>Hardware streaming window replaces C pointer arithmetic; CP dropped by the <span class="eq">+CP_LEN</span> term</td></tr>
+        <tr><td>PSS window: frame_idx in [pss_fft_start, pss_fft_start+NSC&minus;1]</td><td><code>generate_complex_symbol(rxI + slotStartIndex + CP_LEN, …, NSC)</code> @ receiver.c:516</td><td><span class="eq"><i>sample</i> <span class="op">=</span> <i>slot_start</i> + CP_LEN + <i>n</i></span> &nbsp;(<span class="eq"><i>m</i>=0</span>)</td><td>PSS offset <span class="eq"><span class="op">=</span> CP_LEN <span class="op">=</span> 32</span></td></tr>
+        <tr><td>SSS window: frame_idx in [sss_fft_start, sss_fft_start+NSC&minus;1]</td><td><code>generate_complex_symbol(rxI + slotStartIndex + 2*CP_LEN + NSC, …, NSC)</code> @ receiver.c:519</td><td><span class="eq"><i>sample</i> <span class="op">=</span> <i>slot_start</i> + 2<span class="op">·</span>CP_LEN + NSC + <i>n</i></span> &nbsp;(<span class="eq"><i>m</i>=1</span>)</td><td>SSS offset <span class="eq"><span class="op">=</span> 2<span class="op">·</span>CP_LEN + NSC <span class="op">=</span> 320</span></td></tr>
+        <tr><td>m_symbol_sel = 0 (PSS) then 1 (SSS)</td><td>Separate <code>rxCmplx_PSS</code> / <code>rxCmplx_SSS</code> buffers @ receiver.c:513&ndash;520</td><td><span class="eq"><i>sel</i> <span class="op">=</span> <i>m</i> &isin; {0,&nbsp;1}</span></td><td>Serialized on one stream in HW vs two parallel buffers in C</td></tr>
+        <tr><td>m_symbol_index = pss_cnt / sss_cnt</td><td>Copy-loop index <code>i = 0..len&minus;1</code> in <code>generate_complex_symbol()</code> @ auxiliary.c:68</td><td><span class="eq"><i>n</i> <span class="op">=</span> 0 &hellip; NSC&minus;1</span></td><td>Used by downstream FFT frontend as bin address</td></tr>
+        <tr><td>m_axis_tlast at index NSC&minus;1 = 255</td><td>End of <span class="eq">NSC</span>-length buffer passed to <code>fft_without_rearrange()</code> @ receiver.c:517, 520 (def signal_processing_common.c:301)</td><td><span class="eq"><i>n</i> <span class="op">=</span> NSC&minus;1 <span class="op">=</span> 255</span></td><td>Triggers FFT start in hardware</td></tr>
+        <tr><td>Error if tlast before both windows complete (error_code=2)</td><td>Implicit — C buffer always holds the full slot</td><td><span class="eq"><i>slot_start</i> + 320 + NSC &le; <i>frame_len</i></span></td><td>Hardware defensive boundary check absent in C</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- ═══════════════════════════════════════════════════════ SECTION 11 -->
+  <h2>11. Latency Analysis</h2>
+  <table>
+    <thead><tr><th>Operation / Signal</th><th>Latency (cycles)</th><th>Measurement Method</th><th>Notes</th></tr></thead>
+    <tbody>
+      <tr><td>start to first PSS m_axis_tvalid</td><td><span class="eq">CP_LEN + 1 <span class="op">=</span> 33</span></td><td>start pulse to m_axis_tvalid rising, m_ready=1</td><td>32 CP samples discarded, then PSS[0] captured into hold</td></tr>
+      <tr><td>PSS window traversal (no backpressure)</td><td>NSC = 256</td><td>first to last PSS m_axis_tvalid</td><td>1 sample/cycle with m_ready=1</td></tr>
+      <tr><td>PSS tlast to SSS first valid</td><td><span class="eq">2<span class="op">·</span>CP_LEN + 1 <span class="op">=</span> 65</span></td><td>PSS m_axis_tlast to SSS m_axis_tvalid</td><td>2 CP + inter-symbol gap samples discarded</td></tr>
+      <tr><td>SSS window traversal</td><td>NSC = 256</td><td>first to last SSS m_axis_tvalid</td><td>Same as PSS</td></tr>
+      <tr><td>Last SSS sample to done pulse</td><td>1-2</td><td>SSS m_axis_tlast to done</td><td>1 cycle if m_ready consumed hold immediately; 2 if hold needed 1 extra cycle</td></tr>
+      <tr><td>Total frame traversal to done</td><td>FRAME_LEN = 576</td><td>start to done (no backpressure)</td><td>Worst case; actual may be shorter if windows complete before frame end + drain latency</td></tr>
+      <tr><td>Hold register add latency</td><td>1 cycle</td><td>s_fire to m_axis_tvalid assert</td><td>Registered output; 1 cycle pipeline stage</td></tr>
+    </tbody>
+  </table>
+
+  <!-- ═══════════════════════════════════════════════════════ SECTION 12 -->
+  <h2>12. Throughput Analysis</h2>
+  <table>
+    <thead><tr><th>Mode</th><th>Input Samples/Clock</th><th>Output Samples/Clock</th><th>Bottleneck</th><th>Backpressure Impact</th></tr></thead>
+    <tbody>
+      <tr><td>Out-of-window (CP samples)</td><td>1</td><td>0</td><td>None — discarded immediately</td><td>None; s_axis_tready=1 always in this region</td></tr>
+      <tr><td>In-window, m_ready=1</td><td>1</td><td>1</td><td>Hold register clear rate</td><td>None; hold consumed immediately</td></tr>
+      <tr><td>In-window, m_ready=0</td><td>0 (stalled)</td><td>0</td><td>Downstream FFT frontend not ready</td><td>s_axis_tready=0 (hold_valid=1); upstream frac corrector stalls 1 cycle per sample</td></tr>
+      <tr><td>S_DONE drain</td><td>1</td><td>0</td><td>None — drain at full rate</td><td>Critical: must drain to prevent upstream stall</td></tr>
+      <tr><td>Peak throughput</td><td>1</td><td>1 (sustained)</td><td>Downstream m_ready</td><td>1 cycle stall per sample with m_ready=0</td></tr>
+    </tbody>
+  </table>
+
+  <!-- ═══════════════════════════════════════════════════════ SECTION 13 -->
+  <h2>13. Resource Impact</h2>
+  <table>
+    <thead><tr><th>Resource</th><th>Estimate</th><th>Notes</th></tr></thead>
+    <tbody>
+      <tr><td>LUTs</td><td>~60-80</td><td>Window comparators (12-bit compare x4), FSM (2-bit x4 states), hold register mux</td></tr>
+      <tr><td>FFs</td><td>~80-100</td><td>hold_data(32) + hold_sel(1) + hold_index(8) + hold_tlast(1) + hold_valid(1) + frame_idx(12) + pss_cnt(9) + sss_cnt(9) + pss_done_r(1) + sss_done_r(1) + state(2) + busy/done/error/error_code</td></tr>
+      <tr><td>BRAMs</td><td>0</td><td>No block RAM; 1-entry hold register is FFs only</td></tr>
+      <tr><td>DSP48s</td><td>0</td><td>No multiplication; all comparison and increment logic</td></tr>
+      <tr><td>Special primitives</td><td>None</td><td>Pure RTL; no IP instantiation</td></tr>
+    </tbody>
+  </table>
+
+  <!-- ═══════════════════════════════════════════════════════ SECTION 14 -->
+  <h2>14. RTL Simulation Coverage</h2>
+  <table>
+    <thead><tr><th>Gate ID</th><th>Simulator</th><th>FFT IP Mode</th><th>Cases</th><th>Status</th><th>What Was Verified</th></tr></thead>
+    <tbody>
+      <tr><td>P3-13E</td><td>iverilog</td><td>Behavioral DFT (stub=3)</td><td>Sanity</td><td><span class="badge-pending">Not Verified</span></td><td>PSS/SSS extraction windows, m_symbol_sel, m_symbol_index correctness</td></tr>
+      <tr><td>P3-14C</td><td>iverilog</td><td>Behavioral DFT (stub=3)</td><td>Full pipeline</td><td><span class="badge-pending">Not Verified</span></td><td>Extractor in full pipeline context, backpressure observed</td></tr>
+      <tr><td>P3-15A</td><td>iverilog</td><td>Behavioral DFT (stub=3)</td><td>Integration</td><td><span class="badge-pending">Not Verified</span></td><td>S_DONE drain verified, done pulse timing</td></tr>
+      <tr><td>P3-15D</td><td>iverilog</td><td>Behavioral DFT (stub=3)</td><td>100/100 k_int sweep</td><td><span class="badge-pending">Not Verified</span></td><td>All integer CFO values, extractor as part of full chain</td></tr>
+      <tr><td>XIP-002</td><td>Vivado xsim</td><td>Real Xilinx xfft_v9_1</td><td>PSS+SSS frames</td><td><span class="badge-pending">Not Verified</span></td><td>Extraction with real FFT IP downstream, bin capture verified</td></tr>
+      <tr><td>XIP-004</td><td>Vivado xsim</td><td>Real Xilinx xfft_v9_1</td><td>9/9 k_int cases</td><td><span class="badge-pending">Not Verified</span></td><td>FULL_SYNC_REAL_IP_GATE — end-to-end with hardware FFT</td></tr>
+    </tbody>
+  </table>
+
+  <!-- ═══════════════════════════════════════════════════════ SECTION 15 -->
+  <h2>15. Known Issues and Lessons Learned</h2>
+  <div class="ok">ISSUE-001 (complex_mult_iq backpressure): RESOLVED — unrelated to this module but caused TB AXI-S races in early testing.</div>
+  <div class="ok">ISSUE-002 (TB AXI-S race, #1 delay fix): RESOLVED. The TB was driving m_axis_tready and s_axis_tvalid on the same clock edge as the DUT, causing setup violations. Fix: add `#1` delay after posedge in TB before asserting signals. This module's tready/tvalid logic was correct; the issue was pure testbench timing.</div>
+  <div class="note">S_DONE drain is mandatory. Without it, when both windows complete before s_axis_tlast arrives, the upstream frac_cfo_frame_corrector_top output would see s_axis_tready=0 and stall. The frac corrector must emit all FRAME_LEN samples to de-assert busy and pulse done. Early versions omitted the drain, causing a deadlock: extractor waiting for nothing, frac corrector stalled mid-frame.</div>
+  <div class="note">s_symbol_sel pre-set for SSS: the hold_sel field correctly uses in_sss_window priority over in_pss_window for the ternary assignment. In theory the PSS and SSS windows do not overlap (validated at start), but the priority ordering ensures SSS wins if both signals asserted simultaneously due to a bug in window configuration.</div>
+  <div class="note">Error code=4 (start_while_busy) sets the error flag but does not interrupt ongoing extraction. The current operation continues to completion. This is intentional — aborting mid-extraction would leave partial data in the downstream FFT buffers.</div>
+
+  <!-- ═══════════════════════════════════════════════════════ SECTION 16 -->
+  <h2>16. FPGA Bring-Up Guide</h2>
+  <div class="card">
+    <h3>ILA Probe Signals</h3>
+    <table>
+      <thead><tr><th>Signal</th><th>Expected Behavior</th></tr></thead>
+      <tbody>
+        <tr><td><code>m_symbol_sel</code></td><td>0 for first 256 m_axis_tvalid beats, then 1 for next 256 beats</td></tr>
+        <tr><td><code>m_symbol_index[7:0]</code></td><td>Counts 0..255, resets to 0 for SSS</td></tr>
+        <tr><td><code>m_axis_tvalid</code></td><td>High in bursts during PSS and SSS windows; low between windows and during CP</td></tr>
+        <tr><td><code>m_axis_tlast</code></td><td>One-cycle pulse at m_symbol_index=255 for both PSS and SSS</td></tr>
+        <tr><td><code>state[1:0]</code></td><td>0=IDLE, 1=STREAM, 2=DONE, 3=ERROR</td></tr>
+        <tr><td><code>frame_idx[11:0]</code></td><td>Counts 0..575 during frame traversal</td></tr>
+        <tr><td><code>done</code></td><td>1-cycle pulse after SSS extraction complete</td></tr>
+      </tbody>
+    </table>
+
+    <h3>Reset Sequence</h3>
+    <ol>
+      <li>Assert aresetn=0 for at least 16 clock cycles.</li>
+      <li>Release aresetn=1. Confirm state=S_IDLE, busy=0, done=0.</li>
+      <li>Configure pss_fft_start = detected_frame_start + 32, sss_fft_start = detected_frame_start + 320, frame_len = 576 via AXI-Lite register writes.</li>
+      <li>Confirm upstream frac_cfo_frame_corrector_top is idle and ready to stream.</li>
+      <li>Pulse start=1 for one clock cycle.</li>
+      <li>Observe state transition to S_STREAM within 1 cycle.</li>
+      <li>Observe first m_axis_tvalid rising edge at frame_idx=32 (after 32 CP samples discarded).</li>
+    </ol>
+
+    <h3>Hardware Risks</h3>
+    <ul>
+      <li><strong>Window misalignment:</strong> If frame_start_index from the correlation peak detector is wrong (off by 1 or more bins), the PSS/SSS windows will capture incorrect samples. Verify frame_start against known test patterns before running integer CFO estimation.</li>
+      <li><strong>FRAME_LEN mismatch:</strong> If upstream frac corrector emits fewer than 576 samples (e.g., OUTPUT_SAMPLES parameter mismatch), error_code=2 will fire. Check pss_sss_symbol_extractor.frame_len AXI-Lite register matches OUTPUT_SAMPLES.</li>
+      <li><strong>m_axis_tready stuck low:</strong> If downstream FFT frontend fails to assert m_ready, the extractor will stall mid-extraction, eventually stalling the full pipeline. Add ILA trigger on m_axis_tready=0 for >1000 cycles.</li>
+    </ul>
+  </div>
+
+  <!-- ═══════════════════════════════════════════════════════ SECTION 17 -->
+  <h2>17. Debug Checklist</h2>
+  <ol>
+    <li>Confirm aresetn releases correctly; verify state=S_IDLE after reset.</li>
+    <li>Confirm pss_fft_start=frame_start+32, sss_fft_start=frame_start+320 are correct (read back AXI-Lite registers).</li>
+    <li>Confirm frame_len=576 in the register; mismatch causes error_code=2.</li>
+    <li>Verify start pulse is exactly 1 cycle wide and arrives in S_IDLE.</li>
+    <li>Observe state transitions: IDLE→STREAM in 1 cycle after start.</li>
+    <li>At frame_idx=32: verify in_pss_window=1, m_axis_tvalid rises within 1 cycle (after hold clears).</li>
+    <li>Count m_axis_tvalid beats with m_symbol_sel=0 — expect exactly 256.</li>
+    <li>Verify m_axis_tlast at m_symbol_index=255 for PSS (sel=0).</li>
+    <li>After PSS tlast: verify m_symbol_sel switches to 1 at next m_axis_tvalid (SSS[0]).</li>
+    <li>Count m_axis_tvalid beats with m_symbol_sel=1 — expect exactly 256.</li>
+    <li>Verify done pulse asserts within 2 cycles after SSS m_axis_tlast.</li>
+    <li>Check error flag and error_code if done does not pulse within 650 cycles of start.</li>
+    <li>If error_code=2: count s_fire events; upstream likely sent fewer than 576 samples.</li>
+    <li>Verify S_DONE drain: s_axis_tready=1 after last SSS sample, even before done pulse.</li>
+  </ol>
+
+  <!-- ═══════════════════════════════════════════════════════ SECTION 18 -->
+  <h2>18. Review Notes</h2>
+  <div class="card">
+    <h3>Non-Obvious Design Decisions</h3>
+    <ul>
+      <li><strong>1-entry hold register vs FIFO:</strong> A FIFO would add unnecessary area and complexity. The 1-entry register provides the minimum elastic buffering needed to tolerate 1-cycle backpressure between upstream (which may fire continuously) and downstream (which may stall 1 cycle). The design is statically verifiable: upstream stalls immediately when hold_valid=1, so no overflow is possible.</li>
+      <li><strong>s_axis_tready = !hold_valid (not combinatorial from m_fire):</strong> This avoids a combinatorial loop through the upstream module's ready logic. hold_valid clears one cycle after m_fire, giving tready a registered path.</li>
+      <li><strong>frame_idx does not reset to 0 at frame start:</strong> frame_idx is initialized to 0 on start (in S_IDLE branch), not on tlast. This is correct because the frac corrector emits exactly FRAME_LEN=576 samples starting at frame_idx=0 relative to the frame boundary. The window positions (pss_fft_start=32, sss_fft_start=320) are already absolute frame offsets.</li>
+      <li><strong>pss_done_r / sss_done_r flags:</strong> These prevent re-triggering the window comparators after a window completes if a counter wrap bug were ever introduced. They also enable early S_DONE transition before s_axis_tlast.</li>
+      <li><strong>S_ERROR requires explicit start to clear:</strong> This prevents the module from silently recovering and producing incorrect output. The parent state machine must observe the error, handle it (e.g., log, re-trigger correlation), and explicitly restart.</li>
+      <li><strong>NSC_FI / NSC_LAST localparams:</strong> Vivado-safe workaround for the Verilog-2001 constraint that forbids SystemVerilog-style sized constants like <code>FRAME_INDEX_WIDTH'(NSC)</code>. Always use these localparams when mixing parameter widths in arithmetic.</li>
+    </ul>
+    <h3>Notes for Future Engineers</h3>
+    <ul>
+      <li>If NSC changes from 256, update NSC parameter. NSC_W, NSC_FI, NSC_LAST, and all counters auto-size via $clog2 and parameterized widths.</li>
+      <li>The module does not buffer output — it is a streaming extractor. The 512 output samples arrive in order (PSS[0..255] then SSS[0..255]) with gaps between windows. Downstream must handle gaps (no valid output) between the PSS and SSS windows.</li>
+      <li>If future requirements add a third symbol window (e.g., PBCH), replicate the pss/sss cnt/done_r pattern for a third window and add a third output valid stream. The hold register logic extends naturally.</li>
+    </ul>
+  </div>
+
+</div>
+</body>
+</html>

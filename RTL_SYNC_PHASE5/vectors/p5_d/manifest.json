@@ -1,0 +1,119 @@
+{
+  "generator": "scripts/gen_p5_d_stimulus.py",
+  "params": {
+    "NSC": 256,
+    "CP_LEN": 32,
+    "SEQ_LEN": 127,
+    "SYNC_START": 55,
+    "NID_1": 170,
+    "NID_2": 2,
+    "TARGET_PEAK": 16384,
+    "Q15_scale": 7774.093041206046
+  },
+  "tdata_format": "{im[15:0], re[15:0]} - matches meyr_cfo_top s_tdata",
+  "samples_per_file": "256 PSS + 256 SSS = 512 lines",
+  "cases": {
+    "km08": {
+      "k_int": -8,
+      "file": "vectors/p5_d/p5_d_km08.mem",
+      "expected_peak_idx": 504,
+      "expected_cfo_int": -8
+    },
+    "km07": {
+      "k_int": -7,
+      "file": "vectors/p5_d/p5_d_km07.mem",
+      "expected_peak_idx": 505,
+      "expected_cfo_int": -7
+    },
+    "km06": {
+      "k_int": -6,
+      "file": "vectors/p5_d/p5_d_km06.mem",
+      "expected_peak_idx": 506,
+      "expected_cfo_int": -6
+    },
+    "km05": {
+      "k_int": -5,
+      "file": "vectors/p5_d/p5_d_km05.mem",
+      "expected_peak_idx": 507,
+      "expected_cfo_int": -5
+    },
+    "km04": {
+      "k_int": -4,
+      "file": "vectors/p5_d/p5_d_km04.mem",
+      "expected_peak_idx": 508,
+      "expected_cfo_int": -4
+    },
+    "km03": {
+      "k_int": -3,
+      "file": "vectors/p5_d/p5_d_km03.mem",
+      "expected_peak_idx": 509,
+      "expected_cfo_int": -3
+    },
+    "km02": {
+      "k_int": -2,
+      "file": "vectors/p5_d/p5_d_km02.mem",
+      "expected_peak_idx": 510,
+      "expected_cfo_int": -2
+    },
+    "km01": {
+      "k_int": -1,
+      "file": "vectors/p5_d/p5_d_km01.mem",
+      "expected_peak_idx": 511,
+      "expected_cfo_int": -1
+    },
+    "kp00": {
+      "k_int": 0,
+      "file": "vectors/p5_d/p5_d_kp00.mem",
+      "expected_peak_idx": 0,
+      "expected_cfo_int": 0
+    },
+    "kp01": {
+      "k_int": 1,
+      "file": "vectors/p5_d/p5_d_kp01.mem",
+      "expected_peak_idx": 1,
+      "expected_cfo_int": 1
+    },
+    "kp02": {
+      "k_int": 2,
+      "file": "vectors/p5_d/p5_d_kp02.mem",
+      "expected_peak_idx": 2,
+      "expected_cfo_int": 2
+    },
+    "kp03": {
+      "k_int": 3,
+      "file": "vectors/p5_d/p5_d_kp03.mem",
+      "expected_peak_idx": 3,
+      "expected_cfo_int": 3
+    },
+    "kp04": {
+      "k_int": 4,
+      "file": "vectors/p5_d/p5_d_kp04.mem",
+      "expected_peak_idx": 4,
+      "expected_cfo_int": 4
+    },
+    "kp05": {
+      "k_int": 5,
+      "file": "vectors/p5_d/p5_d_kp05.mem",
+      "expected_peak_idx": 5,
+      "expected_cfo_int": 5
+    },
+    "kp06": {
+      "k_int": 6,
+      "file": "vectors/p5_d/p5_d_kp06.mem",
+      "expected_peak_idx": 6,
+      "expected_cfo_int": 6
+    },
+    "kp07": {
+      "k_int": 7,
+      "file": "vectors/p5_d/p5_d_kp07.mem",
+      "expected_peak_idx": 7,
+      "expected_cfo_int": 7
+    },
+    "kp08": {
+      "k_int": 8,
+      "file": "vectors/p5_d/p5_d_kp08.mem",
+      "expected_peak_idx": 8,
+      "expected_cfo_int": 8
+    }
+  }
+}
